@@ -1,11 +1,15 @@
-========= Compile  Mac =========
+========= Compile  Mac/Linux =========
 $ make
 
 ========= Remove object files =========
 $ make clean
 
-========= Run  Mac =========
+========= Run Mac/Linux =========
 $ ./Program -config sgct_config/single.xml
+OR
+$ ./sgct_sim.sh
+OR if you want the VR-arena simulator (1 master and 3 slaves)
+$ ./sgct_sim.sh VR
 
 
 
