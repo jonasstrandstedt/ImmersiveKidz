@@ -1,0 +1,11 @@
+========= Compile  Mac =========
+$ make
+
+========= Remove object files =========
+$ make clean
+
+========= Run  Mac =========
+$ ./Program -config sgct_config/single.xml
+
+
+
