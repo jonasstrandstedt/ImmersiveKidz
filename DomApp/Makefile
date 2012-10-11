@@ -17,7 +17,7 @@ OPENGL=1
 ifdef OPENGL
 	MESSAGE += OpenGL,
 	ifeq ($(OS),Linux)
-		FLAGS += -lsgct -lGL -lGLU -lX11 -lXrandr -static-libgcc -static-libstdc++
+		FLAGS += -lsgct -lGL -lGLU -lX11 -lXrandr -static-libgcc -static-libstdc++ -L"sgct_0_9_5/linux_lib"
 	else ifeq ($(OS),Darwin)
 		FLAGS += -framework Cocoa -framework OpenGL -lglfw -lsgct -L"sgct_0_9_5/mac_lib"
 	endif
@@ -36,7 +36,7 @@ clean:
 	-@echo "Cleaning"
 	-$(RM) src/*.o
 
-# pattern that compiles all .o files, both .cpp and .c works (tested on linux)
+# pattern that compiles all .o files
 %.o: %.cpp
 	$(CC) $(INCPATH) -c $< -o $@
 
