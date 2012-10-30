@@ -1,5 +1,6 @@
-========= Compile  Mac/Linux =========
+========= Compile =========
 $ make
+(windows require mingw-4.7.0)
 
 ========= Remove object files =========
 $ make clean
@@ -11,5 +12,10 @@ $ ./sgct_sim.sh
 OR if you want the VR-arena simulator (1 master and 3 slaves)
 $ ./sgct_sim.sh VR
 
-
+========= Run Windows =========
+$ Program.exe -config sgct_config/single.xml
+OR
+$ sh sgct_sim.sh
+OR if you want the VR-arena simulator (1 master and 3 slaves)
+$ sh sgct_sim.sh VR
 
