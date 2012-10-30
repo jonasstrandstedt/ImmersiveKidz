@@ -20,6 +20,9 @@ ifdef OPENGL
 		FLAGS += -lsgct -lGL -lGLU -lX11 -lXrandr -static-libgcc -static-libstdc++ -L"sgct_0_9_5/linux_lib"
 	else ifeq ($(OS),Darwin)
 		FLAGS += -framework Cocoa -framework OpenGL -lglfw -lsgct -L"sgct_0_9_5/mac_lib"
+	else ifeq ($(OS),MINGW32_NT-6.1)
+		OUTPUT = Program.exe
+		FLAGS += -L"sgct_0_9_5/win_mingw32_lib" -lsgct32 -lopengl32 -lglu32 -lws2_32 -static-libgcc -static-libstdc++
 	endif
 endif
 
@@ -30,7 +33,7 @@ all: $(OBJECTS)
 	-@echo "Linking for $(OS)"
 	-@echo "Including $(MESSAGE)"
 	-@echo " "
-	$(CC) -o $(OUTPUT) $(OBJECTS) $(FLAGS) $(INCPATH)
+	$(CC) -o $(OUTPUT) $(OBJECTS) $(INCPATH) $(FLAGS) 
 
 clean:
 	-@echo "Cleaning"
