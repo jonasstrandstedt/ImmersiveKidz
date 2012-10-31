@@ -1,6 +1,10 @@
 #include "sgct.h"
+#include "ImmersiveKidz.h"
+#include "Billboard.h"
+#include "Illustration.h"
 
 sgct::Engine * gEngine;
+ImmersiveKidz *iKidz = 0;
 
 void myDrawFun();
 void myPreSyncFun();
@@ -11,7 +15,6 @@ double curr_time = 0.0;
 
 int main( int argc, char* argv[] )
 {
-
 	// Allocate
 	gEngine = new sgct::Engine( argc, argv );
 
@@ -28,10 +31,18 @@ int main( int argc, char* argv[] )
 		return EXIT_FAILURE;
 	}
 
+	// Allocate and initialize ImmersiveKidz
+	iKidz = new ImmersiveKidz();
+	iKidz->setMaster(gEngine->isMaster());
+	iKidz->addDrawableObject(new Billboard());
+	iKidz->addDrawableObject(new Illustration());
+	iKidz->draw();
+
 	// Main loop
 	gEngine->render();
 
 	// Clean up (de-allocate)
+	delete iKidz;
 	delete gEngine;
 
 	// Exit program
@@ -40,20 +51,7 @@ int main( int argc, char* argv[] )
 
 void myDrawFun()
 {
-	float speed = 50.0f;
-	glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
-
-	//render a single triangle
-	glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 0.0f, 0.0f); //Red
-		glVertex3f(-0.5f, -0.5f, 0.0f);
-
-		glColor3f(0.0f, 1.0f, 0.0f); //Green
-		glVertex3f(0.0f, 0.5f, 0.0f);
-
-		glColor3f(0.0f, 0.0f, 1.0f); //Blue
-		glVertex3f(0.5f, -0.5f, 0.0f);
-	glEnd();
+	iKidz->draw();
 }
 
 void myPreSyncFun()
@@ -62,16 +60,20 @@ void myPreSyncFun()
 	if( gEngine->isMaster() )
 	{
 		//get the time in seconds
-		curr_time = sgct::Engine::getTime();
+		iKidz->setCurr_time(sgct::Engine::getTime());
 	}
 }
 
 void myEncodeFun()
 {
-	sgct::SharedData::Instance()->writeDouble( curr_time );
+	sgct::SharedData::Instance()->writeDouble( iKidz->getCurr_time() );
 }
 
 void myDecodeFun()
 {
-	curr_time = sgct::SharedData::Instance()->readDouble();
+	double temp_d = sgct::SharedData::Instance()->readDouble();
+	if (iKidz != 0)
+	{
+		iKidz->setCurr_time(temp_d);
+	}
 }
