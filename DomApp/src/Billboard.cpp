@@ -22,11 +22,11 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 };
 
 /**
-*@brief	  Brief description
+*@brief		Draws the Billboard. 
 *
-*@details Detailed description (Extends the brief description)
+*@details	Draws a texture on a Billboard(Quad perpendicual to the camera position).
 *
-*@return     void
+*@return    void
 *
 *
 */
@@ -34,6 +34,44 @@ void Billboard::draw() {
 	
 	sgct::MessageHandler::Instance()->print("Billboard draw\n");
 
+	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(texture));
 
 
+	glPushMatrix();
+	//Apllying the transform matrix
+	glMultMatrixf(glm::value_ptr(transform));
+	
+	glm::vec3 normal(0.0 , 0.0 , 1.0);
+	glm::vec3 camPos(0.0 , 0.0 , -1.0);
+
+	float angle = acos(glm::dot(normal, camPos));
+	//Rotate Billboard towards the camera position.
+	glRotatef(angle, 0.0 , 1.0 , 0.0);
+
+
+	glBegin(GL_QUADS);
+
+	//Vertex 1 
+	glTexCoord2d(0.0,0.0);
+	glVertex3f(-0.5 * proportions[0] , 0 , 0);
+	
+	//Vertex 2 
+	glTexCoord2d(1.0,0.0);
+	glVertex3f(0.5 * proportions[0] , 0 , 0);
+	
+	//Vertex 3 
+	glTexCoord2d(0.0,0.0);
+	glVertex3f(0.5 * proportions[0] , proportions[1] , 0);
+	
+	//Vertex 4 
+	glTexCoord2d(0.0,0.0);
+	glVertex3f(-0.5 * proportions[0] , proportions[1] , 0);
+
+
+
+
+
+	glEnd();
+
+	glPopMatrix();
 }
