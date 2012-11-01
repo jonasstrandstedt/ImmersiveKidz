@@ -51,13 +51,15 @@ void myInitOGLFun() {
 	// Allocate and initialize ImmersiveKidz
 	iKidz = new ImmersiveKidz();
 	iKidz->setMaster(gEngine->isMaster());
-	iKidz->addDrawableObject(new Model("EXTRA_LIFE.obj", "EXTRA_LIFE.png", 0.002));
+	//iKidz->addDrawableObject(new Model("EXTRA_LIFE.obj", "EXTRA_LIFE.png", 0.002));
 	/*
 	iKidz->addDrawableObject(new Billboard());
 	iKidz->addDrawableObject(new Illustration());
 	iKidz->draw();
 	*/
 	
+	iKidz->loadScene();
+
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW); //our polygon winding is counter clockwise
 	glEnable(GL_CULL_FACE);
