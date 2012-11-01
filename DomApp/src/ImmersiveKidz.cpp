@@ -115,7 +115,12 @@ void ImmersiveKidz::decode(){
 
 int ImmersiveKidz::loadScene() {
 	tinyxml2::XMLDocument doc;
+	
+#ifdef __WIN32__
 	doc.LoadFile("../World1/scene.xml");
+#else
+	doc.LoadFile("World1/scene.xml");
+#endif
 
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
 	if(scene) {
@@ -130,13 +135,14 @@ int ImmersiveKidz::loadScene() {
 			double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
 			double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
 			double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
-
+			
+			/*
 			std::cout << name_artist << std::endl;
 			std::cout << name_drawing << std::endl;
 			std::cout << texture << std::endl;
 			std::cout << posx << " " << posy << " " << posz << std::endl;
 			std::cout << sizex << " " << sizey <<  std::endl;
-
+			*/
 		}
 	}
 	else {

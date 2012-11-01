@@ -27,7 +27,6 @@ Model::Model(const char *filename, const char *texturename, float scale, glm::ve
 *@return     void
 */
 void Model::draw() {
-	glEnable(GL_TEXTURE_2D);
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(myTextureIndex) );
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vBufferID);
@@ -55,7 +54,6 @@ void Model::draw() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	
 	glBindTexture(GL_TEXTURE_2D, 0); 
-	glDisable(GL_TEXTURE_2D);
 }
 
 /**
