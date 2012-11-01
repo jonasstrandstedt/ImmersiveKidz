@@ -6,6 +6,7 @@
 #include <vector>
 #include "tinyxml2.h"
 #include <iostream>
+#include "Billboard.h"
 
 class ImmersiveKidz {
 public:

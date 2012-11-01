@@ -32,7 +32,7 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 */
 void Billboard::draw() {
 	
-	sgct::MessageHandler::Instance()->print("Billboard draw\n");
+	//sgct::MessageHandler::Instance()->print("Billboard draw\n");
 
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(texture));
 
@@ -44,7 +44,7 @@ void Billboard::draw() {
 	glm::vec3 normal(0.0 , 0.0 , 1.0);
 	glm::vec3 camPos(0.0 , 0.0 , -1.0);
 
-	float angle = acos(glm::dot(normal, camPos));
+	float angle = acos(glm::dot(-normal, camPos));
 	//Rotate Billboard towards the camera position.
 	glRotatef(angle, 0.0 , 1.0 , 0.0);
 
@@ -60,11 +60,11 @@ void Billboard::draw() {
 	glVertex3f(0.5 * proportions[0] , 0 , 0);
 	
 	//Vertex 3 
-	glTexCoord2d(0.0,0.0);
+	glTexCoord2d(1.0,1.0);
 	glVertex3f(0.5 * proportions[0] , proportions[1] , 0);
 	
 	//Vertex 4 
-	glTexCoord2d(0.0,0.0);
+	glTexCoord2d(0.0,1.0);
 	glVertex3f(-0.5 * proportions[0] , proportions[1] , 0);
 
 
