@@ -37,7 +37,7 @@ public:
 	void encode();
 	void decode();
 
-	int loadScene();
+	int loadScene(std::string folder);
 	
 private:
 	std::vector<DrawableObject*> *objects;

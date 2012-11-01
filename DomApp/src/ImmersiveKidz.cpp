@@ -13,7 +13,7 @@ ImmersiveKidz::ImmersiveKidz() {
 	isMaster = false;
 	curr_time = 0.0;
 
-	sgct::TextureManager::Instance()->loadTexure("test", "Gitkommandon.PNG", true, 0);
+	sgct::TextureManager::Instance()->loadTexure("test", "EXTRA_LIFE.PNG", true, 0);
 	Billboard * b = new Billboard("test", glm::vec3(0.0 , 0.0 , 0.0), glm::vec2(1.0 , 1.0));
 	addDrawableObject(b);
 }
@@ -117,14 +117,25 @@ void ImmersiveKidz::decode(){
 	dt = sgct::SharedData::Instance()->readDouble();
 }
 
-int ImmersiveKidz::loadScene() {
+/**
+*@brief	    Loads a scene from a specified world
+*
+*@details   Loads a scene from a specified folder and parses the scene.xml.
+*
+*@param		folder The folder that contains the scene
+*
+*@return     void
+*/
+int ImmersiveKidz::loadScene(std::string folder) {
 	tinyxml2::XMLDocument doc;
 	
 #ifdef __WIN32__
-	doc.LoadFile("../World1/scene.xml");
+	std::string filename = "../" + folder + "/scene.xml";
 #else
-	doc.LoadFile("World1/scene.xml");
+	std::string filename = folder + "/scene.xml";
 #endif
+	
+	doc.LoadFile(filename.c_str());
 
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
 	if(scene) {

@@ -27,8 +27,6 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 *@details	Draws a texture on a Billboard(Quad perpendicual to the camera position).
 *
 *@return    void
-*
-*
 */
 void Billboard::draw() {
 	
@@ -66,10 +64,6 @@ void Billboard::draw() {
 	//Vertex 4 
 	glTexCoord2d(0.0,1.0);
 	glVertex3f(-0.5 * proportions[0] , proportions[1] , 0);
-
-
-
-
 
 	glEnd();
 
