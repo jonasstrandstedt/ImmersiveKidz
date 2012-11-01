@@ -1,5 +1,16 @@
 #include "Model.h"
 
+/**
+*@brief	    Create a Model object
+*
+*@details   Create a Model object
+*
+*@param		filenme Filename of an object file. Ex: "thingy.obj".
+*@param		texturename Filename of the texture file. Ex: "image.png"
+*@param		scale If the object needs to be scaled before loaded. Defaults to 1.0
+*@param		rotation If the object needs to be rotated before loaded. Defaults to 0.0,0.0,0.0
+*@param		base_color Sets the default color of the object if no texture is used. Defaults to white
+*/
 Model::Model(const char *filename, const char *texturename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
 	myTextureIndex = 0;
 	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
@@ -8,6 +19,13 @@ Model::Model(const char *filename, const char *texturename, float scale, glm::ve
 	loadObj(filename, scale, rotation, base_color);
 }
 
+/**
+*@brief	    Draws the Model
+*
+*@details   Overloads the DrawableObjects draw function
+*
+*@return     void
+*/
 void Model::draw() {
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(myTextureIndex) );
@@ -40,7 +58,18 @@ void Model::draw() {
 	glDisable(GL_TEXTURE_2D);
 }
 
-
+/**
+*@brief	    Initialize the model vertex buffer object
+*
+*@details   Given Vertex array and index array generates the buffers.
+*
+*@param		varray Pointer to vertex array
+*@param		iarray Pointer to index array
+*@param		vertexsize Integer for the vertex array size
+*@param		indexsize Integer for the index array size
+*
+*@return     void
+*/
 void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize) {
 	vBufferID = 0;
 	iBufferID = 0;
@@ -79,6 +108,18 @@ void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }
 
+/**
+*@brief	    Loads an object file model
+*
+*@details   Loads an object from an wavefront object file. 
+*
+*@param		filenme Filename of an object file. Ex: "thingy.obj".
+*@param		scale If the object needs to be scaled before loaded. Defaults to 1.0
+*@param		rotation If the object needs to be rotated before loaded. Defaults to 0.0,0.0,0.0
+*@param		base_color Sets the default color of the object if no texture is used. Defaults to white
+*
+*@return     void
+*/
 void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
 	//printf("Loading object\n");
 	// debugInit = 1 shows all debug information in the console output
