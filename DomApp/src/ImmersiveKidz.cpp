@@ -112,3 +112,34 @@ void ImmersiveKidz::decode(){
 	curr_time = sgct::SharedData::Instance()->readDouble();
 	dt = sgct::SharedData::Instance()->readDouble();
 }
+
+int ImmersiveKidz::loadScene() {
+	tinyxml2::XMLDocument doc;
+	doc.LoadFile("../World1/scene.xml");
+
+	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
+	if(scene) {
+		tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
+		tinyxml2::XMLNode* item = illustrations->FirstChildElement( "item" );
+		for ( item;item; item=item->NextSiblingElement( "item" ) ) {
+			std::string name_artist = item->FirstChildElement( "name_artist" )->GetText();
+			std::string name_drawing = item->FirstChildElement( "name_drawing" )->GetText();
+			std::string texture = item->FirstChildElement( "texture" )->GetText();
+			double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
+			double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
+			double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
+			double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
+			double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
+
+			std::cout << name_artist << std::endl;
+			std::cout << name_drawing << std::endl;
+			std::cout << texture << std::endl;
+			std::cout << posx << " " << posy << " " << posz << std::endl;
+			std::cout << sizex << " " << sizey <<  std::endl;
+
+		}
+	}
+	else {
+		return doc.ErrorID();
+	}
+}

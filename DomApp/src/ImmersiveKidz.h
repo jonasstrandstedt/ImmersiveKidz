@@ -4,6 +4,8 @@
 #include "sgct.h"
 #include "DrawableObject.h"
 #include <vector>
+#include "tinyxml2.h"
+#include <iostream>
 
 class ImmersiveKidz {
 public:
@@ -23,6 +25,8 @@ public:
 	void draw();
 	void encode();
 	void decode();
+
+	int loadScene();
 	
 private:
 	std::vector<DrawableObject*> *objects;
