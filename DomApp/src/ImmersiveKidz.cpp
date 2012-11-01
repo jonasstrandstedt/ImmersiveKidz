@@ -12,7 +12,11 @@ ImmersiveKidz::ImmersiveKidz() {
 	objects = new std::vector<DrawableObject*>();
 	isMaster = false;
 	curr_time = 0.0;
-};
+
+	sgct::TextureManager::Instance()->loadTexure("test", "Gitkommandon.PNG", true, 0);
+	Billboard * b = new Billboard("test", glm::vec3(0.0 , 0.0 , 0.0), glm::vec2(1.0 , 1.0));
+	addDrawableObject(b);
+}
 
 
 /**
@@ -23,7 +27,7 @@ ImmersiveKidz::ImmersiveKidz() {
 ImmersiveKidz::~ImmersiveKidz() {
 	sgct::MessageHandler::Instance()->print("Destroying ImmersiveKidz engine\n");
 	delete objects;
-};
+}
 
 /**
 *@brief	    Adds a DrawableObject to the vector
@@ -63,7 +67,7 @@ void ImmersiveKidz::preSyncFunc() {
 */
 void ImmersiveKidz::draw() {
 	float speed = 50.0f;
-	glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
+	//glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
 	
 	for (int i = 0; i < objects->size(); ++i)
 	{

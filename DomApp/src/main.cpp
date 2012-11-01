@@ -61,10 +61,13 @@ void myInitOGLFun() {
 	
 	iKidz->loadScene();
 
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW); //our polygon winding is counter clockwise
-	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CW); //our polygon winding is counter clockwise
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
 }
+
 
 void myDrawFun()
 {
