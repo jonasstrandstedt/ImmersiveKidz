@@ -34,10 +34,12 @@ int main( int argc, char* argv[] )
 	// Allocate and initialize ImmersiveKidz
 	iKidz = new ImmersiveKidz();
 	iKidz->setMaster(gEngine->isMaster());
+	/*
 	iKidz->addDrawableObject(new Billboard());
 	iKidz->addDrawableObject(new Illustration());
 	iKidz->draw();
-
+	*/
+	
 	// Main loop
 	gEngine->render();
 
