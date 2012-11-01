@@ -22,6 +22,16 @@ typedef struct
 	GLubyte padding[16]; // Pads the struct out to 64 bytes for performance increase
 } Vertex;
 
+/**
+* @brief  	A container class for a object
+*
+* @details	A object defined by a wavefront obj model and a png texture.
+*
+* @author 	Jonas Strandstedt, jonast184@student.liu.se
+* @date   	November 1, 2012
+* @version	0.0.1
+*    
+*/
 class Model: public DrawableObject {
 public:
 	Model(const char *filename, const char *texturename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
