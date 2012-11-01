@@ -1,11 +1,9 @@
 #include "Billboard.h"
 
 /**
-*@file Billboard.cpp
+*@brief	    Brief description
 *
-*@brief		
-*
-*@details
+*@details   Detailed description (Extends the brief description)
 *
 *@param		texturename Unique name of a texture. Ex: "texture.png".
 *@param		position Contains the positions in world coordinates.
@@ -23,7 +21,15 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 
 };
 
-
+/**
+*@brief	  Brief description
+*
+*@details Detailed description (Extends the brief description)
+*
+*@return     void
+*
+*
+*/
 void Billboard::draw() {
 	
 	sgct::MessageHandler::Instance()->print("Billboard draw\n");
