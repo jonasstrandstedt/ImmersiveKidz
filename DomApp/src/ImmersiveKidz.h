@@ -15,17 +15,19 @@ public:
 
 	void setMaster(bool m) { isMaster = m; };
 	void setCurr_time(double t) {curr_time = t;};
+	void setDt(double t) {dt = t;};
 
 	void addDrawableObject(DrawableObject *o);
 	
 	void preSyncFunc();
 	void draw();
-
-	double getCurr_time() { return curr_time; };
+	void encode();
+	void decode();
 	
 private:
 	std::vector<DrawableObject*> *objects;
 	double curr_time;
+	double dt;
 	float mouse_x;
 	float mouse_y;
 	bool isMaster;

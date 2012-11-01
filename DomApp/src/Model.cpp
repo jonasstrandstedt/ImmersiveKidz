@@ -1,22 +1,19 @@
 #include "Model.h"
 
-Model::Model(const char *filename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
+Model::Model(const char *filename, const char *texturename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
+	myTextureIndex = 0;
+	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+	sgct::TextureManager::Instance()->loadTexure(myTextureIndex, texturename, texturename, true);
+	
 	loadObj(filename, scale, rotation, base_color);
 }
 
 void Model::draw() {
-	/*
-	if (texture != -1) {
-		//cout << "using texture" << endl;
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture); 
-	}
-	*/
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(myTextureIndex) );
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vBufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBufferID);
-	//glInterleavedArrays(GL_T2F_C4F_N3F_V3F, 16*sizeof(GLubyte*), (GLubyte*)NULL);
-	//glInterleavedArrays(GL_T2F_C4F_N3F_V3F, 16*sizeof(GLubyte*), (GLubyte*)NULL);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -38,11 +35,9 @@ void Model::draw() {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	/*
-	if (texture != -1) {
-		glBindTexture(GL_TEXTURE_2D, 0); 
-	}
-	*/
+	
+	glBindTexture(GL_TEXTURE_2D, 0); 
+	glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -66,21 +61,18 @@ void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, isize*sizeof(int), (*iarray), GL_STATIC_DRAW);
 
 	if(vBufferID == 0) {
-		//DEBUG_ERROR("Vertex buffer not initialized")
-		std::cout << "Vertex buffer not initialized" << std::endl;
+		sgct::MessageHandler::Instance()->print("Vertex buffer not initialized\n");
 	}
 	if(iBufferID == 0) {
-    	//DEBUG_ERROR("Index buffer not initialized")
-		std::cout << "Index buffer not initialized" << std::endl;
+		sgct::MessageHandler::Instance()->print("Index buffer not initialized\n");
 	}
 
 	// in case of error, print it
     GLuint errorID = glGetError();
     if(errorID != GL_NO_ERROR) {
-		std::cout << "OpenGL error: " << gluErrorString(errorID) << std::endl;
-		std::cout << "Attempting to proceed anyway. Expect rendering errors or a crash." << std::endl;
-		//DEBUG_ERROR("OpenGL error: " << gluErrorString(errorID))
-		//DEBUG_ERROR("Attempting to proceed anyway. Expect rendering errors or a crash.")
+		sgct::MessageHandler::Instance()->print(" OpenGL error: ");
+		sgct::MessageHandler::Instance()->print((const char*)gluErrorString(errorID));
+		sgct::MessageHandler::Instance()->print("\nAttempting to proceed anyway. Expect rendering errors or a crash.\n");
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -88,7 +80,7 @@ void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize
 }
 
 void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
-	printf("Loading object\n");
+	//printf("Loading object\n");
 	// debugInit = 1 shows all debug information in the console output
 	short debugInit = 0;
 	Vertex *varray;
@@ -147,7 +139,7 @@ void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::
 	iarray = (int*)malloc(isize*sizeof(int));
 	int *tempNormalIndicesArray = (int*)malloc(isize*sizeof(int));
 	int *tempTextureIndicesArray = (int*)malloc(isize*sizeof(int));
-	printf("... Array initiated!\n");
+	//printf("... Array initiated!\n");
 	
 	// keeping track of the array indexes
 	int i = 0;
@@ -312,7 +304,7 @@ void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::
 		}
 		m++;
 	}
-	printf("... Array initiated!\n");
+	//printf("... Array initiated!\n");
 	// free up memory
 	free(tempVertexArray);
 	free(tempVertexNormalArray);

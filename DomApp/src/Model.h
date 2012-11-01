@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include "sgct.h"
+#include "DrawableObject.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -21,9 +22,9 @@ typedef struct
 	GLubyte padding[16]; // Pads the struct out to 64 bytes for performance increase
 } Vertex;
 
-class Model {
+class Model: public DrawableObject {
 public:
-	Model(const char *filename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
+	Model(const char *filename, const char *texturename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
 	~Model() {};
 	
 	void draw();
@@ -38,6 +39,7 @@ private:
     GLuint iBufferID;
 	int isize;
 	int vsize;
+	unsigned int myTextureIndex;
     
 
 };

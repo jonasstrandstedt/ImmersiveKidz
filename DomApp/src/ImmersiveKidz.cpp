@@ -18,19 +18,24 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
 }
 
 void ImmersiveKidz::preSyncFunc() {
-	for (int i = 0; i < objects->size(); ++i)
+	//set the time only on the master
+	if( isMaster )
 	{
-		objects->at(i)->draw();
+		//get the time in seconds
+		curr_time = sgct::Engine::getTime();
 	}
 }
 
 void ImmersiveKidz::draw() {
-	/*
+	float speed = 50.0f;
+	glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
+	
 	for (int i = 0; i < objects->size(); ++i)
 	{
 		objects->at(i)->draw();
 	}
-	*/
+	
+	/*
 	
 	float speed = 50.0f;
 	glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
@@ -46,4 +51,14 @@ void ImmersiveKidz::draw() {
 		glColor3f(0.0f, 0.0f, 1.0f); //Blue
 		glVertex3f(0.5f, -0.5f, 0.0f);
 	glEnd();
+	*/
+}
+
+void ImmersiveKidz::encode() {
+	sgct::SharedData::Instance()->writeDouble( curr_time );
+	sgct::SharedData::Instance()->writeDouble( dt );
+}
+void ImmersiveKidz::decode(){
+	curr_time = sgct::SharedData::Instance()->readDouble();
+	dt = sgct::SharedData::Instance()->readDouble();
 }
