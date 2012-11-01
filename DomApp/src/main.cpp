@@ -31,7 +31,7 @@ int main( int argc, char* argv[] )
 		return EXIT_FAILURE;
 	}
 	
-	// set encode and decode 
+	// set encode and decode (after init to prevent segmentationfault from decode function)
 	sgct::SharedData::Instance()->setEncodeFunction(myEncodeFun);
 	sgct::SharedData::Instance()->setDecodeFunction(myDecodeFun);
 
