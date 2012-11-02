@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<scene>
+	<models>
+		<item>
+			<filename>EXTRA_LIFE.obj</filename>
+			<texture>EXTRA_LIFE.png</texture>
+			<pos x="10.0" y="10.0" z="10.0"/>
+			<scale val="0.002"/>
+			<roation x="0.0" y="0.0" z="0.0"/>
+			<base_color r="1.0" g="1.0" b="1.0"/>
+		</item>
+	</models>
+	<billboards>
+		<item>
+			<texture>blomma.png</texture>
+			<pos x="5.0" y="5.0" z="5.0"/>
+			<size x="2.0" y="2.0"/>
+		</item>
+		<item>
+			<texture>blomma.png</texture>
+			<pos x="6.0" y="5.0" z="5.0"/>
+			<size x="2.0" y="2.0"/>
+		</item>
+		<item>
+			<texture>blomma.png</texture>
+			<pos x="7.0" y="5.0" z="5.0"/>
+			<size x="2.0" y="2.0"/>
+		</item>
+	</billboards>
+	<illustrations>
+		<item>
+			<name_artist>Jonas</name_artist>
+			<name_drawing>kossan ko</name_drawing>
+			<texture>1.png</texture>
+			<pos x="10.0" y="10.0" z="10.0"/>
+			<size x="2.0" y="2.0"/>
+		</item>
+		<item>
+			<name_artist>Webbapp</name_artist>
+			<name_drawing>kossan mu</name_drawing>
+			<texture>1.png</texture>
+			<pos x="10.0" y="10.0" z="5.0"/>
+			<size x="2.0" y="2.0"/>
+		</item>
+	</illustrations>
+</scene>
