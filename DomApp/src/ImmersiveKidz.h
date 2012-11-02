@@ -49,6 +49,7 @@ private:
 	// instance variables
 	bool isMaster;
 	std::string scene_path;		// set in constructor
+	bool scene_loaded;
 
 	// time and dynamic variables
 	double curr_time;
