@@ -11,6 +11,13 @@
 *@param		rotation If the object needs to be rotated before loaded. Defaults to 0.0,0.0,0.0
 *@param		base_color Sets the default color of the object if no texture is used. Defaults to white
 */
+Model::Model(std::string filename, std::string texturename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
+	myTextureIndex = 0;
+	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+	sgct::TextureManager::Instance()->loadTexure(myTextureIndex, texturename, texturename, true);
+	
+	loadObj(filename.c_str(), scale, rotation, base_color);
+}
 Model::Model(const char *filename, const char *texturename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
 	myTextureIndex = 0;
 	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);

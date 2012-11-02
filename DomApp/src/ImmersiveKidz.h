@@ -1,12 +1,14 @@
 #ifndef IMMERSIVEKIDS_H
 #define IMMERSIVEKIDS_H
 
-#include "sgct.h"
-#include "DrawableObject.h"
-#include <vector>
-#include "tinyxml2.h"
 #include <iostream>
+#include <vector>
+#include "sgct.h"
+#include "tinyxml2.h"
+#include "DrawableObject.h"
 #include "Billboard.h"
+#include "Illustration.h"
+#include "Model.h"
 
 /**
 * @brief  	The ImmersiveKidz engine
@@ -29,6 +31,7 @@ public:
 	void setMaster(bool m) { isMaster = m; };
 	void setCurr_time(double t) {curr_time = t;};
 	void setDt(double t) {dt = t;};
+	void setScenePath(std::string folder);
 
 	void addDrawableObject(DrawableObject *o);
 	
@@ -40,14 +43,18 @@ public:
 	int loadScene(std::string folder);
 	
 private:
+	// all objects in the scene that can be drawn
 	std::vector<DrawableObject*> *objects;
+
+	// instance variables
+	bool isMaster;
+	std::string scene_path;		// set in constructor
+
+	// time and dynamic variables
 	double curr_time;
 	double dt;
 	float mouse_x;
 	float mouse_y;
-	bool isMaster;
-	
-	
 };
 
 

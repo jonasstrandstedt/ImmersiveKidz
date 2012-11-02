@@ -12,10 +12,6 @@ ImmersiveKidz::ImmersiveKidz() {
 	objects = new std::vector<DrawableObject*>();
 	isMaster = false;
 	curr_time = 0.0;
-
-	sgct::TextureManager::Instance()->loadTexure("test", "EXTRA_LIFE.PNG", true, 0);
-	Billboard * b = new Billboard("test", glm::vec3(0.0 , 0.0 , 0.0), glm::vec2(1.0 , 1.0));
-	addDrawableObject(b);
 }
 
 
@@ -29,6 +25,13 @@ ImmersiveKidz::~ImmersiveKidz() {
 	delete objects;
 }
 
+void ImmersiveKidz::setScenePath(std::string folder) {
+#ifdef __WIN32__
+		scene_path = "../" + folder + "/";
+#else // mac, linux
+		scene_path = folder + "/";
+#endif
+}
 /**
 *@brief	    Adds a DrawableObject to the vector
 *
@@ -127,15 +130,17 @@ void ImmersiveKidz::decode(){
 *@return     void
 */
 int ImmersiveKidz::loadScene(std::string folder) {
+
+	setScenePath(folder);
+	std::string scene_xml = scene_path + "scene.xml";
+	
 	tinyxml2::XMLDocument doc;
-	
-#ifdef __WIN32__
-	std::string filename = "../" + folder + "/scene.xml";
-#else
-	std::string filename = folder + "/scene.xml";
-#endif
-	
-	doc.LoadFile(filename.c_str());
+	doc.LoadFile(scene_xml.c_str());
+
+	sgct::TextureManager::Instance()->loadTexure("test", scene_path + "EXTRA_LIFE.png", true, 0);
+	addDrawableObject(new Billboard("test", glm::vec3(0.0 , 0.0 , 0.0), glm::vec2(1.0 , 1.0)));
+
+	addDrawableObject(new Model(scene_path + "EXTRA_LIFE.obj", scene_path + "EXTRA_LIFE.png", 0.002));
 
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
 	if(scene) {
