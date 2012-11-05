@@ -31,7 +31,7 @@ ImmersiveKidz::~ImmersiveKidz() {
 */
 void ImmersiveKidz::setScenePath(std::string folder) {
 #ifdef __WIN32__
-		scene_path = "../" + folder + "/";
+		scene_path = folder + "/";
 #else // mac, linux
 		scene_path = folder + "/";
 #endif
@@ -140,35 +140,71 @@ int ImmersiveKidz::loadScene(std::string folder) {
 	sgct::TextureManager::Instance()->loadTexure("test", scene_path + "EXTRA_LIFE.png", true, 0);
 	sgct::TextureManager::Instance()->loadTexure("test", scene_path + "EXTRA_LIFE.png", true, 0);
 	addDrawableObject(new Billboard("test", glm::vec3(0.0 , 0.0 , 0.0), glm::vec2(1.0 , 1.0)));
-
-	addDrawableObject(new Model(scene_path + "EXTRA_LIFE.obj", scene_path + "EXTRA_LIFE.png", 0.002));
+	
+	/*addDrawableObject(new Model(scene_path + "EXTRA_LIFE.obj", scene_path + "EXTRA_LIFE.png", 0.002));
 	objects->back()->setAnimationFunc(bounce);
 
 	addDrawableObject(new Model(scene_path + "EXTRA_LIFE.obj", scene_path + "EXTRA_LIFE.png", 0.002));
-	objects->back()->setAnimationFunc(pendulum);
+	objects->back()->setAnimationFunc(pendulum);*/
 
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
 	if(scene) {
-		tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
-		tinyxml2::XMLNode* item = illustrations->FirstChildElement( "item" );
-		for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-			std::string name_artist = item->FirstChildElement( "name_artist" )->GetText();
-			std::string name_drawing = item->FirstChildElement( "name_drawing" )->GetText();
-			std::string texture = item->FirstChildElement( "texture" )->GetText();
-			double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
-			double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
-			double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
-			double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
-			double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
-			
-			/*
-			std::cout << name_artist << std::endl;
-			std::cout << name_drawing << std::endl;
-			std::cout << texture << std::endl;
-			std::cout << posx << " " << posy << " " << posz << std::endl;
-			std::cout << sizex << " " << sizey <<  std::endl;
-			*/
+
+		tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
+		if(models) {
+			tinyxml2::XMLNode* item = models->FirstChildElement( "item" );
+			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
+				std::string filename = item->FirstChildElement( "filename" )->GetText();
+				std::string texture = item->FirstChildElement( "texture" )->GetText();
+				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
+				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
+				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
+				double scale = item->FirstChildElement( "scale" )->DoubleAttribute( "val" );
+				double rotx = item->FirstChildElement( "rot" )->DoubleAttribute( "x" );
+				double roty = item->FirstChildElement( "rot" )->DoubleAttribute( "y" );
+				double rotz = item->FirstChildElement( "rot" )->DoubleAttribute( "z" );
+				double r = item->FirstChildElement( "base_color" )->DoubleAttribute( "r" );
+				double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
+				double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
+
+				//addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale));
+			}
 		}
+
+		tinyxml2::XMLElement* billboards = scene->FirstChildElement( "billboards" );
+		if(billboards) {
+			tinyxml2::XMLNode* item = billboards->FirstChildElement( "item" );
+			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
+				std::string texture = item->FirstChildElement( "texture" )->GetText();
+				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
+				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
+				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
+				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
+				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
+
+				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
+				addDrawableObject(new Billboard(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)));
+			}
+		}
+
+		tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
+		if(illustrations) {
+			tinyxml2::XMLNode* item = illustrations->FirstChildElement( "item" );
+			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
+				std::string name_artist = item->FirstChildElement( "name_artist" )->GetText();
+				std::string name_drawing = item->FirstChildElement( "name_drawing" )->GetText();
+				std::string texture = item->FirstChildElement( "texture" )->GetText();
+				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
+				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
+				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
+				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
+				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
+			
+		
+			}
+		}
+
+		
 	}
 	else {
 		return doc.ErrorID();

@@ -6,7 +6,7 @@
 			<texture>EXTRA_LIFE.png</texture>
 			<pos x="10.0" y="10.0" z="10.0"/>
 			<scale val="0.002"/>
-			<roation x="0.0" y="0.0" z="0.0"/>
+			<rot x="0.0" y="0.0" z="0.0"/>
 			<base_color r="1.0" g="1.0" b="1.0"/>
 		</item>
 	</models>
