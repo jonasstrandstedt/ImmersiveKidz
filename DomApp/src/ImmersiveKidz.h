@@ -9,6 +9,7 @@
 #include "Billboard.h"
 #include "Illustration.h"
 #include "Model.h"
+#include "Camera.h"
 
 /**
 * @brief  	The ImmersiveKidz engine
@@ -24,13 +25,13 @@ class ImmersiveKidz {
 public:
 	
 	// constructors and destructors
-	ImmersiveKidz();
+	ImmersiveKidz(sgct::Engine *engine);
 	~ImmersiveKidz();
 	
 
 	void setMaster(bool m) { isMaster = m; };
-	void setCurr_time(double t) {curr_time = t;};
-	void setDt(double t) {dt = t;};
+	/*void setCurr_time(double t) {curr_time = t;};
+	void setDt(double t) {dt = t;};*/
 	void setScenePath(std::string folder);
 
 	void addDrawableObject(DrawableObject *o);
@@ -39,10 +40,18 @@ public:
 	void draw();
 	void encode();
 	void decode();
+	void postSyncPreDrawFunction();
+
+	void mouseMotion(int x,int y,int dx,int dy);
+	void mouseButton(int button,int state);
+	void keyboardButton(int key,int state);
 
 	int loadScene(std::string folder);
 	
+
+
 private:
+	sgct::Engine *engine;
 	// all objects in the scene that can be drawn
 	std::vector<DrawableObject*> *objects;
 
@@ -56,6 +65,8 @@ private:
 	double dt;
 	float mouse_x;
 	float mouse_y;
+
+	Camera *camera;
 };
 
 
