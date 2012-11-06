@@ -4,22 +4,30 @@ class Site extends CI_Controller
 {
 	public function index()
 	{
-		$this->home();
+		$this->skapa();
 	}
 		
-	public function home()
+	public function skapa()
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_home");
+		$this->load->view("content_skapa");
 		$this->load->view("site_footer");
 	}
 	
-	public function about()
+	public function andra()
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_about");
+		$this->load->view("content_andra");
+		$this->load->view("site_footer");
+	}
+	
+	public function om()
+	{
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_om");
 		$this->load->view("site_footer");
 	}
 }
