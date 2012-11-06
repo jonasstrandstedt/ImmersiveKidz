@@ -23,6 +23,11 @@ public:
 	DrawableObject();
 	void setAnimationFunc(void (*f)(double,double,double)) { animation_func = f; };
 
+	void setAnimationFuncByName(std::string name) { 
+		if ( name == "bounce" ) setAnimationFunc(bounce);
+		if ( name == "pendulum" ) setAnimationFunc(pendulum);
+	};
+
 	// draw functionality
 	void animate(double t, double dt);
 	void postAnimate();

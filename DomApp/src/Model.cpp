@@ -140,7 +140,7 @@ void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::
 	float f1,f2,f3,f4,f5,f6,f7,f8,f9;
 	int i1,i2,i3,i4,i5,i6,i7,i8,i9;
 	char line[150];
-	float maxtex;
+	float maxtex = 0.0;
 	
 	FILE *fi;
 	/*	START LINE COUNT */

@@ -10,6 +10,15 @@ void myPreSyncFun();
 void myEncodeFun();
 void myDecodeFun();
 
+void myPostSyncPreDrawFunction();
+
+void myKeyboardFun(int,int);
+void myMouseMotionFun(int,int);
+void myMouseButtonFun(int,int);
+
+int prevMouseX = -1;
+int prevMouseY = -1;
+
 int main( int argc, char* argv[] )
 {
 	// Allocate
@@ -20,6 +29,13 @@ int main( int argc, char* argv[] )
 	gEngine->setInitOGLFunction( myInitOGLFun );
 	gEngine->setDrawFunction( myDrawFun );
 	gEngine->setPreSyncFunction( myPreSyncFun );
+	
+	gEngine->setKeyboardCallbackFunction(myKeyboardFun);
+	gEngine->setMousePosCallbackFunction(myMouseMotionFun);
+	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
+
+	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
+
 
 	// Init the engine
 	if( !gEngine->init() )
@@ -46,10 +62,10 @@ int main( int argc, char* argv[] )
 
 void myInitOGLFun() {
 	// Allocate and initialize ImmersiveKidz
-	iKidz = new ImmersiveKidz();
+	iKidz = new ImmersiveKidz(gEngine);
 	iKidz->setMaster(gEngine->isMaster());
 	
-	iKidz->loadScene("World1");
+	iKidz->loadScene("world1");
 
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW); //our polygon winding is counter clockwise
@@ -77,4 +93,32 @@ void myEncodeFun()
 void myDecodeFun()
 {
 	iKidz->decode();
+}
+
+
+void myKeyboardFun(int key,int state){
+	iKidz->keyboardButton(key,state);
+}
+
+void myMouseMotionFun(int x,int y){
+	if(prevMouseX == -1){
+		prevMouseX = x;
+		prevMouseY = y;
+		return;
+	}
+	int dx,dy;
+	dx = x - prevMouseX;
+	dy = y - prevMouseY;
+	iKidz->mouseMotion(x,y,dx,dy);
+	prevMouseX = x;
+	prevMouseY = y;
+}
+
+void myMouseButtonFun(int button,int state){
+	iKidz->mouseButton(button,state);
+}
+
+
+void myPostSyncPreDrawFunction(){
+	iKidz->postSyncPreDrawFunction();
 }

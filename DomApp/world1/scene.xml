@@ -4,6 +4,7 @@
 		<item>
 			<filename>EXTRA_LIFE.obj</filename>
 			<texture>EXTRA_LIFE.png</texture>
+      <animation>bounce</animation>
 			<pos x="10.0" y="10.0" z="10.0"/>
 			<scale val="0.002"/>
 			<rot x="0.0" y="0.0" z="0.0"/>
@@ -13,16 +14,19 @@
 	<billboards>
 		<item>
 			<texture>blomma.png</texture>
+      <animation>bounce</animation>
 			<pos x="5.0" y="5.0" z="5.0"/>
 			<size x="2.0" y="2.0"/>
 		</item>
 		<item>
 			<texture>blomma.png</texture>
+      <animation>bounce</animation>
 			<pos x="6.0" y="5.0" z="5.0"/>
 			<size x="2.0" y="2.0"/>
 		</item>
 		<item>
 			<texture>blomma.png</texture>
+      <animation>pendulum</animation>
 			<pos x="7.0" y="5.0" z="5.0"/>
 			<size x="2.0" y="2.0"/>
 		</item>
@@ -31,6 +35,8 @@
 		<item>
 			<name_artist>Jonas</name_artist>
 			<name_drawing>kossan ko</name_drawing>
+      <description>En ko som heter ko!</description>
+      <animation>bounce</animation>
 			<texture>1.png</texture>
 			<pos x="10.0" y="10.0" z="10.0"/>
 			<size x="2.0" y="2.0"/>
@@ -38,6 +44,8 @@
 		<item>
 			<name_artist>Webbapp</name_artist>
 			<name_drawing>kossan mu</name_drawing>
+      <description>En ko som heter mu!</description>
+      <animation>pendulum</animation>
 			<texture>1.png</texture>
 			<pos x="10.0" y="10.0" z="5.0"/>
 			<size x="2.0" y="2.0"/>

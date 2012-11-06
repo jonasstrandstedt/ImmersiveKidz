@@ -3,7 +3,7 @@
 /**
 *@brief	    ImmersiveKidz constructor
 */
-ImmersiveKidz::ImmersiveKidz() {
+ImmersiveKidz::ImmersiveKidz(sgct::Engine *engine) {
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
 
 	// initialize all variables
@@ -11,6 +11,9 @@ ImmersiveKidz::ImmersiveKidz() {
 	isMaster = false;
 	scene_loaded = false;
 	curr_time = 0.0;
+
+	camera = new Camera(engine);
+	this->engine = engine;
 }
 
 
@@ -59,6 +62,7 @@ void ImmersiveKidz::preSyncFunc() {
 	if( isMaster )
 	{
 		//get the time in seconds
+		dt = sgct::Engine::getTime() - curr_time;
 		curr_time = sgct::Engine::getTime();
 	}
 }
@@ -69,6 +73,7 @@ void ImmersiveKidz::preSyncFunc() {
 *@return     void
 */
 void ImmersiveKidz::draw() {
+	camera->setCamera();
 	float speed = 50.0f;
 	//glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
 	
@@ -127,35 +132,26 @@ void ImmersiveKidz::decode(){
 *
 *@return     void
 */
-int ImmersiveKidz::loadScene(std::string folder) {
+void ImmersiveKidz::loadScene(std::string folder) {
 
 	setScenePath(folder);
 	std::string scene_xml = scene_path + "scene.xml";
 	
-	tinyxml2::XMLDocument doc;
-	doc.LoadFile(scene_xml.c_str());
+	tinyxml2::XMLDocument document;
+	document.LoadFile(scene_xml.c_str());
 
-	sgct::TextureManager::Instance()->loadTexure("test", scene_path + "EXTRA_LIFE.png", true, 0);
-	sgct::TextureManager::Instance()->loadTexure("test", scene_path + "EXTRA_LIFE.png", true, 0);
-	sgct::TextureManager::Instance()->loadTexure("test", scene_path + "EXTRA_LIFE.png", true, 0);
-	sgct::TextureManager::Instance()->loadTexure("test", scene_path + "EXTRA_LIFE.png", true, 0);
-	addDrawableObject(new Billboard("test", glm::vec3(0.0 , 0.0 , 0.0), glm::vec2(1.0 , 1.0)));
-	
-	/*addDrawableObject(new Model(scene_path + "EXTRA_LIFE.obj", scene_path + "EXTRA_LIFE.png", 0.002));
-	objects->back()->setAnimationFunc(bounce);
+	tinyxml2::XMLHandle doc(&document);
 
-	addDrawableObject(new Model(scene_path + "EXTRA_LIFE.obj", scene_path + "EXTRA_LIFE.png", 0.002));
-	objects->back()->setAnimationFunc(pendulum);*/
-
-	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
+	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" ).ToElement();
 	if(scene) {
-
 		tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
 		if(models) {
 			tinyxml2::XMLNode* item = models->FirstChildElement( "item" );
+			
 			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
 				std::string filename = item->FirstChildElement( "filename" )->GetText();
 				std::string texture = item->FirstChildElement( "texture" )->GetText();
+				std::string animation = item->FirstChildElement( "animation" )->GetText();
 				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
 				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
 				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
@@ -167,7 +163,8 @@ int ImmersiveKidz::loadScene(std::string folder) {
 				double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
 				double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
 
-				//addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale));
+				addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale));
+				objects->back()->setAnimationFuncByName(animation);
 			}
 		}
 
@@ -176,6 +173,7 @@ int ImmersiveKidz::loadScene(std::string folder) {
 			tinyxml2::XMLNode* item = billboards->FirstChildElement( "item" );
 			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
 				std::string texture = item->FirstChildElement( "texture" )->GetText();
+				std::string animation = item->FirstChildElement( "animation" )->GetText();
 				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
 				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
 				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
@@ -184,6 +182,7 @@ int ImmersiveKidz::loadScene(std::string folder) {
 
 				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
 				addDrawableObject(new Billboard(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)));
+				objects->back()->setAnimationFuncByName(animation);
 			}
 		}
 
@@ -193,6 +192,8 @@ int ImmersiveKidz::loadScene(std::string folder) {
 			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
 				std::string name_artist = item->FirstChildElement( "name_artist" )->GetText();
 				std::string name_drawing = item->FirstChildElement( "name_drawing" )->GetText();
+				std::string description = item->FirstChildElement( "description" )->GetText();
+				std::string animation = item->FirstChildElement( "animation" )->GetText();
 				std::string texture = item->FirstChildElement( "texture" )->GetText();
 				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
 				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
@@ -200,13 +201,33 @@ int ImmersiveKidz::loadScene(std::string folder) {
 				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
 				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
 			
-		
+				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
+				addDrawableObject(new Illustration(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description));
+				objects->back()->setAnimationFuncByName(animation);
 			}
 		}
+	}
+}
 
-		
-	}
-	else {
-		return doc.ErrorID();
-	}
+
+void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
+	if(camera == 0)
+		return;
+	camera->mouseMotion(dx,dy);
+}
+
+void ImmersiveKidz::mouseButton(int button,int state){
+	if(camera == 0)
+		return;
+	camera->mouseButton(button,state);
+}
+
+void ImmersiveKidz::keyboardButton(int key,int state){
+	if(camera == 0)
+		return;
+	camera->keyboardButton(key,state);
+}
+
+void ImmersiveKidz::postSyncPreDrawFunction(){
+	camera->update(dt);
 }
