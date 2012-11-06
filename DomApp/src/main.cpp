@@ -49,7 +49,7 @@ void myInitOGLFun() {
 	iKidz = new ImmersiveKidz();
 	iKidz->setMaster(gEngine->isMaster());
 	
-	iKidz->loadScene("World1");
+	iKidz->loadScene("world1");
 
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW); //our polygon winding is counter clockwise
