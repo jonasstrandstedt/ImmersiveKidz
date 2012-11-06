@@ -40,7 +40,7 @@ public:
 	void encode();
 	void decode();
 
-	int loadScene(std::string folder);
+	void loadScene(std::string folder);
 	
 private:
 	// all objects in the scene that can be drawn

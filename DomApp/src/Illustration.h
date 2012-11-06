@@ -17,6 +17,8 @@
 */
 class Illustration: public Billboard {
 public:
+	Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, 
+		std::string artist, std::string drawing, std::string desc);
 
 	void draw();
 	

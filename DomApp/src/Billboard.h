@@ -21,11 +21,12 @@
 class Billboard: public DrawableObject {
 
 public:
+	Billboard(){};
 	Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn);
 
 	void draw();
 	
-private:
+protected:
 	std::string texture;
 	glm::mat4x4 transform;
 	glm::vec2 proportions;
