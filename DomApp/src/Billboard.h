@@ -8,9 +8,12 @@
 
 
 /**
-    * @brief      Short class description.
+    * @brief      A class for Billboards.
     *
-    * @details    Verbose description of class details.
+    * @details    This class handles the texture , the transformation(translation & scaling) and the proportions of a billboard.
+	*			  " The image can be scaled to simulate perspective, rotated two dimensionally, overlapped 
+	*				with other objects, and be occluded, but it can only be viewed from a single angle. 
+	*				This rendering method is also referred to as billboarding."
 	*
     * @author     Fred McClurg, fred-mcclurg@uiowa.edu
 	* @author     hej, hej-mcclurg@uiowa.edu
