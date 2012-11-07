@@ -18,7 +18,7 @@ class Site extends CI_Controller
 
 		$this->load->library('upload', $config);
 		
-		if ( ! $this->upload->do_upload())
+		if ( ! $this->upload->do_multi_upload())
 		{
 			$error = array('error' => $this->upload->display_errors());
 

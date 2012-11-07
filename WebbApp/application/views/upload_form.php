@@ -3,7 +3,7 @@
 
 <?php echo form_open_multipart('index.php/site/create/upload');?>
 
-<input type="file" name="userfile" size="20" />
+<input type="file" name="userfile[]" size="20" multiple=""/>
 
 <br /><br />
 
