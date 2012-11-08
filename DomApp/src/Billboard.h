@@ -29,8 +29,8 @@ public:
 	void onDraw();
 	
 protected:
-	std::string texture;
-	glm::vec2 proportions;
+	unsigned int _texture;
+	glm::vec2 _proportions;
 };
 
 

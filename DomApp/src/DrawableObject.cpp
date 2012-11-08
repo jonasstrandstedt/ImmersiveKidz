@@ -6,10 +6,10 @@
 *@details   Defines the animation function to be 0.
 */
 DrawableObject::DrawableObject() {
-	animation_func = 0;
-	animation_timer = 0.0;
+	_animationFunc = 0;
+	_animationTimer = 0.0;
 	
-	transform = glm::mat4x4();
+	_transform = glm::mat4x4();
 }
 
 
@@ -21,25 +21,30 @@ DrawableObject::DrawableObject() {
 *@return     void
 */
 void DrawableObject::draw(double t, double dt) {
-	if (animation_func != 0)
+	if (_animationFunc != 0)
 	{
 		glPushMatrix();
-		animation_func(t, dt, animation_timer);
+		_animationFunc(t, dt, _animationTimer);
 	}
 	
 	
 
 	//Apllying the transform matrix
-	glMultMatrixf(glm::value_ptr(transform));
+	glMultMatrixf(glm::value_ptr(_transform));
 	
 	onDraw();
 	
-	if (animation_func != 0)
+	if (_animationFunc != 0)
 	{
 		glPopMatrix();
 	}
 }
 
+void DrawableObject::setAnimationFuncByName(std::string name) { 
+	if ( name == "bounce" ) setAnimationFunc(bounce);
+	if ( name == "pendulum" ) setAnimationFunc(pendulum);
+	if ( name == "none" ) setAnimationFunc(none);
+};
 
 /**
 *@brief	    Translates the object up and down

@@ -27,7 +27,7 @@ public:
 	~ImmersiveKidz();
 	
 
-	void setMaster(bool m) { isMaster = m; };
+	void setMaster(bool m) { _isMaster = m; };
 	void setScenePath(std::string folder);
 
 	void addDrawableObject(DrawableObject *o);
@@ -50,25 +50,28 @@ public:
 	Camera* getCamera();
 	static ImmersiveKidz* getInstance();
 private:
-	static ImmersiveKidz* instance;
+	static ImmersiveKidz* _instance;
 	ImmersiveKidz();
+	
+	// TODO: REMOVE
 	sgct::Engine *engine;
+	
 	// all objects in the scene that can be drawn
-	std::vector<DrawableObject*> *objects;
-	std::vector<Illustration*> *illustrations;
+	std::vector<DrawableObject*> _objects;
+	std::vector<Illustration*> _illustrations;
 
 	// instance variables
-	bool isMaster;
-	std::string scene_path;		// set in constructor
-	bool scene_loaded;
+	bool _isMaster;
+	std::string _scenePath;		// set in constructor
+	bool _sceneLoaded;
 
 	// time and dynamic variables
-	double curr_time;
-	double dt;
-	float mouse_x;
-	float mouse_y;
+	double _currTime;
+	double _dt;
+	float _mouseX;
+	float _mouseY;
 
-	Camera *camera;
+	Camera *_camera;
 };
 
 
