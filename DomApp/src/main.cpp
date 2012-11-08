@@ -61,6 +61,10 @@ int main( int argc, char* argv[] )
 }
 
 void myInitOGLFun() {
+	//Add font information
+	if( !sgct::FontManager::Instance()->AddFont( "Verdana", "verdana.ttf" ) )
+			sgct::FontManager::Instance()->GetFont( "Verdana", 14 );
+
 	// Allocate and initialize ImmersiveKidz
 	iKidz = new ImmersiveKidz(gEngine);
 	iKidz->setMaster(gEngine->isMaster());

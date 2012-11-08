@@ -26,5 +26,5 @@ Illustration::Illustration(std::string texturename , glm::vec3 position, glm::ve
 };
 
 void Illustration::draw() {
-	sgct::MessageHandler::Instance()->print("illustration draw\n");
+	//sgct::MessageHandler::Instance()->print("illustration draw\n");
 }

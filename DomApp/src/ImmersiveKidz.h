@@ -34,8 +34,10 @@ public:
 	void setDt(double t) {dt = t;};*/
 	void setScenePath(std::string folder);
 
-	void addDrawableObject(DrawableObject *o);
 	
+	void addDrawableObject(DrawableObject *o);
+	void drawIllustrationNames(std::vector<DrawableObject*> o);
+
 	void preSyncFunc();
 	void draw();
 	void encode();

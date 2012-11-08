@@ -52,6 +52,18 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
 	objects->push_back(o);
 }
 
+void ImmersiveKidz::drawIllustrationNames(std::vector<DrawableObject*> o)
+{
+	
+		Freetype::print( sgct::FontManager::Instance()->GetFont( "Verdana", 14 ), 100, 140, "Hello");
+	
+
+ 
+	//double current_time = sgct::Engine::getTime();
+	//Freetype::print( sgct::FontManager::Instance()->GetFont( "Verdana", 14 ), 100, 300, "This application has been running for %f s", current_time);
+	
+};
+
 /**
 *@brief	    Function called from sgct presync
 *
@@ -84,6 +96,10 @@ void ImmersiveKidz::draw() {
 		objects->at(i)->postAnimate();
 	}
 	
+	//Draw text for illustrations
+	ImmersiveKidz::drawIllustrationNames(*objects);
+
+
 	/*
 	
 	float speed = 50.0f;
@@ -126,7 +142,8 @@ void ImmersiveKidz::decode(){
 /**
 *@brief	    Loads a scene from a specified world
 *
-*@details   Loads a scene from a specified folder and parses the scene.xml. Calls setScenePath to update the scene_path in case files are required by other functions.
+*@details   Loads a scene from a specified folder and parses the scene.xml. 
+*			Calls setScenePath to update the scene_path in case files are required by other functions.
 *
 *@param		folder The folder that contains the scene
 *
@@ -200,7 +217,7 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
 				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
 				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
-			
+				
 				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
 				addDrawableObject(new Illustration(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description));
 				objects->back()->setAnimationFuncByName(animation);
@@ -208,7 +225,6 @@ void ImmersiveKidz::loadScene(std::string folder) {
 		}
 	}
 }
-
 
 void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 	if(camera == 0)
