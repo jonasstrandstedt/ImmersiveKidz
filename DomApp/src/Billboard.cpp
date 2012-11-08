@@ -15,7 +15,6 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 
 	this->proportions = proportionsIn;
 
-	transform = glm::mat4x4(1);
 	transform = glm::translate(transform, position);
 
 

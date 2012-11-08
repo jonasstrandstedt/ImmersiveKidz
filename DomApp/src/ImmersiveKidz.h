@@ -55,6 +55,7 @@ private:
 	sgct::Engine *engine;
 	// all objects in the scene that can be drawn
 	std::vector<DrawableObject*> *objects;
+	std::vector<Illustration*> *illustrations;
 
 	// instance variables
 	bool isMaster;

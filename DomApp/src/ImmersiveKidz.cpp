@@ -15,6 +15,7 @@ ImmersiveKidz::ImmersiveKidz() {
 
 	// initialize all variables
 	objects = new std::vector<DrawableObject*>();
+	illustrations = new std::vector<Illustration*>();
 	isMaster = false;
 	scene_loaded = false;
 	curr_time = 0.0;
@@ -55,6 +56,12 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *@return     void
 */
 void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
+	
+	Illustration *ill = dynamic_cast<Illustration*>(o);
+	if(ill) {
+		illustrations->push_back(ill);
+	}
+	
 	objects->push_back(o);
 }
 
@@ -206,6 +213,7 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
 			
 				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
+				
 				addDrawableObject(new Illustration(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description));
 				objects->back()->setAnimationFuncByName(animation);
 			}
