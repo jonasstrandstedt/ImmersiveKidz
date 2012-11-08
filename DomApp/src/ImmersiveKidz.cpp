@@ -115,6 +115,7 @@ void ImmersiveKidz::draw() {
 void ImmersiveKidz::encode() {
 	sgct::SharedData::Instance()->writeDouble( curr_time );
 	sgct::SharedData::Instance()->writeDouble( dt );
+	camera->encode(sgct::SharedData::Instance());
 }
 
 /**
@@ -125,6 +126,7 @@ void ImmersiveKidz::encode() {
 void ImmersiveKidz::decode(){
 	curr_time = sgct::SharedData::Instance()->readDouble();
 	dt = sgct::SharedData::Instance()->readDouble();
+	camera->decode(sgct::SharedData::Instance());
 }
 
 /**
