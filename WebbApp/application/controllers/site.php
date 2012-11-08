@@ -47,7 +47,7 @@ class Site extends CI_Controller
 	
 	public function index()
 	{
-		$this->create();
+		$this->create("upload"); // Sets the startpage to the upload view.
 	}
 		
 	public function create($submenu)

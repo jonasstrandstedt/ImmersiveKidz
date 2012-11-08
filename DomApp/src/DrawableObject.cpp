@@ -8,7 +8,10 @@
 DrawableObject::DrawableObject() {
 	animation_func = 0;
 	animation_timer = 0.0;
+	
+	transform = glm::mat4x4();
 }
+
 
 /**
 *@brief	    Animates an object
@@ -17,25 +20,26 @@ DrawableObject::DrawableObject() {
 *
 *@return     void
 */
-void DrawableObject::animate(double t, double dt) {
+void DrawableObject::draw(double t, double dt) {
 	if (animation_func != 0)
 	{
 		glPushMatrix();
 		animation_func(t, dt, animation_timer);
 	}
-}
+	
+	
 
-/**
-*@brief	    If the object animates, pop dat matrix!
-*
-*@return     void
-*/
-void DrawableObject::postAnimate() {
+	//Apllying the transform matrix
+	glMultMatrixf(glm::value_ptr(transform));
+	
+	onDraw();
+	
 	if (animation_func != 0)
 	{
 		glPopMatrix();
 	}
 }
+
 
 /**
 *@brief	    Translates the object up and down
@@ -53,4 +57,12 @@ void bounce(double t, double dt, double at) {
 */
 void pendulum(double t, double dt, double at) {
 	glTranslatef(sin(t),0.0f,0.0f);
+}
+
+/**
+*@brief	    Does nothing
+*
+*@return     void
+*/
+void none(double t, double dt, double at) {
 }

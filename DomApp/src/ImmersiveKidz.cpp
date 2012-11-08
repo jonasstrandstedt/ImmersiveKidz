@@ -1,19 +1,26 @@
 #include "ImmersiveKidz.h"
 
+ImmersiveKidz* ImmersiveKidz::instance = 0;
+ImmersiveKidz* ImmersiveKidz::getInstance(){
+	//WARNING _ NOT THREAD SAFE
+	if(instance == 0)
+		instance = new ImmersiveKidz();
+	return instance;
+}
 /**
 *@brief	    ImmersiveKidz constructor
 */
-ImmersiveKidz::ImmersiveKidz(sgct::Engine *engine) {
+ImmersiveKidz::ImmersiveKidz() {
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
 
 	// initialize all variables
 	objects = new std::vector<DrawableObject*>();
+	illustrations = new std::vector<Illustration*>();
 	isMaster = false;
 	scene_loaded = false;
 	curr_time = 0.0;
 
-	camera = new Camera(engine);
-	this->engine = engine;
+	camera = new Camera();
 }
 
 
@@ -49,6 +56,12 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *@return     void
 */
 void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
+	
+	Illustration *ill = dynamic_cast<Illustration*>(o);
+	if(ill) {
+		illustrations->push_back(ill);
+	}
+	
 	objects->push_back(o);
 }
 
@@ -79,9 +92,7 @@ void ImmersiveKidz::draw() {
 	
 	for (int i = 0; i < objects->size(); ++i)
 	{
-		objects->at(i)->animate(curr_time, dt);
-		objects->at(i)->draw();
-		objects->at(i)->postAnimate();
+		objects->at(i)->draw(curr_time, dt);
 	}
 	
 	/*
@@ -163,7 +174,7 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
 				double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
 
-				addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale));
+				addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale, glm::vec3(rotx, roty, rotz)));
 				objects->back()->setAnimationFuncByName(animation);
 			}
 		}
@@ -202,6 +213,7 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
 			
 				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
+				
 				addDrawableObject(new Illustration(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description));
 				objects->back()->setAnimationFuncByName(animation);
 			}
@@ -230,4 +242,17 @@ void ImmersiveKidz::keyboardButton(int key,int state){
 
 void ImmersiveKidz::postSyncPreDrawFunction(){
 	camera->update(dt);
+}
+
+void ImmersiveKidz::setEngine(sgct::Engine *engine){
+	this->engine = engine;
+}
+
+sgct::Engine* ImmersiveKidz::getEngine(){
+	return engine;
+}
+
+
+Camera* ImmersiveKidz::getCamera(){
+	return camera;
 }
