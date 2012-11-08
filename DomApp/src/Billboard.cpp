@@ -12,14 +12,16 @@
 */
 Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn)
 {
-	texture = texturename;
+	this->_proportions = proportionsIn;
+	this->_position = position;
+	_transform = glm::mat4x4(1);
+	_transform = glm::translate(_transform, position);
+	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+	sgct::TextureManager::Instance()->loadTexure(_texture, texturename, texturename, true);
 
-	this->proportions = proportionsIn;
-	this->position = position;
-	transform = glm::mat4x4(1);
-	transform = glm::translate(transform, position);
+	_proportions = proportionsIn;
 
-
+	_transform = glm::translate(_transform, position);
 };
 
 /**
@@ -33,7 +35,7 @@ void Billboard::onDraw() {
 	
 	//sgct::MessageHandler::Instance()->print("Billboard draw\n");
 
-	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(texture));
+	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(_texture));
 
 
 	glPushMatrix();
@@ -46,19 +48,19 @@ void Billboard::onDraw() {
 
 	//Vertex 1 
 	glTexCoord2d(0.0,0.0);
-	glVertex3f(-0.5 * proportions[0] , 0 , 0);
+	glVertex3f(-0.5 * _proportions[0] , 0 , 0);
 	
 	//Vertex 2 
 	glTexCoord2d(1.0,0.0);
-	glVertex3f(0.5 * proportions[0] , 0 , 0);
+	glVertex3f(0.5 * _proportions[0] , 0 , 0);
 	
 	//Vertex 3 
 	glTexCoord2d(1.0,1.0);
-	glVertex3f(0.5 * proportions[0] , proportions[1] , 0);
+	glVertex3f(0.5 * _proportions[0] , _proportions[1] , 0);
 	
 	//Vertex 4 
 	glTexCoord2d(0.0,1.0);
-	glVertex3f(-0.5 * proportions[0] , proportions[1] , 0);
+	glVertex3f(-0.5 * _proportions[0] , _proportions[1] , 0);
 
 	glEnd();
 

@@ -7,7 +7,7 @@
 
 <br /><br />
 
-<input type="submit" value="upload" />
+<input type="submit" value="Ladda upp bilderna" />
 
 </form>
 <?php echo anchor('index.php/site/create/info', 'Gå vidare');?>

@@ -20,10 +20,10 @@ public:
 	Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, 
 		std::string artist, std::string drawing, std::string desc);
 private:
-	std::string name_artist;
-	std::string name_drawing;
-	std::string description;
-	bool seen;
+	std::string _nameArtist;
+	std::string _nameDrawing;
+	std::string _description;
+	bool _seen;
 
 };
 

@@ -1,11 +1,11 @@
 #include "ImmersiveKidz.h"
 
-ImmersiveKidz* ImmersiveKidz::instance = 0;
+ImmersiveKidz* ImmersiveKidz::_instance = 0;
 ImmersiveKidz* ImmersiveKidz::getInstance(){
 	//WARNING _ NOT THREAD SAFE
-	if(instance == 0)
-		instance = new ImmersiveKidz();
-	return instance;
+	if(_instance == 0)
+		_instance = new ImmersiveKidz();
+	return _instance;
 }
 /**
 *@brief	    ImmersiveKidz constructor
@@ -14,12 +14,13 @@ ImmersiveKidz::ImmersiveKidz() {
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
 
 	// initialize all variables
-	objects = new std::vector<DrawableObject*>();
-	isMaster = false;
-	scene_loaded = false;
-	curr_time = 0.0;
+	//objects = new std::vector<DrawableObject*>();
+	//illustrations = new std::vector<Illustration*>();
+	_isMaster = false;
+	_sceneLoaded = false;
+	_currTime = 0.0;
 
-	camera = new Camera();
+	_camera = new Camera();
 }
 
 
@@ -28,7 +29,7 @@ ImmersiveKidz::ImmersiveKidz() {
 */
 ImmersiveKidz::~ImmersiveKidz() {
 	sgct::MessageHandler::Instance()->print("Destroying ImmersiveKidz engine\n");
-	delete objects;
+	//delete _objects;
 }
 
 /**
@@ -40,9 +41,9 @@ ImmersiveKidz::~ImmersiveKidz() {
 */
 void ImmersiveKidz::setScenePath(std::string folder) {
 #ifdef __WIN32__
-		scene_path = folder + "/";
+		_scenePath = folder + "/";
 #else // mac, linux
-		scene_path = folder + "/";
+		_scenePath = folder + "/";
 #endif
 }
 /**
@@ -55,7 +56,13 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *@return     void
 */
 void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
-	objects->push_back(o);
+	
+	Illustration *ill = dynamic_cast<Illustration*>(o);
+	if(ill) {
+		_illustrations.push_back(ill);
+	}
+	
+	_objects.push_back(o);
 }
 
 /**
@@ -65,11 +72,11 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
 */
 void ImmersiveKidz::preSyncFunc() {
 	//set the time only on the master
-	if( isMaster )
+	if( _isMaster )
 	{
 		//get the time in seconds
-		dt = sgct::Engine::getTime() - curr_time;
-		curr_time = sgct::Engine::getTime();
+		_dt = sgct::Engine::getTime() - _currTime;
+		_currTime = sgct::Engine::getTime();
 	}
 }
 
@@ -79,32 +86,14 @@ void ImmersiveKidz::preSyncFunc() {
 *@return     void
 */
 void ImmersiveKidz::draw() {
-	camera->setCamera();
+	_camera->setCamera();
 	float speed = 50.0f;
 	//glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
 	
-	for (int i = 0; i < objects->size(); ++i)
+	for (int i = 0; i < _objects.size(); ++i)
 	{
-		objects->at(i)->draw(curr_time, dt);
+		_objects.at(i)->draw(_currTime, _dt);
 	}
-	
-	/*
-	
-	float speed = 50.0f;
-	glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
-
-	//render a single triangle
-	glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 0.0f, 0.0f); //Red
-		glVertex3f(-0.5f, -0.5f, 0.0f);
-
-		glColor3f(0.0f, 1.0f, 0.0f); //Green
-		glVertex3f(0.0f, 0.5f, 0.0f);
-
-		glColor3f(0.0f, 0.0f, 1.0f); //Blue
-		glVertex3f(0.5f, -0.5f, 0.0f);
-	glEnd();
-	*/
 }
 
 /**
@@ -113,9 +102,9 @@ void ImmersiveKidz::draw() {
 *@return     void
 */
 void ImmersiveKidz::encode() {
-	sgct::SharedData::Instance()->writeDouble( curr_time );
-	sgct::SharedData::Instance()->writeDouble( dt );
-	camera->encode(sgct::SharedData::Instance());
+	_camera->encode(sgct::SharedData::Instance());
+	sgct::SharedData::Instance()->writeDouble( _currTime );
+	sgct::SharedData::Instance()->writeDouble( _dt );
 }
 
 /**
@@ -124,9 +113,9 @@ void ImmersiveKidz::encode() {
 *@return     void
 */
 void ImmersiveKidz::decode(){
-	curr_time = sgct::SharedData::Instance()->readDouble();
-	dt = sgct::SharedData::Instance()->readDouble();
-	camera->decode(sgct::SharedData::Instance());
+	_camera->decode(sgct::SharedData::Instance());
+	_currTime = sgct::SharedData::Instance()->readDouble();
+	_dt = sgct::SharedData::Instance()->readDouble();
 }
 
 /**
@@ -141,7 +130,7 @@ void ImmersiveKidz::decode(){
 void ImmersiveKidz::loadScene(std::string folder) {
 
 	setScenePath(folder);
-	std::string scene_xml = scene_path + "scene.xml";
+	std::string scene_xml = _scenePath + "scene.xml";
 	
 	tinyxml2::XMLDocument document;
 	document.LoadFile(scene_xml.c_str());
@@ -169,8 +158,8 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
 				double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
 
-				addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale, glm::vec3(rotx, roty, rotz)));
-				objects->back()->setAnimationFuncByName(animation);
+				addDrawableObject(new Model(_scenePath + filename, _scenePath + texture, scale, glm::vec3(rotx, roty, rotz)));
+				_objects.back()->setAnimationFuncByName(animation);
 			}
 		}
 
@@ -186,9 +175,9 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
 				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
 
-				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
+				sgct::TextureManager::Instance()->loadTexure(texture, _scenePath + texture, true, 0);
 				addDrawableObject(new Billboard(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)));
-				objects->back()->setAnimationFuncByName(animation);
+				_objects.back()->setAnimationFuncByName(animation);
 			}
 		}
 
@@ -207,9 +196,10 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
 				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
 			
-				sgct::TextureManager::Instance()->loadTexure(texture, scene_path + texture, true, 0);
+				sgct::TextureManager::Instance()->loadTexure(texture, _scenePath + texture, true, 0);
+				
 				addDrawableObject(new Illustration(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description));
-				objects->back()->setAnimationFuncByName(animation);
+				_objects.back()->setAnimationFuncByName(animation);
 			}
 		}
 	}
@@ -217,25 +207,25 @@ void ImmersiveKidz::loadScene(std::string folder) {
 
 
 void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
-	if(camera == 0)
+	if(_camera == 0)
 		return;
-	camera->mouseMotion(dx,dy);
+	_camera->mouseMotion(dx,dy);
 }
 
 void ImmersiveKidz::mouseButton(int button,int state){
-	if(camera == 0)
+	if(_camera == 0)
 		return;
-	camera->mouseButton(button,state);
+	_camera->mouseButton(button,state);
 }
 
 void ImmersiveKidz::keyboardButton(int key,int state){
-	if(camera == 0)
+	if(_camera == 0)
 		return;
-	camera->keyboardButton(key,state);
+	_camera->keyboardButton(key,state);
 }
 
 void ImmersiveKidz::postSyncPreDrawFunction(){
-	camera->update(dt);
+	_camera->update(_dt);
 }
 
 void ImmersiveKidz::setEngine(sgct::Engine *engine){
@@ -248,5 +238,5 @@ sgct::Engine* ImmersiveKidz::getEngine(){
 
 
 Camera* ImmersiveKidz::getCamera(){
-	return camera;
+	return _camera;
 }

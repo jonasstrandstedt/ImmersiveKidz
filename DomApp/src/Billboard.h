@@ -24,15 +24,14 @@
 class Billboard: public DrawableObject {
 
 public:
-	Billboard(){};
 	Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn);
 
 	void onDraw();
 	
 protected:
-	std::string texture;
-	glm::vec2 proportions;
-	glm::vec3 position;
+	glm::vec3 _position;
+	unsigned int _texture;
+	glm::vec2 _proportions;
 };
 
 
