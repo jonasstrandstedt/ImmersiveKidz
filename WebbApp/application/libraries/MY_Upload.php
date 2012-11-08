@@ -11,7 +11,7 @@ From : https://github.com/nicdev/CodeIgniter-Multiple-File-Upload.
  */
 		
 class MY_Upload extends CI_Upload {
-	
+	var $return_value;
 	public function do_multi_upload( $field = 'userfile', $return_info = TRUE ){
 
 		// Is $_FILES[$field] set? If not, no reason to continue.
@@ -58,7 +58,6 @@ class MY_Upload extends CI_Upload {
 			
 			foreach( $_FILES[$field]['name'] as $k => $file )
 			{
-				
 				// Was the file able to be uploaded? If not, determine the reason why.
 				if ( ! is_uploaded_file($_FILES[$field]['tmp_name'][$k] ) )
 				{
@@ -103,6 +102,7 @@ class MY_Upload extends CI_Upload {
 				$this->file_name = $this->_prep_filename($_FILES[$field]['name'][$k]);
 				$this->file_ext	 = $this->get_extension($this->file_name);
 				$this->client_name = $this->file_name;
+				//echo $this->file_name;
 				
 				// Is the file type allowed to be uploaded?
 				if ( ! $this->is_allowed_filetype())
@@ -231,9 +231,7 @@ class MY_Upload extends CI_Upload {
 				
 				if( $return_info === TRUE )
 				{
-					
 					$return_value[$k] = $this->data();
-				
 				}
 				else
 				{
@@ -244,7 +242,8 @@ class MY_Upload extends CI_Upload {
 				
 				
 			}
-			
+			session_start();
+			$_SESSION['return_value'] = $return_value;
 			return $return_value;
 		
 		}
@@ -259,7 +258,15 @@ class MY_Upload extends CI_Upload {
 
 	
 	}
+	
+	public function get_multi_upload()
+	{
+		$return_value = $_SESSION['return_value'];
+		session_destroy();
+		return $return_value;
+	}
 
 }
+
 
 ?>
