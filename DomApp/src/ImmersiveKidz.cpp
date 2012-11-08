@@ -1,9 +1,16 @@
 #include "ImmersiveKidz.h"
 
+ImmersiveKidz* ImmersiveKidz::instance = 0;
+ImmersiveKidz* ImmersiveKidz::getInstance(){
+	//WARNING _ NOT THREAD SAFE
+	if(instance == 0)
+		instance = new ImmersiveKidz();
+	return instance;
+}
 /**
 *@brief	    ImmersiveKidz constructor
 */
-ImmersiveKidz::ImmersiveKidz(sgct::Engine *engine) {
+ImmersiveKidz::ImmersiveKidz() {
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
 
 	// initialize all variables
@@ -12,8 +19,7 @@ ImmersiveKidz::ImmersiveKidz(sgct::Engine *engine) {
 	scene_loaded = false;
 	curr_time = 0.0;
 
-	camera = new Camera(engine);
-	this->engine = engine;
+	camera = new Camera();
 }
 
 
@@ -230,4 +236,17 @@ void ImmersiveKidz::keyboardButton(int key,int state){
 
 void ImmersiveKidz::postSyncPreDrawFunction(){
 	camera->update(dt);
+}
+
+void ImmersiveKidz::setEngine(sgct::Engine *engine){
+	this->engine = engine;
+}
+
+sgct::Engine* ImmersiveKidz::getEngine(){
+	return engine;
+}
+
+
+Camera* ImmersiveKidz::getCamera(){
+	return camera;
 }

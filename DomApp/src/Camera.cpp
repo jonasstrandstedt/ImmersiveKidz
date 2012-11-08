@@ -1,7 +1,8 @@
 
 #include "Camera.h"
+#include "ImmersiveKidz.h"
 
-Camera::Camera(sgct::Engine *engine)
+Camera::Camera(glm::vec3 startPosition)
 {
 	movingForward = false;
 	movingBackward = false;
@@ -9,7 +10,7 @@ Camera::Camera(sgct::Engine *engine)
 	movingLeft = false;
 	speed = 1.0;
 	mouseState = false;
-	this->engine = engine;
+	this->position = startPosition;
 }
 
 void Camera::setCamera(){
@@ -35,15 +36,6 @@ void Camera::update(float dt){
 	if(!movingLeft && movingRight){
 		position -= glm::vec3(side[0],side[1],side[2]);
 	}
-	/*if(moveUp && !moveDown){
-		pos -= glm::vec3(0,moveSpeed,0);
-	}
-	if(!moveUp && moveDown){
-		pos += glm::vec3(0,moveSpeed,0);
-	}*/
-
-
-
 	
 	viewMatrix = glm::mat4();
  	viewMatrix = glm::rotate(viewMatrix,rotation[1],glm::vec3(1.0f,0.0f,0.0f));
@@ -69,7 +61,7 @@ void Camera::keyboardButton(int key,int state){
 void Camera::mouseButton(int button,int state){
 	if(button == 0){
 		mouseState = state;
-		engine->setMousePointerVisibility(!state);
+		ImmersiveKidz::getInstance()->getEngine()->setMousePointerVisibility(!state);
 	}
 }
 
@@ -78,4 +70,20 @@ void Camera::mouseMotion(int dx,int dy){
 		rotation[0] += dx;
 		rotation[1] += dy;
 	}
+}
+
+glm::vec3 Camera::getPosition()const{
+	return position;
+}
+
+glm::vec2 Camera::getRotation()const{
+	return rotation;
+}
+
+float Camera::getSpeed()const{
+	return speed;
+}
+
+void Camera::setSpeed(float speed){
+	this->speed = speed;
 }
