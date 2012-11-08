@@ -17,6 +17,10 @@ Model::Model(std::string filename, std::string texturename, float scale, glm::ve
 	sgct::TextureManager::Instance()->loadTexure(myTextureIndex, texturename, texturename, true);
 	
 	loadObj(filename.c_str(), scale, rotation, base_color);
+	
+	transform = glm::rotate(transform, rotation[0], glm::vec3(1,0,0));
+	transform = glm::rotate(transform, rotation[1], glm::vec3(0,1,0));
+	transform = glm::rotate(transform, rotation[2], glm::vec3(0,0,1));
 }
 Model::Model(const char *filename, const char *texturename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
 	myTextureIndex = 0;
@@ -33,7 +37,7 @@ Model::Model(const char *filename, const char *texturename, float scale, glm::ve
 *
 *@return     void
 */
-void Model::draw() {
+void Model::onDraw() {
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(myTextureIndex) );
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vBufferID);
@@ -294,46 +298,7 @@ void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::
 		(varray)[m].colour[1] = base_color[1];
 		(varray)[m].colour[2] = base_color[2];
 		(varray)[m].colour[3] = 1.0;
-		/*
-		Vec3 temp;
-		Vec3 normal_temp;
-		temp = Vec3((varray)[m].location[0],(varray)[m].location[1],(varray)[m].location[2]);
-		normal_temp = Vec3((varray)[m].normal[0],(varray)[m].normal[1],(varray)[m].normal[2]);
-		
-		// rotare around x
-		(varray)[m].location[0] = temp.get_x();
-		(varray)[m].location[1] = cos(rotation.get_x())*temp.get_y() - sin(rotation.get_x())*temp.get_z();
-		(varray)[m].location[2] = sin(rotation.get_x())*temp.get_y() + cos(rotation.get_x())*temp.get_z();
-		
-		temp = Vec3((varray)[m].location[0],(varray)[m].location[1],(varray)[m].location[2]);
-		normal_temp = Vec3((varray)[m].normal[0],(varray)[m].normal[1],(varray)[m].normal[2]);
-		// rotare around y
-		(varray)[m].location[0]= cos(rotation.get_y())*temp.get_x() + sin(rotation.get_y())*temp.get_y();
-		(varray)[m].location[1] = temp.get_y();
-		(varray)[m].location[2] = -sin(rotation.get_y())*temp.get_x() + cos(rotation.get_y())*temp.get_z();
-		
-		temp = Vec3((varray)[m].location[0],(varray)[m].location[1],(varray)[m].location[2]);
-		// rotare around z
-		(varray)[m].location[0] = cos(rotation.get_z())*temp.get_x() + sin(rotation.get_z())*temp.get_y();
-		(varray)[m].location[1] = -sin(rotation.get_z())*temp.get_x() + cos(rotation.get_z())*temp.get_y();
-		(varray)[m].location[2] = temp.get_z();
-		
-		// rotare around x
-		normal_temp = Vec3((varray)[m].normal[0],(varray)[m].normal[1],(varray)[m].normal[2]);
-		(varray)[m].normal[0] = normal_temp.get_x();
-		(varray)[m].normal[1] = cos(rotation.get_x())*normal_temp.get_z() - sin(rotation.get_x())*normal_temp.get_y();
-		(varray)[m].normal[2] = sin(rotation.get_x())*normal_temp.get_z() + cos(rotation.get_x())*normal_temp.get_y();
-		// rotare around y
-		normal_temp = Vec3((varray)[m].normal[0],(varray)[m].normal[1],(varray)[m].normal[2]);
-		(varray)[m].normal[0] = cos(rotation.get_y())*normal_temp.get_x() + sin(rotation.get_y())*normal_temp.get_y();
-		(varray)[m].normal[1] = normal_temp.get_y();
-		(varray)[m].normal[2] = -sin(rotation.get_y())*normal_temp.get_x() + cos(rotation.get_y())*normal_temp.get_y();
-		// rotare around z
-		normal_temp = Vec3((varray)[m].normal[0],(varray)[m].normal[1],(varray)[m].normal[2]);
-		(varray)[m].normal[0] = cos(rotation.get_z())*normal_temp.get_x() + sin(rotation.get_z())*normal_temp.get_y();
-		(varray)[m].normal[1] = -sin(rotation.get_z())*normal_temp.get_x() + cos(rotation.get_z())*normal_temp.get_y();
-		(varray)[m].normal[2] = normal_temp.get_z();
-		*/
+
 		if (debugInit == 1) {
 			printf("normal added: %f %f %f \n",(varray)[m].normal[0],(varray)[m].normal[1],(varray)[m].normal[2]);
 			printf("vertex pos added: %f %f %f \n",(varray)[m].location[0],(varray)[m].location[1],(varray)[m].location[2]);

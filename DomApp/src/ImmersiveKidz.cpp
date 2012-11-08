@@ -79,9 +79,7 @@ void ImmersiveKidz::draw() {
 	
 	for (int i = 0; i < objects->size(); ++i)
 	{
-		objects->at(i)->animate(curr_time, dt);
-		objects->at(i)->draw();
-		objects->at(i)->postAnimate();
+		objects->at(i)->draw(curr_time, dt);
 	}
 	
 	/*
@@ -163,7 +161,7 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
 				double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
 
-				addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale));
+				addDrawableObject(new Model(scene_path + filename, scene_path + texture, scale, glm::vec3(rotx, roty, rotz)));
 				objects->back()->setAnimationFuncByName(animation);
 			}
 		}

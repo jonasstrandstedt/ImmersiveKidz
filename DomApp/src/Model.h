@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "sgct.h"
 #include "DrawableObject.h"
 
@@ -38,7 +40,7 @@ public:
 	Model(const char *filename, const char *texturename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
 	~Model() {};
 	
-	void draw();
+	void onDraw();
 private:
 	// Variables used for rendering
 	GLuint vBufferID;

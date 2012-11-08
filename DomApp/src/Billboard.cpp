@@ -28,7 +28,7 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 *
 *@return    void
 */
-void Billboard::draw() {
+void Billboard::onDraw() {
 	
 	//sgct::MessageHandler::Instance()->print("Billboard draw\n");
 
@@ -36,8 +36,6 @@ void Billboard::draw() {
 
 
 	glPushMatrix();
-	//Apllying the transform matrix
-	glMultMatrixf(glm::value_ptr(transform));
 	
 	glm::vec3 normal(0.0 , 0.0 , 1.0);
 	glm::vec3 camPos(0.0 , 0.0 , -1.0);
