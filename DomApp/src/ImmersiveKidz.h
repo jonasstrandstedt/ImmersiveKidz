@@ -24,14 +24,10 @@
 class ImmersiveKidz {
 public:
 	
-	// constructors and destructors
-	ImmersiveKidz(sgct::Engine *engine);
 	~ImmersiveKidz();
 	
 
 	void setMaster(bool m) { isMaster = m; };
-	/*void setCurr_time(double t) {curr_time = t;};
-	void setDt(double t) {dt = t;};*/
 	void setScenePath(std::string folder);
 
 	void addDrawableObject(DrawableObject *o);
@@ -48,9 +44,14 @@ public:
 
 	void loadScene(std::string folder);
 	
+	void setEngine(sgct::Engine *engine);
+	sgct::Engine *getEngine();
 
-
+	Camera* getCamera();
+	static ImmersiveKidz* getInstance();
 private:
+	static ImmersiveKidz* instance;
+	ImmersiveKidz();
 	sgct::Engine *engine;
 	// all objects in the scene that can be drawn
 	std::vector<DrawableObject*> *objects;

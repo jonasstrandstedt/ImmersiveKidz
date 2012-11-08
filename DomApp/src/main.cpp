@@ -62,7 +62,8 @@ int main( int argc, char* argv[] )
 
 void myInitOGLFun() {
 	// Allocate and initialize ImmersiveKidz
-	iKidz = new ImmersiveKidz(gEngine);
+	iKidz = ImmersiveKidz::getInstance();
+	iKidz->setEngine(gEngine);
 	iKidz->setMaster(gEngine->isMaster());
 	
 	iKidz->loadScene("world1");

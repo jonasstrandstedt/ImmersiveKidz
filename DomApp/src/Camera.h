@@ -21,9 +21,8 @@ class Camera {
 	glm::vec3 position;
 	glm::vec2 rotation;
 	glm::mat4 viewMatrix;
-	sgct::Engine *engine;
 public:
-	Camera(sgct::Engine *engine);
+	Camera(glm::vec3 startPosition = glm::vec3(0,0,0));
 	~Camera();
 
 	void setCamera();
@@ -33,7 +32,11 @@ public:
 	void keyboardButton(int key,int state);
 	void mouseButton(int button,int state);
 	void mouseMotion(int dx,int dy);
-
+	
+	glm::vec3 getPosition()const;
+	glm::vec2 getRotation()const;
+	float getSpeed()const;
+	void setSpeed(float speed);
 };
 
 #endif
