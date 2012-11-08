@@ -26,7 +26,7 @@ class Site extends CI_Controller
 		}
 		else 
 		{
-			$data = array('upload_data' => $this->upload->data());
+			$data = array('upload_data' => $this->multi_upload->data());
 
 			$this->load->view('upload_success', $data);
 		}
@@ -34,7 +34,7 @@ class Site extends CI_Controller
 	
 	public function index()
 	{
-		$this->create();
+		$this->create("upload"); // Sets the startpage to the upload view.
 	}
 		
 	public function create($submenu)
