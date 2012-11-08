@@ -32,6 +32,7 @@ public:
 protected:
 	std::string texture;
 	glm::vec2 proportions;
+	glm::vec3 position;
 };
 
 
