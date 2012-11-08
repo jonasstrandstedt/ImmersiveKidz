@@ -6,6 +6,7 @@
 // animate functions
 void bounce(double t, double dt, double at);
 void pendulum(double t, double dt, double at);
+void none(double t, double dt, double at);
 
 /**
 * @brief  	An abstract class for objects that can be rendered
@@ -26,17 +27,19 @@ public:
 	void setAnimationFuncByName(std::string name) { 
 		if ( name == "bounce" ) setAnimationFunc(bounce);
 		if ( name == "pendulum" ) setAnimationFunc(pendulum);
+		if ( name == "none" ) setAnimationFunc(none);
 	};
 
 	// draw functionality
-	void animate(double t, double dt);
-	void postAnimate();
-	virtual void draw() = 0;
+	void draw(double t, double dt);
+	virtual void onDraw() = 0;
 private:
 
 protected:
 	double animation_timer;
 	void (*animation_func)(double, double, double);
+
+	glm::mat4x4 transform;
 };
 
 #endif

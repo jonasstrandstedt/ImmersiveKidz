@@ -75,6 +75,7 @@
     <ClCompile Include="..\src\Billboard.cpp" />
     <ClCompile Include="..\src\Camera.cpp" />
     <ClCompile Include="..\src\DrawableObject.cpp" />
+    <ClCompile Include="..\src\HUD.cpp" />
     <ClCompile Include="..\src\Illustration.cpp" />
     <ClCompile Include="..\src\ImmersiveKidz.cpp" />
     <ClCompile Include="..\src\main.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="..\src\Billboard.h" />
     <ClInclude Include="..\src\Camera.h" />
     <ClInclude Include="..\src\DrawableObject.h" />
+    <ClInclude Include="..\src\HUD.h" />
     <ClInclude Include="..\src\Illustration.h" />
     <ClInclude Include="..\src\ImmersiveKidz.h" />
     <ClInclude Include="..\src\Model.h" />

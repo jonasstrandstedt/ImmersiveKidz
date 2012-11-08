@@ -20,8 +20,8 @@ public:
 	Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, 
 		std::string artist, std::string drawing, std::string desc);
 
-	void draw();
-	
+	std::string getName();
+
 private:
 	std::string name_artist;
 	std::string name_drawing;

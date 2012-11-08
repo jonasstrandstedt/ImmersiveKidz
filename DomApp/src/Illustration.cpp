@@ -8,23 +8,19 @@
 *@return     void
 */
 
-Illustration::Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, std::string artist, std::string drawing, std::string desc) 
+Illustration::Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, std::string artist, std::string drawing, std::string desc): Billboard(texturename, position, proportionsIn) 
 {
-	texture = texturename;
-
-	this->proportions = proportionsIn;
-
-	transform = glm::mat4x4(1);
-	transform = glm::translate(transform, position);
 
 	name_artist = artist;
 	name_drawing = drawing;
 	description = desc;
 
 	seen = false;
-
 };
 
-void Illustration::draw() {
-	//sgct::MessageHandler::Instance()->print("illustration draw\n");
-}
+std::string Illustration::getName()
+{
+	return name_artist;
+};
+
+

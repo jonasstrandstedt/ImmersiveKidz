@@ -66,7 +66,8 @@ void myInitOGLFun() {
 			sgct::FontManager::Instance()->GetFont( "Verdana", 14 );
 
 	// Allocate and initialize ImmersiveKidz
-	iKidz = new ImmersiveKidz(gEngine);
+	iKidz = ImmersiveKidz::getInstance();
+	iKidz->setEngine(gEngine);
 	iKidz->setMaster(gEngine->isMaster());
 	
 	iKidz->loadScene("world1");
