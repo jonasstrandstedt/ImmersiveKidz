@@ -242,7 +242,7 @@ class MY_Upload extends CI_Upload {
 				
 				
 			}
-			session_start();
+			//session_start();
 			$_SESSION['return_value'] = $return_value;
 			return $return_value;
 		
@@ -262,7 +262,7 @@ class MY_Upload extends CI_Upload {
 	public function get_multi_upload()
 	{
 		$return_value = $_SESSION['return_value'];
-		session_destroy();
+		//session_destroy();
 		return $return_value;
 	}
 

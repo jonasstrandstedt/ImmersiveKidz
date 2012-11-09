@@ -28,7 +28,21 @@ class Site extends CI_Controller
 			//print_r($this->upload->get_multi_upload());
 			//print_r($this->upload->data());
 			//print_r($this->upload->get_multi_upload());
+			$group = $_POST['group'];
+			$date = $_POST['date'];
 			$data = array('upload_data' => $this->upload->get_multi_upload());
+			$this->load->model("Images_model");
+			//echo print_r($data);
+			for($i = 0; $i < count($data['upload_data']); $i++)
+			{	
+				$fileurl = "uploads/".$data['upload_data'][$i]['file_name'];
+				//echo $data['upload_data'][$i]['file_name'];
+
+				$this->Images_model->add_image("", $fileurl, $date, $group);
+				echo "<img src='../../../".$fileurl."'' height='42' width='42'/>"; // TEST
+			}
+			
+
 			$this->load->view('upload_success', $data);
 		} 
 		

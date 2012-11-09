@@ -38,7 +38,7 @@ class Install_model extends CI_Model
 
 			// inserting users
 			$this->load->model("Images_model");
-			$this->Images_model->add_image("Viktor Fröberg", "uploads/bild1.jpg", "2012-11-09", "group1");
+			$this->Images_model->add_image("Viktor Fröberg", "uploads/bild.jpg", "2012-11-09", "group1");
 			$this->Images_model->add_image("Emil Lindström", "uploads/bild2.jpg", "2012-11-09", "group1");
 			$this->Images_model->add_image("Jonas Strandstedt", "uploads/bild3.jpg", "2012-11-09", "group2");
 
