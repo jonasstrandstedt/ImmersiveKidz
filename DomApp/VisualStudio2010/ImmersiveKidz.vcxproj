@@ -79,6 +79,7 @@
     <ClCompile Include="..\src\ImmersiveKidz.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Model.cpp" />
+    <ClCompile Include="..\src\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Billboard.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="..\src\Illustration.h" />
     <ClInclude Include="..\src\ImmersiveKidz.h" />
     <ClInclude Include="..\src\Model.h" />
+    <ClInclude Include="..\src\Skybox.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

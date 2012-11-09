@@ -7,6 +7,7 @@ ImmersiveKidz* ImmersiveKidz::getInstance(){
 		_instance = new ImmersiveKidz();
 	return _instance;
 }
+
 /**
 *@brief	    ImmersiveKidz constructor
 */
@@ -53,7 +54,7 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *
 *@return     void
 */
-void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
+void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f) {
 	
 	Illustration *ill = dynamic_cast<Illustration*>(o);
 	if(ill) {
@@ -61,6 +62,7 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o) {
 	}
 	
 	_objects.push_back(o);
+	_objects.back()->setAnimationFuncByName(f);
 }
 
 /**
@@ -102,6 +104,7 @@ void ImmersiveKidz::draw() {
 *@return     void
 */
 void ImmersiveKidz::encode() {
+	_camera->encode(sgct::SharedData::Instance());
 	sgct::SharedData::Instance()->writeDouble( _currTime );
 	sgct::SharedData::Instance()->writeDouble( _dt );
 }
@@ -112,96 +115,9 @@ void ImmersiveKidz::encode() {
 *@return     void
 */
 void ImmersiveKidz::decode(){
+	_camera->decode(sgct::SharedData::Instance());
 	_currTime = sgct::SharedData::Instance()->readDouble();
 	_dt = sgct::SharedData::Instance()->readDouble();
-}
-
-/**
-*@brief	    Loads a scene from a specified world
-*
-*@details   Loads a scene from a specified folder and parses the scene.xml. Calls setScenePath to update the scene_path in case files are required by other functions.
-*
-*@param		folder The folder that contains the scene
-*
-*@return     void
-*/
-void ImmersiveKidz::loadScene(std::string folder) {
-
-	setScenePath(folder);
-	std::string scene_xml = _scenePath + "scene.xml";
-	
-	tinyxml2::XMLDocument document;
-	document.LoadFile(scene_xml.c_str());
-
-	tinyxml2::XMLHandle doc(&document);
-
-	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" ).ToElement();
-	if(scene) {
-		tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
-		if(models) {
-			tinyxml2::XMLNode* item = models->FirstChildElement( "item" );
-			
-			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-				std::string filename = item->FirstChildElement( "filename" )->GetText();
-				std::string texture = item->FirstChildElement( "texture" )->GetText();
-				std::string animation = item->FirstChildElement( "animation" )->GetText();
-				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
-				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
-				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
-				double scale = item->FirstChildElement( "scale" )->DoubleAttribute( "val" );
-				double rotx = item->FirstChildElement( "rot" )->DoubleAttribute( "x" );
-				double roty = item->FirstChildElement( "rot" )->DoubleAttribute( "y" );
-				double rotz = item->FirstChildElement( "rot" )->DoubleAttribute( "z" );
-				double r = item->FirstChildElement( "base_color" )->DoubleAttribute( "r" );
-				double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
-				double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
-
-				addDrawableObject(new Model(_scenePath + filename, _scenePath + texture, scale, glm::vec3(rotx, roty, rotz)));
-				_objects.back()->setAnimationFuncByName(animation);
-			}
-		}
-
-		tinyxml2::XMLElement* billboards = scene->FirstChildElement( "billboards" );
-		if(billboards) {
-			tinyxml2::XMLNode* item = billboards->FirstChildElement( "item" );
-			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-				std::string texture = item->FirstChildElement( "texture" )->GetText();
-				std::string animation = item->FirstChildElement( "animation" )->GetText();
-				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
-				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
-				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
-				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
-				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
-
-				sgct::TextureManager::Instance()->loadTexure(texture, _scenePath + texture, true, 0);
-				addDrawableObject(new Billboard(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)));
-				_objects.back()->setAnimationFuncByName(animation);
-			}
-		}
-
-		tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
-		if(illustrations) {
-			tinyxml2::XMLNode* item = illustrations->FirstChildElement( "item" );
-			for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-				std::string name_artist = item->FirstChildElement( "name_artist" )->GetText();
-				std::string name_drawing = item->FirstChildElement( "name_drawing" )->GetText();
-				std::string description = item->FirstChildElement( "description" )->GetText();
-				std::string animation = item->FirstChildElement( "animation" )->GetText();
-				std::string texture = item->FirstChildElement( "texture" )->GetText();
-				double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
-				double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
-				double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
-				double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
-				double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
-			
-				sgct::TextureManager::Instance()->loadTexure(texture, _scenePath + texture, true, 0);
-				
-				addDrawableObject(new Illustration(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description));
-				_objects.back()->setAnimationFuncByName(animation);
-			}
-		}
-		_sceneLoaded = true;
-	}
 }
 
 

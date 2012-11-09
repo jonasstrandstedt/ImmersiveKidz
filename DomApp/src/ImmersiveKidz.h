@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include "sgct.h"
-#include "tinyxml2.h"
 #include "DrawableObject.h"
 #include "Billboard.h"
 #include "Illustration.h"
@@ -30,8 +29,9 @@ public:
 
 	void setMaster(bool m) { _isMaster = m; };
 	void setScenePath(std::string folder);
+	void setSceneLoaded(bool isLoaded) { _sceneLoaded = isLoaded; };
 
-	void addDrawableObject(DrawableObject *o);
+	void addDrawableObject(DrawableObject *o, std::string f = "none");
 	
 	void preSyncFunc();
 	void draw();
@@ -42,14 +42,14 @@ public:
 	void mouseMotion(int x,int y,int dx,int dy);
 	void mouseButton(int button,int state);
 	void keyboardButton(int key,int state);
-
-	void loadScene(std::string folder);
 	
 	void setEngine(sgct::Engine *engine);
 	sgct::Engine *getEngine();
 
 	Camera* getCamera();
 	static ImmersiveKidz* getInstance();
+	
+	std::string getScenePath() { return _scenePath; };
 private:
 	static ImmersiveKidz* _instance;
 	ImmersiveKidz();

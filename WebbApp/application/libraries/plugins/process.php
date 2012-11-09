@@ -66,18 +66,6 @@ class phMagick_process{
 
         return  $p ;
     }
-    function thicken(phmagick $p){
-            //Build command to close image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource().'"'  ;
-            $cmd .= ' -morphology Thicken:4 "3x1+2+0:1,0,0"';
-            $cmd .= ' "' . $p->getDestination().'"'  ;
-
-            echo  "Close: " . $cmd . "<br/>";
-            $p->execute($cmd);
-
-        return  $p ;
-    }
 
     function mask(phmagick $p, $originalImage){
             //Build command to close image

@@ -29,6 +29,7 @@ public:
 	void onDraw();
 	
 protected:
+	glm::vec3 _position;
 	unsigned int _texture;
 	glm::vec2 _proportions;
 };

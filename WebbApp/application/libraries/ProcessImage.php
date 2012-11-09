@@ -43,7 +43,6 @@ class ProcessImage {
             $size = 6;
             //$phMagick->open($size);
             $phMagick->close($size, "Disk");
-            
 
             //create out image, save to folder "out".
             $out = $folder. "/out/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."out.png";

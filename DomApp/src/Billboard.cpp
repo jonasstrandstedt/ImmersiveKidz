@@ -1,4 +1,5 @@
 #include "Billboard.h"
+#include "ImmersiveKidz.h"
 
 /**
 *@brief	    Brief description
@@ -11,6 +12,10 @@
 */
 Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn)
 {
+	this->_proportions = proportionsIn;
+	this->_position = position;
+	_transform = glm::mat4x4(1);
+	_transform = glm::translate(_transform, position);
 	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
 	sgct::TextureManager::Instance()->loadTexure(_texture, texturename, texturename, true);
 
@@ -34,14 +39,10 @@ void Billboard::onDraw() {
 
 
 	glPushMatrix();
-	
-	glm::vec3 normal(0.0 , 0.0 , 1.0);
-	glm::vec3 camPos(0.0 , 0.0 , -1.0);
-
-	float angle = acos(glm::dot(-normal, camPos));
+	float angle = ImmersiveKidz::getInstance()->getCamera()->getRotation().x;
 	//Rotate Billboard towards the camera position.
-	glRotatef(angle, 0.0 , 1.0 , 0.0);
-
+	glRotatef(-angle, 0.0 , 1.0 , 0.0);
+	
 
 	glBegin(GL_QUADS);
 

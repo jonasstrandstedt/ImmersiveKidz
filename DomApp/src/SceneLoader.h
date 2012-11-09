@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include "sgct.h"
+#include "tinyxml2.h"
 #include "DrawableObject.h"
 #include "Billboard.h"
 #include "Illustration.h"
@@ -32,7 +33,8 @@ public:
 	
 	void keyboardButton(int key,int state);
 	void menu();
-	void loadScene();
+	int loadScene();
+	std::string checkXML(tinyxml2::XMLHandle doc);
 
 private:
 	
