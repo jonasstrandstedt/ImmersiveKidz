@@ -43,6 +43,7 @@ public:
 	void keyboardButton(int key,int state);
 
 	void loadScene(std::string folder);
+	std::string checkXML(tinyxml2::XMLHandle doc);
 	
 	void setEngine(sgct::Engine *engine);
 	sgct::Engine *getEngine();
