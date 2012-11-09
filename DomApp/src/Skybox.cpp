@@ -1,64 +1,118 @@
 #include "Skybox.h"
+#include "ImmersiveKidz.h"
 
 
 
-Skybox::Skybox(std::string texturename, int size)
+Skybox::Skybox()
 {
 	this->texturename = texturename;
-	this->size = size;
+	//this->100 = 100;
+}
+
+void Skybox::loadTextures(std::string textureNames[6])
+{
+	sgct::TextureManager::Instance()->loadTexure("skybox_xpos",textureNames[CUBEMAP_TEX_X_POSITIVE],true,0);
+	sgct::TextureManager::Instance()->loadTexure("skybox_xneg",textureNames[CUBEMAP_TEX_X_NEGATIVE],true,0);
+	sgct::TextureManager::Instance()->loadTexure("skybox_ypos",textureNames[CUBEMAP_TEX_Y_POSITIVE],true,0);
+	sgct::TextureManager::Instance()->loadTexure("skybox_yneg",textureNames[CUBEMAP_TEX_Y_NEGATIVE],true,0);
+	sgct::TextureManager::Instance()->loadTexure("skybox_zpos",textureNames[CUBEMAP_TEX_Z_POSITIVE],true,0);
+	sgct::TextureManager::Instance()->loadTexure("skybox_zneg",textureNames[CUBEMAP_TEX_Z_NEGATIVE],true,0);
+
+
 }
 
 
+void Skybox::drawCube(){
 
-void Skybox::drawCube(int size){
-
-		
-		glBegin(GL_QUADS);
-		
-		//Front face
-		glVertex3f(size/2,size/2,size/2);
-		glVertex3f(-size/2,size/2,size/2);
-		glVertex3f(-size/2,-size/2,size/2);
-		glVertex3f(size/2,-size/2,size/2);
-
-		//Left face
-		glVertex3f(-size/2,size/2,size/2);
-		glVertex3f(-size/2,size/2,-size/2);
-		glVertex3f(-size/2,-size/2,-size/2);
-		glVertex3f(-size/2,-size/2,size/2);
-
-		//Back face
-		glVertex3f(size/2,size/2,-size/2);
-		glVertex3f(-size/2,size/2,-size/2);
-		glVertex3f(-size/2,-size/2,-size/2);
-		glVertex3f(size/2,-size/2,-size/2);
-
-		//Right face
-		glVertex3f(size/2,size/2,-size/2);
-		glVertex3f(size/2,size/2,size/2);
-		glVertex3f(size/2,-size/2,size/2);
-		glVertex3f(size/2,-size/2,-size/2);
-
-		//Top face
-		glVertex3f(size/2,size/2,size/2);
-		glVertex3f(-size/2,size/2,size/2);
-		glVertex3f(-size/2,size/2,-size/2);
-		glVertex3f(size/2,size/2,-size/2);
-
-		//Bottom face
-		glVertex3f(size/2,-size/2,size/2);
-		glVertex3f(-size/2,-size/2,size/2);
-		glVertex3f(-size/2,-size/2,-size/2);
-		glVertex3f(size/2,-size/2,-size/2);
-
+		//Back Face
+		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_zneg"));
+		glBegin(GL_QUADS);		
+		glTexCoord2f(0,1);      //11,01,00,10
+		glVertex3f(50,50,50);
+		glTexCoord2f(1,1);
+		glVertex3f(-50,50,50);
+		glTexCoord2f(1,0);
+		glVertex3f(-50,-50,50);
+		glTexCoord2f(0,0);
+		glVertex3f(50,-50,50);
 		glEnd();
 
+		//Left face
+		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_xneg"));
+		glBegin(GL_QUADS);
+		glTexCoord2f(0,1);   //11,10,00,01
+		glVertex3f(-50,50,50);
+		glTexCoord2f(1,1);
+		glVertex3f(-50,50,-50);
+		glTexCoord2f(1,0);
+		glVertex3f(-50,-50,-50);
+		glTexCoord2f(0,0);
+		glVertex3f(-50,-50,50);
+		glEnd();
+
+		//Front face
+		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_zpos"));
+		glBegin(GL_QUADS);
+		glTexCoord2f(1,1);      //11,01,00,10
+		glVertex3f(50,50,-50);
+		glTexCoord2f(0,1);
+		glVertex3f(-50,50,-50);
+		glTexCoord2f(0,0);
+		glVertex3f(-50,-50,-50);
+		glTexCoord2f(1,0);
+		glVertex3f(50,-50,-50);
+		glEnd();
+		//Right face
+		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_xpos"));
+		glBegin(GL_QUADS);
+		glTexCoord2f(0,1);        //00,01,11,10
+		glVertex3f(50,50,-50);
+		glTexCoord2f(1,1);
+		glVertex3f(50,50,50);
+		glTexCoord2f(1,0);
+		glVertex3f(50,-50,50);
+		glTexCoord2f(0,0);
+		glVertex3f(50,-50,-50);
+		glEnd();
+		//Top face
+		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_ypos"));
+		glBegin(GL_QUADS);
+		glTexCoord2f(1,1);
+		glVertex3f(50,50,50);
+		glTexCoord2f(0,1);
+		glVertex3f(-50,50,50);
+		glTexCoord2f(0,0);
+		glVertex3f(-50,50,-50);
+		glTexCoord2f(1,0);
+		glVertex3f(50,50,-50);
+		glEnd();
+		//Bottom face
+		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_yneg"));
+		glBegin(GL_QUADS);
+		glTexCoord2f(1,1);
+		glVertex3f(50,-50,50);
+		glTexCoord2f(0,1);
+		glVertex3f(-50,-50,50);
+		glTexCoord2f(0,0);
+		glVertex3f(-50,-50,-50);
+		glTexCoord2f(1,0);
+		glVertex3f(50,-50,-50);
+		glEnd();
+		
+
 
 }
 
-void Skybox::draw()
+void Skybox::onDraw()
 {
-	drawCube(size);
+	glPushMatrix();
+	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	glm::vec3 camPos = ImmersiveKidz::getInstance()->getCamera()->getPosition();
+	glTranslatef(camPos[0],camPos[1],camPos[2]);
+	drawCube();
+	//glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+	glPopMatrix();
+
 }
 
 

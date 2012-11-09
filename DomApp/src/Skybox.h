@@ -5,6 +5,15 @@
 #include "glm/glm.hpp"
 #include "DrawableObject.h"
 
+#define CUBEMAP_TEX_X_POSITIVE 0
+#define CUBEMAP_TEX_X_NEGATIVE 1
+#define CUBEMAP_TEX_Y_POSITIVE 2
+#define CUBEMAP_TEX_Y_NEGATIVE 3
+#define CUBEMAP_TEX_Z_POSITIVE 4
+#define CUBEMAP_TEX_Z_NEGATIVE 5
+
+
+
 
 /**
     * @brief      Short class description.
@@ -20,15 +29,14 @@
 class Skybox: public DrawableObject {
 
 public:
-	Skybox(std::string texturename, int size);
-
-	void draw();
+	Skybox();
+	void loadTextures(std::string textureNames[6]);
+	void onDraw();
 	
 private:
 	std::string texturename;
-	int size;
-	void drawCube(int size);
-	//void initSkybox();
+	void drawCube();
+	//;
 };
 
 

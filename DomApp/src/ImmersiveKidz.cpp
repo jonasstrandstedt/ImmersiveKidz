@@ -1,4 +1,5 @@
 #include "ImmersiveKidz.h"
+#include "Skybox.h"
 
 ImmersiveKidz* ImmersiveKidz::_instance = 0;
 ImmersiveKidz* ImmersiveKidz::getInstance(){
@@ -132,6 +133,17 @@ void ImmersiveKidz::loadScene(std::string folder) {
 	setScenePath(folder);
 	std::string scene_xml = _scenePath + "scene.xml";
 	
+	Skybox* skybox = new Skybox();
+	std::string skyboxTextures[6];
+	skyboxTextures[CUBEMAP_TEX_X_POSITIVE] = _scenePath + "skybox_xpos.png";
+	skyboxTextures[CUBEMAP_TEX_X_NEGATIVE] = _scenePath + "skybox_xneg.png";
+	skyboxTextures[CUBEMAP_TEX_Y_POSITIVE] = _scenePath + "skybox_ypos.png";
+	skyboxTextures[CUBEMAP_TEX_Y_NEGATIVE] = _scenePath + "skybox_yneg.png";
+	skyboxTextures[CUBEMAP_TEX_Z_POSITIVE] = _scenePath + "skybox_zpos.png";
+	skyboxTextures[CUBEMAP_TEX_Z_NEGATIVE] = _scenePath + "skybox_zneg.png";
+	skybox->loadTextures(skyboxTextures);
+	addDrawableObject(skybox);
+
 	tinyxml2::XMLDocument document;
 	document.LoadFile(scene_xml.c_str());
 
@@ -160,6 +172,8 @@ void ImmersiveKidz::loadScene(std::string folder) {
 
 				addDrawableObject(new Model(_scenePath + filename, _scenePath + texture, scale, glm::vec3(rotx, roty, rotz)));
 				_objects.back()->setAnimationFuncByName(animation);
+
+
 			}
 		}
 
