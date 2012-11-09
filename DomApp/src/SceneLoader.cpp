@@ -1,5 +1,6 @@
 #import "SceneLoader.h"
 #import "ImmersiveKidz.h"
+#include "Skybox.h"
 
 SceneLoader::SceneLoader() {
 	
@@ -81,6 +82,17 @@ int SceneLoader::loadScene() {
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
 	
 	std::string scene_xml = scenePath + "scene.xml";
+	
+	Skybox* skybox = new Skybox();
+	std::string skyboxTextures[6];
+	skyboxTextures[CUBEMAP_TEX_X_POSITIVE] = scenePath + "skybox_xpos.png";
+	skyboxTextures[CUBEMAP_TEX_X_NEGATIVE] = scenePath + "skybox_xneg.png";
+	skyboxTextures[CUBEMAP_TEX_Y_POSITIVE] = scenePath + "skybox_ypos.png";
+	skyboxTextures[CUBEMAP_TEX_Y_NEGATIVE] = scenePath + "skybox_yneg.png";
+	skyboxTextures[CUBEMAP_TEX_Z_POSITIVE] = scenePath + "skybox_zpos.png";
+	skyboxTextures[CUBEMAP_TEX_Z_NEGATIVE] = scenePath + "skybox_zneg.png";
+	skybox->loadTextures(skyboxTextures);
+	ImmersiveKidz::getInstance()->addDrawableObject(skybox);
 	
 	tinyxml2::XMLDocument document;
 	document.LoadFile(scene_xml.c_str());

@@ -6,7 +6,7 @@ RM = rm
 MESSAGE =
 
 #specify dependency list
-OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/Illustration.o src/Camera.o src/SceneLoader.o
+OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/Illustration.o src/Camera.o src/SceneLoader.o src/Skybox.o
 OUTPUT ?= Program
 FLAGS ?= 
 INCPATH ?= -I"sgct_0_9_5/include"

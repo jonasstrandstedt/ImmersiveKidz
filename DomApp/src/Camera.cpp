@@ -106,6 +106,8 @@ float Camera::getSpeed()const{
 
 void Camera::setSpeed(float speed){
 	this->speed = speed;
+	if(this->speed < 0)
+		this->speed = 0;
 }
 
 

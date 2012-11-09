@@ -120,7 +120,6 @@ void ImmersiveKidz::decode(){
 	_dt = sgct::SharedData::Instance()->readDouble();
 }
 
-
 void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 	if(_camera == 0)
 		return;
