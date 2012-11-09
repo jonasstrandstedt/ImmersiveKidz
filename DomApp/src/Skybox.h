@@ -16,27 +16,25 @@
 
 
 /**
-    * @brief      Short class description.
+    * @brief      Skybox class for rendering a skybox.
     *
-    * @details    Verbose description of class details.
+    * @details    Skybox is a subclass to DrawableObject and overwrites the onDraw method.
 	*
-    * @author     Fred McClurg, fred-mcclurg@uiowa.edu
-	* @author     hej, hej-mcclurg@uiowa.edu
-    * @date       June 10, 2020
-    * @version    1.2.0.1 (alpha)
+    * @author     Karl Gyllensten, kargy291@student.liu.se
+    * @date       November 9, 2012
+    * @version    0.0.1
     *
 	*/
 class Skybox: public DrawableObject {
 
 public:
-	Skybox();
+	Skybox(){}
 	void loadTextures(std::string textureNames[6]);
 	void onDraw();
 	
 private:
 	std::string texturename;
 	void drawCube();
-	//;
 };
 
 
