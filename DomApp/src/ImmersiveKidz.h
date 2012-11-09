@@ -27,7 +27,7 @@ public:
 	~ImmersiveKidz();
 	
 
-	void setMaster(bool m) { _isMaster = m; };
+	void setMaster(bool m) { _isMaster = m; _loader.setMaster(m); };
 	void setScenePath(std::string folder);
 	void setSceneLoaded(bool isLoaded) { _sceneLoaded = isLoaded; };
 
@@ -42,9 +42,6 @@ public:
 	void mouseMotion(int x,int y,int dx,int dy);
 	void mouseButton(int button,int state);
 	void keyboardButton(int key,int state);
-	
-	void setEngine(sgct::Engine *engine);
-	sgct::Engine *getEngine();
 
 	Camera* getCamera();
 	static ImmersiveKidz* getInstance();
@@ -70,8 +67,6 @@ private:
 	// time and dynamic variables
 	double _currTime;
 	double _dt;
-	float _mouseX;
-	float _mouseY;
 
 	// handlers
 	SceneLoader _loader;

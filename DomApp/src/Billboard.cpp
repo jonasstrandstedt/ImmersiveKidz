@@ -14,13 +14,9 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 {
 	this->_proportions = proportionsIn;
 	this->_position = position;
-	_transform = glm::mat4x4(1);
 	_transform = glm::translate(_transform, position);
-	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
 	sgct::TextureManager::Instance()->loadTexure(_texture, texturename, texturename, true);
-
 	_proportions = proportionsIn;
-
 	_transform = glm::translate(_transform, position);
 };
 

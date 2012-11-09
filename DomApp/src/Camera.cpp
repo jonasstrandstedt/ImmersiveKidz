@@ -74,7 +74,7 @@ void Camera::keyboardButton(int key,int state){
 void Camera::mouseButton(int button,int state){
 	if(button == 0){
 		mouseState = state;
-		ImmersiveKidz::getInstance()->getEngine()->setMousePointerVisibility(!state);
+		sgct::Engine::setMousePointerVisibility(!state);
 	}
 }
 
@@ -119,9 +119,6 @@ void Camera::encode(sgct::SharedData *data){
 	data->writeFloat(position[2]);
 	data->writeFloat(rotation[0]);
 	data->writeFloat(rotation[1]);
-	/*for(int i = 0;i<4;i++)for(int j = 0;j<4;j++){
-		data->writeFloat(viewMatrix[i][j]);
-	}*/
 }
 
 void Camera::decode(sgct::SharedData *data){
@@ -132,7 +129,4 @@ void Camera::decode(sgct::SharedData *data){
 	position[2]   = data->readFloat();
 	rotation[0]   = data->readFloat();
 	rotation[1]   = data->readFloat();
-	/*for(int i = 0;i<4;i++)for(int j = 0;j<4;j++){
-		viewMatrix[i][j] = data->readFloat();
-	}*/
 }
