@@ -10,6 +10,7 @@
 #include "Illustration.h"
 #include "Model.h"
 #include "Camera.h"
+#include "SceneLoader.h"
 
 /**
 * @brief  	The ImmersiveKidz engine
@@ -64,6 +65,7 @@ private:
 	bool _isMaster;
 	std::string _scenePath;		// set in constructor
 	bool _sceneLoaded;
+	
 
 	// time and dynamic variables
 	double _currTime;
@@ -71,6 +73,8 @@ private:
 	float _mouseX;
 	float _mouseY;
 
+	// handlers
+	SceneLoader _loader;
 	Camera *_camera;
 };
 

@@ -66,7 +66,7 @@ void myInitOGLFun() {
 	iKidz->setEngine(gEngine);
 	iKidz->setMaster(gEngine->isMaster());
 	
-	iKidz->loadScene("world1");
+	//iKidz->loadScene("world1");
 
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CW); //our polygon winding is counter clockwise

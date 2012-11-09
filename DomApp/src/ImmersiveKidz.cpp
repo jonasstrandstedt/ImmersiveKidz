@@ -14,8 +14,6 @@ ImmersiveKidz::ImmersiveKidz() {
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
 
 	// initialize all variables
-	//objects = new std::vector<DrawableObject*>();
-	//illustrations = new std::vector<Illustration*>();
 	_isMaster = false;
 	_sceneLoaded = false;
 	_currTime = 0.0;
@@ -86,13 +84,15 @@ void ImmersiveKidz::preSyncFunc() {
 *@return     void
 */
 void ImmersiveKidz::draw() {
-	_camera->setCamera();
-	float speed = 50.0f;
-	//glRotatef(static_cast<float>( curr_time ) * speed, 0.0f, 1.0f, 0.0f);
 	
-	for (int i = 0; i < _objects.size(); ++i)
-	{
-		_objects.at(i)->draw(_currTime, _dt);
+	if(_sceneLoaded) {
+		_camera->setCamera();
+		for (int i = 0; i < _objects.size(); ++i)
+		{
+			_objects.at(i)->draw(_currTime, _dt);
+		}
+	} else {
+		_loader.menu();
 	}
 }
 
@@ -200,6 +200,7 @@ void ImmersiveKidz::loadScene(std::string folder) {
 				_objects.back()->setAnimationFuncByName(animation);
 			}
 		}
+		_sceneLoaded = true;
 	}
 }
 
@@ -219,7 +220,12 @@ void ImmersiveKidz::mouseButton(int button,int state){
 void ImmersiveKidz::keyboardButton(int key,int state){
 	if(_camera == 0)
 		return;
-	_camera->keyboardButton(key,state);
+	if(_sceneLoaded) {
+		_camera->keyboardButton(key,state);
+	} else {
+		_loader.keyboardButton(key,state);
+	}
+	
 }
 
 void ImmersiveKidz::postSyncPreDrawFunction(){
