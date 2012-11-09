@@ -19,7 +19,7 @@
 *			needs to hold down left mouse button
 *
 * @author 	Rickard Englund, gefle.rickard@gmail.com
-* @date   	November 11, 2012
+* @date   	November 8, 2012
 * @version	0.0.0.1
 *    
 */
