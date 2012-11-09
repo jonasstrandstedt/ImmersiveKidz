@@ -82,7 +82,7 @@ void Camera::mouseMotion(int dx,int dy){
 	if(mouseState){
 		rotation[0] += dx*rotationSpeed;
 		rotation[1] += dy*rotationSpeed;
-		std::cout << rotation[1] << std::endl;
+		
 		if(rotation[1]<-89){
 			rotation[1] = -89;
 		}
