@@ -1,5 +1,5 @@
-#import "SceneLoader.h"
-#import "ImmersiveKidz.h"
+#include "SceneLoader.h"
+#include "ImmersiveKidz.h"
 #include "Skybox.h"
 
 SceneLoader::SceneLoader() {

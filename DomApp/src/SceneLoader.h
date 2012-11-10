@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <dirent.h>
+
 #include <stdio.h>
 
 #include "sgct.h"

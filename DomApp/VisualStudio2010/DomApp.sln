@@ -9,16 +9,18 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
+		Tests|Win32 = Tests|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{690C54BB-6D13-4C53-93D8-76D4390C0F5B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{690C54BB-6D13-4C53-93D8-76D4390C0F5B}.Debug|Win32.Build.0 = Debug|Win32
 		{690C54BB-6D13-4C53-93D8-76D4390C0F5B}.Release|Win32.ActiveCfg = Release|Win32
 		{690C54BB-6D13-4C53-93D8-76D4390C0F5B}.Release|Win32.Build.0 = Release|Win32
+		{690C54BB-6D13-4C53-93D8-76D4390C0F5B}.Tests|Win32.ActiveCfg = Tests|Win32
 		{166B71CA-E1E1-4521-8378-87C6AA29706D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{166B71CA-E1E1-4521-8378-87C6AA29706D}.Debug|Win32.Build.0 = Debug|Win32
 		{166B71CA-E1E1-4521-8378-87C6AA29706D}.Release|Win32.ActiveCfg = Release|Win32
-		{166B71CA-E1E1-4521-8378-87C6AA29706D}.Release|Win32.Build.0 = Release|Win32
+		{166B71CA-E1E1-4521-8378-87C6AA29706D}.Tests|Win32.ActiveCfg = Tests|Win32
+		{166B71CA-E1E1-4521-8378-87C6AA29706D}.Tests|Win32.Build.0 = Tests|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
