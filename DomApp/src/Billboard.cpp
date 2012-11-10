@@ -40,6 +40,8 @@ void Billboard::onDraw() {
 	glRotatef(-angle, 0.0 , 1.0 , 0.0);
 	
 
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glBegin(GL_QUADS);
 
 	//Vertex 1 
@@ -59,6 +61,7 @@ void Billboard::onDraw() {
 	glVertex3f(-0.5 * _proportions[0] , _proportions[1] , 0);
 
 	glEnd();
+	glDisable (GL_BLEND);
 
 	glPopMatrix();
 }
