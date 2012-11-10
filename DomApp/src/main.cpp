@@ -64,6 +64,10 @@ void myInitOGLFun() {
 	// Allocate and initialize ImmersiveKidz
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER,0.0f);
+
 	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
 
 	iKidz = ImmersiveKidz::getInstance();
