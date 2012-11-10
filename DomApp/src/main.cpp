@@ -98,6 +98,10 @@ void myDecodeFun()
 
 void myKeyboardFun(int key,int state){
 	iKidz->keyboardButton(key,state);
+
+	if(gEngine->isMaster() && key == 'P' && state == GLFW_PRESS) {
+		gEngine->takeScreenshot();
+	}
 }
 
 void myMouseMotionFun(int x,int y){

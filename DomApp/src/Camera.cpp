@@ -7,8 +7,6 @@
 * @details				Creates a camera at startPosition, sets the speed 
 *
 * @param startPosition	the starting poistion of the camera
-*
-*
 */
 Camera::Camera(glm::vec3 startPosition)
 {

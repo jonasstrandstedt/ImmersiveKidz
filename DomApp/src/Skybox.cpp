@@ -2,9 +2,6 @@
 #include "ImmersiveKidz.h"
 
 
-
-
-
 /**
 *@brief	    Loads textures to skybox
 *

@@ -20,9 +20,12 @@
 /**
 * @brief  	The scene loader engine
 *
-* @details	Class that handles the loading of scenes
+* @details	Class that handles the loading of scenes. When first loaded it reads 
+*			a specified folder for folders containing a scene.xml. Thos folders are 
+*			stored in a vector. When the master loads a scene the slaves can see that
+*			they have not loaded the same scene and therefore does so. 
 *
-* @author 	Jonas Strandstedt, jonast184@student.liu.se
+* @author 	Jonas Strandstedt, jonst184@student.liu.se
 * @date   	November 1, 2012
 * @version	0.0.1
 *    

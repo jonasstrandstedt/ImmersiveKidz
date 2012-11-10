@@ -2,6 +2,14 @@
 #include "ImmersiveKidz.h"
 #include "Skybox.h"
 
+
+/**
+*@brief	    Scenloader constructor
+*
+*@details   Reads the set path for folders containing a scene.xml file and adds those folders to a vector
+*
+*@return     void
+*/
 SceneLoader::SceneLoader() {
 	
 	_selection = 0;
@@ -31,7 +39,17 @@ SceneLoader::SceneLoader() {
 	}
 	
 }
-	
+
+/**
+*@brief	    Reads the keyboard for menu management
+*
+*@details   Moves the selection up and down with the arrow keys and when the user presses enter the selected scene is loaded.
+*
+*@param		key The keyboard key, example 'A' or GLFW_KEY_UP
+*@param		state The state of the pressed button, example GLFW_PRESS
+*
+*@return     void
+*/
 void SceneLoader::keyboardButton(int key,int state) {
 	if(_isMaster) {
 		if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
@@ -51,7 +69,13 @@ void SceneLoader::keyboardButton(int key,int state) {
 	}
 }
 
-
+/**
+*@brief	    Draws the menu for the master and loads the scene when selected for the nodes
+*
+*@details   When the master has loaded a scene it is checked here wheather the master has loaded the same scene as the node and if not the node loads the same as the master.
+*
+*@return     void
+*/
 void SceneLoader::menu() {
 	if(_isMaster) {
 		int h = sgct::Engine::getWindowPtr()->getVResolution();
@@ -83,11 +107,9 @@ void SceneLoader::menu() {
 /**
 *@brief	    Loads a scene from a specified world
 *
-*@details   Loads a scene from a specified folder and parses the scene.xml. Calls setScenePath to update the scene_path in case files are required by other functions.
+*@details   Loads a scene from a specified folder and parses the scene.xml. Calls setScenePath to update the sceneÅath in case files are required by other functions.
 *
-*@param		folder The folder that contains the scene
-*
-*@return     void
+*@return     int The selection loaded, -1 in case of error
 */
 int SceneLoader::loadScene() {
 
@@ -183,7 +205,7 @@ int SceneLoader::loadScene() {
 }
 
 /**
-*@brief	    Load a document
+*@brief	    Checks a document
 *
 *@details   Loads a document as an XMLHandle from loadScene(), error checks all elements and if they dont exist
 			it will append error string with the element that cant be found.
@@ -268,11 +290,25 @@ std::string SceneLoader::checkXML(tinyxml2::XMLHandle doc) {
 	return error;
 }
 
+/**
+*@brief	    The master encodes data
+*
+*@param		data Pointer to the sgct SharedData objects
+*
+*@return    void
+*/
 void SceneLoader::encode(sgct::SharedData *data){
 	data->writeInt32(_selection);
 	data->writeInt32(_loaded);
 }
 
+/**
+*@brief	    The slaves decodes data
+*
+*@param		data Pointer to the sgct SharedData objects
+*
+*@return    void
+*/
 void SceneLoader::decode(sgct::SharedData *data){
 	_selection	= data->readInt32();
 	_masterLoaded	= data->readInt32();

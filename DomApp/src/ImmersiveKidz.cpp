@@ -145,13 +145,22 @@ void ImmersiveKidz::keyboardButton(int key,int state){
 	} else {
 		_loader.keyboardButton(key,state);
 	}
-	
 }
 
+/**
+*@brief	    Function called from sgct setPostSyncPreDrawFunction
+*
+*@return     void
+*/
 void ImmersiveKidz::postSyncPreDrawFunction(){
 	_camera->update(_dt);
 }
 
+/**
+*@brief	    Returns the Camera
+*
+*@return     Camera* Pointer to the ImmersiveKidz enginge Camera object
+*/
 Camera* ImmersiveKidz::getCamera(){
 	return _camera;
 }

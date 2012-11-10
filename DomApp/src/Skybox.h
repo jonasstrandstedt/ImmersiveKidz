@@ -13,8 +13,6 @@
 #define CUBEMAP_TEX_Z_NEGATIVE 5
 
 
-
-
 /**
     * @brief      Skybox class for rendering a skybox.
     *

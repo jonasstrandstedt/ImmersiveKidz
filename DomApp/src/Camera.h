@@ -6,9 +6,6 @@
 #include "glm/glm.hpp"
 #include "DrawableObject.h"
 
-
-
-
 /**
 * @brief  	A class to handle the logics for the camera
 *
@@ -23,7 +20,6 @@
 * @version	0.0.0.1
 *    
 */
-
 class Camera {
 	enum ButtonsToMove{
 		Forward = 'W',
