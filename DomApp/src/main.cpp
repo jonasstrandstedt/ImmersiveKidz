@@ -62,17 +62,12 @@ int main( int argc, char* argv[] )
 
 void myInitOGLFun() {
 	// Allocate and initialize ImmersiveKidz
-	iKidz = ImmersiveKidz::getInstance();
-	iKidz->setEngine(gEngine);
-	iKidz->setMaster(gEngine->isMaster());
-	
-	//iKidz->loadScene("world1");
-
-	//glCullFace(GL_BACK);
-	//glFrontFace(GL_CW); //our polygon winding is counter clockwise
-	//glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
+	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+
+	iKidz = ImmersiveKidz::getInstance();
+	iKidz->setMaster(gEngine->isMaster());
 }
 
 

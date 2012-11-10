@@ -12,7 +12,6 @@
 *
 *@param		textureNames
 */
-
 void Skybox::loadTextures(std::string textureNames[6])
 {
 	sgct::TextureManager::Instance()->loadTexure("skybox_xpos",textureNames[CUBEMAP_TEX_X_POSITIVE],true,0);
@@ -21,8 +20,6 @@ void Skybox::loadTextures(std::string textureNames[6])
 	sgct::TextureManager::Instance()->loadTexure("skybox_yneg",textureNames[CUBEMAP_TEX_Y_NEGATIVE],true,0);
 	sgct::TextureManager::Instance()->loadTexure("skybox_zpos",textureNames[CUBEMAP_TEX_Z_POSITIVE],true,0);
 	sgct::TextureManager::Instance()->loadTexure("skybox_zneg",textureNames[CUBEMAP_TEX_Z_NEGATIVE],true,0);
-
-
 }
 
 /**

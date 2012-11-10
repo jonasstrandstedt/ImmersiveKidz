@@ -28,7 +28,7 @@ ImmersiveKidz::ImmersiveKidz() {
 */
 ImmersiveKidz::~ImmersiveKidz() {
 	sgct::MessageHandler::Instance()->print("Destroying ImmersiveKidz engine\n");
-	//delete _objects;
+	delete _camera;
 }
 
 /**
@@ -45,6 +45,7 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 		_scenePath = folder + "/";
 #endif
 }
+
 /**
 *@brief	    Adds a DrawableObject to the vector
 *
@@ -104,9 +105,11 @@ void ImmersiveKidz::draw() {
 *@return     void
 */
 void ImmersiveKidz::encode() {
-	_camera->encode(sgct::SharedData::Instance());
 	sgct::SharedData::Instance()->writeDouble( _currTime );
 	sgct::SharedData::Instance()->writeDouble( _dt );
+
+	_loader.encode(sgct::SharedData::Instance());
+	_camera->encode(sgct::SharedData::Instance());
 }
 
 /**
@@ -115,9 +118,11 @@ void ImmersiveKidz::encode() {
 *@return     void
 */
 void ImmersiveKidz::decode(){
-	_camera->decode(sgct::SharedData::Instance());
 	_currTime = sgct::SharedData::Instance()->readDouble();
 	_dt = sgct::SharedData::Instance()->readDouble();
+	
+	_loader.decode(sgct::SharedData::Instance());
+	_camera->decode(sgct::SharedData::Instance());
 }
 
 void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
@@ -146,15 +151,6 @@ void ImmersiveKidz::keyboardButton(int key,int state){
 void ImmersiveKidz::postSyncPreDrawFunction(){
 	_camera->update(_dt);
 }
-
-void ImmersiveKidz::setEngine(sgct::Engine *engine){
-	this->engine = engine;
-}
-
-sgct::Engine* ImmersiveKidz::getEngine(){
-	return engine;
-}
-
 
 Camera* ImmersiveKidz::getCamera(){
 	return _camera;

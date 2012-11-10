@@ -5,6 +5,9 @@
 SceneLoader::SceneLoader() {
 	
 	_selection = 0;
+	_isMaster = false;
+	_loaded = -1;
+	_masterLoaded = -1;
 	
 	const char* PATH = ".";
 	DIR *dir = opendir(PATH);
@@ -30,37 +33,49 @@ SceneLoader::SceneLoader() {
 }
 	
 void SceneLoader::keyboardButton(int key,int state) {
-	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
-	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
-	
-	if(_selection < 0) _selection = _scenes.size() -1;
-	if(_selection >= _scenes.size()) _selection = 0;
-	
+	if(_isMaster) {
+		if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
+		if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
+		
+		if(_selection < 0) _selection = _scenes.size() -1;
+		if(_selection >= _scenes.size()) _selection = 0;
+		
 
-	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) {
-		int loaded = loadScene();
-		if(loaded == 0) {
-			ImmersiveKidz::getInstance()->setSceneLoaded(true);
+		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) {
+			_loaded = loadScene();
+			if(_loaded != -1) {
+				ImmersiveKidz::getInstance()->setSceneLoaded(true);
+
+			}
 		}
 	}
 }
 
 
 void SceneLoader::menu() {
-	int h = sgct::Engine::getWindowPtr()->getVResolution();
+	if(_isMaster) {
+		int h = sgct::Engine::getWindowPtr()->getVResolution();
 	
-	for(int i = 0; i < _scenes.size(); i++) {
+		for(int i = 0; i < _scenes.size(); i++) {
 		
-		if(i == _selection) {
-			glColor3f(1.0f,0.0f,0.0f);
-		} else {
-			glColor3f(1.0f,1.0f,1.0f);
-		}
+			if(i == _selection) {
+				glColor3f(1.0f,0.0f,0.0f);
+			} else {
+				glColor3f(1.0f,1.0f,1.0f);
+			}
 		
-		Freetype::print(sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ), 50.0f, h-30-20*i, _scenes.at(i).c_str());
+			Freetype::print(sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ), 50.0f, h-30-20*i, _scenes.at(i).c_str());
 
-		glColor3f(1.0f,1.0f,1.0f);
+			glColor3f(1.0f,1.0f,1.0f);
 		
+		}
+	} else {
+		if(_loaded != _masterLoaded && _masterLoaded != -1) {
+			_loaded = loadScene();
+			if(_loaded != -1) {
+				ImmersiveKidz::getInstance()->setSceneLoaded(true);
+			}
+		}
 	}
 }
 
@@ -77,6 +92,7 @@ void SceneLoader::menu() {
 int SceneLoader::loadScene() {
 
 	std::string folder =_scenes.at(_selection);
+	sgct::MessageHandler::Instance()->print("Loading scene %s\n", folder.c_str());
 
 	ImmersiveKidz::getInstance()->setScenePath(folder);
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
@@ -93,15 +109,17 @@ int SceneLoader::loadScene() {
 	skyboxTextures[CUBEMAP_TEX_Z_NEGATIVE] = scenePath + "skybox_zneg.png";
 	skybox->loadTextures(skyboxTextures);
 	ImmersiveKidz::getInstance()->addDrawableObject(skybox);
+
 	
 	tinyxml2::XMLDocument document;
 	document.LoadFile(scene_xml.c_str());
 
 	tinyxml2::XMLHandle doc(&document);
 
-	if(checkXML(doc) != "(XML) Cant find: ") { 
-		std::cout << checkXML(doc) << std::endl; 
-		return 1;
+	std::string checkString = checkXML(doc);
+	if(checkString != "(XML) Cant find: ") { 
+		sgct::MessageHandler::Instance()->print("%s\n",checkString.c_str());
+		return -1;
 	}
 
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" ).ToElement();
@@ -123,6 +141,7 @@ int SceneLoader::loadScene() {
 		double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
 		double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
 
+		sgct::MessageHandler::Instance()->print("Adding model\n");
 		ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, scale, glm::vec3(rotx, roty, rotz)), animation);
 	}
 
@@ -137,9 +156,9 @@ int SceneLoader::loadScene() {
 		double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
 		double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
 
-		sgct::TextureManager::Instance()->loadTexure(texture, scenePath + texture, true, 0);
 
-		ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation);
+		sgct::MessageHandler::Instance()->print("Adding billboard\n");
+		ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation);
 	}
 
 	tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
@@ -156,11 +175,11 @@ int SceneLoader::loadScene() {
 		double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
 		double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
 			
-		sgct::TextureManager::Instance()->loadTexure(texture, scenePath + texture, true, 0);
-				
-		ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation);
+
+		sgct::MessageHandler::Instance()->print("Adding illustration\n");	
+		ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation);
 	}
-	return 0;
+	return _selection;
 }
 
 /**
@@ -249,3 +268,13 @@ std::string SceneLoader::checkXML(tinyxml2::XMLHandle doc) {
 	return error;
 }
 
+void SceneLoader::encode(sgct::SharedData *data){
+	data->writeInt32(_selection);
+	data->writeInt32(_loaded);
+}
+
+void SceneLoader::decode(sgct::SharedData *data){
+	_selection	= data->readInt32();
+	_masterLoaded	= data->readInt32();
+	
+}

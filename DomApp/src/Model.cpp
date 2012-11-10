@@ -13,8 +13,9 @@
 */
 Model::Model(std::string filename, std::string texturename, float scale, glm::vec3 rotation, glm::vec3 base_color) {
 	_texture = 0;
-	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+
 	sgct::TextureManager::Instance()->loadTexure(_texture, texturename, texturename, true);
+	
 	
 	loadObj(filename.c_str(), scale, rotation, base_color);
 	
