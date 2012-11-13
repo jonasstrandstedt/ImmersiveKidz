@@ -14,6 +14,8 @@ Camera::Camera(glm::vec3 startPosition)
 	movingBackward = false;
 	movingRight = false;
 	movingLeft = false;
+	movingUp = false;
+	movingDown = false;
 	speed = 3.0;
 	rotationSpeed = 0.2;
 	mouseState = false;
@@ -43,6 +45,12 @@ void Camera::update(float dt){
 	if(!movingLeft && movingRight){
 		position += glm::vec3(side[0],side[1],side[2]);
 	}
+	if(!movingUp && movingDown){
+		position[1] -= speed*dt;
+	}
+	if(movingUp && !movingDown){
+		position[1] += speed*dt;
+	}
 	
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
 
@@ -67,6 +75,10 @@ void Camera::keyboardButton(int key,int state){
 		movingRight = state;
 	if(key == Left)
 		movingLeft = state;
+	if(key == Up)
+		movingUp = state;
+	if(key == Down)
+		movingDown = state;
 }
 
 void Camera::mouseButton(int button,int state){

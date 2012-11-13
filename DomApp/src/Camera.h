@@ -26,9 +26,11 @@ class Camera {
 		Backward = 'S',
 		Right = 'D',
 		Left = 'A',
+		Up = 'Q',
+		Down = 'E',
 	};
 
-	bool movingForward,movingBackward,movingRight,movingLeft;
+	bool movingForward,movingBackward,movingRight,movingLeft,movingUp,movingDown;
 	bool mouseState;
 	float speed;
 	float rotationSpeed;
