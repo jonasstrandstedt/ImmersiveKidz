@@ -18,6 +18,14 @@
 
 class Site extends CI_Controller 
 {	
+	public function index()
+	{
+		$this->create("upload"); // Sets the startpage to the upload view.
+	}
+	
+
+	
+	//Ladda upp bilder
 	function __construct()
 	{
 		parent::__construct();
@@ -61,25 +69,10 @@ class Site extends CI_Controller
 
 			$this->load->view('upload_success', $data);
 		} 
-		
-		/* $data = $this->upload->do_multi_upload();
-		if(!$data)
-		{
-		echo "geh";
-		 $error = array('error' => $this->upload->display_errors());
-		$this->load->view('upload_form');
-		}else 
-		{
-			$data = array('upload_data' => $data);
-			$this->load->view('upload_success', $data);
-		} */
 	}
+	//SLUT ladda upp bilder
+
 	
-	public function index()
-	{
-		$this->create("upload"); // Sets the startpage to the upload view.
-	}
-		
 	public function create($submenu)
 	{		
 		$this->load->view("site_header");

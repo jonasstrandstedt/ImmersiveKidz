@@ -15,6 +15,8 @@
 <?php //echo $error;
 date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 ?>
+<div id="sub">
+<?php //echo $error;?>
 
 <?php echo form_open_multipart('index.php/site/create/upload');?>
 
@@ -37,3 +39,4 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 
 </form>
 <?php echo anchor('index.php/site/create/info', 'Gå vidare');?>
+</div>
