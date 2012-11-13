@@ -1,9 +1,16 @@
-<?php
-/**
-* The following function are defining the table
+<!--
+* @brief    Function that creates the table for the images.
 *
-* @uses the install model class is using these functions when creating the tables
-*/
+* @details  get_images_table_fields(), returns an array containing all the columns that should be in the images table. 
+*			the install model class is using these functions when creating the tables
+*
+* @author   Viktor Fröberg, vikfr292@student.liu.se
+* @date     November 9, 2012
+* @version  1.0
+*    
+-->
+
+<?php
 
 function get_images_table_fields()
 {	

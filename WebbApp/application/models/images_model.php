@@ -1,3 +1,16 @@
+<!--
+* @brief    Databasefunctions for the images-table.
+*
+* @details  get_all_images_from_group($group, $date), gets all images from a given date and group.
+*			add_image($name, $imgurl, $date, $group), adds an image to the database.
+*			
+*
+* @author   Viktor Fröberg, vikfr292@student.liu.se
+* @date     November 9, 2012
+* @version  1.1 (removed the function data_group_exists() since get_all_images_from_group() = NULL will produce the same result.)
+*    
+-->
+
 <?php
 class Images_model extends CI_Model 
 {
@@ -7,41 +20,23 @@ class Images_model extends CI_Model
         // Call the Model constructor
         parent::__construct();
     }
-    
-	/**
-	 * Fetches the user profile of specified user
+    /**
+	 * Gets all the images from a specific group and date
 	 *
-	 * @param  integer	$id	The id of the user
-	 * @return bool 	
+	 * @param  string	$date		The date
+	 * @param  string	$group		The group
+	 * @return array 	
 	 */ 
     function get_all_images_from_group($group, $date) 
     {
 		$this->db->select("*");
 		$this->db->from("images");
-		$where = "date = '$date' AND group = '$group"; // Get all images from a specifik date and group
+		$where = "date = '$date' AND group = '$group"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
 	}
 
-	/**
-	 * Checks if specified group exists on the same date.
-	 *
-	 * @param  string	$lukasid	The lukasid to check
-	 * @return bool 	
-	 */ 
-	function date_group_exists($group, $date) 
-
-	{	$where = "date = '$date' AND group = '$group";
-
-		$this->db->where($where);
-		$query = $this->db->get('images');
-		if($query->num_rows == 1)
-		{
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * Adds an image to the database
@@ -49,7 +44,7 @@ class Images_model extends CI_Model
 	 * @param  string	$name		The name of the artist
 	 * @param  string	$imgurl		The url of the image
 	 * @param  string	$date		The date of the show
-	 * @param  string	$group		The this image belongs to
+	 * @param  string	$group		The group this image belongs to.
 	 * @return bool 	
 	 */ 
 	function add_image($name, $imgurl, $date, $group) 

@@ -1,12 +1,16 @@
 <!--
-* @brief    Short class description. Max 2 sentences
+* @brief    The site controller, loads the site and all views.
 *
-* @details  Verbose description of class details. (Extends the brief description)
+* @details  do_multi_upload(), function for uploading images to the server and save them in the database.
+*			index(), loads the startpage(upload)
+*			create($submenu), loads a specific view.
+*			function edit(), loads the edif view.
+*			about(), loads the about view.
 *
-* @author   examplename1, mailadress1
-* @author   examplename2, mailadress2
-* @date     June 10, 2020
-* @version  1.2.0.1 (alpha)
+* @author   Emil Lindström, emili250@student.liu.se
+* @author   Viktor Fröberg, vikfr292@student.liu.se
+* @date     November 9, 2012
+* @version  1.3 (images are now added to the database)
 *    
 -->
 
