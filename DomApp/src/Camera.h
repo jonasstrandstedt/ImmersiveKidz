@@ -7,10 +7,10 @@
 #include "DrawableObject.h"
 
 enum ButtonsToMove{
-	Forward = 'W',
-	Backward = 'S',
-	Right = 'D',
-	Left = 'A',
+	Forward		= 'W',
+	Backward	= 'S',
+	Right		= 'D',
+	Left		= 'A',
 };
 
 class Camera {

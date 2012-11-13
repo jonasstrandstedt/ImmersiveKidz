@@ -21,6 +21,7 @@ ImmersiveKidz::ImmersiveKidz() {
 	curr_time = 0.0;
 
 	camera = new Camera();
+	_hud = new HUD();
 }
 
 
@@ -96,8 +97,9 @@ void ImmersiveKidz::draw() {
 	}
 	
 	//Draw text for illustrations
-	_hud.drawIllustrationNames(*illustrations);
-	_hud.drawBackgroundToNames();
+	_hud->drawBackgroundToNames();
+	_hud->drawIllustrationNames(*illustrations);
+	
 
 
 	/*
@@ -231,12 +233,14 @@ void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 	if(camera == 0)
 		return;
 	camera->mouseMotion(dx,dy);
+	_hud->mouseMotion(x,y);
 }
 
 void ImmersiveKidz::mouseButton(int button,int state){
 	if(camera == 0)
 		return;
 	camera->mouseButton(button,state);
+	_hud->mouseButton(button,state);
 }
 
 void ImmersiveKidz::keyboardButton(int key,int state){

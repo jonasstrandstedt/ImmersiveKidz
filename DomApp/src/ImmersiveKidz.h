@@ -60,7 +60,7 @@ private:
 	std::vector<Illustration*> *illustrations;
 
 	// instance variables
-	HUD	_hud;
+	HUD	*_hud;
 	bool isMaster;
 	std::string scene_path;		// set in constructor
 	bool scene_loaded;
@@ -72,6 +72,7 @@ private:
 	float mouse_y;
 
 	Camera *camera;
+	
 };
 
 
