@@ -1,3 +1,15 @@
+<!--
+* @brief    Functions to process image.
+*
+* @details  readIms - Read images of folder
+            findDrawing - treshold and close image. Mask image to find the figure. 
+*
+* @author   Gabriella Ivarsson, gabiv132
+* @author   
+* @date     2012-11-08
+* @version  
+*    
+-->
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 include "phmagick.php";
