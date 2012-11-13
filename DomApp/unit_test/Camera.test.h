@@ -31,6 +31,7 @@ TEST (CameraTests, Speed) {
 
 	c->setSpeed(3);
 	EXPECT_EQ(3,c->getSpeed());
+
 }
 
 TEST (CameraTests, Movements) { 

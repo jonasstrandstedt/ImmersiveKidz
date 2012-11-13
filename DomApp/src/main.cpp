@@ -1,3 +1,10 @@
+#ifndef _RUN_TESTS_AT_STARTUP_
+
+#ifdef _RUN_TESTS_
+int runUnitTests(int argc, char **argv);
+#endif
+
+
 #include "sgct.h"
 #include "ImmersiveKidz.h"
 
@@ -21,6 +28,12 @@ int prevMouseY = -1;
 
 int main( int argc, char* argv[] )
 {
+#ifdef _RUN_TESTS_
+	if(runUnitTests(argc, argv )){
+		std::cin.get();
+	}
+#endif
+
 	// Allocate
 	gEngine = new sgct::Engine( argc, argv );
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
@@ -126,3 +139,5 @@ void myMouseButtonFun(int button,int state){
 void myPostSyncPreDrawFunction(){
 	iKidz->postSyncPreDrawFunction();
 }
+
+#endif
