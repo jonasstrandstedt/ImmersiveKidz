@@ -51,9 +51,9 @@ class Install_model extends CI_Model
 
 			// inserting users
 			$this->load->model("Images_model");
-			$this->Images_model->add_image("Viktor Fröberg", "uploads/bild.jpg", "2012-11-09", "group1");
-			$this->Images_model->add_image("Emil Lindström", "uploads/bild2.jpg", "2012-11-09", "group1");
-			$this->Images_model->add_image("Jonas Strandstedt", "uploads/bild3.jpg", "2012-11-09", "group2");
+			$this->Images_model->add_image("Viktor Fröberg","sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3", "2012-11-09", "group1");
+			$this->Images_model->add_image("Emil Lindström", "sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3", "2012-11-09", "group1");
+			$this->Images_model->add_image("Jonas Strandstedt","sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3","2012-11-09", "group2");
 
 		}
 	}

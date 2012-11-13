@@ -32,7 +32,7 @@ class ProcessImage {
     }
 
     public function findDrawing($images, $folder)
-    {
+    {   $imagesOut = array(); // Array containing
         //If no mask folder exists, create it.
         if(!is_dir($folder. "/mask")){
             mkdir($folder. "/mask", 0777);
@@ -58,11 +58,13 @@ class ProcessImage {
 
             //create out image, save to folder "out".
             $out = $folder. "/out/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."out.png";
+            array_push($imagesOut,$out);
             $phMagick = new phMagick($mask, $out);
             $phMagick->mask($images[$i]); //pass original image
 
 
         }
+        return $imagesOut;
     }
 }
 

@@ -41,17 +41,23 @@ class Images_model extends CI_Model
 	/**
 	 * Adds an image to the database
 	 *
-	 * @param  string	$name		The name of the artist
+	 * @param  string	$artist		The name of the artist
+	 * @param  string	$imgname	The name of the image
 	 * @param  string	$imgurl		The url of the image
-	 * @param  string	$date		The date of the show
-	 * @param  string	$group		The group this image belongs to.
+	 * @param  string	$imgouturl	The url of the image after image processing
+	 * @param  string	$soundurl	The url of the soundfile
+	 * @param  string	$date		The date for this group
+	 * @param  string	$group		The group this image belongs to
 	 * @return bool 	
 	 */ 
-	function add_image($name, $imgurl, $date, $group) 
+	function add_image($artist, $imgname, $imgurl, $imgouturl,$soundurl ,$date, $group) 
 	{
 				$data = array(
-				   'name' => $name ,
+				   'artist' => $artist ,
+				   'imgname' => $imgname,
 				   'imgurl' => $imgurl,
+				   'imgouturl' => $imgouturl,
+				   'soundurl' => $soundurl,
 				   'date' => $date,
 				   'group' => $group
 				);

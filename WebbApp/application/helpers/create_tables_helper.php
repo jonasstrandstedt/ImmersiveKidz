@@ -21,11 +21,23 @@ function get_images_table_fields()
 			'unsigned' => TRUE,
 			'auto_increment' => TRUE
 			),
-		'name' => array(
+		'artist' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40',
+			),
+		'imgname' => array(
 			'type' => 'VARCHAR',
 			'constraint' => '40',
 			),
 		'imgurl' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40',
+			),
+		'imgouturl' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40',
+			),
+		'soundurl' => array(
 			'type' => 'VARCHAR',
 			'constraint' => '40',
 			),
