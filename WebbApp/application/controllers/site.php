@@ -1,12 +1,16 @@
 <!--
-* @brief    Short class description. Max 2 sentences
+* @brief    The site controller, loads the site and all views.
 *
-* @details  Verbose description of class details. (Extends the brief description)
+* @details  do_multi_upload(), function for uploading images to the server and save them in the database.
+*			index(), loads the startpage(upload)
+*			create($submenu), loads a specific view.
+*			function edit(), loads the edif view.
+*			about(), loads the about view.
 *
-* @author   examplename1, mailadress1
-* @author   examplename2, mailadress2
-* @date     June 10, 2020
-* @version  1.2.0.1 (alpha)
+* @author   Emil Lindström, emili250@student.liu.se
+* @author   Viktor Fröberg, vikfr292@student.liu.se
+* @date     November 9, 2012
+* @version  1.3 (images are now added to the database)
 *    
 -->
 
@@ -14,6 +18,14 @@
 
 class Site extends CI_Controller 
 {	
+	public function index()
+	{
+		$this->create("upload"); // Sets the startpage to the upload view.
+	}
+	
+
+	
+	//Ladda upp bilder
 	function __construct()
 	{
 		parent::__construct();
@@ -57,25 +69,10 @@ class Site extends CI_Controller
 
 			$this->load->view('upload_success', $data);
 		} 
-		
-		/* $data = $this->upload->do_multi_upload();
-		if(!$data)
-		{
-		echo "geh";
-		 $error = array('error' => $this->upload->display_errors());
-		$this->load->view('upload_form');
-		}else 
-		{
-			$data = array('upload_data' => $data);
-			$this->load->view('upload_success', $data);
-		} */
 	}
+	//SLUT ladda upp bilder
+
 	
-	public function index()
-	{
-		$this->create("upload"); // Sets the startpage to the upload view.
-	}
-		
 	public function create($submenu)
 	{		
 		$this->load->view("site_header");

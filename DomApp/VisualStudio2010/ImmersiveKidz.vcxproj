@@ -9,8 +9,12 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Tests|Win32">
-      <Configuration>Tests</Configuration>
+    <ProjectConfiguration Include="DebugWithTests|Win32">
+      <Configuration>DebugWithTests</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="UnitTests|Win32">
+      <Configuration>UnitTests</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -75,6 +79,38 @@
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithTests|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>sgct32_d.lib;gtestd.lib;gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>..\unit_test\lib\win_msvs10;..\sgct_0_9_5\win_msvc10_lib</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTests|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>_RUN_TESTS_AT_STARTUP_;_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>sgct32_d.lib;gtestd.lib;gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Link>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>..\unit_test\lib\win_msvs10;..\sgct_0_9_5\win_msvc10_lib</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Billboard.cpp" />
     <ClCompile Include="..\src\Camera.cpp" />
@@ -86,6 +122,7 @@
     <ClCompile Include="..\src\Model.cpp" />
     <ClCompile Include="..\src\SceneLoader.cpp" />
     <ClCompile Include="..\src\Skybox.cpp" />
+    <ClCompile Include="..\unit_test\UnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Billboard.h" />
@@ -97,6 +134,7 @@
     <ClInclude Include="..\src\Model.h" />
     <ClInclude Include="..\src\SceneLoader.h" />
     <ClInclude Include="..\src\Skybox.h" />
+    <ClInclude Include="..\unit_test\Camera.test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,10 +1,21 @@
+#ifdef _RUN_TESTS_
 #include "gtest/gtest.h"
+#include "Camera.test.h"
 
-#include "CameraTests.h"
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  int res = RUN_ALL_TESTS();
-  std::cin.get();
-  return res;
+int runUnitTests(int argc, char **argv){
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
+
+#ifdef _RUN_TESTS_AT_STARTUP_
+int main(int argc, char **argv) {
+	int res = runUnitTests(argc, argv);
+	std::cin.get();
+	return res;
+}
+#endif
+
+
+#endif
+
+
