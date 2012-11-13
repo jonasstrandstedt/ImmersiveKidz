@@ -22,13 +22,9 @@ class DrawableObject {
 public:
 	//initializers
 	DrawableObject();
-	void setAnimationFunc(void (*f)(double,double,double)) { animation_func = f; };
-
-	void setAnimationFuncByName(std::string name) { 
-		if ( name == "bounce" ) setAnimationFunc(bounce);
-		if ( name == "pendulum" ) setAnimationFunc(pendulum);
-		if ( name == "none" ) setAnimationFunc(none);
-	};
+	
+	void setAnimationFunc(void (*f)(double,double,double)) { _animationFunc = f; };
+	void setAnimationFuncByName(std::string name);
 
 	// draw functionality
 	void draw(double t, double dt);
@@ -36,10 +32,10 @@ public:
 private:
 
 protected:
-	double animation_timer;
-	void (*animation_func)(double, double, double);
+	double _animationTimer;
+	void (*_animationFunc)(double, double, double);
 
-	glm::mat4x4 transform;
+	glm::mat4x4 _transform;
 };
 
 #endif

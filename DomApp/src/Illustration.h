@@ -21,12 +21,14 @@ public:
 		std::string artist, std::string drawing, std::string desc);
 
 	std::string getName();
+	bool getSeen();
+	void setSeen(bool state);
 
 private:
-	std::string name_artist;
-	std::string name_drawing;
-	std::string description;
-	bool seen;
+	std::string _nameArtist;
+	std::string _nameDrawing;
+	std::string _description;
+	bool _seen;
 
 };
 

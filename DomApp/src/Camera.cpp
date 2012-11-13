@@ -1,14 +1,23 @@
-
 #include "Camera.h"
 #include "ImmersiveKidz.h"
 
+/**
+* @brief				Default constructor for the Camera
+*
+* @details				Creates a camera at startPosition, sets the speed 
+*
+* @param startPosition	the starting poistion of the camera
+*/
 Camera::Camera(glm::vec3 startPosition)
 {
 	movingForward = false;
 	movingBackward = false;
 	movingRight = false;
 	movingLeft = false;
-	speed = 1.0;
+	movingUp = false;
+	movingDown = false;
+	speed = 3.0;
+	rotationSpeed = 0.2;
 	mouseState = false;
 	this->position = startPosition;
 }
@@ -25,22 +34,32 @@ void Camera::update(float dt){
  	glm::vec4 side = mSide * dir;
 
 	if(movingForward && !movingBackward){
-		position += glm::vec3(dir[0],dir[1],dir[2]);
-	}
-	if(!movingForward && movingBackward){
 		position -= glm::vec3(dir[0],dir[1],dir[2]);
 	}
-	if(movingLeft && !movingRight){
-		position += glm::vec3(side[0],side[1],side[2]);
+	if(!movingForward && movingBackward){
+		position += glm::vec3(dir[0],dir[1],dir[2]);
 	}
-	if(!movingLeft && movingRight){
+	if(movingLeft && !movingRight){
 		position -= glm::vec3(side[0],side[1],side[2]);
 	}
+	if(!movingLeft && movingRight){
+		position += glm::vec3(side[0],side[1],side[2]);
+	}
+	if(!movingUp && movingDown){
+		position[1] -= speed*dt;
+	}
+	if(movingUp && !movingDown){
+		position[1] += speed*dt;
+	}
 	
+	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
+
 	viewMatrix = glm::mat4();
+	viewMatrix = glm::translate(viewMatrix,headPos);
  	viewMatrix = glm::rotate(viewMatrix,rotation[1],glm::vec3(1.0f,0.0f,0.0f));
  	viewMatrix = glm::rotate(viewMatrix,rotation[0],glm::vec3(0.0f,1.0f,0.0f));
-	viewMatrix = glm::translate(viewMatrix,position);
+	viewMatrix = glm::translate(viewMatrix,-position);
+	viewMatrix = glm::translate(viewMatrix,-headPos);
 }
 
 Camera::~Camera(void)
@@ -56,19 +75,30 @@ void Camera::keyboardButton(int key,int state){
 		movingRight = state;
 	if(key == Left)
 		movingLeft = state;
+	if(key == Up)
+		movingUp = state;
+	if(key == Down)
+		movingDown = state;
 }
 
 void Camera::mouseButton(int button,int state){
 	if(button == 0){
 		mouseState = state;
-		ImmersiveKidz::getInstance()->getEngine()->setMousePointerVisibility(!state);
+		sgct::Engine::setMousePointerVisibility(!state);
 	}
 }
 
 void Camera::mouseMotion(int dx,int dy){
 	if(mouseState){
-		rotation[0] += dx;
-		rotation[1] += dy;
+		rotation[0] += dx*rotationSpeed;
+		rotation[1] += dy*rotationSpeed;
+		
+		if(rotation[1]<-89){
+			rotation[1] = -89;
+		}
+		if(rotation[1]>89){
+			rotation[1] = 89;
+		}
 	}
 }
 
@@ -86,4 +116,27 @@ float Camera::getSpeed()const{
 
 void Camera::setSpeed(float speed){
 	this->speed = speed;
+	if(this->speed < 0)
+		this->speed = 0;
+}
+
+
+void Camera::encode(sgct::SharedData *data){
+	data->writeFloat(speed);
+	data->writeFloat(rotationSpeed);
+	data->writeFloat(position[0]);
+	data->writeFloat(position[1]);
+	data->writeFloat(position[2]);
+	data->writeFloat(rotation[0]);
+	data->writeFloat(rotation[1]);
+}
+
+void Camera::decode(sgct::SharedData *data){
+	speed         = data->readFloat();
+	rotationSpeed = data->readFloat();
+	position[0]   = data->readFloat();
+	position[1]   = data->readFloat();
+	position[2]   = data->readFloat();
+	rotation[0]   = data->readFloat();
+	rotation[1]   = data->readFloat();
 }

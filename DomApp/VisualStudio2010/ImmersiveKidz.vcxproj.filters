@@ -36,7 +36,14 @@
     <ClCompile Include="..\src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\src\HUD.cpp">
+=======
+    <ClCompile Include="..\src\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SceneLoader.cpp">
+>>>>>>> 7f7e33d0ac3f774d6d9e6740c3ec1084e5ab7742
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +66,14 @@
     <ClInclude Include="..\src\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\src\HUD.h">
+=======
+    <ClInclude Include="..\src\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SceneLoader.h">
+>>>>>>> 7f7e33d0ac3f774d6d9e6740c3ec1084e5ab7742
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,3 +1,15 @@
+<!--
+* @brief    Short class description. Max 2 sentences
+*
+* @details  Verbose description of class details. (Extends the brief description)
+*
+* @author   examplename1, mailadress1
+* @author   examplename2, mailadress2
+* @date     June 10, 2020
+* @version  1.2.0.1 (alpha)
+*    
+-->
+
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {

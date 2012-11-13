@@ -66,17 +66,16 @@ void myInitOGLFun() {
 			sgct::FontManager::Instance()->GetFont( "Verdana", 14 );
 
 	// Allocate and initialize ImmersiveKidz
-	iKidz = ImmersiveKidz::getInstance();
-	iKidz->setEngine(gEngine);
-	iKidz->setMaster(gEngine->isMaster());
-	
-	iKidz->loadScene("world1");
-
-	//glCullFace(GL_BACK);
-	//glFrontFace(GL_CW); //our polygon winding is counter clockwise
-	//glEnable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER,0.0f);
+
+	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+
+	iKidz = ImmersiveKidz::getInstance();
+	iKidz->setMaster(gEngine->isMaster());
 }
 
 
@@ -103,6 +102,10 @@ void myDecodeFun()
 
 void myKeyboardFun(int key,int state){
 	iKidz->keyboardButton(key,state);
+
+	if(gEngine->isMaster() && key == 'P' && state == GLFW_PRESS) {
+		gEngine->takeScreenshot();
+	}
 }
 
 void myMouseMotionFun(int x,int y){

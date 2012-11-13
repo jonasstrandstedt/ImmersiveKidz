@@ -15,10 +15,10 @@
 	*				with other objects, and be occluded, but it can only be viewed from a single angle. 
 	*				This rendering method is also referred to as billboarding."
 	*
-    * @author     Fred McClurg, fred-mcclurg@uiowa.edu
-	* @author     hej, hej-mcclurg@uiowa.edu
-    * @date       June 10, 2020
-    * @version    1.2.0.1 (alpha)
+    * @author     Anders Nord, andno922@student.liu.se
+	* @author     Rickard Englund, ricen256@student.liu.se
+    * @date       November 10, 2012
+    * @version    0.0.1
     *
 	*/
 class Billboard: public DrawableObject {
@@ -29,8 +29,9 @@ public:
 	void onDraw();
 	
 protected:
-	std::string texture;
-	glm::vec2 proportions;
+	glm::vec3 _position;
+	unsigned int _texture;
+	glm::vec2 _proportions;
 };
 
 

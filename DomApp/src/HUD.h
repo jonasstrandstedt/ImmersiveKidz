@@ -24,15 +24,17 @@ public:
 	void drawIllustrationNames(std::vector<Illustration*> illu);
 	void drawBackgroundToNames();
 
+	
+
 	void mouseButton(int button,int state);
 	void mouseMotion(int dx,int dy);
+	void keyboardButton(int key,int state, std::vector<Illustration*> illu);
 
 	private:
 	bool mouseState;
 	float speed;
 
-	glm::vec3 position;
-	glm::vec2 rotation;
+	int _selection;
 
 private:
 

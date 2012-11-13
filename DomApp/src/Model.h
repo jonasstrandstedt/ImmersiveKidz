@@ -37,17 +37,16 @@ typedef struct
 class Model: public DrawableObject {
 public:
 	Model(std::string filename, std::string texturename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
-	Model(const char *filename, const char *texturename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
 	~Model() {};
 	
 	void onDraw();
 private:
 	// Variables used for rendering
-	GLuint vBufferID;
-    GLuint iBufferID;
-	int isize;
-	int vsize;
-	unsigned int myTextureIndex;
+	GLuint _vBufferID;
+    GLuint _iBufferID;
+	int _isize;
+	int _vsize;
+	unsigned int _texture;
     
 	void initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize);
 	void loadObj(const char *filename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
