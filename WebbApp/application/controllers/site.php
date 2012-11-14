@@ -9,8 +9,8 @@
 *
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
-* @date     November 9, 2012
-* @version  1.3 (images are now added to the database)
+* @date     November 14, 2012
+* @version  1.34 (processed images are now added to the database on upload.)
 *    
 -->
 
@@ -55,15 +55,25 @@ class Site extends CI_Controller
 			$group = $_POST['group'];
 			$date = $_POST['date'];
 			$data = array('upload_data' => $this->upload->get_multi_upload());
-			$this->load->model("Images_model");
-			//echo print_r($data);
-			for($i = 0; $i < count($data['upload_data']); $i++)
+			$this->load->model("Images_model"); // model för images tablen 
+			$this->load->library('ProcessImage'); // bibliotek för bildbehandling.
+			$imagesIn = array(); // Array över de uppladdade bilderna.
+			for($i = 0; $i < count($data['upload_data']); $i++)// Loopa igenom alla bilder för att skapa en array över filnamen.
+			{ 
+				
+				array_push($imagesIn, "uploads/".$data['upload_data'][$i]['file_name']);
+			}
+
+			$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // $imagesOut blir en array över de behandlade bilderna.
+
+			for($i = 0; $i < count($imagesIn); $i++)
 			{	
-				$fileurl = "uploads/".$data['upload_data'][$i]['file_name'];
+				$fileurl = $imagesIn[$i];
+				$fileouturl = $imagesOut[$i];
 				//echo $data['upload_data'][$i]['file_name'];
 
-				$this->Images_model->add_image("", $fileurl, $date, $group);
-				echo "<img src='../../../".$fileurl."'' height='42' width='42'/>"; // TEST
+				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group);
+				echo "<img src='../../../".$fileurl."'' height='60' width='60'/><img src='../../../".$fileouturl."'' height='60' width='60'/><br />"; // TEST
 			}
 			
 
