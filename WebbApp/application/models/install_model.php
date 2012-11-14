@@ -34,6 +34,7 @@ class Install_model extends CI_Model
 	function drop_tables() {
 		$this->load->dbforge();
 		$this->dbforge->drop_table('images');
+		$this->dbforge->drop_table('worlds');
 	}
  	
 
@@ -58,4 +59,23 @@ class Install_model extends CI_Model
 		}
 	}
 
+
+	function create_worlds_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('worlds') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_images_table_fields()); 	// get_images_table_fields() returns an array with the fields
+			$this->dbforge->add_key('id',true);						// set the primary key
+			$this->dbforge->create_table('worlds');
+			log_message('info', "Created table: worlds");
+
+			// inserting users
+			$this->load->model("Worlds_model");
+			$this->Worlds_model->add_world("JonasWorld","../../../JonasWorld/grass.png", "../../../JonasWorld/skybox_xpos.png", "../../../JonasWorld/skybox_xneg.png", "../../../JonasWorld/skybox_ypos.png", "../../../JonasWorld/skybox_yneg.png", "../../../JonasWorld/skybox_zpos.png", "../../../JonasWorld/skybox_zneg.png", "../../../JonasWorld/blomma.png", "../../../JonasWorld/bush.png", "../../../JonasWorld/tree.png");
+			}
 	}
+
+}
