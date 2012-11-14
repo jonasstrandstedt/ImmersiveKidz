@@ -31,7 +31,7 @@ class Images_model extends CI_Model
     {
 		$this->db->select("*");
 		$this->db->from("images");
-		$where = "date = '$date' AND group = '$group"; 
+		$where = "`date` = '$date' AND `group` = '$group'"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
@@ -48,20 +48,51 @@ class Images_model extends CI_Model
 	 * @param  string	$soundurl	The url of the soundfile
 	 * @param  string	$date		The date for this group
 	 * @param  string	$group		The group this image belongs to
+	 * @param  string	$story		The story of the image
 	 * @return bool 	
 	 */ 
-	function add_image($artist, $imgname, $imgurl, $imgouturl,$soundurl ,$date, $group) 
+	function add_image($artist, $imgname, $imgurl, $imgouturl,$soundurl ,$date, $group, $story) 
 	{
 				$data = array(
-				   'artist' => $artist ,
+				   'artist' => $artist,
 				   'imgname' => $imgname,
 				   'imgurl' => $imgurl,
 				   'imgouturl' => $imgouturl,
 				   'soundurl' => $soundurl,
 				   'date' => $date,
-				   'group' => $group
+				   'group' => $group,
+				   'story' => $story
 				);
 				$q = $this->db->insert('images', $data);
 				return $q;
+			}
+		/**
+	 * Updates an image-post
+	 *
+	 * @param  string	$artist		The name of the artist
+	 * @param  string	$imgname	The name of the image
+	 * @param  string	$imgurl		The url of the image
+	 * @param  string	$imgouturl	The url of the image after image processing
+	 * @param  string	$soundurl	The url of the soundfile
+	 * @param  string	$date		The date for this group
+	 * @param  string	$group		The group this image belongs to
+	 * @param  string	$story		The story of the image
+	 * @return bool 	
+	 */ 
+	function update_image($id, $artist, $imgname, $soundurl, $story) 
+	{
+				$data = array( // what to update
+				   'artist' => $artist,
+				   'imgname' => $imgname,
+				   'soundurl' => $soundurl,
+				   'story' => $story
+				);
+
+				$where = array( // the id to update
+    				'id' => $id
+				);
+
+				$this->db->where($where);
+				$q = $this->db->update('images', $data);
 			}
 	}

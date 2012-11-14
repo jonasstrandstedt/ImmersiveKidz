@@ -47,11 +47,8 @@ class Site extends CI_Controller
 			$error = array('error' => $this->upload->display_errors());
 			$this->load->view('upload_form');
 		}
-		else 
+		else if(isset($_POST['submit']))
 		{	
-			//print_r($this->upload->get_multi_upload());
-			//print_r($this->upload->data());
-			//print_r($this->upload->get_multi_upload());
 			$group = $_POST['group'];
 			$date = $_POST['date'];
 			$data = array('upload_data' => $this->upload->get_multi_upload());
@@ -70,27 +67,25 @@ class Site extends CI_Controller
 			{	
 				$fileurl = $imagesIn[$i];
 				$fileouturl = $imagesOut[$i];
-				//echo $data['upload_data'][$i]['file_name'];
-
-				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group);
-				echo "<img src='../../../".$fileurl."'' height='60' width='60'/><img src='../../../".$fileouturl."'' height='60' width='60'/><br />"; // TEST
+				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group, "");
 			}
-			
 
-			$this->load->view('upload_success', $data);
+			$info = array('date' => $date,
+								'group' => $group);
+			$this->load->view('sub_info', $info);
 		} 
 	}
 	//SLUT ladda upp bilder
 
 	
 	public function create($submenu)
-	{		
+	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");	
 		$this->load->view("content_create");
 		if($submenu=="upload") $this->do_multi_upload();
-		if($submenu=="info") $this->load->view("sub_info");
 		if($submenu=="download") $this->load->view("sub_download");
+		if($submenu=="info") $this->load->view("sub_info");
 		$this->load->view("site_footer");
 	}
 	

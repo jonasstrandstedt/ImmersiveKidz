@@ -7,7 +7,22 @@ h1,h2,h3,h4,p,a,li,ul{
 font-family: arial, sans-serif;
 text-decoration: none;
 }
+.row{
+	width: 1020px;
+	overflow: auto;
+	
+}
+.imgform input{
+	width:200px;
+}
+.imgform label{
+	float:left;
+}
+.imgform{
+	width: 340px;
+	float:left;
 
+}
 #nav{
 margin: 50px auto 0 auto;
 width: 1024px;
@@ -70,8 +85,8 @@ display: inline;
 #sub{
 background-color: #302b29;
 width: 1024px;
-min-height: 100%;
 margin: 0 auto;
+overflow: auto;
 }
 
 #footer{

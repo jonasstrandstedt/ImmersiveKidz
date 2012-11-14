@@ -49,6 +49,10 @@ function get_images_table_fields()
 			'type' => 'VARCHAR',
 			'constraint' => '30',
 			),
+		'story' => array(
+			'type' => 'TEXT',
+			'constraint' => '300'
+			)
 		);
 	return $fields;
 }

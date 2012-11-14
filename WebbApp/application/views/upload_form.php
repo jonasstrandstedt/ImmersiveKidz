@@ -10,14 +10,12 @@
 * @version  1.1 (added forms for date and group)
 *    
 -->
-
-<h1>Ladda upp bilder här </h1>
 <?php //echo $error;
 date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 ?>
 <div id="sub">
 <?php //echo $error;?>
-
+<div class='imgform'>
 <?php echo form_open_multipart('index.php/site/create/upload');?>
 
 <input type="file" name="userfile[]" size="20" multiple=""/>
@@ -25,18 +23,19 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 
 <label for="group">
 	Gruppnamn
-</label>
-<input type="text" name="group" size="20"/>
 
+<input type="text" name="group" size="20"/>
+</label>
 <label for="date">
 	Datum
-</label>
-<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
 
+<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
+</label>
 <br /><br />
 
-<input type="submit" value="Ladda upp bilderna" />
+<input type="submit" name="submit" value="Ladda upp bilderna" />
 
 </form>
+</div>
 <?php echo anchor('index.php/site/create/info', 'Gå vidare');?>
 </div>
