@@ -58,7 +58,7 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *
 *@return     void
 */
-void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f) {
+void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double seed) {
 	
 	Illustration *ill = dynamic_cast<Illustration*>(o);
 	if(ill) {
@@ -66,7 +66,7 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f) {
 	}
 	
 	_objects.push_back(o);
-	_objects.back()->setAnimationFuncByName(f);
+	_objects.back()->setAnimationFuncByName(f, seed);
 }
 
 /**
@@ -95,7 +95,7 @@ void ImmersiveKidz::draw() {
 		_camera->setCamera();
 		for (int i = 0; i < _objects.size(); ++i)
 		{
-			_objects.at(i)->draw(_currTime, _dt);
+			_objects.at(i)->draw(_currTime);
 		}
 		_hud->drawBackgroundToNames();
 		_hud->drawIllustrationNames(_illustrations);
