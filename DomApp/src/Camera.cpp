@@ -22,10 +22,23 @@ Camera::Camera(glm::vec3 startPosition)
 	this->position = startPosition;
 }
 
+/**
+* @brief	Sets the camera position 
+*
+* @return	void 
+*/
 void Camera::setCamera(){
 	glLoadMatrixf(glm::value_ptr(viewMatrix)); //TODO Consider using glMultmatrix instead
 }
 
+
+/**
+* @brief	Updates the position and rotation every time step dt. 
+*
+* @param	
+*
+* @return	void 
+*/
 void Camera::update(float dt){
 	glm::vec4 dir = glm::vec4(0,0,speed*dt,0);
  	glm::mat4x4 mDir = glm::rotate(glm::mat4(),-rotation[0],glm::vec3(0.0f,1.0f,0.0f));
@@ -102,28 +115,50 @@ void Camera::mouseMotion(int dx,int dy){
 	}
 }
 
+/**
+* @brief	Returns the camera position
+*
+* @return	glm::vec3 
+*/
 glm::vec3 Camera::getPosition()const{
 	return position;
 }
 
+/**
+* @brief	Returns the camera rotation
+*
+* @return	glm::vec2 
+*/
 glm::vec2 Camera::getRotation()const{
 	return rotation;
 }
 
+/**
+* @brief	Returns the camera speed 
+*
+* @return	float 
+*/
 float Camera::getSpeed()const{
 	return speed;
 }
 
+/**
+* @brief	Sets the camera speed 
+*
+* @return	void 
+*/
 void Camera::setSpeed(float speed){
 	this->speed = speed;
 	if(this->speed < 0)
 		this->speed = 0;
 }
 
-
+/**
+* @brief	Sends the data to the master.   
+*
+* @return	void 
+*/
 void Camera::encode(sgct::SharedData *data){
-	data->writeFloat(speed);
-	data->writeFloat(rotationSpeed);
 	data->writeFloat(position[0]);
 	data->writeFloat(position[1]);
 	data->writeFloat(position[2]);
@@ -131,9 +166,12 @@ void Camera::encode(sgct::SharedData *data){
 	data->writeFloat(rotation[1]);
 }
 
+/**
+* @brief	Receives the data to the master.   
+*
+* @return	void 
+*/
 void Camera::decode(sgct::SharedData *data){
-	speed         = data->readFloat();
-	rotationSpeed = data->readFloat();
 	position[0]   = data->readFloat();
 	position[1]   = data->readFloat();
 	position[2]   = data->readFloat();
