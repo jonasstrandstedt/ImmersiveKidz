@@ -70,6 +70,7 @@ void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
 
 void HUD::drawBackgroundToNames()
 {
+	glDisable(GL_DEPTH_TEST);
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName("menu"));
 
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
@@ -110,6 +111,7 @@ void HUD::drawBackgroundToNames()
 
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
 }
 
 void HUD::drawMinimapBackground()
