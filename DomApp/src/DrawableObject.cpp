@@ -28,13 +28,13 @@ void DrawableObject::draw(double t, double dt) {
 		glPushMatrix();
 		_animationFunc(t, dt, _animationTimer);
 	}
-	
+	glPushMatrix();
 	//Appllying the transform matrix
 	glMultMatrixf(glm::value_ptr(_transform));
 	
 	// calls the virtual onDraw function.
 	onDraw();
-	
+	glPopMatrix();
 	// post-animate
 	if (_animationFunc != 0)
 	{

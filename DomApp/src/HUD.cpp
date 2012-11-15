@@ -173,7 +173,6 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	int sizeY = 150;
 	int sizeX = 250;
 
-
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 
@@ -184,14 +183,13 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	glPushMatrix();
 	glLoadIdentity();
 
-	glPointSize(20.0f); 
+	glPointSize(20.0f);
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
+	
 	glColor3f( 1.0f, 0.0f, 0.0f);
 	for(int i = 0; i < illu.size(); i++)
 	{
 		glBegin(GL_POINTS);
-		std::cout << "KANEL MANNEN" << std::endl;
 		glm::vec3 illuPosition = illu[i]->getPosition();
 
 		glVertex2f( illuPosition.x , illuPosition.z);
