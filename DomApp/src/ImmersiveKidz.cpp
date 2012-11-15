@@ -97,8 +97,12 @@ void ImmersiveKidz::draw() {
 		{
 			_objects.at(i)->draw(_currTime, _dt);
 		}
-		_hud->drawBackgroundToNames();
+
+		//_hud->drawBackgroundToNames();
+		//_hud->drawMinimapBackground();
+		_hud->drawMinimapPositions(_illustrations);
 		_hud->drawIllustrationNames(_illustrations);
+		
 	} else {
 		_loader.menu();
 	}
