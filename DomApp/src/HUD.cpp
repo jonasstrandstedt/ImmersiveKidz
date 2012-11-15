@@ -235,20 +235,21 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 		glColor3f( 1.0f, 1.0f, 1.0f);
 	}
 	//Draw camera on minimap
-	float x = (camPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
-	float y = (camPosition.z - worldRect.y) / (worldRect.w - worldRect.y);
+	float x = (camPosition.x/2 - worldRect.x) / (worldRect.z - worldRect.x);
+	float y = (camPosition.z/2 + 2 - worldRect.y) / (worldRect.w - worldRect.y);
 
 
 	glVertex2f(x * sizeX  , y * sizeY);
 
+	glEnd();
+	glBegin(GL_LINES);
 
+
+
+
+	
 
 	glEnd();
-
-	
-
-	
-	
 
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix(); 
