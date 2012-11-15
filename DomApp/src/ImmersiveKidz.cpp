@@ -97,11 +97,13 @@ void ImmersiveKidz::draw() {
 		{
 			_objects.at(i)->draw(_currTime);
 		}
+
 		if( _isMaster ) {
 			//Draw text for illustrations
-			_hud->drawBackgroundToNames();
-			_hud->drawIllustrationNames(_illustrations);
+			_hud->drawBackgroundToNames();	
+			_hud->drawMinimapBackground();
 			_hud->drawMinimapPositions(_illustrations);
+			_hud->drawIllustrationNames(_illustrations);
 		}
 	} else {
 		_loader.menu();
