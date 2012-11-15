@@ -2,9 +2,9 @@
 #include "ImmersiveKidz.h"
 
 /**
-*@brief	    Brief description
+*@brief	    Constructor to the billboard class
 *
-*@details   Detailed description (Extends the brief description)
+*@details	Creates a billboard at a position, sets the proportions and assignes a texture to it.
 *
 *@param		texturename Unique name of a texture. Ex: "texture.png".
 *@param		position Contains the positions in world coordinates.
@@ -19,6 +19,11 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 	_proportions = proportionsIn;
 	_transform = glm::translate(_transform, position);
 };
+
+glm::vec3 Billboard::getPosition()
+{
+	return _position;
+}
 
 /**
 *@brief		Draws the Billboard. 

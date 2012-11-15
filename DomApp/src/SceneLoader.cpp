@@ -133,161 +133,187 @@ int SceneLoader::loadScene() {
 	ImmersiveKidz::getInstance()->addDrawableObject(skybox);
 
 	
-	tinyxml2::XMLDocument document;
-	document.LoadFile(scene_xml.c_str());
+	tinyxml2::XMLDocument doc;
+	doc.LoadFile(scene_xml.c_str());
 
-	tinyxml2::XMLHandle doc(&document);
+	tinyxml2::XMLHandle hDoc(&doc);
 
-	std::string checkString = checkXML(doc);
-	if(checkString != "(XML) Cant find: ") { 
-		sgct::MessageHandler::Instance()->print("%s\n",checkString.c_str());
-		return -1;
-	}
+	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
+	if(scene){
+		tinyxml2::XMLElement* item;
 
-	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" ).ToElement();
-	tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
-	tinyxml2::XMLNode* item = models->FirstChildElement( "item" );
-			
-	for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-		std::string filename = item->FirstChildElement( "filename" )->GetText();
-		std::string texture = item->FirstChildElement( "texture" )->GetText();
-		std::string animation = item->FirstChildElement( "animation" )->GetText();
-		double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
-		double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
-		double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
-		double scale = item->FirstChildElement( "scale" )->DoubleAttribute( "val" );
-		double rotx = item->FirstChildElement( "rot" )->DoubleAttribute( "x" );
-		double roty = item->FirstChildElement( "rot" )->DoubleAttribute( "y" );
-		double rotz = item->FirstChildElement( "rot" )->DoubleAttribute( "z" );
-		double r = item->FirstChildElement( "base_color" )->DoubleAttribute( "r" );
-		double g = item->FirstChildElement( "base_color" )->DoubleAttribute( "g" );
-		double b = item->FirstChildElement( "base_color" )->DoubleAttribute( "b" );
-
-		sgct::MessageHandler::Instance()->print("Adding model\n");
-		ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, scale, glm::vec3(rotx, roty, rotz)), animation);
-	}
-
-	tinyxml2::XMLElement* billboards = scene->FirstChildElement( "billboards" );
-	item = billboards->FirstChildElement( "item" );
-	for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-		std::string texture = item->FirstChildElement( "texture" )->GetText();
-		std::string animation = item->FirstChildElement( "animation" )->GetText();
-		double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
-		double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
-		double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
-		double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
-		double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
-
-
-		sgct::MessageHandler::Instance()->print("Adding billboard\n");
-		ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation);
-	}
-
-	tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
-	item = illustrations->FirstChildElement( "item" );
-	for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-		std::string name_artist = item->FirstChildElement( "name_artist" )->GetText();
-		std::string name_drawing = item->FirstChildElement( "name_drawing" )->GetText();
-		std::string description = item->FirstChildElement( "description" )->GetText();
-		std::string animation = item->FirstChildElement( "animation" )->GetText();
-		std::string texture = item->FirstChildElement( "texture" )->GetText();
-		double posx = item->FirstChildElement( "pos" )->DoubleAttribute( "x" );
-		double posy = item->FirstChildElement( "pos" )->DoubleAttribute( "y" );
-		double posz = item->FirstChildElement( "pos" )->DoubleAttribute( "z" );
-		double sizex = item->FirstChildElement( "size" )->DoubleAttribute( "x" );
-		double sizey = item->FirstChildElement( "size" )->DoubleAttribute( "y" );
-			
-
-		sgct::MessageHandler::Instance()->print("Adding illustration\n");	
-		ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation);
-	}
-	return _selection;
-}
-
-/**
-*@brief	    Checks a document
-*
-*@details   Loads a document as an XMLHandle from loadScene(), error checks all elements and if they dont exist
-			it will append error string with the element that cant be found.
-*
-*@param		doc the XMLHandle document (.xml)
-*
-*@return    string
-*/
-std::string SceneLoader::checkXML(tinyxml2::XMLHandle doc) {
-
-	std::string error = "(XML) Cant find: ";
-
-	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" ).ToElement();
-	if(scene) {
 		tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
-		if(models) {
-			tinyxml2::XMLNode* item = models->FirstChildElement( "item" );
-			if(item) {
-				for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-
-					tinyxml2::XMLElement* filename = item->FirstChildElement( "filename" );
-					if(!filename) error.append("models->item->filename ");
-					tinyxml2::XMLElement* texture = item->FirstChildElement( "texture" );
-					if(!texture) error.append("models->item->texture ");
-					tinyxml2::XMLElement* animation = item->FirstChildElement( "animation" );
-					if(!animation) error.append("models->item->animation ");
-					tinyxml2::XMLElement* pos = item->FirstChildElement( "pos" );
-					if(!pos) error.append("models->item->pos ");
-					tinyxml2::XMLElement* scale = item->FirstChildElement( "scale" );
-					if(!scale) error.append("models->item->scale ");
-					tinyxml2::XMLElement* rot = item->FirstChildElement( "rot" );
-					if(!rot) error.append("models->item->rot ");
-					tinyxml2::XMLElement* color = item->FirstChildElement( "base_color" );
-					if(!color) error.append("models->item->color ");
+		if(models){
+			item = models->FirstChildElement( "item" );
+			for(item;item; item = item->NextSiblingElement( "item" )){
+				std::string filename = "";
+				tinyxml2::XMLElement* fileElement = item->FirstChildElement( "filename" );
+				if(fileElement) {
+					filename = fileElement->GetText();
 				}
-			} else error.append("models->item ");
-		} else error.append("models ");
+				else	continue;
+
+				std::string texture = "";
+				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
+				if(textureElement) {
+					texture = textureElement->GetText();
+				}
+				else	continue;
+		
+				std::string animation = "none";
+				double seed = 0;
+				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
+				if(aniElement) {
+					animation = aniElement->Attribute( "name" );
+					seed = aniElement->DoubleAttribute( "seed" );
+				}
+
+				double posx = 20*((double)rand()/RAND_MAX-0.5);
+				double posy = 0;
+				double posz  = 20*((double)rand()/RAND_MAX-0.5);
+				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
+				if(posElement){
+					posx = posElement->DoubleAttribute( "x" );
+					posy = posElement->DoubleAttribute( "y" );
+					posz = posElement->DoubleAttribute( "z" );
+				}
+
+				double scale = 1;
+				tinyxml2::XMLElement* scaleElement = item->FirstChildElement( "scale" );
+				if(scaleElement){
+					scale = scaleElement->DoubleAttribute( "val" );
+				}
+
+				double rotx = 0;
+				double roty = 0;
+				double rotz = 0;
+				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "rot" );
+				if(rotElement){
+					rotx = rotElement->DoubleAttribute( "x" );
+					roty = rotElement->DoubleAttribute( "y" );
+					rotz = rotElement->DoubleAttribute( "z" );
+				}
+
+				double r = 1;
+				double g = 1;
+				double b = 1;
+				tinyxml2::XMLElement* colorElement = item->FirstChildElement( "base_color" );
+				if(colorElement){
+					r = colorElement->DoubleAttribute( "r" );
+					g = colorElement->DoubleAttribute( "g" );
+					b = colorElement->DoubleAttribute( "b" );
+				}
+
+				sgct::MessageHandler::Instance()->print("Adding model\n");
+				ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, scale, glm::vec3(rotx, roty, rotz)), animation, seed);
+			}
+		}
 
 		tinyxml2::XMLElement* billboards = scene->FirstChildElement( "billboards" );
-		if(billboards) {
-			tinyxml2::XMLNode* item = billboards->FirstChildElement( "item" );
-			if(item) {
-				for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-
-					tinyxml2::XMLElement* texture = item->FirstChildElement( "texture" );
-					if(!texture) error.append("billboards->item->texture ");
-					tinyxml2::XMLElement* animation = item->FirstChildElement( "animation" );
-					if(!animation) error.append("billboards->item->animation ");
-					tinyxml2::XMLElement* pos = item->FirstChildElement( "pos" );
-					if(!pos) error.append("billboards->item->pos ");
-					tinyxml2::XMLElement* size = item->FirstChildElement( "size" );
-					if(!size) error.append("billboards->item->size ");
+		if(billboards){
+			item = billboards->FirstChildElement( "item" );
+			for(item;item; item = item->NextSiblingElement( "item" )){
+				std::string texture = "";
+				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
+				if(textureElement) {
+					texture = textureElement->GetText();
 				}
-			} else error.append("billboards->item ");
-		} else error.append("billboards ");
+				else	continue;
+		
+				std::string animation = "none";
+				double seed = 0;
+				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
+				if(aniElement) {
+					animation = aniElement->Attribute( "name" );
+					seed = aniElement->DoubleAttribute( "seed" );
+				}
+
+				double posx = 20*((double)rand()/RAND_MAX-0.5);
+				double posy = 0;
+				double posz  = 20*((double)rand()/RAND_MAX-0.5);
+				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
+				if(posElement){
+					posx = posElement->DoubleAttribute( "x" );
+					posy = posElement->DoubleAttribute( "y" );
+					posz = posElement->DoubleAttribute( "z" );
+				}
+
+				double sizex = 1;
+				double sizey = 1;
+				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
+				if(rotElement){
+					sizex = rotElement->DoubleAttribute( "x" );
+					sizey = rotElement->DoubleAttribute( "y" );
+				}
+
+				sgct::MessageHandler::Instance()->print("Adding billboard\n");
+				ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation, seed);
+			}
+		}
 
 		tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
-		if(illustrations) {
-			tinyxml2::XMLNode* item = illustrations->FirstChildElement( "item" );
-			if(item) { 
-				for ( item;item; item=item->NextSiblingElement( "item" ) ) {
-
-					tinyxml2::XMLElement* name_artist = item->FirstChildElement( "name_artist" );
-					if(!name_artist) error.append("illustrations->item->name_artist ");
-					tinyxml2::XMLElement* name_drawing = item->FirstChildElement( "name_drawing" );
-					if(!name_drawing) error.append("illustrations->item->name_drawing ");
-					tinyxml2::XMLElement* description = item->FirstChildElement( "description" );
-					if(!description) error.append("illustrations->item->description ");
-					tinyxml2::XMLElement* texture = item->FirstChildElement( "texture" );
-					if(!texture) error.append("illustrations->item->texture ");
-					tinyxml2::XMLElement* animation = item->FirstChildElement( "animation" );
-					if(!animation) error.append("illustrations->item->animation ");
-					tinyxml2::XMLElement* pos = item->FirstChildElement( "pos" );
-					if(!pos) error.append("illustrations->item->pos ");
-					tinyxml2::XMLElement* size = item->FirstChildElement( "size" );
-					if(!size) error.append("illustrations->item->size ");
+		if(illustrations){
+			item = illustrations->FirstChildElement( "item" );
+			for(item;item; item = item->NextSiblingElement( "item" )){
+				std::string name_artist = "Dolan";
+				tinyxml2::XMLElement* artistElement = item->FirstChildElement( "name_artist" );
+				if(artistElement) {
+					name_artist = artistElement->GetText();
 				}
-			} else error.append("illustrations->item ");
-		} else error.append("illustrations ");
-	} else error.append("scene "); 
 
-	return error;
+				std::string name_drawing = "Goobey";
+				tinyxml2::XMLElement* drawingeElement = item->FirstChildElement( "name_drawing" );
+				if(drawingeElement) {
+					name_drawing = drawingeElement->GetText();
+				}
+
+				std::string description = "Goobey pls";
+				tinyxml2::XMLElement* descElement = item->FirstChildElement( "description" );
+				if(descElement) {
+					description = descElement->GetText();
+				}					
+		
+				std::string animation = "none";
+				double seed = 0;
+				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
+				if(aniElement) {
+					animation = aniElement->Attribute( "name" );
+					seed = aniElement->DoubleAttribute( "seed" );
+				}
+
+				std::string texture = "";
+				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
+				if(textureElement) {
+					texture = textureElement->GetText();
+				}
+				else	continue;
+
+				double posx = 20*((double)rand()/RAND_MAX-0.5);
+				double posy = 0;
+				double posz  = 20*((double)rand()/RAND_MAX-0.5);
+				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
+				if(posElement){
+					posx = posElement->DoubleAttribute( "x" );
+					posy = posElement->DoubleAttribute( "y" );
+					posz = posElement->DoubleAttribute( "z" );
+				}
+
+				double sizex = 1;
+				double sizey = 1;
+				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
+				if(rotElement){
+					sizex = rotElement->DoubleAttribute( "x" );
+					sizey = rotElement->DoubleAttribute( "y" );
+				}
+			
+				sgct::MessageHandler::Instance()->print("Adding illustration\n");	
+				ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation, seed);
+			}
+		}
+	}
+	
+
+	return _selection;
 }
 
 /**

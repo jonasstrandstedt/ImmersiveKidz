@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!--
 * @brief    The site controller, loads the site and all views.
 *
@@ -15,7 +16,6 @@
 -->
 
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 class Site extends CI_Controller 
 {	
 	public function index()
@@ -69,26 +69,81 @@ class Site extends CI_Controller
 				$fileouturl = $imagesOut[$i];
 				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group, "");
 			}
+			$_SESSION['group'] = $group;
+			$_SESSION['date'] = $date;
+			echo "<script>window.location.href = '../create/info';</script>";
+			//$this->create("info");
+			
+			//$this->load->view("sub_info", $info);
 
-			$info = array('date' => $date,
-								'group' => $group);
-			$this->load->view('sub_info', $info);
 		} 
 	}
 	//SLUT ladda upp bilder
 
+	function add_information($date, $group)
+	{
+		$this->load->model("Images_model");
+		
+		echo $date . " " . $group;
+
+		if(!(isset($date) || isset($group)) && !isset($_POST['update'])){
+			// Välj en grupp och ett datum att editera.
+		}else if(!isset($_POST['update'])){
+
+			$images = $this->Images_model->get_all_images_from_group($group, $date);
+			$data = array(
+				"images" => $images
+				);
+			$this->load->view('sub_info', $data);
+
+		}else{ // isset($_POST['update'])
+				$counter = 0;
+				$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']);
+
+				foreach ($idArray as $id) {
+				$artist = $_POST['artist'.$counter];
+				$imgname = $_POST['imgname'.$counter];
+				// Lägg till för type.
+				$story = $_POST['story'.$counter];
+				//$soundurl = $_POST['soundurl'.$counter];
+				$soundurl = "";
+				$this->Images_model->update_image($id ->id, $artist, $imgname, $soundurl, $story);
+				$counter ++;
+			}
+			$_SESSION['group'] = $_POST['group'];
+			$_SESSION['date'] = $_POST['date'];
+			echo "<script>window.location.href = '../create/download';</script>";
+		}
+		
+	}
+
+	function download_info(){
+		$this->load->view("sub_download");
+		echo $_SESSION['group'];
+		
+	}
+
 	
 	public function create($submenu)
-	{	
-		$this->load->view("site_header");
-		$this->load->view("site_nav");	
-		$this->load->view("content_create");
-		if($submenu=="upload") $this->do_multi_upload();
-		if($submenu=="download") $this->load->view("sub_download");
-		if($submenu=="info") $this->load->view("sub_info");
-		$this->load->view("site_footer");
-	}
-	
+	{		echo"<h2>".$submenu."</h2>";
+			$this->load->view("site_header");
+			$this->load->view("site_nav");
+			$this->load->view("content_create");
+			if($submenu=="upload") $this->do_multi_upload();
+			if($submenu=="download") $this->download_info(); 
+			//if($submenu=="info") $this->load->view("sub_info");
+			if($submenu=="info")
+			{ 	
+				if(isset($_SESSION['date']) && isset($_SESSION['group'])){
+					$date = $_SESSION['date'];
+					$group = $_SESSION['group'];
+					$this->add_information($date,$group);
+				}else{
+					$this->add_information(NULL,NULL);
+				}
+			}
+			$this->load->view("site_footer");
+		}
 	public function edit()
 	{
 		$this->load->view("site_header");

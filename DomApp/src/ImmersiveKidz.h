@@ -33,7 +33,7 @@ public:
 	void setMaster(bool m) { _isMaster = m; _loader.setMaster(m); };
 	void setScenePath(std::string folder);
 	void setSceneLoaded(bool isLoaded) { _sceneLoaded = isLoaded; };
-	void addDrawableObject(DrawableObject *o, std::string f = "none");
+	void addDrawableObject(DrawableObject *o, std::string f = "none", double animseed = 0.0);
 
 	void preSyncFunc();
 	void draw();
@@ -49,6 +49,8 @@ public:
 	static ImmersiveKidz* getInstance();
 	
 	std::string getScenePath() { return _scenePath; };
+
+	glm::vec4 getWorldRect();
 private:
 	static ImmersiveKidz* _instance;
 	ImmersiveKidz();

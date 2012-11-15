@@ -30,14 +30,14 @@ class Camera {
 		Down = 'E',
 	};
 
-	bool movingForward,movingBackward,movingRight,movingLeft,movingUp,movingDown;
-	bool mouseState;
-	float speed;
-	float rotationSpeed;
+	bool _movingForward,_movingBackward,_movingRight,_movingLeft,_movingUp,_movingDown;
+	bool _mouseState;
+	float _speed;
+	float _rotationSpeed;
 
-	glm::vec3 position;
-	glm::vec2 rotation;
-	glm::mat4 viewMatrix;
+	glm::vec3 _position;
+	glm::vec2 _rotation;
+	glm::mat4 _viewMatrix;
 public:
 	Camera(glm::vec3 startPosition = glm::vec3(0,1.5,0));
 	~Camera();
