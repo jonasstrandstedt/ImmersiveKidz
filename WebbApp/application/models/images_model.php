@@ -37,6 +37,23 @@ class Images_model extends CI_Model
 		return $query->result();
 	}
 
+	    /**
+	 * Gets all the images id from a specific group and date
+	 *
+	 * @param  string	$date		The date
+	 * @param  string	$group		The group
+	 * @return array 	
+	 */ 
+	    function get_all_id_from_group($group, $date) 
+    {
+		$this->db->select("id");
+		$this->db->from("images");
+		$where = "`date` = '$date' AND `group` = '$group'"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 
 	/**
 	 * Adds an image to the database
