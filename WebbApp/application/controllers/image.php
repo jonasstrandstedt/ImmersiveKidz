@@ -6,7 +6,7 @@ class Image extends CI_Controller {
 		$this->load->library('ProcessImage');
 		$folder = "images";
 		$images = $this->processimage->readIms($folder); 
-		$this->processimage->findDrawing($images, $folder);  
+		$this->processimage->findDrawing($images, $folder);
 	}
 }
 ?>

@@ -36,7 +36,7 @@ class phmagick{
     private $originalFile = '';
     private $source = '';
     private $destination = '';
-    private $imageMagickPath = '/opt/local/bin/'; //Find location on your computer by typing "type convert" in terminal
+    private $imageMagickPath = '/usr/local/bin/'; //Find location on your computer by typing "type convert" in terminal
     private $imageQuality = 80 ;
 
     public $debug = false;

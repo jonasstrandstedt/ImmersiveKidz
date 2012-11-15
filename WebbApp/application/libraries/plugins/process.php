@@ -32,10 +32,10 @@ class phMagick_process{
             //Build command to threshold image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource().'"'  ;
-            $cmd .= ' -negate -threshold ' . $amount ;
+            $cmd .= ' -threshold ' . $amount ;
             $cmd .= ' "' . $p->getDestination().'"'  ;
 
-            echo "Threashold: " . $cmd . "<br/>";
+            echo "Threshold: " . $cmd . "<br/>";
             $p->execute($cmd);
 
         return  $p ;
@@ -54,7 +54,7 @@ class phMagick_process{
         return  $p ;
     }
 
-    function close(phmagick $p, $size, $kernel){
+    /*function close(phmagick $p, $size, $kernel){
             //Build command to close image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource().'"'  ;
@@ -67,19 +67,46 @@ class phMagick_process{
         return  $p ;
     }
 
+    function close(phmagick $p, $kernel){
+            //Build command to close image
+            $cmd = $p->getBinary('convert');
+            $cmd .= ' "' . $p->getSource() .'"'  ;
+            $cmd .= ' -morphology close ' .$kernel;
+            $cmd .= ' "' . $p->getDestination() .'"'  ;
+
+            echo  "Close: " . $cmd . "<br/>";
+            $p->execute($cmd);
+
+        return  $p ;
+    }*/
+
     function mask(phmagick $p, $originalImage){
             //Build command to close image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource() .'"'  ;
             $cmd .= ' "' . $originalImage .'"' ;
-            $cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' -compose multiply -composite '  ;
+            //$cmd .= ' "' . $p->getSource() .'"'  ;
+            $cmd .= ' -compose multiply -composite'  ;
             $cmd .= ' "' . $p->getDestination() .'"'  ;
             
             echo "Mask: " . $cmd . "<br/>";
             $p->execute($cmd);
 
         return  $p ;
+    }
+
+    function fillHoles(phmagick $p, $drawSettings)
+    {
+        //Build to fill holes
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() . '"';
+        $cmd .= ' -fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"' . ' -fill black +opaque red -fill white -opaque red -alpha off -negate';
+        $cmd .= ' "' . $p->getDestination() .'"'  ;
+
+        echo "Fill holes " . $cmd . "<br/>";
+        $p->execute($cmd);
+
+        return $p;
     }
 }
 ?>

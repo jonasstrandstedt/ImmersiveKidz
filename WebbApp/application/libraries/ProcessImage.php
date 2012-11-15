@@ -37,19 +37,26 @@ class ProcessImage {
             $namelength = strpos($images[$i], ".") - strrpos($images[$i], "/") -1;
             $mask = $folder. "/mask/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."mask.png";
             $phMagick = new phMagick($images[$i], $mask);
-            $amount = "10%";
+            $amount = "45%";
             $phMagick->threshold($amount);
-            $phMagick = new phMagick($mask, $mask);
-            $size = 6;
+            
             //$phMagick->open($size);
-            $phMagick->close($size, "Disk");
+            
+            $phMagick = new phMagick($mask, $mask);
+            $drawSettings = "color 0,0 floodfill";
+            $phMagick->fillHoles($drawSettings);
+
+            /*$phMagick = new phMagick($mask, $mask);
+            $phMagick->close("diamond");*/
+            
+            /*$size = 6;
+            $phMagick->close($size, "Disk");*/
+            
 
             //create out image, save to folder "out".
             $out = $folder. "/out/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."out.png";
             $phMagick = new phMagick($mask, $out);
             $phMagick->mask($images[$i]); //pass original image
-
-
         }
     }
 }
