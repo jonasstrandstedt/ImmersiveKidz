@@ -19,6 +19,7 @@ Model::Model(std::string filename, std::string texturename, float scale, glm::ve
 	
 	loadObj(filename.c_str(), scale, rotation, base_color);
 	
+	_transform = glm::scale(_transform, glm::vec3(scale));
 	_transform = glm::rotate(_transform, rotation[0], glm::vec3(1,0,0));
 	_transform = glm::rotate(_transform, rotation[1], glm::vec3(0,1,0));
 	_transform = glm::rotate(_transform, rotation[2], glm::vec3(0,0,1));
@@ -266,7 +267,7 @@ void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::
 		
 		int q = 0;
 		while (q < 3) {
-			varray[m].location[q] = tempVertexArray[vertexIndex+q]*scale;
+			varray[m].location[q] = tempVertexArray[vertexIndex+q];
 			(varray)[m].normal[q] = tempVertexNormalArray[normalIndex+q];
 			q++;
 		}	
