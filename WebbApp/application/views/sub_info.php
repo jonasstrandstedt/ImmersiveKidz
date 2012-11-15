@@ -1,3 +1,15 @@
+<!--
+* @brief   	The page where you view and edit pictures and related information
+*
+* @details  
+*
+* @author   Viktor Fröberg, vikfr292@student.liu.se
+* @author 	Belinda Bernfort, belbe886@student.liu.se
+* @date     November 14, 2012 
+* @version  1.0
+*    
+-->
+
 <div id="sub">		
 
 <h1>Här är alla fina bilder, jippi</h1>
