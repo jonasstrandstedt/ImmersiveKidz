@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php session_start();?>
 <!--
 * @brief    The site controller, loads the site and all views.
 *
@@ -118,14 +118,52 @@ class Site extends CI_Controller
 	}
 
 	function download_info(){
-		$this->load->view("sub_download");
-		echo $_SESSION['group'];
+
+		$this->load->model("Images_model");
+
+		if(!isset($_POST['download'])){
+		$group = $_SESSION['group'];
+		$date = $_SESSION['date'];
+		
+		$data = array(
+				"group" => $group,
+				"date" => $date
+				);
+
+		$this->load->view("sub_download", $data);
+		}else{
+		
+			$group = $_POST['group'];
+			$date = $_POST['date'];
+
+			$filename = $group."_".$date.".Zip"; // Name of the zip-file to create.
+			$images = $this->Images_model->get_all_images_from_group($group, $date);
+			$this->zip->clear_data();
+			foreach ($images as $row){
+				// Skriv en imgtagg för att kolla sökvägen.
+				//echo "<img src='../../../".$row -> imgouturl."' alt='Bildjävel' width='90' />";
+				$path = $row -> imgouturl;
+				if($this->zip->read_file($path, TRUE)){
+					//echo "tillagd!";
+				} 
+
+			}
+			
+			// Kolla om vi kommer hit när man trycker download.
+			$this->zip->archive($filename); 
+
+			//$this->zip->download($filename); BUGGGG...
+
+			
+
+			
+		}
 		
 	}
 
 	
 	public function create($submenu)
-	{		echo"<h2>".$submenu."</h2>";
+	{		//echo"<h2>".$submenu."</h2>";
 			$this->load->view("site_header");
 			$this->load->view("site_nav");
 			$this->load->view("content_create");

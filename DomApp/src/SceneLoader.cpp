@@ -208,6 +208,7 @@ int SceneLoader::loadScene() {
 					animseed = aniElement->DoubleAttribute( "seed" );
 				}
 
+				srand(time(NULL));
 				double posx = 20*((double)rand()/RAND_MAX-0.5);
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
@@ -352,6 +353,7 @@ int SceneLoader::loadScene() {
 				}
 				else	continue;
 
+				srand(time(NULL));
 				double posx = 20*((double)rand()/RAND_MAX-0.5);
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
