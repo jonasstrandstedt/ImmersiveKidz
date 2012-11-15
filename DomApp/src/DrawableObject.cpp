@@ -1,7 +1,7 @@
 #include "DrawableObject.h"
 
 /**
-*@brief	    DrawableObject main constructor
+*@brief	    DrawableObject default constructor
 *
 *@details   Defines the animation function to be 0.
 */
