@@ -34,7 +34,7 @@ bool Illustration::getSeen()
 };
 
 /**
-*@brief	    sets a value which tells if the illustration has been seen
+*@brief	    Sets a value which tells if the illustration has been seen
 *
 *@return	void
 */
