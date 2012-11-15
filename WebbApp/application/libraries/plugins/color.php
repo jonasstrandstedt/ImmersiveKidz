@@ -79,17 +79,17 @@ class phMagick_color {
     /**
      * Convert's the image to grayscale
      */
-//    function toGrayScale(phmagick $p){
-//        $cmd  = $p->getBinary('convert');
-//        $cmd .= ' "' . $p->getSource() .'"';
-//        $cmd .= ' -colorspace Gray  ';
-//        $cmd .= ' "' . $p->getDestination().'"' ;
-//
-//        $p->execute($cmd);
-//        $p->setSource($p->getDestination());
-//        $p->setHistory($p->getDestination());
-//        return  $p ;
-//    }
+    function toGrayScale(phmagick $p){
+        $cmd  = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() .'"';
+        $cmd .= ' -colorspace Gray  ';
+        $cmd .= ' "' . $p->getDestination().'"' ;
+
+        $p->execute($cmd);
+        $p->setSource($p->getDestination());
+        $p->setHistory($p->getDestination());
+        return  $p ;
+    }
 
 	function toGreyScale(phmagick $p, $enhance=2){
 		$cmd   = $p->getBinary('convert');
