@@ -35,7 +35,7 @@ void Camera::setCamera(){
 /**
 * @brief	Updates the position and rotation every time step dt. 
 *
-* @param	
+* @param	dt steptime 
 *
 * @return	void 
 */
@@ -78,7 +78,14 @@ void Camera::update(float dt){
 Camera::~Camera(void)
 {
 }
-
+/**
+* @brief	A method to set the state of a keyboard button
+*
+* @param	key		The key that is interacted with 
+* @param	state	The state, if the button is pressed or not 
+*
+* @return	void 
+*/
 void Camera::keyboardButton(int key,int state){
 	if(key == Forward)
 		movingForward = state;
@@ -94,6 +101,15 @@ void Camera::keyboardButton(int key,int state){
 		movingDown = state;
 }
 
+/**
+* @brief	A method to set the state of a mouse button
+*
+* @param	button		The key pressed 
+* @param	state		the state, if the button is pressed or not 
+*
+* @return	void 
+*/
+
 void Camera::mouseButton(int button,int state){
 	if(button == 0){
 		mouseState = state;
@@ -101,6 +117,14 @@ void Camera::mouseButton(int button,int state){
 	}
 }
 
+/**
+* @brief	A method that updates the rotation of the camera with the mouse state 
+*
+* @param	button		The key pressed 
+* @param	state		the state, if the button is pressed or not 
+*
+* @return	void 
+*/
 void Camera::mouseMotion(int dx,int dy){
 	if(mouseState){
 		rotation[0] += dx*rotationSpeed;
