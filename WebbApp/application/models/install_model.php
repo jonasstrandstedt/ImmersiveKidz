@@ -3,10 +3,12 @@
 *
 * @details  drop_tables(), drop all tables in the database.
 *			create_images_table(), creates the table in the database and inserts example values. Uses images-model.php and create_table_helper.php
+*			create_worlds_table(), creates the table in the database and inserts example values. Uses worlds-model.php and create_table_helper.php
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
-* @date     November 9, 2012
-* @version  1.0
+* @author 	Belinda Bernfort, belbe886@student.liu.se
+* @date     November (9) 14, 2012 
+* @version  1.1 Added create_worlds_table
 *    
 -->
 
