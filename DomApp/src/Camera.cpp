@@ -6,7 +6,7 @@
 *
 * @details				Creates a camera at startPosition, sets the speed 
 *
-* @param startPosition	the starting poistion of the camera
+* @param startPosition		the starting poistion of the camera
 */
 Camera::Camera(glm::vec3 startPosition)
 {
@@ -40,7 +40,7 @@ void Camera::setCamera(){
 /**
 * @brief	Updates the position and rotation every time step dt. 
 *
-* @param	dt steptime 
+* @param	dt	  steptime 
 *
 * @return	void 
 */
@@ -84,8 +84,8 @@ void Camera::update(float dt){
 /**
 * @brief	A method to set the state of a keyboard button
 *
-* @param	key		The key that is interacted with 
-* @param	state	The state, if the button is pressed or not 
+* @param	key			The key that is interacted with 
+* @param	state		The state, if the button is pressed or not 
 *
 * @return	void 
 */
@@ -123,8 +123,8 @@ void Camera::mouseButton(int button,int state){
 /**
 * @brief	A method that updates the rotation of the camera with the mouse state 
 *
-* @param	button		The key pressed 
-* @param	state		the state, if the button is pressed or not 
+* @param	dx		delta x. The change in x
+* @param	dy		delta y. The change in y 
 *
 * @return	void 
 */

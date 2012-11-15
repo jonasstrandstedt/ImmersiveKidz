@@ -7,7 +7,7 @@
 *
 *@details   Loads textures with sgct:s texture manager
 *
-*@param		textureNames
+*@param		textureNames		The names of the skybox textures
 *
 *@return	void
 */
@@ -115,7 +115,7 @@ void Skybox::drawCube(){
 *
 *@details   Draws the skybox aligned at the center of the camera
 *
-*@param		textureNames
+*@param		textureNames		The names of the skybox textures
 *
 *@return	void
 */

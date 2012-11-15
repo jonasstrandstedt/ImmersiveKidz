@@ -18,6 +18,8 @@ DrawableObject::DrawableObject() {
 *
 *@details   If the animation function is set the object will animate. TODO: Add some sort of start and stop condition
 *
+*@param t	 The time 
+*
 *@return     void
 */
 void DrawableObject::draw(double t) {
@@ -47,7 +49,7 @@ void DrawableObject::draw(double t) {
 *
 *@details   Given a name (string) it sets the permanent animation for the object, in case the given animation does not exist nothing happens.
 *
-*@param		name The name for the wanted animation, example "bounce"
+*@param		name		The name for the wanted animation, example "bounce"
 *
 *@return     void
 */
@@ -81,6 +83,9 @@ void pendulum(double t, double seed) {
 
 /**
 *@brief	    Does nothing
+*
+*@param t
+*@param seed
 *
 *@return     void
 */
