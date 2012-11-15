@@ -165,6 +165,7 @@ int SceneLoader::loadScene() {
 						miny = sizeElement->DoubleAttribute( "miny" );
 						maxx = sizeElement->DoubleAttribute( "maxx" );
 						maxy = sizeElement->DoubleAttribute( "maxy" );
+						ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(minx,miny,maxx,maxy));
 					}
 					
 					tinyxml2::XMLElement* randElement = world->FirstChildElement( "rand" );
