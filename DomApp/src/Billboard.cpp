@@ -69,4 +69,6 @@ void Billboard::onDraw() {
 	glDisable (GL_BLEND);
 
 	glPopMatrix();
+	
+	glBindTexture( GL_TEXTURE_2D, 0);
 }
