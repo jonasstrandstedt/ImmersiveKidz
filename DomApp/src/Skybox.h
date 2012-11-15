@@ -14,11 +14,12 @@
 
 
 /**
-    * @brief      Skybox class for rendering a skybox.
+    * @brief      Skybox class is a class for creation and rendering of a skybox.
     *
     * @details    Skybox is a subclass to DrawableObject and overwrites the onDraw method.
 	*
     * @author     Karl Gyllensten, kargy291@student.liu.se
+	* @author     Rickard Englund, ricen256@student.liu.se
     * @date       November 9, 2012
     * @version    0.0.1
     *

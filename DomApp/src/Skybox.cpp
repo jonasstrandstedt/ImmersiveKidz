@@ -5,9 +5,11 @@
 /**
 *@brief	    Loads textures to skybox
 *
-*@details   Loads textures and assigns them to sgct:s texture manager
+*@details   Loads textures with sgct:s texture manager
 *
 *@param		textureNames
+*
+*@return	void
 */
 void Skybox::loadTextures(std::string textureNames[6])
 {
@@ -24,6 +26,7 @@ void Skybox::loadTextures(std::string textureNames[6])
 *
 *@details   Assigns the textures to each face and defines the skyboxparameters. 
 *
+*@return	void
 */
 void Skybox::drawCube(){
 
@@ -110,9 +113,11 @@ void Skybox::drawCube(){
 /**
 *@brief	    Draws the skybox
 *
-*@details   Draws the skybox at the center of the camera
+*@details   Draws the skybox aligned at the center of the camera
 *
 *@param		textureNames
+*
+*@return	void
 */
 
 void Skybox::onDraw()
