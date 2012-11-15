@@ -4,7 +4,6 @@
 		<item>
 			<filename>plane.obj</filename>
 			<texture>grass.png</texture>
-			<animation>none</animation>
 			<pos x="0.0" y="0.0" z="0.0"/>
 			<scale val="0.5"/>
 			<rot x="90.0" y="0.0" z="0.0"/>
@@ -14,43 +13,36 @@
 	<billboards>
 		<item>
 			<texture>tree.png</texture>
-			<animation>none</animation>
 			<pos x="0.0" y="0.0" z="0.0"/>
 			<size x="1.0" y="1.8"/>
 		</item>
 		<item>
 			<texture>tree.png</texture>
-			<animation>none</animation>
 			<pos x="0.0" y="0.0" z="0.5"/>
 			<size x="1.0" y="1.8"/>
 		</item>
 		<item>
 			<texture>tree.png</texture>
-			<animation>none</animation>
 			<pos x="0.5" y="0.0" z="0.0"/>
 			<size x="1.0" y="1.8"/>
 		</item>
 		<item>
 			<texture>blomma.png</texture>
-			<animation>none</animation>
 			<pos x="2.0" y="0.0" z="2.5"/>
 			<size x="0.5" y="1.0"/>
 		</item>
 		<item>
 			<texture>blomma.png</texture>
-			<animation>none</animation>
 			<pos x="2.0" y="0.0" z="2.0"/>
 			<size x="0.5" y="1.0"/>
 		</item>
 		<item>
 			<texture>blomma.png</texture>
-			<animation>none</animation>
 			<pos x="2.5" y="0.0" z="2.0"/>
 			<size x="0.5" y="1.0"/>
 		</item>
 		<item>
 			<texture>bush.png</texture>
-			<animation>none</animation>
 			<pos x="-2.0" y="0.0" z="2.0"/>
 			<size x="0.5" y="1.0"/>
 		</item>
@@ -59,8 +51,8 @@
 		<item>
 			<name_artist>J dawgs</name_artist>
 			<name_drawing>jolle kanin</name_drawing>
-      	  	<description>Den här haren är galet stor</description>
-     	   	<animation>bounce</animation>
+      <description>Den här haren är galet stor</description>
+      <animation name="bounce" seed="0"/>
 			<texture>bunny.png</texture>
 			<pos x="1.0" y="0.0" z="0.5"/>
 			<size x="2.0" y="2.6"/>
@@ -68,8 +60,8 @@
 		<item>
 			<name_artist>R dawgs</name_artist>
 			<name_drawing>rulle kanin</name_drawing>
-      	  	<description>Den här haren är galet stor</description>
-     	   	<animation>bounce</animation>
+      <description>Den här haren är galet stor</description>
+      <animation name="bounce" seed="100"/>
 			<texture>bunny.png</texture>
 			<pos x="7.0" y="0.0" z="0.5"/>
 			<size x="4.0" y="4.2"/>
@@ -77,8 +69,8 @@
 			<item>
 			<name_artist>A dawgs</name_artist>
 			<name_drawing>andy kanin</name_drawing>
-      	  	<description>Den här haren är galet stor</description>
-     	   	<animation>bounce</animation>
+      <description>Den här haren är galet stor</description>
+      <animation name="bounce" seed="200"/>
 			<texture>bunny.png</texture>
 			<pos x="7.0" y="0.0" z="7.5"/>
 			<size x="4.0" y="7.2"/>
@@ -86,8 +78,8 @@
 			<item>
 			<name_artist>V dawgs</name_artist>
 			<name_drawing>virre kanin</name_drawing>
-      	  	<description>Den här haren är galet stor</description>
-     	   	<animation>bounce</animation>
+      <description>Den här haren är galet stor</description>
+      <animation name="bounce" seed="300"/>
 			<texture>bunny.png</texture>
 			<pos x="7.0" y="0.0" z="-4.5"/>
 			<size x="3.0" y="3.2"/>

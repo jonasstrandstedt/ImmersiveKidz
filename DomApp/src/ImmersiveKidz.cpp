@@ -58,7 +58,7 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *
 *@return     void
 */
-void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f) {
+void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double seed) {
 	
 	Illustration *ill = dynamic_cast<Illustration*>(o);
 	if(ill) {
@@ -66,7 +66,7 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f) {
 	}
 	
 	_objects.push_back(o);
-	_objects.back()->setAnimationFuncByName(f);
+	_objects.back()->setAnimationFuncByName(f, seed);
 }
 
 /**
@@ -95,7 +95,7 @@ void ImmersiveKidz::draw() {
 		_camera->setCamera();
 		for (int i = 0; i < _objects.size(); ++i)
 		{
-			_objects.at(i)->draw(_currTime, _dt);
+			_objects.at(i)->draw(_currTime);
 		}
 
 		//_hud->drawBackgroundToNames();
@@ -218,4 +218,36 @@ void ImmersiveKidz::postSyncPreDrawFunction(){
 */
 Camera* ImmersiveKidz::getCamera(){
 	return _camera;
+}
+
+
+/**
+*@brief	    Returns the size of the world. Currenlty return the min/max position for illustrations that currently are in the scene, this should be changed to be read from the xml
+*
+*@return    rect	rect of [minX,minY,maxX,maxX] eg, the 2d corner points of the world	
+*/
+glm::vec4 ImmersiveKidz::getWorldRect(){
+	glm::vec4 rect;
+	if(_illustrations.size() == 0)
+		return rect;
+
+	rect[0] = rect[2] = _illustrations[0]->getPosition()[0];
+	rect[1] = rect[3] = _illustrations[0]->getPosition()[2];
+
+	for(int i = 1;i<_illustrations.size();i++){
+		
+		if(rect[0]>_illustrations[i]->getPosition()[0])
+			rect[0] = _illustrations[i]->getPosition()[0];
+		
+		if(rect[1]>_illustrations[i]->getPosition()[2])
+			rect[1] = _illustrations[i]->getPosition()[2];
+
+		if(rect[2]<_illustrations[i]->getPosition()[0])
+			rect[2] = _illustrations[i]->getPosition()[0];
+
+
+		if(rect[3]<_illustrations[i]->getPosition()[2])
+			rect[3] = _illustrations[i]->getPosition()[2];
+	}
+	return rect;
 }

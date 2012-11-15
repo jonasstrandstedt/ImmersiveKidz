@@ -40,7 +40,6 @@ public:
 	void keyboardButton(int key,int state);
 	void menu();
 	int loadScene();
-	std::string checkXML(tinyxml2::XMLHandle doc);
 	
 	void encode(sgct::SharedData *data);
 	void decode(sgct::SharedData *data);

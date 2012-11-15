@@ -4,9 +4,9 @@
 #include "sgct.h"
 
 // animate functions
-void bounce(double t, double dt, double at);
-void pendulum(double t, double dt, double at);
-void none(double t, double dt, double at);
+void bounce(double t, double seed);
+void pendulum(double t, double seed);
+void none(double t, double seed);
 
 /**
 * @brief  	An abstract class for objects that can be rendered
@@ -23,17 +23,17 @@ public:
 	//initializers
 	DrawableObject();
 	
-	void setAnimationFunc(void (*f)(double,double,double)) { _animationFunc = f; };
-	void setAnimationFuncByName(std::string name);
+	void setAnimationFunc(void (*f)(double,double), double seed) { _animationFunc = f; _seed = seed; };
+	void setAnimationFuncByName(std::string name, double seed);
 
 	// draw functionality
-	void draw(double t, double dt);
+	void draw(double t);
 	virtual void onDraw() = 0;
 private:
 
 protected:
-	double _animationTimer;
-	void (*_animationFunc)(double, double, double);
+	double _seed;
+	void (*_animationFunc)(double, double);
 
 	glm::mat4x4 _transform;
 };
