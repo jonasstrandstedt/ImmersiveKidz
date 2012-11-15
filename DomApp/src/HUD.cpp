@@ -191,7 +191,6 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	for(int i = 0; i < illu.size(); i++)
 	{
 		glBegin(GL_POINTS);
-		std::cout << "KANEL MANNEN" << std::endl;
 		glm::vec3 illuPosition = illu[i]->getPosition();
 
 		glVertex2f( illuPosition.x , illuPosition.z);

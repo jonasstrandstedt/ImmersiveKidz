@@ -49,7 +49,8 @@ int main( int argc, char* argv[] )
 
 	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
 
-
+	
+	
 	// Init the engine
 	if( !gEngine->init() )
 	{
@@ -81,6 +82,8 @@ void myInitOGLFun() {
 	// Allocate and initialize ImmersiveKidz
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
+	
+	gEngine->setNearAndFarClippingPlanes(gEngine->getNearClippingPlane(),600.0);	//sets far plane bigger than 100f which is default
 
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER,0.0f);
