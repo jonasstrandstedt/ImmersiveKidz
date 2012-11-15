@@ -49,6 +49,8 @@ public:
 	static ImmersiveKidz* getInstance();
 	
 	std::string getScenePath() { return _scenePath; };
+
+	glm::vec4 getWorldRect();
 private:
 	static ImmersiveKidz* _instance;
 	ImmersiveKidz();
