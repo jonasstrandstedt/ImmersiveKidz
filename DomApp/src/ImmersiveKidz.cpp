@@ -52,7 +52,7 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 /**
 *@brief	    Adds a DrawableObject to the vector
 *
-*@details   Simply uses the vector push_back functionality so no checks are performed.
+*@details   Uses the vector push_back functionality so no checks are performed.
 *
 *@param		o is a subclass of DrawableObject (because DrawableObject is abstract)
 *
@@ -138,6 +138,17 @@ void ImmersiveKidz::decode(){
 
 }
 
+/**
+* @brief	a method that uses the mouseMotion method in the Camera class
+*
+* @param	x
+* @param	y
+* @param	dx			delta x, amount of movement in x-axis
+* @param	dy			delta y, amount of movement in y-axis
+*
+* @return	void 
+*/
+
 void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 	if(_camera == 0)
 		return;
@@ -147,6 +158,16 @@ void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 	_camera->mouseMotion(dx,dy);
 
 }
+
+
+/**
+* @brief	a method that uses the mouseButton method in the Camera class
+*
+* @param	button		The button which is interacted with
+* @param	state		The state, if the button is pressed or not 
+*
+* @return	void 
+*/
 
 void ImmersiveKidz::mouseButton(int button,int state){
 	if(_camera == 0)
@@ -158,6 +179,14 @@ void ImmersiveKidz::mouseButton(int button,int state){
 
 }
 
+/**
+* @brief	a method that uses the keyboardButton method in either the Camera class, the HUD or the SceneLoader class
+*
+* @param	key			The key which is interacted with
+* @param	state		The state, if the key is pressed or not 
+*
+* @return	void 
+*/
 void ImmersiveKidz::keyboardButton(int key,int state){
 	if(_camera == 0)
 		return;
@@ -170,7 +199,7 @@ void ImmersiveKidz::keyboardButton(int key,int state){
 }
 
 /**
-*@brief	    Function called from sgct setPostSyncPreDrawFunction
+*@brief	    Function called from sgct setPostSyncPreDrawFunction, updates the Camera
 *
 *@return     void
 */
