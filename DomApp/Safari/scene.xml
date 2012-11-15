@@ -1,30 +1,65 @@
 <?xml version="1.0" ?>
 <scene>
+  <world>
+  	<camera>
+  		<start x="0.0" y="0.5" z="0.0" />
+  		<limitx min="-256.0" max="256.0" />
+  		<limity min="0.0" max="256.0" />
+  		<limitz min="-256.0" max="256.0" />
+  	</camera>
+    <plane>
+      <texture>textures/map.png</texture>
+      <size minx="-256"  miny="-256" maxx="256" maxy="256"/>
+    </plane>
+    <rand minx="-256" miny="-256" maxx="256"  maxy="256"/>
+  </world>
 	<models>
-		<item>
-			<filename>plane.obj</filename>
-			<texture>textures/grass.png</texture>
-			<pos x="0.0" y="0.0" z="0.0"/>
-			<scale val="0.5"/>
-			<rot x="90.0" y="0.0" z="0.0"/>
-			<base_color r="0.0" g="0.5" b="0.0"/>
-		</item>
 	</models>
 	<billboards>
 		<item>
 			<texture>textures/tree.png</texture>
-			<pos x="0.0" y="0.0" z="0.0"/>
-			<size x="1.0" y="1.8"/>
+			<size x="2.5" y="2.5"/>
+			<mult count="1009" seed="4124" map="water.png"/>
 		</item>
 		<item>
-			<texture>textures/tree.png</texture>
-			<pos x="0.0" y="0.0" z="0.5"/>
-			<size x="1.0" y="1.8"/>
+			<texture>textures/tree2.png</texture>
+			<size x="2.5" y="2.5"/>
+			<mult count="1009" seed="534534" map="water.png"/>
 		</item>
 		<item>
-			<texture>textures/tree.png</texture>
-			<pos x="0.5" y="0.0" z="0.0"/>
-			<size x="1.0" y="1.8"/>
+			<texture>textures/tree3.png</texture>
+			<size x="2.5" y="2.5"/>
+     		<mult count="1009" seed="3132" map="water.png"/>
+		</item>
+		<item>
+			<texture>textures/tree4.png</texture>
+			<size x="2.5" y="2.5"/>
+     		<mult count="1009" seed="34" map="water.png"/>
+		</item>
+		<item>
+			<texture>textures/flower.png</texture>
+			<size x="0.3" y="0.3"/>
+     		<mult count="1009" seed="345" map="water.png"/>
+		</item>
+		<item>
+			<texture>textures/flower2.png</texture>
+			<size x="0.3" y="0.3"/>
+     		<mult count="1009" seed="756" map="water.png"/>
+		</item>
+		<item>
+			<texture>textures/flower3.png</texture>
+			<size x="0.3" y="0.3"/>
+     		<mult count="1009" seed="868" map="water.png"/>
+		</item>
+		<item>
+			<texture>textures/flower4.png</texture>
+			<size x="0.3" y="0.3"/>
+     		<mult count="1009" seed="6866" map="water.png"/>
+		</item>
+		<item>
+			<texture>textures/flower5.png</texture>
+			<size x="0.3" y="0.3"/>
+     		<mult count="1009" seed="6868" map="water.png"/>
 		</item>
 	</billboards>
 	<illustrations>

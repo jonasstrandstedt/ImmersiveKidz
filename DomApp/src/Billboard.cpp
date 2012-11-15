@@ -14,8 +14,8 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 {
 	this->_proportions = proportionsIn;
 	this->_position = position;
-	_transform = glm::translate(_transform, position);
-	sgct::TextureManager::Instance()->loadTexure(_texture, texturename, texturename, true);
+	ImmersiveKidz::getInstance()->loadTexture(texturename);
+	_texture = texturename;
 	_proportions = proportionsIn;
 	_transform = glm::translate(_transform, position);
 };
@@ -43,7 +43,7 @@ void Billboard::onDraw() {
 	
 	//sgct::MessageHandler::Instance()->print("Billboard draw\n");
 
-	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(_texture));
+	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture));
 
 
 	glPushMatrix();

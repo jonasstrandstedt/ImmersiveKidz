@@ -206,7 +206,7 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	glPushMatrix();
 	glLoadIdentity();
 
-	glPointSize(20.0f);
+	glPointSize(5.0f);
 	glBegin(GL_POINTS);
 	//Draw illustrations on minimap
 	for(int i = 0; i < illu.size(); i++)

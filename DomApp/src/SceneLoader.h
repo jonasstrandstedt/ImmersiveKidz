@@ -16,6 +16,7 @@
 #include "Billboard.h"
 #include "Illustration.h"
 #include "Model.h"
+#include "Plane.h"
 
 #include <glm/gtx/random.hpp>
 

@@ -69,6 +69,14 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double a
 	_objects.back()->setAnimationFuncByName(f, animseed);
 }
 
+bool ImmersiveKidz::loadTexture(std::string texture) {
+	if ( _textures.find(texture) == _textures.end()) {
+		_textures.insert(texture);
+		return sgct::TextureManager::Instance()->loadTexure(texture, texture, true, 4);
+	}
+	return true;
+}
+
 /**
 *@brief	    Function called from sgct presync
 *

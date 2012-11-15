@@ -6,7 +6,7 @@ RM = rm
 MESSAGE =
 
 #specify dependency list
-OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/Illustration.o src/Camera.o src/SceneLoader.o src/Skybox.o src/HUD.o
+OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/Illustration.o src/Camera.o src/SceneLoader.o src/Skybox.o src/HUD.o src/Plane.o
 OUTPUT ?= Program
 FLAGS ?=
 CXXFLAGS ?= 

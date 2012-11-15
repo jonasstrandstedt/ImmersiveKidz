@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "ImmersiveKidz.h"
 
 /**
 *@brief	    Constructor of Model.
@@ -12,18 +13,108 @@
 *@param		base_color Sets the default color of the object if no texture is used. Defaults to white
 */
 Model::Model(std::string filename, std::string texturename, glm::vec3 position, float scale, glm::vec3 rotation, glm::vec3 base_color) {
-	_texture = 0;
 
-	sgct::TextureManager::Instance()->loadTexure(_texture, texturename, texturename, true);
+	ImmersiveKidz::getInstance()->loadTexture(texturename);
+	_texture = texturename;
 	
+	std::ifstream ifile(filename.c_str());
+	if(ifile) {
+		loadObj(filename.c_str(), scale, rotation, base_color);
+		ifile.close();
+	} else {
+		sgct::MessageHandler::Instance()->print("Model not found\n");
+		// Maybe init with a triangle
+		/*
+		_vsize = 3;
+		_isize = 3;
+		Vertex *varray = (Vertex*)malloc(_vsize*sizeof(Vertex));
+		int *iarray = (int*)malloc(_isize*sizeof(int));
+
+		iarray[0] = 0;
+		iarray[1] = 1;
+		iarray[2] = 2;
+
+		varray[0].location[0] = 0.0;
+		varray[0].location[1] = 0.0;
+		varray[0].location[2] = 0.0;
+		varray[1].location[0] = 1.0;
+		varray[1].location[1] = 1.0;
+		varray[1].location[2] = 1.0;
+		varray[2].location[0] = 1.0;
+		varray[2].location[1] = 1.0;
+		varray[2].location[2] = -1.0;
+		
+		glm::vec3 v1(1.0,1.0,1.0);
+		glm::vec3 v2(0.0,0.0,-2.0);
+
+		v1 = glm::normalize(v1);
+		v2 = glm::normalize(v2);
+
+		glm::vec3 theNormal = glm::normalize(glm::cross(v1,v2));
+
+		varray[0].normal[0] = theNormal[0];
+		varray[0].normal[1] = theNormal[1];
+		varray[0].normal[2] = theNormal[2];
+		varray[1].normal[0] = theNormal[0];
+		varray[1].normal[1] = theNormal[1];
+		varray[1].normal[2] = theNormal[2];
+		varray[2].normal[0] = theNormal[0];
+		varray[2].normal[1] = theNormal[1];
+		varray[2].normal[2] = theNormal[2];
+
+		varray[0].location[0] = 0.0;
+		varray[0].location[1] = 0.0;
+		varray[0].location[2] = 0.0;
+		varray[0].normal[0] = 0.0;
+		varray[0].normal[1] = 0.0;
+		varray[0].normal[2] = 1.0;
+		//VERTEX 1
+		varray[1].location[0] = 1.0;
+		varray[1].location[1] = 0.0;
+		varray[1].location[2] = 0.0;
+		varray[1].normal[0] = 0.0;
+		varray[1].normal[1] = 0.0;
+		varray[1].normal[2] = 1.0;
+		//VERTEX 2
+		varray[2].location[0] = 0.0;
+		varray[2].location[1] = 1.0;
+		varray[2].location[2] = 0.0;
+		varray[2].normal[0] = 0.0;
+		varray[2].normal[1] = 0.0;
+		varray[2].normal[2] = 1.0;
+		
+
+
+		varray[0].colour[0] = 1.0;
+		varray[0].colour[1] = 0.0;
+		varray[0].colour[2] = 0.0;
+		varray[0].colour[3] = 1.0;
+		varray[1].colour[0] = 0.0;
+		varray[1].colour[1] = 1.0;
+		varray[1].colour[2] = 0.0;
+		varray[1].colour[3] = 1.0;
+		varray[2].colour[0] = 0.0;
+		varray[2].colour[1] = 0.0;
+		varray[2].colour[2] = 1.0;
+		varray[2].colour[3] = 1.0;
+
+		varray[0].tex[0] = 0.0;
+		varray[0].tex[1] = 0.0;
+		varray[1].tex[0] = 1.0;
+		varray[1].tex[1] = 1.0;
+		varray[2].tex[0] = 0.0;
+		varray[2].tex[1] = 1.0;
+
+		initVBO(&varray, &iarray, _vsize, _isize);
+		*/
+	}
+
 	
-	loadObj(filename.c_str(), scale, rotation, base_color);
-	
-	_transform = glm::scale(_transform, glm::vec3(scale));
 	_transform = glm::rotate(_transform, rotation[0], glm::vec3(1,0,0));
 	_transform = glm::rotate(_transform, rotation[1], glm::vec3(0,1,0));
 	_transform = glm::rotate(_transform, rotation[2], glm::vec3(0,0,1));
 	_transform = glm::translate(_transform, position);
+	_transform = glm::scale(_transform, glm::vec3(scale));
 }
 
 /**
@@ -34,7 +125,7 @@ Model::Model(std::string filename, std::string texturename, glm::vec3 position, 
 *@return     void
 */
 void Model::onDraw() {
-	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(_texture) );
+	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture) );
 	
 	glBindBuffer(GL_ARRAY_BUFFER, _vBufferID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iBufferID);

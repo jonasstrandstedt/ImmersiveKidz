@@ -167,6 +167,8 @@ int SceneLoader::loadScene() {
 						maxy = sizeElement->DoubleAttribute( "maxy" );
 						ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(minx,miny,maxx,maxy));
 					}
+					ImmersiveKidz::getInstance()->loadTexture(texture);
+					ImmersiveKidz::getInstance()->addDrawableObject(new Plane(glm::vec4(minx,miny,maxx,maxy), scenePath + texture, 0.0));
 					
 					tinyxml2::XMLElement* randElement = world->FirstChildElement( "rand" );
 					if(randElement){

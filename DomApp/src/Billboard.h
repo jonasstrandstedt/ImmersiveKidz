@@ -32,7 +32,7 @@ public:
 	
 protected:
 	glm::vec3 _position;
-	unsigned int _texture;
+	std::string _texture;
 	glm::vec2 _proportions;
 };
 
