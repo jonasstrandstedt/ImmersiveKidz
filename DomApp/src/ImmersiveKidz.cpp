@@ -97,11 +97,13 @@ void ImmersiveKidz::draw() {
 		{
 			_objects.at(i)->draw(_currTime);
 		}
+
 		if( _isMaster ) {
 			//Draw text for illustrations
-			_hud->drawBackgroundToNames();
-			_hud->drawIllustrationNames(_illustrations);
+			_hud->drawBackgroundToNames();	
+			_hud->drawMinimapBackground();
 			_hud->drawMinimapPositions(_illustrations);
+			_hud->drawIllustrationNames(_illustrations);
 		}
 	} else {
 		_loader.menu();
@@ -240,9 +242,9 @@ glm::vec4 ImmersiveKidz::getWorldRect(){
 		if(rect[2]<_illustrations[i]->getPosition()[0])
 			rect[2] = _illustrations[i]->getPosition()[0];
 
-
 		if(rect[3]<_illustrations[i]->getPosition()[2])
 			rect[3] = _illustrations[i]->getPosition()[2];
 	}
+	rect = glm::vec4(-10,-10,10,10);
 	return rect;
 }

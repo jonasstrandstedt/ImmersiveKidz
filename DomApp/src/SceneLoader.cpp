@@ -45,8 +45,8 @@ SceneLoader::SceneLoader() {
 *
 *@details   Moves the selection up and down with the arrow keys and when the user presses enter the selected scene is loaded.
 *
-*@param		key The keyboard key, example 'A' or GLFW_KEY_UP
-*@param		state The state of the pressed button, example GLFW_PRESS
+*@param	key			The keyboard key, example 'A' or GLFW_KEY_UP
+*@param	state		The state of the pressed button, example GLFW_PRESS
 *
 *@return     void
 */
@@ -379,7 +379,7 @@ int SceneLoader::loadScene() {
 /**
 *@brief	    The master encodes data
 *
-*@param		data Pointer to the sgct SharedData objects
+*@param		data		Pointer to the sgct SharedData objects
 *
 *@return    void
 */
@@ -391,7 +391,7 @@ void SceneLoader::encode(sgct::SharedData *data){
 /**
 *@brief	    The slaves decodes data
 *
-*@param		data Pointer to the sgct SharedData objects
+*@param		data		Pointer to the sgct SharedData objects
 *
 *@return    void
 */
