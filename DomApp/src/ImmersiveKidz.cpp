@@ -58,7 +58,7 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *
 *@return     void
 */
-void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double seed) {
+void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double animseed) {
 	
 	Illustration *ill = dynamic_cast<Illustration*>(o);
 	if(ill) {
@@ -66,7 +66,7 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double s
 	}
 	
 	_objects.push_back(o);
-	_objects.back()->setAnimationFuncByName(f, seed);
+	_objects.back()->setAnimationFuncByName(f, animseed);
 }
 
 /**
@@ -98,20 +98,16 @@ void ImmersiveKidz::draw() {
 			_objects.at(i)->draw(_currTime);
 		}
 
-		
-		_hud->drawBackgroundToNames();
-		_hud->drawMinimapBackground();
-		_hud->drawMinimapPositions(_illustrations);
-		_hud->drawIllustrationNames(_illustrations);
-		
+		if( _isMaster ) {
+			//Draw text for illustrations
+			_hud->drawBackgroundToNames();	
+			_hud->drawMinimapBackground();
+			_hud->drawMinimapPositions(_illustrations);
+			_hud->drawIllustrationNames(_illustrations);
+		}
 	} else {
 		_loader.menu();
 	}
-
-	
-	//Draw text for illustrations
-	
-	
 }
 
 /**

@@ -45,8 +45,8 @@ SceneLoader::SceneLoader() {
 *
 *@details   Moves the selection up and down with the arrow keys and when the user presses enter the selected scene is loaded.
 *
-*@param		key The keyboard key, example 'A' or GLFW_KEY_UP
-*@param		state The state of the pressed button, example GLFW_PRESS
+*@param	key			The keyboard key, example 'A' or GLFW_KEY_UP
+*@param	state		The state of the pressed button, example GLFW_PRESS
 *
 *@return     void
 */
@@ -168,9 +168,9 @@ int SceneLoader::loadScene() {
 					seed = aniElement->DoubleAttribute( "seed" );
 				}
 
-				double posx = 100*((double)rand()/RAND_MAX-0.5);
-				double posy = 100*((double)rand()/RAND_MAX-0.5);
-				double posz  = 100*((double)rand()/RAND_MAX-0.5);
+				double posx = 20*((double)rand()/RAND_MAX-0.5);
+				double posy = 0;
+				double posz  = 20*((double)rand()/RAND_MAX-0.5);
 				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
 				if(posElement){
 					posx = posElement->DoubleAttribute( "x" );
@@ -228,9 +228,9 @@ int SceneLoader::loadScene() {
 					seed = aniElement->DoubleAttribute( "seed" );
 				}
 
-				double posx = 100*((double)rand()/RAND_MAX-0.5);
-				double posy = 100*((double)rand()/RAND_MAX-0.5);
-				double posz  = 100*((double)rand()/RAND_MAX-0.5);
+				double posx = 20*((double)rand()/RAND_MAX-0.5);
+				double posy = 0;
+				double posz  = 20*((double)rand()/RAND_MAX-0.5);
 				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
 				if(posElement){
 					posx = posElement->DoubleAttribute( "x" );
@@ -238,8 +238,8 @@ int SceneLoader::loadScene() {
 					posz = posElement->DoubleAttribute( "z" );
 				}
 
-				double sizex = 0;
-				double sizey = 0;
+				double sizex = 1;
+				double sizey = 1;
 				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
 				if(rotElement){
 					sizex = rotElement->DoubleAttribute( "x" );
@@ -288,9 +288,9 @@ int SceneLoader::loadScene() {
 				}
 				else	continue;
 
-				double posx = 100*((double)rand()/RAND_MAX-0.5);
-				double posy = 100*((double)rand()/RAND_MAX-0.5);
-				double posz  = 100*((double)rand()/RAND_MAX-0.5);
+				double posx = 20*((double)rand()/RAND_MAX-0.5);
+				double posy = 0;
+				double posz  = 20*((double)rand()/RAND_MAX-0.5);
 				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
 				if(posElement){
 					posx = posElement->DoubleAttribute( "x" );
@@ -298,8 +298,8 @@ int SceneLoader::loadScene() {
 					posz = posElement->DoubleAttribute( "z" );
 				}
 
-				double sizex = 0;
-				double sizey = 0;
+				double sizex = 1;
+				double sizey = 1;
 				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
 				if(rotElement){
 					sizex = rotElement->DoubleAttribute( "x" );
@@ -319,7 +319,7 @@ int SceneLoader::loadScene() {
 /**
 *@brief	    The master encodes data
 *
-*@param		data Pointer to the sgct SharedData objects
+*@param		data		Pointer to the sgct SharedData objects
 *
 *@return    void
 */
@@ -331,7 +331,7 @@ void SceneLoader::encode(sgct::SharedData *data){
 /**
 *@brief	    The slaves decodes data
 *
-*@param		data Pointer to the sgct SharedData objects
+*@param		data		Pointer to the sgct SharedData objects
 *
 *@return    void
 */

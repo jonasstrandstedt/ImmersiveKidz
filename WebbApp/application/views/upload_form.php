@@ -14,28 +14,31 @@
 date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 ?>
 <div id="sub">
-<?php //echo $error;?>
-<div class='imgform'>
-<?php echo form_open_multipart('index.php/site/create/upload');?>
+	<div class='imgform'>
+		<?php echo form_open_multipart('index.php/site/create/upload');?>
+		<form>
+		<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
+		<br>
+		
+		<div id="group">
+			<label for="group">
+				Gruppnamn
+			</label>
+			<input type="text" name="group" size="20"/>
+			<br>
+		</div>
+		
+		<div id="date">
+			<label for="date">
+				Datum
+			</label>
+			<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
+		</div>
+		
+		<br /><br />
 
-<input type="file" name="userfile[]" size="20" multiple=""/>
+		<div id="button"><input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" /></div>
+		</form>
+	</div>
 
-
-<label for="group">
-	Gruppnamn
-
-<input type="text" name="group" size="20"/>
-</label>
-<label for="date">
-	Datum
-
-<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/>
-</label>
-<br /><br />
-
-<input type="submit" name="submit" value="Ladda upp bilderna" />
-
-</form>
-</div>
-<?php echo anchor('index.php/site/create/info', 'Gå vidare');?>
 </div>

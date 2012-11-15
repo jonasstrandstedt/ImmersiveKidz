@@ -76,13 +76,8 @@
 			<size x="4.0" y="7.2"/>
 		</item>
 			<item>
-			<name_artist>V dawgs</name_artist>
-			<name_drawing>virre kanin</name_drawing>
-      <description>Den här haren är galet stor</description>
       <animation name="bounce" seed="300"/>
 			<texture>bunny.png</texture>
-			<pos x="7.0" y="0.0" z="-4.5"/>
-			<size x="3.0" y="3.2"/>
 		</item>
 	</illustrations>
 </scene>

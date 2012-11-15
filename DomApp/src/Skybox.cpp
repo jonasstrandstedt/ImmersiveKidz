@@ -7,7 +7,7 @@
 *
 *@details   Loads textures with sgct:s texture manager
 *
-*@param		textureNames
+*@param		textureNames		The names of the skybox textures
 *
 *@return	void
 */
@@ -34,76 +34,76 @@ void Skybox::drawCube(){
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_zneg"));
 		glBegin(GL_QUADS);		
 		glTexCoord2f(0,1);     
-		glVertex3f(50,50,50);
+		glVertex3f(300,300,300);
 		glTexCoord2f(1,1);
-		glVertex3f(-50,50,50);
+		glVertex3f(-300,300,300);
 		glTexCoord2f(1,0);
-		glVertex3f(-50,-50,50);
+		glVertex3f(-300,-300,300);
 		glTexCoord2f(0,0);
-		glVertex3f(50,-50,50);
+		glVertex3f(300,-300,300);
 		glEnd();
 
 		//Left face
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_xneg"));
 		glBegin(GL_QUADS);
 		glTexCoord2f(0,1);   
-		glVertex3f(-50,50,50);
+		glVertex3f(-300,300,300);
 		glTexCoord2f(1,1);
-		glVertex3f(-50,50,-50);
+		glVertex3f(-300,300,-300);
 		glTexCoord2f(1,0);
-		glVertex3f(-50,-50,-50);
+		glVertex3f(-300,-300,-300);
 		glTexCoord2f(0,0);
-		glVertex3f(-50,-50,50);
+		glVertex3f(-300,-300,300);
 		glEnd();
 
 		//Front face
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_zpos"));
 		glBegin(GL_QUADS);
 		glTexCoord2f(1,1);      
-		glVertex3f(50,50,-50);
+		glVertex3f(300,300,-300);
 		glTexCoord2f(0,1);
-		glVertex3f(-50,50,-50);
+		glVertex3f(-300,300,-300);
 		glTexCoord2f(0,0);
-		glVertex3f(-50,-50,-50);
+		glVertex3f(-300,-300,-300);
 		glTexCoord2f(1,0);
-		glVertex3f(50,-50,-50);
+		glVertex3f(300,-300,-300);
 		glEnd();
 
 		//Right face
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_xpos"));
 		glBegin(GL_QUADS);
 		glTexCoord2f(0,1);        
-		glVertex3f(50,50,-50);
+		glVertex3f(300,300,-300);
 		glTexCoord2f(1,1);
-		glVertex3f(50,50,50);
+		glVertex3f(300,300,300);
 		glTexCoord2f(1,0);
-		glVertex3f(50,-50,50);
+		glVertex3f(300,-300,300);
 		glTexCoord2f(0,0);
-		glVertex3f(50,-50,-50);
+		glVertex3f(300,-300,-300);
 		glEnd();
 		//Top face
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_ypos"));
 		glBegin(GL_QUADS);
 		glTexCoord2f(1,1);
-		glVertex3f(50,50,50);
+		glVertex3f(300,300,300);
 		glTexCoord2f(0,1);
-		glVertex3f(-50,50,50);
+		glVertex3f(-300,300,300);
 		glTexCoord2f(0,0);
-		glVertex3f(-50,50,-50);
+		glVertex3f(-300,300,-300);
 		glTexCoord2f(1,0);
-		glVertex3f(50,50,-50);
+		glVertex3f(300,300,-300);
 		glEnd();
 		//Bottom face
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_yneg"));
 		glBegin(GL_QUADS);
 		glTexCoord2f(1,1);
-		glVertex3f(50,-50,50);
+		glVertex3f(300,-300,300);
 		glTexCoord2f(0,1);
-		glVertex3f(-50,-50,50);
+		glVertex3f(-300,-300,300);
 		glTexCoord2f(0,0);
-		glVertex3f(-50,-50,-50);
+		glVertex3f(-300,-300,-300);
 		glTexCoord2f(1,0);
-		glVertex3f(50,-50,-50);
+		glVertex3f(300,-300,-300);
 		glEnd();
 
 		glBindTexture(GL_TEXTURE_2D,0);
@@ -115,7 +115,7 @@ void Skybox::drawCube(){
 *
 *@details   Draws the skybox aligned at the center of the camera
 *
-*@param		textureNames
+*@param		textureNames		The names of the skybox textures
 *
 *@return	void
 */

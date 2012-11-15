@@ -13,6 +13,8 @@ HUD::HUD()
 *
 *@details	Function called from ImmersiveKidz::draw()
 *
+*@param	illu		A vector containing the illustrations
+*
 *@return    void
 */
 
@@ -112,6 +114,11 @@ void HUD::drawBackgroundToNames()
 	glEnable(GL_DEPTH_TEST);
 }
 
+/**
+*@brief	    Draws the minimap background
+*
+*@return    void
+*/
 void HUD::drawMinimapBackground()
 {
 	glDisable(GL_DEPTH_TEST);
@@ -165,6 +172,13 @@ void HUD::drawMinimapBackground()
 
 }
 
+/**
+*@brief	    Draws the minimap background
+*
+*@param	illu		A vector containing the illustrations
+*
+*@return    void
+*/
 void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 {
 	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
@@ -208,6 +222,7 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 			glColor3f( 1.0f, 0.0f, 0.0f);
 		}
 
+
 		glm::vec3 illuPosition = illu[i]->getPosition();
 
 		float x = (illuPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
@@ -244,7 +259,14 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 
 }
 
-
+/**
+* @brief	A method to set the state of a mouse button
+*
+* @param	button		The key pressed 
+* @param	state		the state, if the button is pressed or not 
+*
+* @return	void 
+*/
 void HUD::mouseButton(int button,int state)
 {
 	if(button == 0){
@@ -255,6 +277,14 @@ void HUD::mouseButton(int button,int state)
 	}
 }
 
+/**
+* @brief	A method that updates the HUD with the mouse state 
+*
+* @param	dx		The key pressed 
+* @param	dy		the state, if the button is pressed or not 
+*
+* @return	void 
+*/
 void HUD::mouseMotion(int dx,int dy){
 	if(mouseState){
 		std::cout << dx << std::endl; 
@@ -262,6 +292,15 @@ void HUD::mouseMotion(int dx,int dy){
 	}
 }
 
+/**
+* @brief	A method to set the state of a keyboard button
+*
+* @param	key			The key that is interacted with 
+* @param	state		The state, if the button is pressed or not 
+* @param    illu		A vector containing the illustrations		
+* 
+*@return	void 
+*/
 void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 {
 		if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
