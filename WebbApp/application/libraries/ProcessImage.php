@@ -43,10 +43,18 @@ class ProcessImage {
             mkdir($folder. "/out", 0777);
         }
 
+        //If no out folder exists, create it.
+        if(!is_dir($folder. "/int")){
+            mkdir($folder. "/int", 0777);
+        }
+
         //Go through each image in the images array
         for($i=0; $i < sizeof($images); $i++){
+           $namelength = strpos($images[$i], ".") - strrpos($images[$i], "/") -1;
+
+            echo substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) . "<br/>";
+            //------------ Create temporary result to use in intensity calculation --------------------//
             //create mask, save to folder "mask".
-            $namelength = strpos($images[$i], ".") - strrpos($images[$i], "/") -1;
             $mask = $folder. "/mask/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."mask.png";
             $phMagick = new phMagick($images[$i], $mask);
             $amount = "10%";
@@ -58,10 +66,33 @@ class ProcessImage {
 
             //create out image, save to folder "out".
             $out = $folder. "/out/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."out.png";
-            array_push($imagesOut,$out);
             $phMagick = new phMagick($mask, $out);
             $phMagick->mask($images[$i]); //pass original image
 
+            //------------ Calculate intensity value for each image --------------------//
+            $int = $folder. "/int/" . substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."intensity.png";
+            $image = new phMagick($out, $int);
+            $intensityValue = $image->getAverageIntensity();
+            echo "intensityValue " . $intensityValue . "<br/>";
+            $intensityPercent = $intensityValue / 255;
+            echo "intensityPercent " . $intensityPercent . "<br/>";
+
+
+            //------------ Create result using value from the intensity calculation as thresh --------------------//
+            //create mask, save to folder "mask".
+            $phMagick = new phMagick($images[$i], $mask);
+            $amount = 10*$intensityPercent . "%";
+            echo "thresh amount: " . $amount . "<br/>";
+            $phMagick->threshold($amount);
+            $phMagick = new phMagick($mask, $mask);
+            $size = 6;
+            $phMagick->close($size, "Disk");
+
+            //create out image, save to folder "out".
+            array_push($imagesOut,$out);
+            $phMagick = new phMagick($mask, $out);
+            $phMagick->mask($images[$i]); //pass original image
+            echo "<br/>";
 
         }
         return $imagesOut;

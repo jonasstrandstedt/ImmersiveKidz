@@ -35,7 +35,6 @@ class phMagick_process{
             $cmd .= ' -negate -threshold ' . $amount ;
             $cmd .= ' "' . $p->getDestination().'"'  ;
 
-            echo "Threashold: " . $cmd . "<br/>";
             $p->execute($cmd);
 
         return  $p ;
@@ -48,7 +47,6 @@ class phMagick_process{
             $cmd .= ' -morphology Open '.$kernel.':' . $size ;
             $cmd .= ' "' . $p->getDestination().'"'  ;
 
-            echo "Open: " . $cmd . "<br/>";
             $p->execute($cmd);
 
         return  $p ;
@@ -61,7 +59,6 @@ class phMagick_process{
             $cmd .= ' -morphology Close '.$kernel.':' . $size ;
             $cmd .= ' "' . $p->getDestination().'"'  ;
 
-            echo  "Close: " . $cmd . "<br/>";
             $p->execute($cmd);
 
         return  $p ;
@@ -73,13 +70,32 @@ class phMagick_process{
             $cmd .= ' "' . $p->getSource() .'"'  ;
             $cmd .= ' "' . $originalImage .'"' ;
             $cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' -compose multiply -composite '  ;
+            $cmd .= ' -compose multiply -composite  -transparent "#000000"'  ;
             $cmd .= ' "' . $p->getDestination() .'"'  ;
             
-            echo "Mask: " . $cmd . "<br/>";
             $p->execute($cmd);
 
         return  $p ;
+    }
+
+    function getAverageIntensity(phmagick $p){
+
+            $p->resize(1,1);
+            $p->toGrayScale();
+            //Build command to close image
+            $cmd = $p->getBinary('convert');
+            $cmd .= ' "' . $p->getSource() .'"';
+            $cmd .= " -format '%[pixel:p{0,0}]' info:";
+
+            $p->execute($cmd);
+            $res = $p->getLog();
+            $res = $res[2];
+            $res = $res["output"];
+            $start = strpos($res[0], "(")+1;
+            $length = strpos($res[0], ",") - strpos($res[0], "(") - 1;
+            $res = substr($res[0], $start, $length);
+            
+        return  $res ;
     }
 }
 ?>
