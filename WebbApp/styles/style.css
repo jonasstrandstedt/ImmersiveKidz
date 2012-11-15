@@ -1,0 +1,105 @@
+body, html{ margin: 0; padding: 0;}
+
+body{
+	background-color: #EEE;
+}
+h1,h2,h3,h4,p,a,li,ul{
+font-family: arial, sans-serif;
+text-decoration: none;
+}
+.row{
+	width: 1020px;
+	overflow: auto;
+	
+}
+.imgform input{
+	width:200px;
+}
+.imgform label{
+	float:left;
+}
+.imgform{
+	width: 340px;
+	float:left;
+
+}
+#nav{
+margin: 50px auto 0 auto;
+width: 1024px;
+background-color: #2e2e2d;
+height: 30px;
+text-transform:uppercase;
+font-size: 10px;
+font-weight:bold;
+color: bababa;
+}
+
+#nav a:visited{
+color: #bababa;
+}
+#nav a:hover{
+color: white;
+}
+
+#nav ul{
+list-style: none;
+float: left;
+padding: 10px 0 0 300px;
+margin: 0 50px;
+}
+
+#nav ul li{
+margin: 0 20px 0 0;
+display: inline;
+}
+
+#content{
+margin: 0 auto 0 auto;
+width: 1024px;
+background-color: #302b29;
+height: 150px;
+font-size: 14px;
+color: #e8e8e8;
+}
+
+#content a:visited{
+color: #e8e8e8;
+}
+
+#content a:hover{
+color: white;
+}
+
+#content ul{
+padding: 50px 0 0 300px;
+list-style: none;
+float: left;
+margin: 0 50px;
+}
+
+#content ul li{
+margin: 0 20px 0 0;
+display: inline;
+}
+
+#sub{
+background-color: #302b29;
+width: 1024px;
+margin: 0 auto;
+overflow: auto;
+}
+
+#footer{
+width: 1024px;
+background-color: #2e2e2d;
+height: 30px;
+margin: 0 auto;
+}
+
+#footer p{
+color: #777;
+}
+
+
+
+

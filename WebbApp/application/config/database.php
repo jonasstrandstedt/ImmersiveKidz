@@ -1,3 +1,23 @@
+<!--
+* @brief    database-config file.
+*
+* @details  Connects to the database.
+*			You need to config a database with the following settings.
+*
+*	['localhost'] The hostname of your database server.
+*	['ImmersiveKidz'] The username used to connect to the database
+*	['20n69O41992Nd54'] The password used to connect to the database
+*	['ImmersiveKidz'] The name of the database you want to connect to
+*
+*
+*
+* @author	Codeigniter. 
+* @author   Viktor Fröberg, vikfr292@student.liu.se
+* @date     November 9, 2012
+* @version  1.1
+*    
+-->
+
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
@@ -49,9 +69,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = '';
-$db['default']['password'] = '';
-$db['default']['database'] = '';
+$db['default']['username'] = 'ImmersiveKidz';
+$db['default']['password'] = '20n69O41992Nd54';
+$db['default']['database'] = 'ImmersiveKidz';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

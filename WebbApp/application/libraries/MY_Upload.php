@@ -52,16 +52,14 @@ class MY_Upload extends CI_Upload {
 
 		//Multiple file upload
 		if( is_array( $_FILES[$field] ) )
-		{
-	
+		{	
 			//$count = count($_FILES[$field]['name']); //Number of files to process
 			
 			foreach( $_FILES[$field]['name'] as $k => $file )
 			{
 				// Was the file able to be uploaded? If not, determine the reason why.
 				if ( ! is_uploaded_file($_FILES[$field]['tmp_name'][$k] ) )
-				{
-					
+				{					
 					$error = ( ! isset($_FILES[$field]['error'][$k])) ? 4 : $_FILES[$field]['error'][$k];
 					
 					switch($error)
@@ -89,8 +87,7 @@ class MY_Upload extends CI_Upload {
 							break;
 						default :   $this->set_error('upload_no_file_selected');
 							break;
-					}
-		
+					}		
 					return FALSE;
 				}
 								
@@ -235,34 +232,26 @@ class MY_Upload extends CI_Upload {
 				}
 				else
 				{
-				
 					$return_value = TRUE;
-				
-				}
-				
-				
+				}				
 			}
-			session_start();
+			//session_start();
 			$_SESSION['return_value'] = $return_value;
 			return $return_value;
 		
 		}
 		else //Single file upload, rely on native CI upload class
-		{
-		
+		{		
 			$upload = self::do_upload();
 			
 			return $upload;
-		
-		}
-
-	
+		}	
 	}
 	
 	public function get_multi_upload()
 	{
 		$return_value = $_SESSION['return_value'];
-		session_destroy();
+		//session_destroy();
 		return $return_value;
 	}
 

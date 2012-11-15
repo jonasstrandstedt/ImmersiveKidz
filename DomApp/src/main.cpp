@@ -1,3 +1,10 @@
+#ifndef _RUN_TESTS_AT_STARTUP_
+
+#ifdef _RUN_TESTS_
+int runUnitTests(int argc, char **argv);
+#endif
+
+
 #include "sgct.h"
 #include "ImmersiveKidz.h"
 
@@ -21,6 +28,12 @@ int prevMouseY = -1;
 
 int main( int argc, char* argv[] )
 {
+#ifdef _RUN_TESTS_
+	if(runUnitTests(argc, argv )){
+		std::cin.get();
+	}
+#endif
+
 	// Allocate
 	gEngine = new sgct::Engine( argc, argv );
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
@@ -61,18 +74,21 @@ int main( int argc, char* argv[] )
 }
 
 void myInitOGLFun() {
-	// Allocate and initialize ImmersiveKidz
-	iKidz = ImmersiveKidz::getInstance();
-	iKidz->setEngine(gEngine);
-	iKidz->setMaster(gEngine->isMaster());
-	
-	iKidz->loadScene("world1");
+	//Add font information
+	if( !sgct::FontManager::Instance()->AddFont( "Verdana", "verdana.ttf" ) )
+			sgct::FontManager::Instance()->GetFont( "Verdana", 14 );
 
-	//glCullFace(GL_BACK);
-	//glFrontFace(GL_CW); //our polygon winding is counter clockwise
-	//glEnable(GL_CULL_FACE);
+	// Allocate and initialize ImmersiveKidz
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER,0.0f);
+
+	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+
+	iKidz = ImmersiveKidz::getInstance();
+	iKidz->setMaster(gEngine->isMaster());
 }
 
 
@@ -99,6 +115,10 @@ void myDecodeFun()
 
 void myKeyboardFun(int key,int state){
 	iKidz->keyboardButton(key,state);
+
+	if(gEngine->isMaster() && key == 'P' && state == GLFW_PRESS) {
+		gEngine->takeScreenshot();
+	}
 }
 
 void myMouseMotionFun(int x,int y){
@@ -123,3 +143,5 @@ void myMouseButtonFun(int button,int state){
 void myPostSyncPreDrawFunction(){
 	iKidz->postSyncPreDrawFunction();
 }
+
+#endif

@@ -6,9 +6,10 @@ RM = rm
 MESSAGE =
 
 #specify dependency list
-OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/Illustration.o src/Camera.o
+OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/Illustration.o src/Camera.o src/SceneLoader.o src/Skybox.o
 OUTPUT ?= Program
-FLAGS ?= 
+FLAGS ?=
+CXXFLAGS ?= 
 INCPATH ?= -I"sgct_0_9_5/include"
 
 OPENGL=1
@@ -33,7 +34,7 @@ all: $(OBJECTS)
 	-@echo "Linking for $(OS)"
 	-@echo "Including $(MESSAGE)"
 	-@echo " "
-	$(CC) -o $(OUTPUT) $(OBJECTS) $(INCPATH) $(FLAGS) 
+	$(CC) -o $(OUTPUT) $(OBJECTS) $(INCPATH) $(CXXFLAGS) $(FLAGS) 
 
 clean:
 	-@echo "Cleaning"
@@ -41,6 +42,6 @@ clean:
 
 # pattern that compiles all .o files
 %.o: %.cpp
-	$(CC) $(INCPATH) -c $< -o $@
+	$(CC) $(CXXFLAGS) $(INCPATH) -c $< -o $@
 
 

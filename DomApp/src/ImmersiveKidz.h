@@ -4,19 +4,22 @@
 #include <iostream>
 #include <vector>
 #include "sgct.h"
-#include "tinyxml2.h"
 #include "DrawableObject.h"
 #include "Billboard.h"
 #include "Illustration.h"
 #include "Model.h"
 #include "Camera.h"
+#include "HUD.h"
+#include "SceneLoader.h"
+
 
 /**
 * @brief  	The ImmersiveKidz engine
 *
-* @details	The engine class that controls the ImmersiveKidz application. Only allow one instance called from the sgct main class.
+* @details	The engine class that controls the ImmersiveKidz application. Only 
+*			allow one instance called from the sgct main class.
 *
-* @author 	Jonas Strandstedt, jonast184@student.liu.se
+* @author 	Jonas Strandstedt, jonst184@student.liu.se
 * @date   	November 1, 2012
 * @version	0.0.1
 *    
@@ -27,11 +30,11 @@ public:
 	~ImmersiveKidz();
 	
 
-	void setMaster(bool m) { _isMaster = m; };
+	void setMaster(bool m) { _isMaster = m; _loader.setMaster(m); };
 	void setScenePath(std::string folder);
+	void setSceneLoaded(bool isLoaded) { _sceneLoaded = isLoaded; };
+	void addDrawableObject(DrawableObject *o, std::string f = "none");
 
-	void addDrawableObject(DrawableObject *o);
-	
 	void preSyncFunc();
 	void draw();
 	void encode();
@@ -42,13 +45,10 @@ public:
 	void mouseButton(int button,int state);
 	void keyboardButton(int key,int state);
 
-	void loadScene(std::string folder);
-	
-	void setEngine(sgct::Engine *engine);
-	sgct::Engine *getEngine();
-
 	Camera* getCamera();
 	static ImmersiveKidz* getInstance();
+	
+	std::string getScenePath() { return _scenePath; };
 private:
 	static ImmersiveKidz* _instance;
 	ImmersiveKidz();
@@ -61,17 +61,25 @@ private:
 	std::vector<Illustration*> _illustrations;
 
 	// instance variables
+
+	HUD	*_hud;
+	bool isMaster;
+	std::string scene_path;		// set in constructor
+	bool scene_loaded;
+
 	bool _isMaster;
 	std::string _scenePath;		// set in constructor
 	bool _sceneLoaded;
+	
 
 	// time and dynamic variables
 	double _currTime;
 	double _dt;
-	float _mouseX;
-	float _mouseY;
 
+	// handlers
+	SceneLoader _loader;
 	Camera *_camera;
+
 };
 
 

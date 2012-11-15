@@ -15,7 +15,7 @@
 			<texture>grass.png</texture>
 			<animation>none</animation>
 			<pos x="0.0" y="0.0" z="0.0"/>
-			<scale val="0.1"/>
+			<scale val="0.5"/>
 			<rot x="90.0" y="0.0" z="0.0"/>
 			<base_color r="0.0" g="0.5" b="0.0"/>
 		</item>
@@ -46,7 +46,7 @@
 			<name_drawing>kossan ko</name_drawing>
       	  	<description>En ko som heter ko!</description>
 			<animation>none</animation>
-			<texture>1.png</texture>
+			<texture>blomma.png</texture>
 			<pos x="10.0" y="0.0" z="10.0"/>
 			<size x="2.0" y="2.0"/>
 		</item>
@@ -55,7 +55,7 @@
 			<name_drawing>kossan mu</name_drawing>
       	  	<description>En ko som heter mu!</description>
      	   	<animation>none</animation>
-			<texture>1.png</texture>
+			<texture>blomma.png</texture>
 			<pos x="10.0" y="0.0" z="5.0"/>
 			<size x="2.0" y="2.0"/>
 		</item>
