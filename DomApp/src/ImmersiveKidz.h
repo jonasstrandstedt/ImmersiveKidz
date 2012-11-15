@@ -49,7 +49,8 @@ public:
 	static ImmersiveKidz* getInstance();
 	
 	std::string getScenePath() { return _scenePath; };
-
+	
+	void setWorldRect(glm::vec4 rec);
 	glm::vec4 getWorldRect();
 private:
 	static ImmersiveKidz* _instance;
@@ -81,6 +82,8 @@ private:
 	// handlers
 	SceneLoader _loader;
 	Camera *_camera;
+
+	glm::vec4 _worldRect;
 
 };
 

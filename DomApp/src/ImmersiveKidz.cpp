@@ -217,34 +217,20 @@ Camera* ImmersiveKidz::getCamera(){
 	return _camera;
 }
 
+/**
+*@brief	    Set the size of the world on the form [minX,minY,maxX,maxX]
+*
+*@param    worldRect	a vec4 on the form [minX,minY,maxX,maxX]
+*/
+void ImmersiveKidz::setWorldRect(glm::vec4 worldRect){
+	_worldRect = worldRect;
+}
 
 /**
-*@brief	    Returns the size of the world. Currenlty return the min/max position for illustrations that currently are in the scene, this should be changed to be read from the xml
+*@brief	    Returns the size of the world. 
 *
 *@return    rect	rect of [minX,minY,maxX,maxX] eg, the 2d corner points of the world	
 */
 glm::vec4 ImmersiveKidz::getWorldRect(){
-	glm::vec4 rect;
-	if(_illustrations.size() == 0)
-		return rect;
-
-	rect[0] = rect[2] = _illustrations[0]->getPosition()[0];
-	rect[1] = rect[3] = _illustrations[0]->getPosition()[2];
-
-	for(int i = 1;i<_illustrations.size();i++){
-		
-		if(rect[0]>_illustrations[i]->getPosition()[0])
-			rect[0] = _illustrations[i]->getPosition()[0];
-		
-		if(rect[1]>_illustrations[i]->getPosition()[2])
-			rect[1] = _illustrations[i]->getPosition()[2];
-
-		if(rect[2]<_illustrations[i]->getPosition()[0])
-			rect[2] = _illustrations[i]->getPosition()[0];
-
-		if(rect[3]<_illustrations[i]->getPosition()[2])
-			rect[3] = _illustrations[i]->getPosition()[2];
-	}
-	rect = glm::vec4(-10,-10,10,10);
-	return rect;
+	return _worldRect;
 }

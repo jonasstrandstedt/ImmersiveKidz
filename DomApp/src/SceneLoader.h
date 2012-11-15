@@ -17,6 +17,8 @@
 #include "Illustration.h"
 #include "Model.h"
 
+#include <glm/gtx/random.hpp>
+
 /**
 * @brief  	The scene loader engine
 *

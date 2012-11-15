@@ -20,6 +20,13 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 	_transform = glm::translate(_transform, position);
 };
 
+
+/**
+*@brief	    Gets the position of the billboard
+*
+*@return	vec3
+*
+*/
 glm::vec3 Billboard::getPosition()
 {
 	return _position;
