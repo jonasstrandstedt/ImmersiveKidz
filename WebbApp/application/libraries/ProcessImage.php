@@ -57,14 +57,10 @@ class ProcessImage {
             //create mask, save to folder "mask".
             $mask = $folder. "/mask/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."mask.png";
             $phMagick = new phMagick($images[$i], $mask);
-            $amount = "45%";
+            $amount = "10%";
             $phMagick->threshold($amount);
             
             //$phMagick->open($size);
-            
-            $phMagick = new phMagick($mask, $mask);
-            $drawSettings = "color 0,0 floodfill";
-            $phMagick->fillHoles($drawSettings);
 
             /*$phMagick = new phMagick($mask, $mask);
             $phMagick->close("diamond");*/
@@ -93,9 +89,10 @@ class ProcessImage {
             $amount = 10*$intensityPercent . "%";
             echo "thresh amount: " . $amount . "<br/>";
             $phMagick->threshold($amount);
+
             $phMagick = new phMagick($mask, $mask);
-            $size = 6;
-            $phMagick->close($size, "Disk");
+            $drawSettings = "color 0,0 floodfill";
+            $phMagick->fillHoles($drawSettings);
 
             //create out image, save to folder "out".
             array_push($imagesOut,$out);

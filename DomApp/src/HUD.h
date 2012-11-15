@@ -23,8 +23,9 @@ public:
 	//Functions
 	void drawIllustrationNames(std::vector<Illustration*> illu);
 	void drawBackgroundToNames();
+	void drawMinimapBackground();
+	void drawMinimapPositions(std::vector<Illustration*> illu);
 
-	
 
 	void mouseButton(int button,int state);
 	void mouseMotion(int dx,int dy);

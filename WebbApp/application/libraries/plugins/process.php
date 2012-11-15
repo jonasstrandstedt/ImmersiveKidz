@@ -32,7 +32,7 @@ class phMagick_process{
             //Build command to threshold image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource().'"'  ;
-            $cmd .= ' -threshold ' . $amount ;
+            $cmd .= ' -negate -threshold ' . $amount ;
             $cmd .= ' "' . $p->getDestination().'"'  ;
 
             echo "Threshold: " . $cmd . "<br/>";
@@ -53,7 +53,7 @@ class phMagick_process{
         return  $p ;
     }
 
-    /*function close(phmagick $p, $size, $kernel){
+    function close(phmagick $p, $size, $kernel){
             //Build command to close image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource().'"'  ;
@@ -65,7 +65,7 @@ class phMagick_process{
         return  $p ;
     }
 
-    function close(phmagick $p, $kernel){
+   /* function close(phmagick $p, $kernel){
             //Build command to close image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource() .'"'  ;
@@ -84,7 +84,6 @@ class phMagick_process{
             $cmd .= ' "' . $p->getSource() .'"'  ;
             $cmd .= ' "' . $originalImage .'"' ;
             //$cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' -compose multiply -composite'  ;
             $cmd .= ' "' . $p->getSource() .'"'  ;
             $cmd .= ' -compose multiply -composite  -transparent "#000000"'  ;
             $cmd .= ' "' . $p->getDestination() .'"'  ;
@@ -99,7 +98,7 @@ class phMagick_process{
         //Build to fill holes
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() . '"';
-        $cmd .= ' -fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"' . ' -fill black +opaque red -fill white -opaque red -alpha off -negate';
+        $cmd .= '-fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"' . ' -fill black +opaque red -fill white -opaque red -alpha off';
         $cmd .= ' "' . $p->getDestination() .'"'  ;
 
         echo "Fill holes " . $cmd . "<br/>";

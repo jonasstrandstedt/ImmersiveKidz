@@ -52,13 +52,13 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 /**
 *@brief	    Adds a DrawableObject to the vector
 *
-*@details   Simply uses the vector push_back functionality so no checks are performed.
+*@details   Uses the vector push_back functionality so no checks are performed.
 *
 *@param		o is a subclass of DrawableObject (because DrawableObject is abstract)
 *
 *@return     void
 */
-void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f) {
+void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double seed) {
 	
 	Illustration *ill = dynamic_cast<Illustration*>(o);
 	if(ill) {
@@ -66,7 +66,7 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f) {
 	}
 	
 	_objects.push_back(o);
-	_objects.back()->setAnimationFuncByName(f);
+	_objects.back()->setAnimationFuncByName(f, seed);
 }
 
 /**
@@ -95,10 +95,14 @@ void ImmersiveKidz::draw() {
 		_camera->setCamera();
 		for (int i = 0; i < _objects.size(); ++i)
 		{
-			_objects.at(i)->draw(_currTime, _dt);
+			_objects.at(i)->draw(_currTime);
 		}
-		_hud->drawBackgroundToNames();
+
+		//_hud->drawBackgroundToNames();
+		//_hud->drawMinimapBackground();
+		_hud->drawMinimapPositions(_illustrations);
 		_hud->drawIllustrationNames(_illustrations);
+		
 	} else {
 		_loader.menu();
 	}
@@ -138,6 +142,17 @@ void ImmersiveKidz::decode(){
 
 }
 
+/**
+* @brief	a method that uses the mouseMotion method in the Camera class
+*
+* @param	x
+* @param	y
+* @param	dx			delta x, amount of movement in x-axis
+* @param	dy			delta y, amount of movement in y-axis
+*
+* @return	void 
+*/
+
 void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 	if(_camera == 0)
 		return;
@@ -147,6 +162,16 @@ void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 	_camera->mouseMotion(dx,dy);
 
 }
+
+
+/**
+* @brief	a method that uses the mouseButton method in the Camera class
+*
+* @param	button		The button which is interacted with
+* @param	state		The state, if the button is pressed or not 
+*
+* @return	void 
+*/
 
 void ImmersiveKidz::mouseButton(int button,int state){
 	if(_camera == 0)
@@ -158,6 +183,14 @@ void ImmersiveKidz::mouseButton(int button,int state){
 
 }
 
+/**
+* @brief	a method that uses the keyboardButton method in either the Camera class, the HUD or the SceneLoader class
+*
+* @param	key			The key which is interacted with
+* @param	state		The state, if the key is pressed or not 
+*
+* @return	void 
+*/
 void ImmersiveKidz::keyboardButton(int key,int state){
 	if(_camera == 0)
 		return;
@@ -170,7 +203,7 @@ void ImmersiveKidz::keyboardButton(int key,int state){
 }
 
 /**
-*@brief	    Function called from sgct setPostSyncPreDrawFunction
+*@brief	    Function called from sgct setPostSyncPreDrawFunction, updates the Camera
 *
 *@return     void
 */
@@ -185,4 +218,36 @@ void ImmersiveKidz::postSyncPreDrawFunction(){
 */
 Camera* ImmersiveKidz::getCamera(){
 	return _camera;
+}
+
+
+/**
+*@brief	    Returns the size of the world. Currenlty return the min/max position for illustrations that currently are in the scene, this should be changed to be read from the xml
+*
+*@return    rect	rect of [minX,minY,maxX,maxX] eg, the 2d corner points of the world	
+*/
+glm::vec4 ImmersiveKidz::getWorldRect(){
+	glm::vec4 rect;
+	if(_illustrations.size() == 0)
+		return rect;
+
+	rect[0] = rect[2] = _illustrations[0]->getPosition()[0];
+	rect[1] = rect[3] = _illustrations[0]->getPosition()[2];
+
+	for(int i = 1;i<_illustrations.size();i++){
+		
+		if(rect[0]>_illustrations[i]->getPosition()[0])
+			rect[0] = _illustrations[i]->getPosition()[0];
+		
+		if(rect[1]>_illustrations[i]->getPosition()[2])
+			rect[1] = _illustrations[i]->getPosition()[2];
+
+		if(rect[2]<_illustrations[i]->getPosition()[0])
+			rect[2] = _illustrations[i]->getPosition()[0];
+
+
+		if(rect[3]<_illustrations[i]->getPosition()[2])
+			rect[3] = _illustrations[i]->getPosition()[2];
+	}
+	return rect;
 }

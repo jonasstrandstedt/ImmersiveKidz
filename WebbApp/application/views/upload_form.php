@@ -40,4 +40,5 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 		<div id="button"><input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" /></div>
 		</form>
 	</div>
+
 </div>

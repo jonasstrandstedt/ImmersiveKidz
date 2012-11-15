@@ -1,13 +1,13 @@
 #include "DrawableObject.h"
 
 /**
-*@brief	    DrawableObject main constructor
+*@brief	    DrawableObject default constructor
 *
 *@details   Defines the animation function to be 0.
 */
 DrawableObject::DrawableObject() {
 	_animationFunc = 0;
-	_animationTimer = 0.0;
+	_seed = 0;
 	
 	_transform = glm::mat4x4();
 }
@@ -20,13 +20,13 @@ DrawableObject::DrawableObject() {
 *
 *@return     void
 */
-void DrawableObject::draw(double t, double dt) {
+void DrawableObject::draw(double t) {
 
 	// pre-animate
 	if (_animationFunc != 0)
 	{
 		glPushMatrix();
-		_animationFunc(t, dt, _animationTimer);
+		_animationFunc(t, _seed);
 	}
 	
 	//Appllying the transform matrix
@@ -51,10 +51,10 @@ void DrawableObject::draw(double t, double dt) {
 *
 *@return     void
 */
-void DrawableObject::setAnimationFuncByName(std::string name) { 
-	if ( name == "bounce" ) setAnimationFunc(bounce);
-	if ( name == "pendulum" ) setAnimationFunc(pendulum);
-	if ( name == "none" ) setAnimationFunc(none);
+void DrawableObject::setAnimationFuncByName(std::string name, double seed) { 
+	if ( name == "bounce" ) setAnimationFunc(bounce, seed);
+	if ( name == "pendulum" ) setAnimationFunc(pendulum, seed);
+	if ( name == "none" ) setAnimationFunc(none, seed);
 };
 
 /**
@@ -62,8 +62,9 @@ void DrawableObject::setAnimationFuncByName(std::string name) {
 *
 *@return     void
 */
-void bounce(double t, double dt, double at) {
+void bounce(double t, double seed) {
 	// translates the object up and down along the y-axis (never below 0)
+	t += seed;
 	glTranslatef(0.0f,fabsf(sin(t*2))*0.5,0.0f);
 }
 
@@ -72,8 +73,9 @@ void bounce(double t, double dt, double at) {
 *
 *@return     void
 */
-void pendulum(double t, double dt, double at) {
+void pendulum(double t, double seed) {
 	// translates the object side to side along the x-axis
+	t += seed;
 	glTranslatef(sin(t),0.0f,0.0f);
 }
 
@@ -82,6 +84,6 @@ void pendulum(double t, double dt, double at) {
 *
 *@return     void
 */
-void none(double t, double dt, double at) {
+void none(double t, double seed) {
 	// dafuq?! :D
 }

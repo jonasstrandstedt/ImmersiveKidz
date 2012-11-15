@@ -61,4 +61,28 @@ TEST (CameraTests, Movements) {
 	c->keyboardButton('S',0);
 	c->update(1);
 	EXPECT_EQ(glm::vec3(1,1.5,3),c->getPosition());
+
+	c->keyboardButton('Q',1);
+	c->update(1);
+	EXPECT_EQ(glm::vec3(1,2.5,3),c->getPosition());
+	
+	c->keyboardButton('Q',0);
+	c->keyboardButton('E',1);
+	c->update(1);
+	c->update(1);
+	EXPECT_EQ(glm::vec3(1,0.5,3),c->getPosition());
+	c->keyboardButton('E',0);
+	
+	c->keyboardButton('A',1);
+	c->update(1);
+	c->update(1);
+	EXPECT_EQ(glm::vec3(-1,0.5,3),c->getPosition());
+	c->keyboardButton('E',0);
+	
+	c->keyboardButton('A',0);
+	c->keyboardButton('D',1);
+	c->update(1);
+	c->update(1);
+	EXPECT_EQ(glm::vec3(1,0.5,3),c->getPosition());
+	c->keyboardButton('D',0);
 }

@@ -13,19 +13,31 @@ Illustration::Illustration(std::string texturename , glm::vec3 position, glm::ve
 
 	_seen = false;
 };
-
+/**
+*@brief	    Returns the name of the drawing
+*
+*@return	string
+*/
 std::string Illustration::getName()
 {
 	return _nameArtist;
 };
 
-
-//Returns a value which tells if the illustration has been seen
+/**
+*@brief	    Returns a value which tells if the illustration has been seen
+*
+*@return	bool
+*/
 bool Illustration::getSeen()
 {
 	return _seen;
 };
 
+/**
+*@brief	    Sets a value which tells if the illustration has been seen
+*
+*@return	void
+*/
 void Illustration::setSeen(bool state)
 {
 	_seen = state;

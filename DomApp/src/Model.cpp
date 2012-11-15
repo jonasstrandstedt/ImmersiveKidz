@@ -1,9 +1,9 @@
 #include "Model.h"
 
 /**
-*@brief	    Create a Model object
+*@brief	    Constructor of Model.
 *
-*@details   Create a Model object
+*@details   Creates a Model object with a given rotation, base color and scaling.
 *
 *@param		filenme Filename of an object file. Ex: "thingy.obj".
 *@param		texturename Filename of the texture file. Ex: "image.png"
@@ -116,7 +116,7 @@ void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize
 *
 *@details   Loads an object from an wavefront object file. 
 *
-*@param		filenme Filename of an object file. Ex: "thingy.obj".
+*@param		filename Filename of an object file. Ex: "thingy.obj".
 *@param		scale If the object needs to be scaled before loaded. Defaults to 1.0
 *@param		rotation If the object needs to be rotated before loaded. Defaults to 0.0,0.0,0.0
 *@param		base_color Sets the default color of the object if no texture is used. Defaults to white
