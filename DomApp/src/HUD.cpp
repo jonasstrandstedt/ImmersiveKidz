@@ -23,9 +23,6 @@ void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
 	int x , y;
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
-	
-	//sgct::MessageHandler::Instance()->print("Random number: %d\n", winSizeX);
-	//sgct::MessageHandler::Instance()->print("Random number: %d\n", winSizeY);
 
 	x = 20;
 	y = 30;
@@ -113,6 +110,7 @@ void HUD::drawBackgroundToNames()
 
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+	glBindTexture( GL_TEXTURE_2D, 0);
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -123,7 +121,8 @@ void HUD::drawBackgroundToNames()
 */
 void HUD::drawMinimapBackground()
 {
-	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName("minimap"));
+	glDisable(GL_DEPTH_TEST);
+	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName("minimap"));
 
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
@@ -168,6 +167,8 @@ void HUD::drawMinimapBackground()
 
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+	glBindTexture( GL_TEXTURE_2D, 0);
+	glEnable(GL_DEPTH_TEST);
 
 }
 
@@ -180,13 +181,20 @@ void HUD::drawMinimapBackground()
 */
 void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 {
+	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	glm::vec3 camPosition = ImmersiveKidz::getInstance()->getCamera()->getPosition();
+	glm::vec2 camRotation = ImmersiveKidz::getInstance()->getCamera()->getRotation();
+
+	glDisable(GL_DEPTH_TEST);
 	//Time to draw the positions
+	glBindTexture( GL_TEXTURE_2D, 0);
+
+
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
 
 	int sizeY = 150;
 	int sizeX = 250;
-
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -198,23 +206,48 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	glPushMatrix();
 	glLoadIdentity();
 
-	glPointSize(20.0f); 
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_LIGHTING);
-	glColor3f( 1.0f, 0.0f, 0.0f);
+	glPointSize(20.0f);
+	glBegin(GL_POINTS);
+	//Draw illustrations on minimap
 	for(int i = 0; i < illu.size(); i++)
 	{
-		glBegin(GL_POINTS);
+		
+		if(i == _selection)
+		{
+			glColor3f( 0.0f, 0.0f, 1.0f);	
+		}else if(illu[i]->getSeen())
+		{
+			glColor3f( 0.0f, 1.0f, 0.0f);			
+		}else		{
+			glColor3f( 1.0f, 0.0f, 0.0f);
+		}
+
+
 		glm::vec3 illuPosition = illu[i]->getPosition();
 
-		glVertex2f( illuPosition.x , illuPosition.z);
+		float x = (illuPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
+		float y = (illuPosition.z - worldRect.y) / (worldRect.w - worldRect.y);
 
-		glEnd();
+
+		glVertex2f(x * sizeX  , y * sizeY);
+
+
+		glColor3f( 1.0f, 1.0f, 1.0f);
 	}
+	//Draw camera on minimap
+	float x = (camPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
+	float y = (camPosition.z - worldRect.y) / (worldRect.w - worldRect.y);
 
-	glEnable(GL_DEPTH_TEST);
 
-	glColor3f( 1.0f, 1.0f, 1.0f);
+	glVertex2f(x * sizeX  , y * sizeY);
+
+
+
+	glEnd();
+
+	
+
+	
 	
 
 	glMatrixMode(GL_PROJECTION);
@@ -222,6 +255,8 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
+
 }
 
 /**

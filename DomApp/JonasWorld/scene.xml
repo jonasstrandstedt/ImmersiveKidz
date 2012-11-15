@@ -1,5 +1,12 @@
 <?xml version="1.0" ?>
 <scene>
+  <world>
+    <plane>
+      <texture>grass.png</texture>
+      <size minx="-50"  miny="-50" maxx="50" maxy="50"/>
+    </plane>
+    <rand minx="-10" miny="-10" maxx="10"  maxy="10"/>
+  </world>
 	<models>
 		<item>
 			<filename>plane.obj</filename>
@@ -7,14 +14,20 @@
 			<pos x="0.0" y="0.0" z="0.0"/>
 			<scale val="0.5"/>
 			<rot x="90.0" y="0.0" z="0.0"/>
-			<base_color r="0.0" g="0.5" b="0.0"/>
 		</item>
+    <item>
+      <filename>box.obj</filename>
+      <texture>EXTRA_LIFE.png</texture>
+      <animation name="bounce"/>
+      <mult count="1000" seed="4524" map="water.png"/>
+      <scale val="0.002"/>
+    </item>
 	</models>
 	<billboards>
 		<item>
 			<texture>tree.png</texture>
-			<pos x="0.0" y="0.0" z="0.0"/>
 			<size x="1.0" y="1.8"/>
+      <mult count="1000" seed="4124" map="water.png"/>
 		</item>
 		<item>
 			<texture>tree.png</texture>
@@ -30,6 +43,7 @@
 			<texture>blomma.png</texture>
 			<pos x="2.0" y="0.0" z="2.5"/>
 			<size x="0.5" y="1.0"/>
+      <mult count="200" seed="1337" map="water.png"/>
 		</item>
 		<item>
 			<texture>blomma.png</texture>
