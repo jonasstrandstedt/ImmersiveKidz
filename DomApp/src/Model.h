@@ -36,7 +36,7 @@ typedef struct
 */
 class Model: public DrawableObject {
 public:
-	Model(std::string filename, std::string texturename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
+	Model(std::string filename, std::string texturename, glm::vec3 position = glm::vec3(0.0,0.0,0.0), float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
 	~Model() {};
 	
 	void onDraw();
