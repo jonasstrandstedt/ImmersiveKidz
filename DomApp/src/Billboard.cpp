@@ -6,20 +6,27 @@
 *
 *@details	Creates a billboard at a position, sets the proportions and assignes a texture to it.
 *
-*@param		texturename Unique name of a texture. Ex: "texture.png".
-*@param		position Contains the positions in world coordinates.
-*@param		proportionsIn The proportions of the billboardsize according to the world unit length. 
+*@param		texturename		Unique name of a texture. Ex: "texture.png".
+*@param		position	Contains the positions in world coordinates.
+*@param		proportionsIn	The proportions of the billboardsize according to the world unit length. 
 */
 Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn)
 {
 	this->_proportions = proportionsIn;
 	this->_position = position;
-	_transform = glm::translate(_transform, position);
-	sgct::TextureManager::Instance()->loadTexure(_texture, texturename, texturename, true);
+	ImmersiveKidz::getInstance()->loadTexture(texturename);
+	_texture = texturename;
 	_proportions = proportionsIn;
 	_transform = glm::translate(_transform, position);
 };
 
+
+/**
+*@brief	    Gets the position of the billboard
+*
+*@return	vec3
+*
+*/
 glm::vec3 Billboard::getPosition()
 {
 	return _position;
@@ -36,7 +43,7 @@ void Billboard::onDraw() {
 	
 	//sgct::MessageHandler::Instance()->print("Billboard draw\n");
 
-	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByIndex(_texture));
+	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture));
 
 
 	glPushMatrix();
@@ -69,4 +76,6 @@ void Billboard::onDraw() {
 	glDisable (GL_BLEND);
 
 	glPopMatrix();
+	
+	glBindTexture( GL_TEXTURE_2D, 0);
 }

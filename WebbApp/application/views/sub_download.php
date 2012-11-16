@@ -1,10 +1,6 @@
-<div id="sub">	
-	<?php echo form_open_multipart('index.php/site/create/download');?>
-	<form>
-	<input type="file" name="userfile[]" size="20" multiple=""/>
+<?php
 
-	<br /><br />
-
-	<input type="submit" value="Ladda ned bilderna" />
-	</form>
-</div>
+		echo "<div id='sub'>".form_open('index.php/site/create/download')
+		."<input type='hidden' name='date' value='".$date."' />
+		<input type='hidden' name='group' value='".$group."' />
+		<input type='submit' value='Ladda Ner' name='download'></form></div>";

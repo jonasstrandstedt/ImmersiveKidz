@@ -16,6 +16,9 @@
 #include "Billboard.h"
 #include "Illustration.h"
 #include "Model.h"
+#include "Plane.h"
+
+#include <glm/gtx/random.hpp>
 
 /**
 * @brief  	The scene loader engine
@@ -26,8 +29,9 @@
 *			they have not loaded the same scene and therefore does so. 
 *
 * @author 	Jonas Strandstedt, jonst184@student.liu.se
-* @date   	November 1, 2012
-* @version	0.0.1
+* @author 	Viktor Nilsson, vikni067@student.liu.se
+* @date   	November 15, 2012
+* @version	0.0.2
 *    
 */
 class SceneLoader {

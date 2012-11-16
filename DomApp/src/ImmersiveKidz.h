@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
+#include <algorithm>
 #include "sgct.h"
 #include "DrawableObject.h"
 #include "Billboard.h"
@@ -33,7 +35,8 @@ public:
 	void setMaster(bool m) { _isMaster = m; _loader.setMaster(m); };
 	void setScenePath(std::string folder);
 	void setSceneLoaded(bool isLoaded) { _sceneLoaded = isLoaded; };
-	void addDrawableObject(DrawableObject *o, std::string f = "none", double seed = 0.0);
+	void addDrawableObject(DrawableObject *o, std::string f = "none", double animseed = 0.0);
+	bool loadTexture(std::string texture);
 
 	void preSyncFunc();
 	void draw();
@@ -49,7 +52,8 @@ public:
 	static ImmersiveKidz* getInstance();
 	
 	std::string getScenePath() { return _scenePath; };
-
+	
+	void setWorldRect(glm::vec4 rec);
 	glm::vec4 getWorldRect();
 private:
 	static ImmersiveKidz* _instance;
@@ -59,8 +63,9 @@ private:
 	sgct::Engine *engine;
 	
 	// all objects in the scene that can be drawn
-	std::vector<DrawableObject*> _objects;
-	std::vector<Illustration*> _illustrations;
+	std::vector< DrawableObject* > _objects;
+	std::vector< Illustration* > _illustrations;
+	std::set< std::string > _textures;
 
 	// instance variables
 
@@ -81,6 +86,8 @@ private:
 	// handlers
 	SceneLoader _loader;
 	Camera *_camera;
+
+	glm::vec4 _worldRect;
 
 };
 
