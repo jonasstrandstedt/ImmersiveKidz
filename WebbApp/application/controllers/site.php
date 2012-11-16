@@ -145,10 +145,15 @@ class Site extends CI_Controller
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
 		$this->load->view("content_create");
-
 		$this->load->model("Images_model");
-
-		if(!isset($_POST['download'])){
+		if(!(isset($date) || isset($group)) && !isset($_POST['download'])){
+			$info = $this->Images_model->get_all_groups();
+			
+			$data = array(
+				"info" => $info);
+			$this->load->view("content_download", $data);
+		}
+		elseif(!isset($_POST['download'])){
 		
 		$data = array(
 				"group" => $group,
@@ -157,39 +162,23 @@ class Site extends CI_Controller
 
 		$this->load->view("sub_download", $data);
 		}else{
-
+			
 			$filename = $group."_".$date.".Zip"; // Name of the zip-file to create.
 			$images = $this->Images_model->get_all_images_from_group($group, $date);
 			$this->zip->clear_data();
 			foreach ($images as $row){
-				// Skriv en imgtagg för att kolla sökvägen.
-				//echo "<img src='../../../".$row -> imgouturl."' alt='Bildjävel' width='90' />";
 				$path = $row -> imgouturl;
-				if($this->zip->read_file($path, TRUE)){
-					//echo "tillagd!";
-				} 
+				$this->zip->read_file($path, TRUE);
 
 			}
-			
-			// Kolla om vi kommer hit när man trycker download.
-		//	$this->zip->archive($filename); 
 
 			$this->zip->download($filename);
 		}
 		$this->load->view("site_footer");
 		
 	}
-
-	public function edit()
-	{
-		$this->load->view("site_header");
-		$this->load->view("site_nav");
-		session_destroy();
-		$this->add_information(NULL,NULL);
-		$this->load->view("site_footer");
-	}
 	
-	public function about()
+	function about()
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");

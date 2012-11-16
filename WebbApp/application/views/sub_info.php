@@ -13,7 +13,7 @@
 
 $counter = 0;
 
-	echo "<div id='sub'>". form_open_multipart('index.php/site/add_information//');
+	echo "<div id='sub'>". form_open_multipart('index.php/site/add_information/');
 	$column = 0;
 	$idArray = array();
 	echo "<div class='form'><div class='row'>
