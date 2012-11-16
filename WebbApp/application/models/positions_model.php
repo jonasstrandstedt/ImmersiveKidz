@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Databasefunctions for the positions in the worlds table.
 *
 * @details  add_position($xval, $yval, $zval, $classification) , adds a world to the database.
@@ -6,10 +7,9 @@
 * @author   Belinda Bernfort, belbe886@student.liu.se
 * @date     November 15, 2012
 * @version  1.0
-*    
--->
+*/
 
-<?php
+
 class Positions_model extends CI_Model 
 {
 

@@ -82,11 +82,20 @@ class Site extends CI_Controller
 	function add_information($date, $group)
 	{
 		$this->load->model("Images_model");
-		
-		echo $date . " " . $group;
 
 		if(!(isset($date) || isset($group)) && !isset($_POST['update'])){
-			// Välj en grupp och ett datum att editera.
+
+
+			$info = $this->Images_model->get_all_groups();
+			$data = array(
+				"info" => $info);
+			$this->load->view("content_edit", $data);
+			// foreach ($info as $groupDate) {
+
+
+			// }
+
+
 		}else if(!isset($_POST['update'])){
 
 			$images = $this->Images_model->get_all_images_from_group($group, $date);
@@ -185,7 +194,8 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_edit");
+		session_destroy();
+		$this->add_information(NULL,NULL);
 		$this->load->view("site_footer");
 	}
 	
