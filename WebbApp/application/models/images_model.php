@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Databasefunctions for the images-table.
 *
 * @details  get_all_images_from_group($group, $date), gets all images from a given date and group.
@@ -9,9 +10,9 @@
 * @date     November 9, 2012
 * @version  1.1 (removed the function data_group_exists() since get_all_images_from_group() = NULL will produce the same result.)
 *    
--->
+*/
 
-<?php
+
 class Images_model extends CI_Model 
 {
 

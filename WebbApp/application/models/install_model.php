@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Model that creates the table in the database. Runs everytime you visit the site and installs if the images table dont exist.
 *
 * @details  drop_tables(), drop all tables in the database.
@@ -11,10 +12,8 @@
 * @date     November (9) 14, 2012 
 * @version  1.2 Added create_positions_table
 *    
--->
+*/
 
-
-<?php
 class Install_model extends CI_Model 
 {
     function __construct()

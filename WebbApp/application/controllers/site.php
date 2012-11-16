@@ -1,5 +1,5 @@
-<?php session_start();?>
-<!--
+<?php session_start();
+/*
 * @brief    The site controller, loads the site and all views.
 *
 * @details  do_multi_upload(), function for uploading images to the server and save them in the database.
@@ -13,9 +13,8 @@
 * @date     November 14, 2012
 * @version  1.34 (processed images are now added to the database on upload.)
 *    
--->
-
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+*/
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Site extends CI_Controller 
 {	
 	public function index()
@@ -152,7 +151,7 @@ class Site extends CI_Controller
 			// Kolla om vi kommer hit när man trycker download.
 			$this->zip->archive($filename); 
 
-			//$this->zip->download($filename); BUGGGG...
+			$this->zip->download($filename);
 
 			
 

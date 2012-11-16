@@ -1,10 +1,11 @@
-<!--
+<?php 
+/*
 From : https://github.com/nicdev/CodeIgniter-Multiple-File-Upload.
 
 2012-11-7
--->
+*/
 
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * Exenstion File Uploading Class
