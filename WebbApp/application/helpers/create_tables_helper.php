@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Function that creates the table for the images.
 *
 * @details  get_images_table_fields(), returns an array containing all the columns that should be in the images table. 
@@ -11,9 +12,8 @@
 * @date     November 15, 2012
 * @version  1.1 Added get table fields functions for worlds and positions
 *    
--->
+*/
 
-<?php
 
 function get_images_table_fields()
 {	

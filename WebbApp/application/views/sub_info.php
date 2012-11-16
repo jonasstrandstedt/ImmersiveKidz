@@ -1,4 +1,5 @@
-<!--
+<?php 
+/*
 * @brief   	The page where you view and edit pictures and related information
 *
 * @details  
@@ -8,18 +9,11 @@
 * @date     November 14, 2012 
 * @version  1.0
 *    
--->
-
-<div id="sub">		
-
-<h1>Här är alla fina bilder, jippi</h1>
-		<p> majs</p>
-
-<?php 
+*/
 
 $counter = 0;
 
-	echo form_open_multipart('index.php/site/create/info');
+	echo "<div id='sub'>". form_open_multipart('index.php/site/create/info');
 	$column = 0;
 	$idArray = array();
 	echo "<div class='form'><div class='row'>
@@ -27,7 +21,6 @@ $counter = 0;
 		<input type='hidden' name='group' value='".$images[0] -> group."' />";
 	foreach ($images as $row)
 	{ 
-		array_push($idArray, $row -> id); // sparar ner varje bilds id i en array.
 
 	echo "<div class='imgform'>
 	<img src='../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> 
