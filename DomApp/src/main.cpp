@@ -25,6 +25,8 @@ void myMouseButtonFun(int,int);
 
 int prevMouseX = -1;
 int prevMouseY = -1;
+bool stereo = true;
+float eyeSeparation = 0.0f;
 
 int main( int argc, char* argv[] )
 {
@@ -89,6 +91,7 @@ void myInitOGLFun() {
 	glAlphaFunc(GL_GREATER,0.0f);
 
 	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+	eyeSeparation = gEngine->getUserPtr()->getEyeSeparation();
 
 	iKidz = ImmersiveKidz::getInstance();
 	iKidz->setMaster(gEngine->isMaster());
@@ -107,11 +110,12 @@ void myPreSyncFun()
 
 void myEncodeFun()
 {
+	sgct::SharedData::Instance()->writeBool( stereo );
 	iKidz->encode();
 }
 
-void myDecodeFun()
-{
+void myDecodeFun() {
+	stereo = sgct::SharedData::Instance()->readBool();
 	iKidz->decode();
 }
 
@@ -119,8 +123,9 @@ void myDecodeFun()
 void myKeyboardFun(int key,int state){
 	iKidz->keyboardButton(key,state);
 
-	if(gEngine->isMaster() && key == 'P' && state == GLFW_PRESS) {
-		gEngine->takeScreenshot();
+	if(gEngine->isMaster() && state == GLFW_PRESS) {
+		if(key == 'P') gEngine->takeScreenshot();
+		if(key == 'X') stereo = !stereo;
 	}
 }
 
@@ -144,6 +149,7 @@ void myMouseButtonFun(int button,int state){
 
 
 void myPostSyncPreDrawFunction(){
+	stereo ? gEngine->getUserPtr()->setEyeSeparation( eyeSeparation ) : gEngine->getUserPtr()->setEyeSeparation( 0.0f );
 	iKidz->postSyncPreDrawFunction();
 }
 
