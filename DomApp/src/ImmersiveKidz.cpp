@@ -19,10 +19,11 @@ ImmersiveKidz::ImmersiveKidz() {
 	_sceneLoaded = false;
 	_currTime = 0.0;
 
+}
+
+void ImmersiveKidz::init(){
 	_hud = new HUD();
-
 	_camera = new Camera();
-
 }
 
 
