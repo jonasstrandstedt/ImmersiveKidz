@@ -148,6 +148,28 @@ int SceneLoader::loadScene() {
 		double randmaxy = 50;
 		tinyxml2::XMLElement* world = scene->FirstChildElement( "world" );
 		if(world){
+			tinyxml2::XMLElement* camera = world->FirstChildElement( "camera" );
+			if(camera){
+				Camera *cam = ImmersiveKidz::getInstance()->getCamera();
+				tinyxml2::XMLElement* start = camera->FirstChildElement( "start" );
+				if(start){
+					cam->setPosition(glm::vec3(start->DoubleAttribute("x"),start->DoubleAttribute("y"),start->DoubleAttribute("z")));
+				}
+				tinyxml2::XMLElement* limitx = camera->FirstChildElement( "limitx" );
+				if(limitx){
+					cam->setLimitsX(glm::vec2(limitx->DoubleAttribute("min"),limitx->DoubleAttribute("max")));
+				}
+				tinyxml2::XMLElement* limity = camera->FirstChildElement( "limity" );
+				if(limity){
+					cam->setLimitsY(glm::vec2(limity->DoubleAttribute("min"),limity->DoubleAttribute("max")));
+			
+				}
+				tinyxml2::XMLElement* limitz = camera->FirstChildElement( "limitz" );
+				if(limitz){
+					cam->setLimitsZ(glm::vec2(limitz->DoubleAttribute("min"),limitz->DoubleAttribute("max")));
+			
+				}
+			}
 			tinyxml2::XMLElement* plane = world->FirstChildElement( "plane" );
 			if(plane){
 				std::string texture = "";
@@ -181,7 +203,6 @@ int SceneLoader::loadScene() {
 				}
 			}
 		}
-
 		tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
 		if(models){
 			item = models->FirstChildElement( "item" );
