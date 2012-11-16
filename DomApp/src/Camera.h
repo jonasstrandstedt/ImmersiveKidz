@@ -38,6 +38,9 @@ class Camera {
 	glm::vec3 _position;
 	glm::vec2 _rotation;
 	glm::mat4 _viewMatrix;
+	glm::vec2 _limitsX;
+	glm::vec2 _limitsY;
+	glm::vec2 _limitsZ;
 public:
 	Camera(glm::vec3 startPosition = glm::vec3(0,1.5,0));
 	~Camera();
@@ -50,6 +53,7 @@ public:
 	void mouseButton(int button,int state);
 	void mouseMotion(int dx,int dy);
 	
+	void setPosition(glm::vec3);
 	glm::vec3 getPosition()const;
 	glm::vec2 getRotation()const;
 	float getSpeed()const;
@@ -57,6 +61,14 @@ public:
 
 	void encode(sgct::SharedData *data);
 	void decode(sgct::SharedData *data);
+
+	
+	glm::vec2 getLimitsX();
+	glm::vec2 getLimitsY();
+	glm::vec2 getLimitsZ();
+	void setLimitsX(glm::vec2 limits);
+	void setLimitsY(glm::vec2 limits);
+	void setLimitsZ(glm::vec2 limits);
 };
 
 #endif
