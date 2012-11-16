@@ -69,8 +69,15 @@ void Camera::update(float dt){
 	if(_movingUp && !_movingDown){
 		_position[1] += _speed*dt;
 	}
-	
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
+
+	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	if(_position.x+headPos.x < worldRect.x) _position.x = worldRect.x-headPos.x;
+	if(_position.x+headPos.x > worldRect.z) _position.x = worldRect.z-headPos.x;
+	if(_position.z+headPos.z < worldRect.y) _position.z = worldRect.y-headPos.z;
+	if(_position.z+headPos.z > worldRect.w) _position.z = worldRect.q-headPos.z;
+
+
 
 	_viewMatrix = glm::mat4();
 	_viewMatrix = glm::translate(_viewMatrix,headPos);
