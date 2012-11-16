@@ -122,18 +122,22 @@ background-color: #302b29;
 width: 100%;
 overflow: auto;
 } 
-
-
-.imgform{
-	/*margin: 0px 200px;*/
-}
-form {
+.editList {
 margin: 0 auto;
 width: 300px;
 /* background-color: white; */
 }
 
-.imgform .upload {
+.uploadform{
+	/*margin: 0px 200px;*/
+}
+.uploadform form, .downloadform form {
+margin: 0 auto;
+width: 300px;
+/* background-color: white; */
+}
+
+.uploadform .upload {
 	/* background-color: green; */
 	width: 250px;
 	color: #c3c3c3;
@@ -141,20 +145,20 @@ width: 300px;
 	padding: 0px 0px 40px 25px;	
 }
 
-.imgform input{
+.uploadform input{
 	color: gray; 
 	width:150px;
 	padding: 0 5px;
 }
-.imgform #group{
+.uploadform #group{
 /* background-color: yellow; */
 padding: 0px 0px 10px 0;
 }
-.imgform #date{
+.uploadform #date{
 /* background-color: #fc0; */
 }
 
-.imgform label {
+.uploadform label {
 font-size: 18px;
 color: #c3c3c3;
 /* background-color: blue; */

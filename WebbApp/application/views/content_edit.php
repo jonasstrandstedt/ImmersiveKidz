@@ -1,9 +1,9 @@
 <?php 
-echo "<div id='content'>";
+echo "<div id='content'><div class='editList'>";
 	 foreach ($info as $groupDate) {
-	 			echo "<a href='".base_url()."index.php/site/add_information/".$groupDate -> date."/".$groupDate -> group."'>". $groupDate -> group ."</a></ br>";
+	 			echo "<div class='editObject'><a href='".base_url()."index.php/site/add_information/".$groupDate -> date."/".$groupDate -> group."'>". $groupDate -> group ."</a></div>";
 
 			 }
 
-echo"</div>";
+echo"</div></div>";
 ?>
