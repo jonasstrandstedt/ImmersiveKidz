@@ -1,5 +1,7 @@
 #include "../src/Camera.h"
 
+#include "../src/ImmersiveKidz.h";
+
 /**
 * @file CameraTests.h
 * 
@@ -15,7 +17,11 @@
 
 
 TEST (CameraTests, Speed) { 
+
     Camera *c = new Camera(glm::vec3(1,1.5,3));
+	c->setLimitsX(glm::vec2(-10,10));
+	c->setLimitsY(glm::vec2(-10,10));
+	c->setLimitsZ(glm::vec2(-10,10));
 	
 	c->setSpeed(1);
 	EXPECT_EQ(1,c->getSpeed());
@@ -36,6 +42,9 @@ TEST (CameraTests, Speed) {
 
 TEST (CameraTests, Movements) { 
     Camera *c = new Camera(glm::vec3(1,1.5,3));
+	c->setLimitsX(glm::vec2(-10,10));
+	c->setLimitsY(glm::vec2(-10,10));
+	c->setLimitsZ(glm::vec2(-10,10));
 
 	EXPECT_EQ(glm::vec3(1,1.5,3),c->getPosition());
 	
@@ -85,4 +94,10 @@ TEST (CameraTests, Movements) {
 	c->update(1);
 	EXPECT_EQ(glm::vec3(1,0.5,3),c->getPosition());
 	c->keyboardButton('D',0);
+
+	
+	c->keyboardButton('W',1);
+	c->update(200);
+	EXPECT_EQ(glm::vec3(1,0.5,-10),c->getPosition());
+	c->keyboardButton('W',0);
 }
