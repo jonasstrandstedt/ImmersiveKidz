@@ -1,5 +1,5 @@
 	<div id="footer">
-		<p> Copyright ImmersiveKidz </p>
+		<p>ImmersiveKidz</p>
 	</div>
 	
 	</div>
