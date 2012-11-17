@@ -18,6 +18,43 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\data\Shaders\BatchBillboard_still.frag" />
+    <None Include="..\data\Shaders\BatchBillboard_still.vert" />
+    <None Include="..\data\Shaders\BatchBillboard_turn.frag" />
+    <None Include="..\data\Shaders\BatchBillboard_turn.vert" />
+    <None Include="..\data\Shaders\SingleBillboard.frag" />
+    <None Include="..\data\Shaders\SingleBillboard.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\BatchBillboard.h" />
+    <ClInclude Include="..\src\Billboard.h" />
+    <ClInclude Include="..\src\Camera.h" />
+    <ClInclude Include="..\src\DrawableObject.h" />
+    <ClInclude Include="..\src\HUD.h" />
+    <ClInclude Include="..\src\Illustration.h" />
+    <ClInclude Include="..\src\ImmersiveKidz.h" />
+    <ClInclude Include="..\src\Model.h" />
+    <ClInclude Include="..\src\Plane.h" />
+    <ClInclude Include="..\src\SceneLoader.h" />
+    <ClInclude Include="..\src\Skybox.h" />
+    <ClInclude Include="..\unit_test\Camera.test.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\BatchBillboard.cpp" />
+    <ClCompile Include="..\src\Billboard.cpp" />
+    <ClCompile Include="..\src\Camera.cpp" />
+    <ClCompile Include="..\src\DrawableObject.cpp" />
+    <ClCompile Include="..\src\HUD.cpp" />
+    <ClCompile Include="..\src\Illustration.cpp" />
+    <ClCompile Include="..\src\ImmersiveKidz.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\Model.cpp" />
+    <ClCompile Include="..\src\Plane.cpp" />
+    <ClCompile Include="..\src\SceneLoader.cpp" />
+    <ClCompile Include="..\src\Skybox.cpp" />
+    <ClCompile Include="..\unit_test\UnitTests.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{690C54BB-6D13-4C53-93D8-76D4390C0F5B}</ProjectGuid>
     <RootNamespace>ImmersiveKidz</RootNamespace>
@@ -51,7 +88,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -67,7 +104,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_NDEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -82,7 +119,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithTests|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -98,7 +135,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTests|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>_RUN_TESTS_AT_STARTUP_;_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -111,33 +148,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\Billboard.cpp" />
-    <ClCompile Include="..\src\Camera.cpp" />
-    <ClCompile Include="..\src\DrawableObject.cpp" />
-    <ClCompile Include="..\src\HUD.cpp" />
-    <ClCompile Include="..\src\Illustration.cpp" />
-    <ClCompile Include="..\src\ImmersiveKidz.cpp" />
-    <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\Model.cpp" />
-    <ClCompile Include="..\src\Plane.cpp" />
-    <ClCompile Include="..\src\SceneLoader.cpp" />
-    <ClCompile Include="..\src\Skybox.cpp" />
-    <ClCompile Include="..\unit_test\UnitTests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\Billboard.h" />
-    <ClInclude Include="..\src\Camera.h" />
-    <ClInclude Include="..\src\DrawableObject.h" />
-    <ClInclude Include="..\src\HUD.h" />
-    <ClInclude Include="..\src\Illustration.h" />
-    <ClInclude Include="..\src\ImmersiveKidz.h" />
-    <ClInclude Include="..\src\Model.h" />
-    <ClInclude Include="..\src\Plane.h" />
-    <ClInclude Include="..\src\SceneLoader.h" />
-    <ClInclude Include="..\src\Skybox.h" />
-    <ClInclude Include="..\unit_test\Camera.test.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

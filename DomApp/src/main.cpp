@@ -78,7 +78,6 @@ int main( int argc, char* argv[] )
 }
 
 void myInitOGLFun() {
-	
 	// init shaders
 	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_still", "data/Shaders/BatchBillboard_still.vert", "data/Shaders/BatchBillboard_still.frag" );
 	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_turn", "data/Shaders/BatchBillboard_turn.vert", "data/Shaders/BatchBillboard_turn.frag" );
