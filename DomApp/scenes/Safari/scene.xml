@@ -4,7 +4,7 @@
   		<camera>
   			<start x="0.0" y="0.5" z="0.0" />
   			<limitx min="-256.0" max="256.0" />
-  			<limity min="0.0" max="256.0" />
+  			<limity min="0.1" max="256.0" />
   			<limitz min="-256.0" max="256.0" />
   		</camera>
   		<plane>
