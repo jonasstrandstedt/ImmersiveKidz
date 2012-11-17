@@ -18,6 +18,28 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 	_texture = texturename;
 	_proportions = proportionsIn;
 	_transform = glm::translate(_transform, position);
+	
+    _listid = glGenLists(1);
+    glNewList(_listid, GL_COMPILE);
+	glBegin(GL_QUADS);
+	//Vertex 1 
+	glTexCoord2d(0.0,0.0);
+	glVertex3f(-0.5 * _proportions[0] , 0 , 0);
+	
+	//Vertex 2 
+	glTexCoord2d(1.0,0.0);
+	glVertex3f(0.5 * _proportions[0] , 0 , 0);
+	
+	//Vertex 3 
+	glTexCoord2d(1.0,1.0);
+	glVertex3f(0.5 * _proportions[0] , _proportions[1] , 0);
+	
+	//Vertex 4 
+	glTexCoord2d(0.0,1.0);
+	glVertex3f(-0.5 * _proportions[0] , _proportions[1] , 0);
+
+	glEnd();
+    glEndList();
 };
 
 
@@ -40,42 +62,17 @@ glm::vec3 Billboard::getPosition()
 *@return    void
 */
 void Billboard::onDraw() {
-	
-	//sgct::MessageHandler::Instance()->print("Billboard draw\n");
-
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture));
-
-
-	glPushMatrix();
 	float angle = ImmersiveKidz::getInstance()->getCamera()->getRotation().x;
-	//Rotate Billboard towards the camera position.
-	glRotatef(-angle, 0.0 , 1.0 , 0.0);
 	
-
-	glEnable (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBegin(GL_QUADS);
-
-	//Vertex 1 
-	glTexCoord2d(0.0,0.0);
-	glVertex3f(-0.5 * _proportions[0] , 0 , 0);
+	// bind shader and set the angle
+	sgct::ShaderManager::Instance()->bindShader( "SingleBillboard" );
+	int angle_loc = sgct::ShaderManager::Instance()->getShader( "SingleBillboard").getUniformLocation( "angle_x" );
+	glUniform1f( angle_loc, angle *3.14/180);
 	
-	//Vertex 2 
-	glTexCoord2d(1.0,0.0);
-	glVertex3f(0.5 * _proportions[0] , 0 , 0);
+    // Draw one obejct from a display list
+    glCallList(_listid);
 	
-	//Vertex 3 
-	glTexCoord2d(1.0,1.0);
-	glVertex3f(0.5 * _proportions[0] , _proportions[1] , 0);
-	
-	//Vertex 4 
-	glTexCoord2d(0.0,1.0);
-	glVertex3f(-0.5 * _proportions[0] , _proportions[1] , 0);
-
-	glEnd();
-	glDisable (GL_BLEND);
-
-	glPopMatrix();
-	
+	sgct::ShaderManager::Instance()->unBindShader();
 	glBindTexture( GL_TEXTURE_2D, 0);
 }

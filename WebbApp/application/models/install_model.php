@@ -55,12 +55,6 @@ class Install_model extends CI_Model
 			$this->dbforge->create_table('images');
 			log_message('info', "Created table: images");
 
-			// inserting users
-			$this->load->model("Images_model");
-			$this->Images_model->add_image("Viktor Fröberg","sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3", "2012-11-09", "group1", "bla bla bla");
-			$this->Images_model->add_image("Emil Lindström", "sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3", "2012-11-09", "group1", "bla bla bla");
-			$this->Images_model->add_image("Jonas Strandstedt","sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3","2012-11-09", "group2", "bla bla bla");
-
 		}
 	}
 

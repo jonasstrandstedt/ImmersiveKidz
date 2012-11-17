@@ -56,7 +56,7 @@ void DrawableObject::draw(double t) {
 void DrawableObject::setAnimationFuncByName(std::string name, double seed) { 
 	if ( name == "bounce" ) setAnimationFunc(bounce, seed);
 	if ( name == "pendulum" ) setAnimationFunc(pendulum, seed);
-	if ( name == "none" ) setAnimationFunc(none, seed);
+	//if ( name == "none" ) setAnimationFunc(none, seed);
 };
 
 /**

@@ -13,7 +13,7 @@
 
 $counter = 0;
 
-	echo "<div id='sub'>". form_open_multipart('index.php/site/create/info');
+	echo "<div id='sub'>". form_open_multipart('index.php/site/add_information/');
 	$column = 0;
 	$idArray = array();
 	echo "<div class='form'><div class='row'>
@@ -23,7 +23,7 @@ $counter = 0;
 	{ 
 
 	echo "<div class='imgform'>
-	<img src='../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> 
+	<img src='../../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> 
 		<label>Konstnär:
 		<input type='text' name='artist".$column."' value='".$row -> artist."' />
     	</label>
@@ -53,6 +53,4 @@ echo "</div></div>";
 ?>
 <input type="submit" value="Submit" name="update">
 </form>
-<?php echo anchor('index.php/site/create/download', 'Gå vidare');?>)
-
 </div>		

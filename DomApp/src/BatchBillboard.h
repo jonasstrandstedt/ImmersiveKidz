@@ -1,9 +1,10 @@
-#ifndef BILLBOARD_H
-#define BILLBOARD_H
+#ifndef BATCHBILLBOARD_H
+#define BATCHBILLBOARD_H
 
 #include <string>
 #include "sgct.h"
 #include "glm/glm.hpp"
+#include <glm/gtx/random.hpp>
 #include "DrawableObject.h"
 
 
@@ -21,20 +22,16 @@
     * @version    0.0.1
     *
 	*/
-class Billboard: public DrawableObject {
+class BatchBillboard: public DrawableObject {
 
 public:
-	Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn);
-
-	glm::vec3 getPosition();
-
+	BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::vec3 pos_max, int seed, int count, glm::vec2 proportionsIn, bool billboard = false);
 	void onDraw();
-	
 protected:
-	GLuint _listid;
-	glm::vec3 _position;
 	std::string _texture;
-	glm::vec2 _proportions;
+private:
+	GLuint _listid;
+	bool _billboard;
 };
 
 

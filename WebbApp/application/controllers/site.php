@@ -1,4 +1,4 @@
-<?php session_start();
+<?php
 /*
 * @brief    The site controller, loads the site and all views.
 *
@@ -10,8 +10,8 @@
 *
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
-* @date     November 14, 2012
-* @version  1.34 (processed images are now added to the database on upload.)
+* @date     November 16, 2012
+* @version  2.0 (Cleaned up site.php.)
 *    
 */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
@@ -19,7 +19,7 @@ class Site extends CI_Controller
 {	
 	public function index()
 	{
-		$this->create("upload"); // Sets the startpage to the upload view.
+		$this->upload(); // Sets the startpage to the upload view.
 	}
 	
 
@@ -31,8 +31,12 @@ class Site extends CI_Controller
 		$this->load->helper(array('form', 'url'));
 	}
 
-	function do_multi_upload()
-	{
+	function upload()
+	{	
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_create");
+
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '10000';
@@ -68,19 +72,26 @@ class Site extends CI_Controller
 				$fileouturl = $imagesOut[$i];
 				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group, "");
 			}
-			$_SESSION['group'] = $group;
-			$_SESSION['date'] = $date;
-			echo "<script>window.location.href = '../create/info';</script>";
+			//$_SESSION['group'] = $group;
+			//$_SESSION['date'] = $date;
+			echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>";
+			//$this->add_information($date, $group);
 			//$this->create("info");
 			
 			//$this->load->view("sub_info", $info);
 
-		} 
+		}
+		$this->load->view("site_footer");
+
 	}
 	//SLUT ladda upp bilder
 
-	function add_information($date, $group)
-	{
+	function add_information($date = NULL , $group = NULL)
+	{	
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_create");
+
 		$this->load->model("Images_model");
 
 		if(!(isset($date) || isset($group)) && !isset($_POST['update'])){
@@ -118,20 +129,31 @@ class Site extends CI_Controller
 				$this->Images_model->update_image($id ->id, $artist, $imgname, $soundurl, $story);
 				$counter ++;
 			}
-			$_SESSION['group'] = $_POST['group'];
-			$_SESSION['date'] = $_POST['date'];
-			echo "<script>window.location.href = '../create/download';</script>";
+			//$_SESSION['group'] = $_POST['group'];
+			//$_SESSION['date'] = $_POST['date'];
+			$group = $_POST['group'];
+			$date = $_POST['date'];
+
+			echo "<script>window.location.href = 'download_info/".$date."/".$group."';</script>";
+			//$this->download_info($date, $group);
 		}
+		$this->load->view("site_footer");
 		
 	}
 
-	function download_info(){
-
+	function download_info($date = NULL, $group = NULL){
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_create");
 		$this->load->model("Images_model");
-
-		if(!isset($_POST['download'])){
-		$group = $_SESSION['group'];
-		$date = $_SESSION['date'];
+		if(!(isset($date) || isset($group)) && !isset($_POST['download'])){
+			$info = $this->Images_model->get_all_groups();
+			
+			$data = array(
+				"info" => $info);
+			$this->load->view("content_download", $data);
+		}
+		elseif(!isset($_POST['download'])){
 		
 		$data = array(
 				"group" => $group,
@@ -140,66 +162,23 @@ class Site extends CI_Controller
 
 		$this->load->view("sub_download", $data);
 		}else{
-		
-			$group = $_POST['group'];
-			$date = $_POST['date'];
-
+			
 			$filename = $group."_".$date.".Zip"; // Name of the zip-file to create.
 			$images = $this->Images_model->get_all_images_from_group($group, $date);
 			$this->zip->clear_data();
 			foreach ($images as $row){
-				// Skriv en imgtagg för att kolla sökvägen.
-				//echo "<img src='../../../".$row -> imgouturl."' alt='Bildjävel' width='90' />";
 				$path = $row -> imgouturl;
-				if($this->zip->read_file($path, TRUE)){
-					//echo "tillagd!";
-				} 
+				$this->zip->read_file($path, TRUE);
 
 			}
-			
-			// Kolla om vi kommer hit när man trycker download.
-			$this->zip->archive($filename); 
 
 			$this->zip->download($filename);
-
-			
-
-			
 		}
+		$this->load->view("site_footer");
 		
 	}
-
 	
-	public function create($submenu)
-	{		//echo"<h2>".$submenu."</h2>";
-			$this->load->view("site_header");
-			$this->load->view("site_nav");
-			$this->load->view("content_create");
-			if($submenu=="upload") $this->do_multi_upload();
-			if($submenu=="download") $this->download_info(); 
-			//if($submenu=="info") $this->load->view("sub_info");
-			if($submenu=="info")
-			{ 	
-				if(isset($_SESSION['date']) && isset($_SESSION['group'])){
-					$date = $_SESSION['date'];
-					$group = $_SESSION['group'];
-					$this->add_information($date,$group);
-				}else{
-					$this->add_information(NULL,NULL);
-				}
-			}
-			$this->load->view("site_footer");
-		}
-	public function edit()
-	{
-		$this->load->view("site_header");
-		$this->load->view("site_nav");
-		session_destroy();
-		$this->add_information(NULL,NULL);
-		$this->load->view("site_footer");
-	}
-	
-	public function about()
+	function about()
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");

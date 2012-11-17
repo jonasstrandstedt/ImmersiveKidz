@@ -10,9 +10,6 @@ min-height: 100%;
 body{
 	background-color: #302b29;
 }
-body a{
-color: red;
-}
 *  { margin: 0;}
  
 h1,h2,h3,h4,p,a,li,ul, html{
@@ -43,6 +40,9 @@ border-width: 2px;
 /* border-color: #707070; */
 }
 
+#nav a{
+color: #bababa;
+}
 #nav a:visited{
 color: #bababa;
 }
@@ -77,7 +77,9 @@ height: 150px;
 font-size: 14px;
 color: #e8e8e8;
 }
-
+#content a{
+color: #e8e8e8;
+}
 #content a:visited{
 color: #e8e8e8;
 }
@@ -87,7 +89,6 @@ color: white;
 }
 
 #content ul{
-
 text-align: center;
 width: 50%;
 padding: 50px 0px 5px 0px;
@@ -97,12 +98,12 @@ margin: 0 25%;
 }
 
 #content ul li{
-
 margin: 0px 10px;
 display: inline;
 }
 #content hr{
-margin: 0 37.5%;
+/* margin: 0 0 0 37.5%; */
+margin: 0 auto;
 }
 
 #content .hr1{
@@ -122,18 +123,22 @@ background-color: #302b29;
 width: 100%;
 overflow: auto;
 } 
-
-
-.imgform{
-	/*margin: 0px 200px;*/
-}
-form {
+.editList {
 margin: 0 auto;
 width: 300px;
 /* background-color: white; */
 }
 
-.imgform .upload {
+.uploadform{
+	/*margin: 0px 200px;*/
+}
+.uploadform form, .downloadform form {
+margin: 0 auto;
+width: 300px;
+/* background-color: white; */
+}
+
+.uploadform .upload {
 	/* background-color: green; */
 	width: 250px;
 	color: #c3c3c3;
@@ -141,20 +146,20 @@ width: 300px;
 	padding: 0px 0px 40px 25px;	
 }
 
-.imgform input{
+.uploadform input{
 	color: gray; 
 	width:150px;
 	padding: 0 5px;
 }
-.imgform #group{
+.uploadform #group{
 /* background-color: yellow; */
 padding: 0px 0px 10px 0;
 }
-.imgform #date{
+.uploadform #date{
 /* background-color: #fc0; */
 }
 
-.imgform label {
+.uploadform label {
 font-size: 18px;
 color: #c3c3c3;
 /* background-color: blue; */
