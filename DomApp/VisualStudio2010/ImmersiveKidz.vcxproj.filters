@@ -1,90 +1,120 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="src">
+      <UniqueIdentifier>{a39fa5ce-d8d4-4e10-a566-2064056b37b9}</UniqueIdentifier>
+      <Extensions>cpp</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="h">
+      <UniqueIdentifier>{433d3181-68cd-4d9e-b15c-90707ccd925c}</UniqueIdentifier>
+      <Extensions>h</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="glsl">
+      <UniqueIdentifier>{707db9ff-15eb-4cec-ac24-e7ced5feca23}</UniqueIdentifier>
+      <Extensions>frag;vert</Extensions>
     </Filter>
     <Filter Include="tests">
-      <UniqueIdentifier>{a2e47654-93ce-4344-bb3c-50ac1af99b1c}</UniqueIdentifier>
+      <UniqueIdentifier>{dd3da551-c97a-4daa-9f2b-9be846dc359d}</UniqueIdentifier>
       <Extensions>test.h</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main.cpp">
-      <Filter>Source Files</Filter>
+    <None Include="..\data\Shaders\BatchBillboard_still.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\data\Shaders\BatchBillboard_still.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\data\Shaders\BatchBillboard_turn.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\data\Shaders\BatchBillboard_turn.vert">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\data\Shaders\SingleBillboard.frag">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="..\data\Shaders\SingleBillboard.vert">
+      <Filter>glsl</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\BatchBillboard.cpp">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Billboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DrawableObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Illustration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ImmersiveKidz.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Model.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Camera.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
-<<<<<<< HEAD
+    <ClCompile Include="..\src\DrawableObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\HUD.cpp">
-=======
-    <ClCompile Include="..\src\Skybox.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Illustration.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ImmersiveKidz.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Model.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Plane.cpp">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SceneLoader.cpp">
->>>>>>> 7f7e33d0ac3f774d6d9e6740c3ec1084e5ab7742
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Skybox.cpp">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\unit_test\UnitTests.cpp">
       <Filter>tests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\Billboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\DrawableObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Illustration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\ImmersiveKidz.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="..\src\HUD.h">
-=======
-    <ClInclude Include="..\src\Skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SceneLoader.h">
->>>>>>> 7f7e33d0ac3f774d6d9e6740c3ec1084e5ab7742
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\unit_test\Camera.test.h">
       <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BatchBillboard.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Billboard.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Camera.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DrawableObject.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\HUD.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Illustration.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ImmersiveKidz.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Model.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Plane.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SceneLoader.h">
+      <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Skybox.h">
+      <Filter>h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

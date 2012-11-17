@@ -1,7 +1,4 @@
 uniform sampler2D teximage;
-attribute vec3 billboard_position;
-uniform float angle_x;
-uniform vec3 camera_position;
 
 
 varying vec2 st; // 2D texcoords (from OpenGL texcoords)

@@ -20,6 +20,13 @@ Camera::Camera(glm::vec3 startPosition)
 	_rotationSpeed = 0.05;
 	_mouseState = false;
 	_position = startPosition;
+	
+	_limitsX.x = -10;
+	_limitsX.y = 10;
+	_limitsY.x = -10;
+	_limitsY.y = 10;
+	_limitsZ.x = -10;
+	_limitsZ.y = 10;
 }
 
 
