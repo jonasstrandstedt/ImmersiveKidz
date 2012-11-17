@@ -318,12 +318,6 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) {
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int list_height = winSizeY - _minimapHeight;
 
-
-	std::cout << "Before: " <<std::endl;
-	std::cout << "winSizeY = " << winSizeY << std::endl;
-	std::cout << "list_height = " << list_height << std::endl;
-	std::cout << "_offset = " << _offset << std::endl;
-	std::cout << "_selection = " << _selection << std::endl;
 	// check if need to increase offset for animal list
 	if(list_height - ( 15 + _selection *14 + _offset) < 0) {
 		_offset -= 14*4;
@@ -337,11 +331,4 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) {
 			_offset = 0;
 		}
 	}
-
-
-	std::cout << "After: " <<std::endl;
-	std::cout << "winSizeY = " << winSizeY << std::endl;
-	std::cout << "list_height = " << list_height << std::endl;
-	std::cout << "_offset = " << _offset << std::endl;
-	std::cout << "_selection = " << _selection << std::endl;
 }
