@@ -17,7 +17,7 @@ Camera::Camera(glm::vec3 startPosition)
 	_movingUp = false;
 	_movingDown = false;
 	_speed = 3.0;
-	_rotationSpeed = 0.2;
+	_rotationSpeed = 0.05;
 	_mouseState = false;
 	_position = startPosition;
 }
@@ -69,8 +69,15 @@ void Camera::update(float dt){
 	if(_movingUp && !_movingDown){
 		_position[1] += _speed*dt;
 	}
-	
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
+
+	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	if(_position.x+headPos.x < _limitsX.x) _position.x = _limitsX.x-headPos.x;
+	if(_position.x+headPos.x > _limitsX.y) _position.x = _limitsX.y-headPos.x;
+	if(_position.y+headPos.y < _limitsY.x) _position.y = _limitsY.x-headPos.y;
+	if(_position.y+headPos.y > _limitsY.y) _position.y = _limitsY.y-headPos.y;
+	if(_position.z+headPos.z < _limitsZ.x) _position.z = _limitsZ.x-headPos.z;
+	if(_position.z+headPos.z > _limitsZ.y) _position.z = _limitsZ.y-headPos.z;
 
 	_viewMatrix = glm::mat4();
 	_viewMatrix = glm::translate(_viewMatrix,headPos);
@@ -142,6 +149,11 @@ void Camera::mouseMotion(int dx,int dy){
 	}
 }
 
+
+void Camera::setPosition(glm::vec3 position){
+	_position = position;
+}
+
 /**
 * @brief	Returns the camera position
 *
@@ -204,4 +216,30 @@ void Camera::decode(sgct::SharedData *data){
 	_position[2]   = data->readFloat();
 	_rotation[0]   = data->readFloat();
 	_rotation[1]   = data->readFloat();
+}
+
+
+
+glm::vec2 Camera::getLimitsX(){
+	return _limitsX;
+}
+
+glm::vec2 Camera::getLimitsY(){
+	return _limitsY;
+}
+
+glm::vec2 Camera::getLimitsZ(){
+	return _limitsZ;
+}
+
+void Camera::setLimitsX(glm::vec2 limits){
+	this->_limitsX = limits;
+}
+
+void Camera::setLimitsY(glm::vec2 limits){
+	this->_limitsY = limits;
+}
+
+void Camera::setLimitsZ(glm::vec2 limits){
+	this->_limitsZ = limits;
 }

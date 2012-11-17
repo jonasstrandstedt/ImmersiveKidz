@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Function that creates the table for the images.
 *
 * @details  get_images_table_fields(), returns an array containing all the columns that should be in the images table. 
@@ -9,11 +10,10 @@
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @author 	Belinda Bernfort, belbe886@studetn.liu.se
 * @date     November 15, 2012
-* @version  1.1 Added get table fields functions for worlds and positions
+* @version  1.2 Added get table fields functions for worlds and positions
 *    
--->
+*/
 
-<?php
 
 function get_images_table_fields()
 {	
@@ -34,15 +34,15 @@ function get_images_table_fields()
 			),
 		'imgurl' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '40',
+			'constraint' => '400',
 			),
 		'imgouturl' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '40',
+			'constraint' => '400',
 			),
 		'soundurl' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '40',
+			'constraint' => '400',
 			),
 		'date' => array(
 			'type' => 'VARCHAR',
@@ -54,7 +54,7 @@ function get_images_table_fields()
 			),
 		'story' => array(
 			'type' => 'TEXT',
-			'constraint' => '300'
+			'constraint' => '400'
 			)
 		);
 	return $fields;

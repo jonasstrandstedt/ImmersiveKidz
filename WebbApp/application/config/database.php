@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    database-config file.
 *
 * @details  Connects to the database.
@@ -16,9 +17,9 @@
 * @date     November 9, 2012
 * @version  1.1
 *    
--->
+*/
 
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS

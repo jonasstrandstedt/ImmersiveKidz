@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Model that creates the table in the database. Runs everytime you visit the site and installs if the images table dont exist.
 *
 * @details  drop_tables(), drop all tables in the database.
@@ -8,14 +9,13 @@
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @date     November 9, 2012
 * @version  1.1 (added forms for date and group)
-*    
--->
-<?php //echo $error;
+*/
+
 date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 ?>
 <div id="sub">
-	<div class='imgform'>
-		<?php echo form_open_multipart('index.php/site/create/upload');?>
+	<div class='uploadform'>
+		<?php echo form_open_multipart('index.php/site/upload');?>
 		<form>
 		<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
 		<br>

@@ -36,6 +36,7 @@ int main( int argc, char* argv[] )
 	}
 #endif
 
+
 	// Allocate
 	gEngine = new sgct::Engine( argc, argv );
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
@@ -97,6 +98,7 @@ void myInitOGLFun() {
 	eyeSeparation = gEngine->getUserPtr()->getEyeSeparation();
 
 	iKidz = ImmersiveKidz::getInstance();
+	iKidz->init();
 	iKidz->setMaster(gEngine->isMaster());
 }
 

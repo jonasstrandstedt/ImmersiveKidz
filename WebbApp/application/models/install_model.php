@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Model that creates the table in the database. Runs everytime you visit the site and installs if the images table dont exist.
 *
 * @details  drop_tables(), drop all tables in the database.
@@ -11,10 +12,8 @@
 * @date     November (9) 14, 2012 
 * @version  1.2 Added create_positions_table
 *    
--->
+*/
 
-
-<?php
 class Install_model extends CI_Model 
 {
     function __construct()
@@ -55,12 +54,6 @@ class Install_model extends CI_Model
 			$this->dbforge->add_key('id',true);						// set the primary key
 			$this->dbforge->create_table('images');
 			log_message('info', "Created table: images");
-
-			// inserting users
-			$this->load->model("Images_model");
-			$this->Images_model->add_image("Viktor Fröberg","sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3", "2012-11-09", "group1", "bla bla bla");
-			$this->Images_model->add_image("Emil Lindström", "sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3", "2012-11-09", "group1", "bla bla bla");
-			$this->Images_model->add_image("Jonas Strandstedt","sköldpadda", "uploads/bild.jpg","uploads/out/bildout.png","uploads/sound.mp3","2012-11-09", "group2", "bla bla bla");
 
 		}
 	}

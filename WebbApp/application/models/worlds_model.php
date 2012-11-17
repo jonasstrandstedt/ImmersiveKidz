@@ -1,4 +1,5 @@
-<!--
+<?php
+/*
 * @brief    Databasefunctions for the worlds-table.
 *
 * @details  add_world($name, $floor, $sky_xpos, $sky_xneg, $sky_ypos, $sky_yneg, $sky_zpos, $sky_zneg, $smallobj, $mediumobj ,$bigobj)  , adds a world to the database.
@@ -9,9 +10,7 @@
 * @date     November 14, 2012
 * @version  1.0
 *    
--->
-
-<?php
+*/
 class Worlds_model extends CI_Model 
 {
 

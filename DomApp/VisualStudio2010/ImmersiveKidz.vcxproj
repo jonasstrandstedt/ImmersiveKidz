@@ -120,6 +120,7 @@
     <ClCompile Include="..\src\ImmersiveKidz.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Model.cpp" />
+    <ClCompile Include="..\src\Plane.cpp" />
     <ClCompile Include="..\src\SceneLoader.cpp" />
     <ClCompile Include="..\src\Skybox.cpp" />
     <ClCompile Include="..\unit_test\UnitTests.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="..\src\Illustration.h" />
     <ClInclude Include="..\src\ImmersiveKidz.h" />
     <ClInclude Include="..\src\Model.h" />
+    <ClInclude Include="..\src\Plane.h" />
     <ClInclude Include="..\src\SceneLoader.h" />
     <ClInclude Include="..\src\Skybox.h" />
     <ClInclude Include="..\unit_test\Camera.test.h" />

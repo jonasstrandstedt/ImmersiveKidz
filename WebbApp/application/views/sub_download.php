@@ -1,10 +1,4 @@
-<div id="sub">	
-	<?php echo form_open_multipart('index.php/site/create/download');?>
-	<form>
-	<input type="file" name="userfile[]" size="20" multiple=""/>
+<?php
+		$path = "index.php/site/download_info/".$date."/".$group;
 
-	<br /><br />
-
-	<input type="submit" value="Ladda ned bilderna" />
-	</form>
-</div>
+		echo "<div id='sub'><div class='downloadform'>".form_open($path)."<div id='button'><input class='styledbutton' type='submit' value='Ladda Ner' name='download'></form></div></div></div>";

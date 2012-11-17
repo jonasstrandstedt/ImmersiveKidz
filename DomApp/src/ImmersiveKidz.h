@@ -32,6 +32,7 @@ public:
 	
 	~ImmersiveKidz();
 	
+	void init();
 
 	void setMaster(bool m) { _isMaster = m; _loader.setMaster(m); };
 	void setScenePath(std::string folder);
