@@ -3,9 +3,13 @@
 
 HUD::HUD()
 {
-	sgct::TextureManager::Instance()->loadTexure("menu", "HUD/menu.png", true, 0); //Load HUD into OpenGL
-	sgct::TextureManager::Instance()->loadTexure("minimap", "HUD/minimap.png", true, 0); //Load HUD into OpenGL
+	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0); //Load HUD into OpenGL
+	sgct::TextureManager::Instance()->loadTexure("minimap", "data/HUD/minimap.png", true, 0); //Load HUD into OpenGL
 	_selection = 0;
+	_offset = 0;
+
+	_minimapWidth = 150;
+	_minimapHeight = 150;
 };
 
 /**
@@ -25,7 +29,7 @@ void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
 
 	x = 20;
-	y = 30;
+	y = 15 + _offset;
 
 	for(int i = 0; i < illu.size(); i++)
 	{
@@ -38,7 +42,7 @@ void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
 		}
 
 		Freetype::print( sgct::FontManager::Instance()->
-			GetFont( "SGCTFont", 14 ), 0 + x, winSizeY - y, illu[i]->getName().c_str());
+			GetFont( "SGCTFont", 12 ), 0 + x, winSizeY - y, illu[i]->getName().c_str());
 
 		glColor3f(1.0f,1.0f,1.0f);
 
@@ -55,7 +59,7 @@ void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
 
 		glColor3f(1.0f,1.0f,1.0f);
 
-		y = y + 20;
+		y = y + 14;
 	};
 };
 
@@ -127,11 +131,6 @@ void HUD::drawMinimapBackground()
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
 
-	int sizeY = 150;
-	int sizeX = 250;
-
-	
-
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 
@@ -150,15 +149,15 @@ void HUD::drawMinimapBackground()
 	
 	//Vertex 2 
 	glTexCoord2d(1.0,0.0);
-	glVertex3f(sizeX , 0 , 0);
+	glVertex3f(_minimapWidth , 0 , 0);
 	
 	//Vertex 3 
 	glTexCoord2d(1.0,1.0);
-	glVertex3f(sizeX , sizeY , 0);
+	glVertex3f(_minimapWidth , _minimapHeight , 0);
 	
 	//Vertex 4 
 	glTexCoord2d(0.0,1.0);
-	glVertex3f(0 , sizeY , 0);
+	glVertex3f(0 , _minimapHeight , 0);
 
 	glEnd();
 
@@ -193,9 +192,6 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
 
-	int sizeY = 150;
-	int sizeX = 250;
-
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 
@@ -229,7 +225,7 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 		float y = (illuPosition.z - worldRect.y) / (worldRect.w - worldRect.y);
 
 
-		glVertex2f(x * sizeX  , y * sizeY);
+		glVertex2f(x * _minimapWidth  , y * _minimapHeight);
 
 
 		glColor3f( 1.0f, 1.0f, 1.0f);
@@ -239,7 +235,7 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	float y = (camPosition.z/2 + 2 - worldRect.y) / (worldRect.w - worldRect.y);
 
 
-	glVertex2f(x * sizeX  , y * sizeY);
+	glVertex2f(x * _minimapWidth  , y * _minimapHeight);
 
 	glEnd();
 	glBegin(GL_LINES);
@@ -287,7 +283,7 @@ void HUD::mouseButton(int button,int state)
 * @return	void 
 */
 void HUD::mouseMotion(int dx,int dy){
-	if(mouseState){
+	if(_mouseState){
 		std::cout << dx << std::endl; 
 		std::cout << dy << std::endl;
 	}
@@ -302,16 +298,44 @@ void HUD::mouseMotion(int dx,int dy){
 * 
 *@return	void 
 */
-void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
-{
-		if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
-		if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
+void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) {
+	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
+	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 
-		if(_selection < 0) _selection = illu.size() -1;
-		if(_selection >= illu.size()) _selection = 0;
+	if(_selection < 0) _selection = 0;
+	if(_selection >= illu.size()) _selection = illu.size() -1;
 
-		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
-		{
-			illu[_selection]->setSeen(true);
-		};
+	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) {
+		illu[_selection]->setSeen(true);
+	};
+
+	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
+	int list_height = winSizeY - _minimapHeight;
+
+
+	std::cout << "Before: " <<std::endl;
+	std::cout << "winSizeY = " << winSizeY << std::endl;
+	std::cout << "list_height = " << list_height << std::endl;
+	std::cout << "_offset = " << _offset << std::endl;
+	std::cout << "_selection = " << _selection << std::endl;
+	// check if need to increase offset for animal list
+	if(list_height - ( 15 + _selection *14 + _offset) < 0) {
+		_offset -= 14*4;
+	}
+
+	// check if need to decrease offset for animal list
+	if((-15-_selection *14 - _offset) > -15) {
+		_offset += 14*4;
+
+		if(_offset > 0) {
+			_offset = 0;
+		}
+	}
+
+
+	std::cout << "After: " <<std::endl;
+	std::cout << "winSizeY = " << winSizeY << std::endl;
+	std::cout << "list_height = " << list_height << std::endl;
+	std::cout << "_offset = " << _offset << std::endl;
+	std::cout << "_selection = " << _selection << std::endl;
 }

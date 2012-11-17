@@ -17,7 +17,7 @@ SceneLoader::SceneLoader() {
 	_loaded = -1;
 	_masterLoaded = -1;
 	
-	const char* PATH = ".";
+	const char* PATH = "scenes";
 	DIR *dir = opendir(PATH);
 	
 	struct dirent *entry = readdir(dir);
@@ -25,7 +25,8 @@ SceneLoader::SceneLoader() {
 	while (entry != NULL)
 	{
 		if (entry->d_type == DT_DIR) {
-			std::string sceneXML = "";
+			std::string sceneXML = PATH;
+			sceneXML += "/";
 			sceneXML += entry->d_name;
 			sceneXML += "/scene.xml";
 			const char *filename = sceneXML.c_str();
@@ -118,6 +119,7 @@ int SceneLoader::loadScene() {
 
 	ImmersiveKidz::getInstance()->setScenePath(folder);
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
+	scenePath = "scenes/" + scenePath;
 	
 	std::string scene_xml = scenePath + "scene.xml";
 	
@@ -300,15 +302,16 @@ int SceneLoader::loadScene() {
 					int count = multElement->IntAttribute( "count" );
 					int seed = multElement->IntAttribute( "seed" );
 					std::string map = multElement->Attribute( "map" );
-
-					srand(seed);
-					for(int c = 1; c <= count ; c++){
-						posx = glm::compRand1(randminx,randmaxx); 
-						posy = 0;
-						posz  = glm::compRand1(randminy,randmaxy);
-
-						ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation, animseed);
+					bool billboard = false;
+					const char* bb = multElement->Attribute( "billboard" );
+					if(bb) {
+						std::string bbstring = bb;
+						if(bbstring == "yes") billboard = true;
 					}
+
+
+					ImmersiveKidz::getInstance()->addDrawableObject(new BatchBillboard(scenePath + texture, glm::vec3(randminx , 0 , randminy),glm::vec3(randmaxx , 0 , randmaxy), seed, count, glm::vec2(sizex , sizey), billboard), animation, animseed);
+					
 				}
 				else {
 					ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation, animseed);

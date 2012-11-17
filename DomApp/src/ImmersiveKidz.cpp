@@ -109,9 +109,9 @@ void ImmersiveKidz::draw() {
 		if( _isMaster ) {
 			//Draw text for illustrations
 			_hud->drawBackgroundToNames();	
+			_hud->drawIllustrationNames(_illustrations);
 			_hud->drawMinimapBackground();
 			_hud->drawMinimapPositions(_illustrations);
-			_hud->drawIllustrationNames(_illustrations);
 		}
 	} else {
 		_loader.menu();

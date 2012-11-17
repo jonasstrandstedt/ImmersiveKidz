@@ -21,14 +21,20 @@ fi
 
 if [ -z "$1" ]
 	then
-	CONFIG="sgct_config/single.xml"
+	CONFIG="data/sgct_config/single.xml"
+	if [[ "$unamestr" == 'Darwin' ]]; then
+		CONFIG="data/sgct_config/single_mac.xml"
+	fi
 else
 	if [ "$1" = "VR" ]
 		then
-		CONFIG="sgct_config/VRArenaSimCenter.xml"
+		CONFIG="data/sgct_config/VRArenaSimCenter.xml"
 		SLAVES="YES"
 	else
-		CONFIG="sgct_config/single.xml"
+		CONFIG="data/sgct_config/single.xml"
+		if [[ "$unamestr" == 'Darwin' ]]; then
+			CONFIG="data/sgct_config/single_mac.xml"
+		fi
 	fi
 fi
 

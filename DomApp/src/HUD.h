@@ -31,17 +31,17 @@ public:
 	void mouseMotion(int dx,int dy);
 	void keyboardButton(int key,int state, std::vector<Illustration*> illu);
 
-	private:
-	bool mouseState;
-	float speed;
-
-	int _selection;
+	void setTextureMinimap(std::string texture) { _textureMinimap = texture; };
 
 private:
 
+	bool _mouseState;
+	int _offset;
+	std::string _textureMinimap;
+	int _minimapWidth;
+	int _minimapHeight;
 
-
-
+	int _selection;
 
 };
 

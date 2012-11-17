@@ -8,6 +8,7 @@
 #include "sgct.h"
 #include "DrawableObject.h"
 #include "Billboard.h"
+#include "BatchBillboard.h"
 #include "Illustration.h"
 #include "Model.h"
 #include "Camera.h"
