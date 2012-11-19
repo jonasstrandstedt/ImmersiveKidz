@@ -42,18 +42,27 @@ class Site extends CI_Controller
 		$config['max_size']	= '10000';
 		$config['max_width']  = '10000';
 		$config['max_height']  = '10000';
-
-		$this->load->library('upload', $config);
 		
+		$this->load->library('upload', $config);
+		$this->load->model("Images_model");
+
+		$info = $this->Images_model->get_all_worlds();
+		
+		$data = array(
+			"worlds" => $info
+			);
+
 		 if ( ! $this->upload->do_multi_upload())
 		{
 			$error = array('error' => $this->upload->display_errors());
-			$this->load->view('upload_form');
+			$this->load->view('upload_form', $data);
 		}
 		else if(isset($_POST['submit']))
 		{	
 			$group = $_POST['group'];
 			$date = $_POST['date'];
+			$world = $_POST['world'];
+
 			$data = array('upload_data' => $this->upload->get_multi_upload());
 			$this->load->model("Images_model"); // model för images tablen 
 			$this->load->library('ProcessImage'); // bibliotek för bildbehandling.
@@ -70,7 +79,7 @@ class Site extends CI_Controller
 			{	
 				$fileurl = $imagesIn[$i];
 				$fileouturl = $imagesOut[$i];
-				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group, "");
+				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group, "", $world);
 			}
 			//$_SESSION['group'] = $group;
 			//$_SESSION['date'] = $date;

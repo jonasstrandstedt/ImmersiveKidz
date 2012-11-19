@@ -83,7 +83,7 @@ class Images_model extends CI_Model
 	 * @param  string	$story		The story of the image
 	 * @return bool 	
 	 */ 
-	function add_image($artist, $imgname, $imgurl, $imgouturl,$soundurl ,$date, $group, $story) 
+	function add_image($artist, $imgname, $imgurl, $imgouturl,$soundurl ,$date, $group, $story, $world) 
 	{
 				$data = array(
 				   'artist' => $artist,
@@ -93,7 +93,8 @@ class Images_model extends CI_Model
 				   'soundurl' => $soundurl,
 				   'date' => $date,
 				   'group' => $group,
-				   'story' => $story
+				   'story' => $story,
+				   'world' => $world
 				);
 				$q = $this->db->insert('images', $data);
 				return $q;
@@ -126,5 +127,17 @@ class Images_model extends CI_Model
 
 				$this->db->where($where);
 				$q = $this->db->update('images', $data);
-			}
+		}
+			    /**
+	 * Gets all the worlds from the database
+	 *
+	 * @return array 	
+	 */ 
+	function get_all_worlds()
+    {
+		$this->db->select("id, name");
+		$this->db->from("worlds");
+		$query = $this->db->get();
+		return $query->result();
 	}
+}

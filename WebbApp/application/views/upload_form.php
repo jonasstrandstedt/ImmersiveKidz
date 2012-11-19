@@ -18,14 +18,12 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 		<?php echo form_open_multipart('index.php/site/upload');?>
 		<form>
 		<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
-		<br>
 		
 		<div id="group">
 			<label for="group">
 				Gruppnamn
 			</label>
 			<input type="text" name="group" size="20"/>
-			<br>
 		</div>
 		
 		<div id="date">
@@ -34,8 +32,18 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 			</label>
 			<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
 		</div>
-		
-		<br /><br />
+		<div id="world">
+			<label for"world">
+				Värld
+			</label>
+			<select name="world">
+				<?php
+				foreach ($worlds as $world)
+				{ 
+					echo "<option value='".$world-> id."'>".$world-> name."</option>";
+				}
+				?>
+			</select>
 
 		<div id="button"><input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" /></div>
 		</form>

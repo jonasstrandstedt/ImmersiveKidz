@@ -55,7 +55,10 @@ function get_images_table_fields()
 		'story' => array(
 			'type' => 'TEXT',
 			'constraint' => '400'
-			)
+			),
+		'world' => array(
+			'type' => 'INT',
+			'constraint' => 5)
 		);
 	return $fields;
 }
