@@ -42,7 +42,7 @@ class Site extends CI_Controller
 		$config['max_size']	= '10000';
 		$config['max_width']  = '10000';
 		$config['max_height']  = '10000';
-
+		
 		$this->load->library('upload', $config);
 		$this->load->model("Images_model");
 

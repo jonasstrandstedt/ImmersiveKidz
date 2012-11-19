@@ -151,12 +151,13 @@ width: 300px;
 	width:150px;
 	padding: 0 5px;
 }
-.uploadform #group{
+.uploadform #group, .uploadform #date{
 /* background-color: yellow; */
 padding: 0px 0px 10px 0;
 }
 .uploadform #date{
 /* background-color: #fc0; */
+
 }
 
 .uploadform label {
