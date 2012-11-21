@@ -1,6 +1,14 @@
-<!-- 
-Läser in bildfilen 'test.jpg' från samma mapp
--->
+/*
+* @brief    Function for rotating images.
+*
+* @details  -
+* @author   Emil Lindström
+* @date     ?
+* @version  
+*    */
+
+
+<!--Läser in bildfilen 'test.jpg' från samma mapp-->
 
 <html>
 <button onclick="rotate('-90')"> <- Rotera 90 grader</button>
@@ -16,6 +24,7 @@ img.onload = function(){
     can.height = img.height;
     ctx.drawImage(img, 0, 0, img.width, img.height);
 }
+
 img.src = 'test.jpg';
 
 function rotate(angle){
