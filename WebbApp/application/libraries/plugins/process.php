@@ -41,18 +41,6 @@ class phMagick_process{
         return  $p ;
     }
 
-    function open(phmagick $p, $size, $kernel){
-            //Build command to open image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource().'"'  ;
-            $cmd .= ' -morphology Open '.$kernel.':' . $size ;
-            $cmd .= ' "' . $p->getDestination().'"'  ;
-
-            $p->execute($cmd);
-
-        return  $p ;
-    }
-
     function close(phmagick $p, $size, $kernel){
             //Build command to close image
             $cmd = $p->getBinary('convert');
@@ -65,27 +53,13 @@ class phMagick_process{
         return  $p ;
     }
 
-   /* function close(phmagick $p, $kernel){
-            //Build command to close image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' -morphology close ' .$kernel;
-            $cmd .= ' "' . $p->getDestination() .'"'  ;
-
-            echo  "Close: " . $cmd . "<br/>";
-            $p->execute($cmd);
-
-        return  $p ;
-    }*/
-
-    function mask(phmagick $p, $originalImage){
+    function mask(phmagick $p, $originalImage)
+    {
             //Build command to close image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource() .'"'  ;
             $cmd .= ' "' . $originalImage .'"' ;
-            //$cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' -compose multiply -composite  -transparent "#000000"'  ;
+            $cmd .= ' -compose multiply -composite -transparent "#000000"'  ;
             $cmd .= ' "' . $p->getDestination() .'"'  ;
             
             $p->execute($cmd);
@@ -98,17 +72,47 @@ class phMagick_process{
         //Build to fill holes
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() . '"';
-        $cmd .= '-fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"' . ' -fill black +opaque red -fill white -opaque red -alpha off';
-        $cmd .= ' "' . $p->getDestination() .'"'  ;
-
-        echo "Fill holes " . $cmd . "<br/>";
+        $cmd .= ' -fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"';
+        $cmd .= ' "' . $p->getDestination() .'"';
         $p->execute($cmd);
 
+        echo $cmd . "<br/>";
+
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() . '"';
+        $cmd .= ' -fill white +opaque red -fill black -opaque red -alpha off';
+        $cmd .= ' "' . $p->getDestination() .'"';
+        $p->execute($cmd);
+
+        echo $cmd . "<br/>";
+        
         return $p;
     }
 
-    function getAverageIntensity(phmagick $p){
+    function addBorder(phmagick $p, $borderSize)
+    {
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() . '"';
+        $cmd .= ' -bordercolor black -border ' . $borderSize;
+        $cmd .= ' "' . $p->getDestination() .'"'  ;
+        $p->execute($cmd);
 
+        echo "Add border: " . $cmd . "<br/>";
+    }
+
+    function removeBorder(phmagick $p, $borderSize)
+    {
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() . '"';
+        $cmd .= ' -shave ' . $borderSize;
+        $cmd .= ' "' . $p->getDestination() .'"'  ;
+        $p->execute($cmd);
+
+        echo "Remove border: " . $cmd . "<br/>";
+    }
+
+    function getAverageIntensity(phmagick $p)
+    {
             $p->resize(1,1);
             $p->toGrayScale();
             //Build command to close image

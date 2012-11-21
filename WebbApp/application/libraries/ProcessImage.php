@@ -56,21 +56,11 @@ class ProcessImage {
             //------------ Create temporary result to use in intensity calculation --------------------//
             //create mask, save to folder "mask".
             $mask = $folder. "/mask/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."mask.png";
-            $phMagick = new phMagick($images[$i], $mask);
-            $amount = "10%";
-            $phMagick->threshold($amount);
-            
-            //$phMagick->open($size);
-
-            /*$phMagick = new phMagick($mask, $mask);
-            $phMagick->close("diamond");*/
-            
-            /*$size = 6;
-            $phMagick->close($size, "Disk");*/
-            
+            $phMagick = new phMagick($images[$i], $mask);            
 
             //create out image, save to folder "out".
             $out = $folder. "/out/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."out.png";
+            
             $phMagick = new phMagick($mask, $out);
             $phMagick->mask($images[$i]); //pass original image
 
@@ -82,7 +72,6 @@ class ProcessImage {
             $intensityPercent = $intensityValue / 255;
             echo "intensityPercent " . $intensityPercent . "<br/>";
 
-
             //------------ Create result using value from the intensity calculation as thresh --------------------//
             //create mask, save to folder "mask".
             $phMagick = new phMagick($images[$i], $mask);
@@ -90,10 +79,18 @@ class ProcessImage {
             echo "thresh amount: " . $amount . "<br/>";
             $phMagick->threshold($amount);
 
+            //Add border to fill the holes
             $phMagick = new phMagick($mask, $mask);
+            $borderSize = "10x10";
+            $phMagick->addBorder($borderSize);
+
+            //Start filling at x=0, y=0
             $drawSettings = "color 0,0 floodfill";
             $phMagick->fillHoles($drawSettings);
 
+            //Remove the border
+            $phMagick->removeBorder($borderSize);
+            
             //create out image, save to folder "out".
             array_push($imagesOut,$out);
             $phMagick = new phMagick($mask, $out);
