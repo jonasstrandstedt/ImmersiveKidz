@@ -29,41 +29,43 @@
 * @version  
 */
 class phMagick_process{
-    function threshold(phmagick $p, $amount){
-            //Build command to threshold image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource().'"'  ;
-            $cmd .= ' -negate -threshold ' . $amount ;
-            $cmd .= ' "' . $p->getDestination().'"'  ;
+    function threshold(phmagick $p, $amount)
+    {
+        //Build command to threshold image
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource().'"'  ;
+        $cmd .= ' -negate -threshold ' . $amount ;
+        $cmd .= ' "' . $p->getDestination().'"'  ;
 
-            echo "Threshold: " . $cmd . "<br/>";
-            $p->execute($cmd);
+        echo "Threshold: " . $cmd . "<br/>";
+        $p->execute($cmd);
 
         return  $p ;
     }
 
-    function close(phmagick $p, $size, $kernel){
-            //Build command to close image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource().'"'  ;
-            $cmd .= ' -morphology Close '.$kernel.':' . $size ;
-            $cmd .= ' "' . $p->getDestination().'"'  ;
+    function close(phmagick $p, $size, $kernel)
+    {
+        //Build command to close image
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource().'"'  ;
+        $cmd .= ' -morphology Close '.$kernel.':' . $size ;
+        $cmd .= ' "' . $p->getDestination().'"'  ;
 
-            $p->execute($cmd);
+        $p->execute($cmd);
 
         return  $p ;
     }
 
     function mask(phmagick $p, $originalImage)
     {
-            //Build command to close image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' "' . $originalImage .'"' ;
-            $cmd .= ' -compose multiply -composite -transparent "#000000"'  ;
-            $cmd .= ' "' . $p->getDestination() .'"'  ;
-            
-            $p->execute($cmd);
+        //Build command to close image
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() .'"'  ;
+        $cmd .= ' "' . $originalImage .'"' ;
+        $cmd .= ' -compose multiply -composite -transparent "#000000"'  ;
+        $cmd .= ' "' . $p->getDestination() .'"'  ;
+        
+        $p->execute($cmd);
 
         return  $p ;
     }
@@ -77,15 +79,11 @@ class phMagick_process{
         $cmd .= ' "' . $p->getDestination() .'"';
         $p->execute($cmd);
 
-        echo $cmd . "<br/>";
-
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() . '"';
         $cmd .= ' -fill white +opaque red -fill black -opaque red -alpha off';
         $cmd .= ' "' . $p->getDestination() .'"';
         $p->execute($cmd);
-
-        echo $cmd . "<br/>";
         
         return $p;
     }
@@ -97,8 +95,6 @@ class phMagick_process{
         $cmd .= ' -bordercolor black -border ' . $borderSize;
         $cmd .= ' "' . $p->getDestination() .'"'  ;
         $p->execute($cmd);
-
-        echo "Add border: " . $cmd . "<br/>";
     }
 
     function removeBorder(phmagick $p, $borderSize)
@@ -108,26 +104,24 @@ class phMagick_process{
         $cmd .= ' -shave ' . $borderSize;
         $cmd .= ' "' . $p->getDestination() .'"'  ;
         $p->execute($cmd);
-
-        echo "Remove border: " . $cmd . "<br/>";
     }
 
     function getAverageIntensity(phmagick $p)
     {
-            $p->resize(1,1);
-            $p->toGrayScale();
-            //Build command to close image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource() .'"';
-            $cmd .= " -format '%[pixel:p{0,0}]' info:";
+        $p->resize(1,1);
+        $p->toGrayScale();
+        //Build command to close image
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() .'"';
+        $cmd .= " -format '%[pixel:p{0,0}]' info:";
 
-            $p->execute($cmd);
-            $res = $p->getLog();
-            $res = $res[2];
-            $res = $res["output"];
-            $start = strpos($res[0], "(")+1;
-            $length = strpos($res[0], ",") - strpos($res[0], "(") - 1;
-            $res = substr($res[0], $start, $length);
+        $p->execute($cmd);
+        $res = $p->getLog();
+        $res = $res[2];
+        $res = $res["output"];
+        $start = strpos($res[0], "(")+1;
+        $length = strpos($res[0], ",") - strpos($res[0], "(") - 1;
+        $res = substr($res[0], $start, $length);
             
         return  $res ;
     }
