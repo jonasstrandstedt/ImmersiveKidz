@@ -1,3 +1,13 @@
+/* @brief    CSS for the webpage
+*
+* @details  -
+*
+* @author   Emil Lindström, emili250@student.liu.se
+* @date     ?
+* @version  
+*/
+
+
 *  { margin: 0;}  /* fix margins to at header and footer */
 
 html{  /*footer to bottom of page*/
@@ -13,8 +23,8 @@ body {
 
  
 h1,h2,h3,h4,p,a,li,ul, html{
-font-family: arial, sans-serif;
-text-decoration: none;
+	font-family: arial, sans-serif;
+	text-decoration: none;
 }
 
 #nav{
@@ -115,7 +125,7 @@ text-decoration: none;
 	width: 300px;
 }
 
-.uploadform .upload {  /* choose files to upload area */
+.uploadform .upload{  /* choose files to upload area */
 	width: 250px;
 	color: #c3c3c3;
 	font-size: 18px;
@@ -134,7 +144,7 @@ text-decoration: none;
 
 
 
-.uploadform label {
+.uploadform label{
 	font-size: 18px;
 	color: #c3c3c3;
 	display: inline-block; 
@@ -205,11 +215,6 @@ padding: 40px 0px 80px 0px;
 	padding:10px 15px;
 	color:#fff;
 	font-size:16px;
-	/* rundade hörn
-	border-radius:5px;
-	-moz-border-radius:5px;
-	-webkit-border-radius:5px;
-	*/
 	border:1px solid #459A00
 }
 
