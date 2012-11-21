@@ -1,16 +1,20 @@
-<!--
-* @brief    Functions to process image.
+<?php 
+/* @brief    Functions to process image.
 *
-* @details  readIms - Read images of folder
-            findDrawing - treshold and close image. Mask image to find the figure. 
+* @details  readIms($folder) - Reads images from a folder.
+                In: $folder - Folder to read images from.
+                Out: array of images.
+            findDrawing($images, $folder) - treshold, close and fill holes in image. Mask original image to find the figure. 
+                In: $images - Array of images.
+                    $folder - destination folder.
+                Out: array of processed images.
 *
 * @author   Gabriella Ivarsson, gabiv132
 * @author   
 * @date     2012-11-08
 * @version  
-*    
--->
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+*/
+if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 include "phmagick.php";
 class ProcessImage {
