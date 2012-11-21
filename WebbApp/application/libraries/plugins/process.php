@@ -22,8 +22,8 @@
                 In: $p - phmagick object.
                 Out: Resulting intensity value.
                 
-* @author   Gabriella Ivarsson, gabiv132
-            Christoffer Hermansson, chrhe155
+* @author   Gabriella Ivarsson, gabiv132.
+            Christoffer Hermansson, chrhe155.
 * @author   
 * @date     2012-11-18
 * @version  

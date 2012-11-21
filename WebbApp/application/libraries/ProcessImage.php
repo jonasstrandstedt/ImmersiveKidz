@@ -88,7 +88,7 @@ class ProcessImage {
             $borderSize = "10x10";
             $phMagick->addBorder($borderSize);
 
-            //Start filling at x=0, y=0
+            //Start fill at x=0, y=0
             $drawSettings = "color 0,0 floodfill";
             $phMagick->fillHoles($drawSettings);
 
