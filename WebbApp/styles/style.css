@@ -218,11 +218,44 @@ padding: 40px 0px 80px 0px;
 	border:1px solid #459A00
 }
 
-.editList { /* 'ÄNDRA BEFINTLIG VÄRLD' */
-	background-color: red;
+#content .editList{/* 'ÄNDRA BEFINTLIG VÄRLD' */
 	margin: 0 auto;
-	width: 300px;
+	width: 100%;
+}
+
+.editList h2{
 	text-align: center;
+	padding-bottom: 10px;
+}
+
+.editList .editObject {
+	width: 25%;
+	margin: 0 auto;
+	text-align: left;
+	padding: 3px 0 0 15%;
+}
+
+.editList .editObject .date{
+	font-size: 12px;
+	color: #cc9;
+	margin-right: 10px;
+}
+
+.editList .editObject .group{	
+	display: inline-block;
+	margin-left: 10px;
+}
+
+#contentAbout{
+	color: white;
+	font-size: 12px;
+	margin: 0 auto;
+	padding-top: 30px;
+	width: 50%
+}
+
+#contentAbout p{
+margin-top: 10px;
 }
 
 #footer{
