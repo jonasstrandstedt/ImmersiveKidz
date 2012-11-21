@@ -1,145 +1,121 @@
-body, html{ 
-margin: 0; 
-padding: 0;
-height: 100%;
+*  { margin: 0;}  /* fix margins to at header and footer */
+
+html{  /*footer to bottom of page*/
+	position: relative; 
+	/* height: auto; */
+	min-height: 100%; 
+	overflow-y: scroll;
 }
-html{
-position: relative;
-min-height: 100%;
+
+body {
+	background-color: #302b29; /*mörk grå, bakgrund till större del av sidan*/
 }
-body{
-	background-color: #302b29;
-}
-*  { margin: 0;}
+
  
 h1,h2,h3,h4,p,a,li,ul, html{
 font-family: arial, sans-serif;
 text-decoration: none;
 }
-.row{
-	width: 1020px;
-	overflow: auto;
-}
 
 #nav{
-/* margin: 50px auto 0 auto; */  /* centrera */
-/* width: 1024px; */
-width: 100%;
-background-color: #2e2e2d;
-height: 30px;
-text-transform:uppercase;
-font-size: 10px;
-font-weight:bold;
-color: bababa;
-border: rgba(112, 112, 112, .5);
-border-style: groove;
-border-top:1px;
-border-right:1px;
-border-left:1px;
-border-width: 2px;
-/* border-color: #707070; */
+	width: 100%;
+	background-color: #2e2e2d;
+	height: 30px;
+	text-transform:uppercase;
+	font-size: 10px;
+	font-weight:bold;
+	color: bababa;
+	border: rgba(112, 112, 112, .5);
+	border-style: groove;
+	border-top:1px;
+	border-right:1px;
+	border-left:1px;
+	border-width: 2px;
 }
 
-#nav a{
-color: #bababa;
+#nav a, #nav a:visited{
+	color: #bababa;
 }
-#nav a:visited{
-color: #bababa;
-}
+
 #nav a:hover{
-color: white;
+	color: white;
 }
 
-#nav ul{
-width: 50%;
-text-align: center;
-list-style: none;
-margin: 0 0 0 22%;
-height: 30px;
-}
-#nav .image{
-width: 10%;
-margin: 5px 0 0 10%;
-float: left;
+#nav ul{ /*navigation bar in header*/
+	width: 50%;
+	text-align: center;
+	list-style: none;
+	margin: 0 0 0 22%;
+	height: 30px;
 }
 
-#nav ul li{
-margin: 10px 10px 0px 10px;
-display: inline-block;
+#nav .image{ /*logotype in header*/
+	width: 10%;
+	margin: 5px 0 0 10%;
+	float: left;
 }
 
-#content{
-/* margin: 0 auto 0 auto; */
-/* width: 1024px; */
-width: 100%;
-background-color: #302b29;
-height: 150px;
-font-size: 14px;
-color: #e8e8e8;
+#nav ul li{ /*links in navigation bar in header*/
+	margin: 10px 10px 0px 10px;
+	display: inline-block;
 }
-#content a{
-color: #e8e8e8;
+
+#content{ 
+	width: 100%;
+	background-color: #302b29;
+	height: 150px;
+	font-size: 14px;
+	color: #e8e8e8;
 }
-#content a:visited{
-color: #e8e8e8;
+#content a, #content a:visited{
+	color: #e8e8e8;
 }
 
 #content a:hover{
-color: white;
+	color: white;
 }
 
-#content ul{
-text-align: center;
-width: 50%;
-padding: 50px 0px 5px 0px;
-list-style: none;
-float: left;
-margin: 0 25%;
+#content ul{ /*navigation in content */
+	text-align: center;
+	width: 50%;
+	padding: 50px 0px 5px 0px;
+	list-style: none;
+	float: left;
+	margin: 0 25%;
 }
 
-#content ul li{
-margin: 0px 10px;
-display: inline;
-}
-#content hr{
-/* margin: 0 0 0 37.5%; */
-margin: 0 auto;
+#content ul li{ /*links in navigation in content */
+	margin: 0px 10px;
+	display: inline;
 }
 
-#content .hr1{
-border-color: black;
-opacity:0.44;
-width: 340px;
+#content hr{ /*line under links*/
+	margin: 0 auto;
 }
-#content .hr2{
-opacity:0.2;
-width: 340px;
+
+#content .hr1{ /*black line under llinks*/
+	border-color: black;
+	opacity:0.44;
+	width: 340px;
+}
+
+#content .hr2{ /* white line under llinks*/
+	opacity:0.2;
+	width: 340px;
 }
 
 #sub{
-background-color: #302b29;
-/* width: 1024px; */
-/* margin: 0 auto; */
-width: 100%;
-overflow: auto;
-} 
-.editList {
-margin: 0 auto;
-width: 300px;
-/* background-color: white; */
+	background-color: #302b29;
+	width: 100%;
+	overflow: auto;
 }
 
-.uploadform{
-	/*margin: 0px 200px;*/
-}
-.uploadform form, .downloadform form {
-margin: 0 auto;
-width: 300px;
-/* background-color: white; */
+.uploadform form, .downloadform form { /* center the upload and download area*/
+	margin: 0 auto;
+	width: 300px;
 }
 
-.uploadform .upload {
-	/* background-color: green; */
+.uploadform .upload {  /* choose files to upload area */
 	width: 250px;
 	color: #c3c3c3;
 	font-size: 18px;
@@ -152,23 +128,69 @@ width: 300px;
 	padding: 0 5px;
 }
 .uploadform #group{
-/* background-color: yellow; */
-padding: 0px 0px 10px 0;
-}
-.uploadform #date{
-/* background-color: #fc0; */
+	padding: 0px 0px 10px 0;
 }
 
+.uploadform #date{}
+
 .uploadform label {
-font-size: 18px;
-color: #c3c3c3;
-/* background-color: blue; */
-display: inline-block; 
-width: 100px;
+	font-size: 18px;
+	color: #c3c3c3;
+	display: inline-block; 
+	width: 100px;
 }
+
+.row{ /*each row with uploaded images*/
+	clear: both;
+	overflow: hidden;
+	width: 80%;
+	margin: 0 auto;
+}
+
+.row .imgform{ /*each image and forms */
+	margin: 50px 20px 50px 20px;
+	float:left;
+	width: 300px;
+}
+
+.row label{ 
+	font-size: 18px;
+	color: #c3c3c3;
+	display: inline-block; 
+	width: 120px;
+	padding: 5px 0 0 0;
+}
+
+.row .image{
+	width: 100%;
+}
+
+.row img{ /*the image*/
+	margin-left: 140px;
+	padding-bottom: 10px;
+	text-align: center;
+	height: 100px;
+	width: auto;
+}
+
+.row input {
+	color: gray; 
+	width:150px;
+	padding: 0 5px;
+	vertical-align: middle;
+}
+
+#sub form #buttoninfo{ /* Area for 'Gå vidare'-button on 'Fyll i info'*/
+margin: 0 auto;
+text-align: center;
+width: 50%;
+padding: 40px 0px 80px 0px;
+}
+
 #button {
- padding: 20px 0px 40px 50px;	 
+	padding: 20px 0px 40px 50px;	 
 }
+
 #sub .styledbutton {
 	width: 200px;
 	background:#5CCD00;
@@ -190,32 +212,30 @@ width: 100px;
 	border:1px solid #459A00
 }
 
+.editList { /* 'ÄNDRA BEFINTLIG VÄRLD' */
+	background-color: red;
+	margin: 0 auto;
+	width: 300px;
+	text-align: center;
+}
+
 #footer{
-/* width: 1024px; */
-width: 100%;
-background-color: #2e2e2d;
-height: 30px;
-/* margin: 0 auto; */
-text-align: center;
-border: rgba(112, 112, 112, .5);
-border-style: groove ;
-border-bottom:1px;
-border-right:1px;
-border-left:1px;
-border-width: 2px;
-/* border-color: #707070; */
-
-position: absolute;
-left: 0;
-bottom: 0;
-
+	width: 100%;
+	background-color: #2e2e2d;
+	height: 30px;
+	text-align: center;
+	border: rgba(112, 112, 112, .5);
+	border-style: groove ;
+	border-bottom:1px;
+	border-right:1px;
+	border-left:1px;
+	border-width: 2px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
 }
 
 #footer p{
-padding: 5px 0 0px 0;
-color: #777;
+	padding: 5px 0 0px 0;
+	color: #777;
 }
-
-
-
-

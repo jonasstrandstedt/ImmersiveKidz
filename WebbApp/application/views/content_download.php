@@ -1,5 +1,5 @@
 <?php 
-echo "<div id='content'><div class='editList'><h2> V√§lj v√§rld: </h2>";
+echo "<div id='content'><div class='editList'><h2> V‰lj v‰rld: </h2>";
 	 foreach ($info as $groupDate) {
 	 			echo "<div class='editObject'><a href='".base_url()."index.php/site/download_info/".$groupDate -> date."/".$groupDate -> group."'>". $groupDate -> group ." (".$groupDate -> date.")</a></div>";
 
