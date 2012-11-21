@@ -23,8 +23,7 @@
                 Out: Resulting intensity value.
                 
 * @author   Gabriella Ivarsson, gabiv132.
-            Christoffer Hermansson, chrhe155.
-* @author   
+* @author   Christoffer Hermansson, chrhe155.   
 * @date     2012-11-18
 * @version  
 */
