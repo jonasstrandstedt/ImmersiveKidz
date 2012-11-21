@@ -4,7 +4,7 @@
   		<camera>
   			<start x="0.0" y="0.5" z="0.0" />
   			<limitx min="-256.0" max="256.0" />
-  			<limity min="0.0" max="256.0" />
+  			<limity min="0.1" max="256.0" />
   			<limitz min="-256.0" max="256.0" />
   		</camera>
   		<plane>
@@ -19,47 +19,47 @@
 		<item>
 			<texture>textures/tree.png</texture>
 			<size x="2.5" y="2.5"/>
-			<mult count="1009" seed="4124" map="water.png"/>
+			<mult count="1000" seed="4124" map="water.png" />
 		</item>
 		<item>
 			<texture>textures/tree2.png</texture>
 			<size x="2.5" y="2.5"/>
-			<mult count="1009" seed="534534" map="water.png"/>
+			<mult count="1000" seed="534534" map="water.png" />
 		</item>
 		<item>
 			<texture>textures/tree3.png</texture>
 			<size x="2.5" y="2.5"/>
-     		<mult count="1009" seed="3132" map="water.png"/>
+     		<mult count="1000" seed="3132" map="water.png" />
 		</item>
 		<item>
 			<texture>textures/tree4.png</texture>
 			<size x="2.5" y="2.5"/>
-     		<mult count="1009" seed="34" map="water.png"/>
+     		<mult count="1000" seed="34" map="water.png" />
 		</item>
 		<item>
 			<texture>textures/flower.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1009" seed="345" map="water.png"/>
+     		<mult count="1000" seed="345" map="water.png" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower2.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1009" seed="756" map="water.png"/>
+     		<mult count="1000" seed="756" map="water.png" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower3.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1009" seed="868" map="water.png"/>
+     		<mult count="1000" seed="868" map="water.png" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower4.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1009" seed="6866" map="water.png"/>
+     		<mult count="1000" seed="6866" map="water.png" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower5.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1009" seed="6868" map="water.png"/>
+     		<mult count="1000" seed="6868" map="water.png" billboard="yes" />
 		</item>
 	</billboards>
 	<illustrations>

@@ -55,7 +55,10 @@ function get_images_table_fields()
 		'story' => array(
 			'type' => 'TEXT',
 			'constraint' => '400'
-			)
+			),
+		'world' => array(
+			'type' => 'INT',
+			'constraint' => 5)
 		);
 	return $fields;
 }
@@ -127,13 +130,13 @@ function get_positions_table_fields()
 			'auto_increment' => TRUE
 			),
 		'xval' => array(
-			'type' => 'DOUBLE',
+			'type' => 'FLOAT',
 			),
 		'yval' => array(
-			'type' => 'DOUBLE',
+			'type' => 'FLOAT',
 			),
 		'zval' => array(
-			'type' => 'DOUBLE',
+			'type' => 'FLOAT',
 			),
 		'classification' => array(
 			'type' => 'VARCHAR',

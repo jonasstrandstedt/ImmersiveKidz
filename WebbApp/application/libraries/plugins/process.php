@@ -1,32 +1,33 @@
 <?php
-/*
-    +--------------------------------------------------------------------------------------------+
-    |   DISCLAIMER - LEGAL NOTICE -                                                              |
-    +--------------------------------------------------------------------------------------------+
-    |                                                                                            |
-    |  This program is free for non comercial use, see the license terms available at            |
-    |  http://www.francodacosta.com/licencing/ for more information                              |
-    |                                                                                            |
-    |  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; |
-    |  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. |
-    |                                                                                            |
-    |  USE IT AT YOUR OWN RISK                                                                   |
-    |                                                                                            |
-    |                                                                                            |
-    +--------------------------------------------------------------------------------------------+
-
+/* @brief    Functions to process image.
+*
+* @details  threshold(phmagick $p, $amount) - Thresholds the image.
+                In: $p - phmagick object.
+                    $amount - threshold value.
+                Out: phmagick object.
+            close(phmagick $p, $size, $kernel) - Closes the image.
+                In: $p - phmagick object.
+                    $size - Size of structuring element.
+                    $kernel - Type of structuring element. (disk etc.)
+                Out: phmagick object.
+            mask(phmagick $p, $originalImage) - Masks original image using the mask in $p.
+                In: $p - phmagick object.
+                    $originalImage - Original input image.
+                Out: phmagick object.
+            fillHoles(phmagick $p, $drawSettings) - Fills internal holes in the resulting image.
+                In: $p - phmagick object.
+                    $drawSettings - Coordinates where to start calculating..
+                Out: phmagick object.
+            getAverageIntensity(phmagick $p) - Calculates the average intensity of the image.
+                In: $p - phmagick object.
+                Out: Resulting intensity value.
+                
+* @author   Gabriella Ivarsson, gabiv132.
+            Christoffer Hermansson, chrhe155.
+* @author   
+* @date     2012-11-18
+* @version  
 */
-/**
- * phMagick - Resising functions
- *
- * @package    phMagick
- * @version    0.1.1
- * @author     Nuno Costa - sven@francodacosta.com
- * @copyright  Copyright (c) 2007
- * @license    GPL v3
- * @link       http://www.francodacosta.com/phmagick
- * @since      2008-03-13
- */
 class phMagick_process{
     function threshold(phmagick $p, $amount){
             //Build command to threshold image
@@ -36,18 +37,6 @@ class phMagick_process{
             $cmd .= ' "' . $p->getDestination().'"'  ;
 
             echo "Threshold: " . $cmd . "<br/>";
-            $p->execute($cmd);
-
-        return  $p ;
-    }
-
-    function open(phmagick $p, $size, $kernel){
-            //Build command to open image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource().'"'  ;
-            $cmd .= ' -morphology Open '.$kernel.':' . $size ;
-            $cmd .= ' "' . $p->getDestination().'"'  ;
-
             $p->execute($cmd);
 
         return  $p ;
@@ -65,27 +54,13 @@ class phMagick_process{
         return  $p ;
     }
 
-   /* function close(phmagick $p, $kernel){
-            //Build command to close image
-            $cmd = $p->getBinary('convert');
-            $cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' -morphology close ' .$kernel;
-            $cmd .= ' "' . $p->getDestination() .'"'  ;
-
-            echo  "Close: " . $cmd . "<br/>";
-            $p->execute($cmd);
-
-        return  $p ;
-    }*/
-
-    function mask(phmagick $p, $originalImage){
+    function mask(phmagick $p, $originalImage)
+    {
             //Build command to close image
             $cmd = $p->getBinary('convert');
             $cmd .= ' "' . $p->getSource() .'"'  ;
             $cmd .= ' "' . $originalImage .'"' ;
-            //$cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' "' . $p->getSource() .'"'  ;
-            $cmd .= ' -compose multiply -composite  -transparent "#000000"'  ;
+            $cmd .= ' -compose multiply -composite -transparent "#000000"'  ;
             $cmd .= ' "' . $p->getDestination() .'"'  ;
             
             $p->execute($cmd);
@@ -98,17 +73,47 @@ class phMagick_process{
         //Build to fill holes
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() . '"';
-        $cmd .= '-fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"' . ' -fill black +opaque red -fill white -opaque red -alpha off';
-        $cmd .= ' "' . $p->getDestination() .'"'  ;
-
-        echo "Fill holes " . $cmd . "<br/>";
+        $cmd .= ' -fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"';
+        $cmd .= ' "' . $p->getDestination() .'"';
         $p->execute($cmd);
 
+        echo $cmd . "<br/>";
+
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() . '"';
+        $cmd .= ' -fill white +opaque red -fill black -opaque red -alpha off';
+        $cmd .= ' "' . $p->getDestination() .'"';
+        $p->execute($cmd);
+
+        echo $cmd . "<br/>";
+        
         return $p;
     }
 
-    function getAverageIntensity(phmagick $p){
+    function addBorder(phmagick $p, $borderSize)
+    {
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() . '"';
+        $cmd .= ' -bordercolor black -border ' . $borderSize;
+        $cmd .= ' "' . $p->getDestination() .'"'  ;
+        $p->execute($cmd);
 
+        echo "Add border: " . $cmd . "<br/>";
+    }
+
+    function removeBorder(phmagick $p, $borderSize)
+    {
+        $cmd = $p->getBinary('convert');
+        $cmd .= ' "' . $p->getSource() . '"';
+        $cmd .= ' -shave ' . $borderSize;
+        $cmd .= ' "' . $p->getDestination() .'"'  ;
+        $p->execute($cmd);
+
+        echo "Remove border: " . $cmd . "<br/>";
+    }
+
+    function getAverageIntensity(phmagick $p)
+    {
             $p->resize(1,1);
             $p->toGrayScale();
             //Build command to close image

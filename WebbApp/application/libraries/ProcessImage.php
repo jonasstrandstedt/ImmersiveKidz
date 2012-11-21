@@ -1,16 +1,20 @@
-<!--
-* @brief    Functions to process image.
+<?php 
+/* @brief    Functions to process image.
 *
-* @details  readIms - Read images of folder
-            findDrawing - treshold and close image. Mask image to find the figure. 
+* @details  readIms($folder) - Reads images from a folder.
+                In: $folder - Folder to read images from.
+                Out: array of images.
+            findDrawing($images, $folder) - treshold, close and fill holes in image. Mask original image to find the figure. 
+                In: $images - Array of images.
+                    $folder - destination folder.
+                Out: array of processed images.
 *
 * @author   Gabriella Ivarsson, gabiv132
 * @author   
 * @date     2012-11-08
 * @version  
-*    
--->
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+*/
+if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 include "phmagick.php";
 class ProcessImage {
@@ -56,21 +60,13 @@ class ProcessImage {
             //------------ Create temporary result to use in intensity calculation --------------------//
             //create mask, save to folder "mask".
             $mask = $folder. "/mask/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."mask.png";
-            $phMagick = new phMagick($images[$i], $mask);
+            $phMagick = new phMagick($images[$i], $mask);            
             $amount = "10%";
             $phMagick->threshold($amount);
-            
-            //$phMagick->open($size);
-
-            /*$phMagick = new phMagick($mask, $mask);
-            $phMagick->close("diamond");*/
-            
-            /*$size = 6;
-            $phMagick->close($size, "Disk");*/
-            
 
             //create out image, save to folder "out".
             $out = $folder. "/out/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."out.png";
+            
             $phMagick = new phMagick($mask, $out);
             $phMagick->mask($images[$i]); //pass original image
 
@@ -82,7 +78,6 @@ class ProcessImage {
             $intensityPercent = $intensityValue / 255;
             echo "intensityPercent " . $intensityPercent . "<br/>";
 
-
             //------------ Create result using value from the intensity calculation as thresh --------------------//
             //create mask, save to folder "mask".
             $phMagick = new phMagick($images[$i], $mask);
@@ -90,10 +85,18 @@ class ProcessImage {
             echo "thresh amount: " . $amount . "<br/>";
             $phMagick->threshold($amount);
 
+            //Add border to fill the holes
             $phMagick = new phMagick($mask, $mask);
+            $borderSize = "10x10";
+            $phMagick->addBorder($borderSize);
+
+            //Start fill at x=0, y=0
             $drawSettings = "color 0,0 floodfill";
             $phMagick->fillHoles($drawSettings);
 
+            //Remove the border
+            $phMagick->removeBorder($borderSize);
+            
             //create out image, save to folder "out".
             array_push($imagesOut,$out);
             $phMagick = new phMagick($mask, $out);

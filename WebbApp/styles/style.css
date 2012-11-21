@@ -127,11 +127,12 @@ text-decoration: none;
 	width:150px;
 	padding: 0 5px;
 }
-.uploadform #group{
+.uploadform #group, .uploadform #date{
 	padding: 0px 0px 10px 0;
 }
 
-.uploadform #date{}
+
+
 
 .uploadform label {
 	font-size: 18px;

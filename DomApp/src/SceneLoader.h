@@ -13,6 +13,7 @@
 #include "sgct.h"
 #include "tinyxml2.h"
 #include "DrawableObject.h"
+#include "BatchBillboard.h"
 #include "Billboard.h"
 #include "Illustration.h"
 #include "Model.h"
