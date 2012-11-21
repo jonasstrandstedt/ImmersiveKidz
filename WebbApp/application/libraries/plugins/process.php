@@ -21,33 +21,27 @@
             getAverageIntensity(phmagick $p) - Calculates the average intensity of the image.
                 In: $p - phmagick object.
                 Out: Resulting intensity value.
+            addBorder(phmagick $p, $borderSize) - Adds a border to the image to help fill the holes.
+                In: $p - phmagick object.
+                    $borderSize - The size of the border.
+                Out: phmagick object.
+            removeBorder(phmagick $p, $borderSize) - Removes the border to obtain the right size for the image.
+                In: $p - phmagick object.
+                    $borderSize - The size of the border.
+                Out: phmagick object.
                 
 * @author   Gabriella Ivarsson, gabiv132.
 * @author   Christoffer Hermansson, chrhe155.   
 * @date     2012-11-18
 * @version  
 */
-class phMagick_process{
+class phMagick_process
+{
     function threshold(phmagick $p, $amount)
     {
-        //Build command to threshold image
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource().'"'  ;
         $cmd .= ' -negate -threshold ' . $amount ;
-        $cmd .= ' "' . $p->getDestination().'"'  ;
-
-        echo "Threshold: " . $cmd . "<br/>";
-        $p->execute($cmd);
-
-        return  $p ;
-    }
-
-    function close(phmagick $p, $size, $kernel)
-    {
-        //Build command to close image
-        $cmd = $p->getBinary('convert');
-        $cmd .= ' "' . $p->getSource().'"'  ;
-        $cmd .= ' -morphology Close '.$kernel.':' . $size ;
         $cmd .= ' "' . $p->getDestination().'"'  ;
 
         $p->execute($cmd);
@@ -57,7 +51,6 @@ class phMagick_process{
 
     function mask(phmagick $p, $originalImage)
     {
-        //Build command to close image
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() .'"'  ;
         $cmd .= ' "' . $originalImage .'"' ;
@@ -71,7 +64,6 @@ class phMagick_process{
 
     function fillHoles(phmagick $p, $drawSettings)
     {
-        //Build to fill holes
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() . '"';
         $cmd .= ' -fill red -fuzz 5% -draw ' . '"' . $drawSettings . '"';
@@ -109,7 +101,7 @@ class phMagick_process{
     {
         $p->resize(1,1);
         $p->toGrayScale();
-        //Build command to close image
+
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() .'"';
         $cmd .= " -format '%[pixel:p{0,0}]' info:";

@@ -21,7 +21,8 @@ class ProcessImage {
 
     public function readIms($folder)
     {
-        $dir = opendir($folder); // Use 'opendir(".")' if the PHP file is in the same folder as your images. Or set a relative path 'opendir("../path/to/folder")'.
+        //Use 'opendir(".")' if the PHP file is in the same folder as your images. Or set a relative path 'opendir("../path/to/folder")'.
+        $dir = opendir($folder); 
         $pic_types = array("jpg", "jpeg", "gif", "png");
         $images = array();
          
@@ -38,7 +39,10 @@ class ProcessImage {
     }
 
     public function findDrawing($images, $folder)
-    {   $imagesOut = array(); // Array containing
+    {   
+        //Array containing the modified images
+        $imagesOut = array();
+
         //If no mask folder exists, create it.
         if(!is_dir($folder. "/mask")){
             mkdir($folder. "/mask", 0777);
@@ -99,7 +103,8 @@ class ProcessImage {
             //create out image, save to folder "out".
             array_push($imagesOut,$out);
             $phMagick = new phMagick($mask, $out);
-            $phMagick->mask($images[$i]); //pass original image
+            //pass original image
+            $phMagick->mask($images[$i]); 
 
         }
         return $imagesOut;
