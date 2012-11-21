@@ -46,7 +46,7 @@ class phMagick_process
 
         $p->execute($cmd);
 
-        return  $p ;
+        return  $p;
     }
 
     function mask(phmagick $p, $originalImage)
@@ -54,12 +54,12 @@ class phMagick_process
         $cmd = $p->getBinary('convert');
         $cmd .= ' "' . $p->getSource() .'"'  ;
         $cmd .= ' "' . $originalImage .'"' ;
-        $cmd .= ' -compose multiply -composite -transparent "#000000"'  ;
+        $cmd .= ' -compose multiply -composite -transparent "#000000" -trim';
         $cmd .= ' "' . $p->getDestination() .'"'  ;
         
         $p->execute($cmd);
 
-        return  $p ;
+        return  $p;
     }
 
     function fillHoles(phmagick $p, $drawSettings)
@@ -86,6 +86,8 @@ class phMagick_process
         $cmd .= ' -bordercolor black -border ' . $borderSize;
         $cmd .= ' "' . $p->getDestination() .'"'  ;
         $p->execute($cmd);
+
+        return $p;
     }
 
     function removeBorder(phmagick $p, $borderSize)
@@ -95,6 +97,8 @@ class phMagick_process
         $cmd .= ' -shave ' . $borderSize;
         $cmd .= ' "' . $p->getDestination() .'"'  ;
         $p->execute($cmd);
+
+        return $p;
     }
 
     function getAverageIntensity(phmagick $p)
@@ -114,7 +118,7 @@ class phMagick_process
         $length = strpos($res[0], ",") - strpos($res[0], "(") - 1;
         $res = substr($res[0], $start, $length);
             
-        return  $res ;
+        return  $res;
     }
 }
 ?>
