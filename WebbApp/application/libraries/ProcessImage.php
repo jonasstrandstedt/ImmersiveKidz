@@ -61,6 +61,8 @@ class ProcessImage {
             //create mask, save to folder "mask".
             $mask = $folder. "/mask/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."mask.png";
             $phMagick = new phMagick($images[$i], $mask);            
+            $amount = "10%";
+            $phMagick->threshold($amount);
 
             //create out image, save to folder "out".
             $out = $folder. "/out/". substr($images[$i], strrpos($images[$i], "/") + 1, $namelength) ."out.png";
