@@ -8,6 +8,15 @@ int runUnitTests(int argc, char **argv);
 #include "sgct.h"
 #include "ImmersiveKidz.h"
 
+//include open AL
+#ifdef __APPLE__
+    #include <OpenAL/al.h>
+    #include <ALUT/alut.h>
+#else
+    #include <AL/al.h>
+    #include <AL/alut.h>
+#endif
+
 sgct::Engine * gEngine;
 ImmersiveKidz *iKidz;
 
@@ -16,7 +25,7 @@ void myDrawFun();
 void myPreSyncFun();
 void myEncodeFun();
 void myDecodeFun();
-
+void myCleanUpFun(); //openAL clean
 void myPostSyncPreDrawFunction();
 
 void myKeyboardFun(int,int);
@@ -27,6 +36,14 @@ int prevMouseX = -1;
 int prevMouseY = -1;
 bool stereo = true;
 float eyeSeparation = 0.0f;
+
+
+//OpenAL data & functions
+void setAudioSource(ALuint &buffer,ALuint &source, char * filename);
+ALuint audio_buffer0 = AL_NONE;
+ALuint source0;
+glm::vec4 audioPos;
+
 
 int main( int argc, char* argv[] )
 {
@@ -51,6 +68,7 @@ int main( int argc, char* argv[] )
 	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
 
 	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
+	//gEngine->setCleanUpFunction( myCleanUpFun );
 
 	
 	
@@ -99,6 +117,7 @@ void myInitOGLFun() {
 	iKidz = ImmersiveKidz::getInstance();
 	iKidz->init();
 	iKidz->setMaster(gEngine->isMaster());
+
 }
 
 
@@ -155,6 +174,8 @@ void myMouseButtonFun(int button,int state){
 void myPostSyncPreDrawFunction(){
 	stereo ? gEngine->getUserPtr()->setEyeSeparation( eyeSeparation ) : gEngine->getUserPtr()->setEyeSeparation( 0.0f );
 	iKidz->postSyncPreDrawFunction();
+
 }
+
 
 #endif
