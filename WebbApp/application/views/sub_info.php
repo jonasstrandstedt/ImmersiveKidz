@@ -23,25 +23,20 @@ $counter = 0;
 	{ 
 
 	echo "<div class='imgform'>
-	<img src='../../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> 
-		<label>Konstnär:
+	<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> </div>
+		<label>Konstnär:</label>
 		<input type='text' name='artist".$column."' value='".$row -> artist."' />
-    	</label>
-    	<label>Titel:
+    	<label>Titel:</label>
 		<input type='text' name='imgname".$column."' value='".$row -> imgname."' />
-    	</label>
-    	<label>Typ:
+    	<label>Typ:</label>
 		<input type='text' name='type".$column."' value='' />
-    	</label>
-    	<label>Tröskelvärde:
+    	<label>Tröskelvärde:</label>
 		<input type='range' name='threshold".$column."' min='1' max='10' value='5' />
-    	</label>
-    	<label>Historia:
+    	<label>Historia:</label>
 	 	<input type='text' name='story".$column."' value='".$row -> story."' />
-    	</label>
-    	<label>Ljud:
+    	<label>Ljud:</label>
 		<input type='file' name='soundurl".$column."' />
-		</label></div>";
+		</div>";
  			
  		$column++;
 
@@ -51,6 +46,6 @@ $counter = 0;
 	}
 echo "</div></div>";
 ?>
-<input type="submit" value="Submit" name="update">
+<div id="buttoninfo"><input class="styledbutton" type="submit" value="Gå vidare" name="update"></div>
 </form>
 </div>		

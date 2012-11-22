@@ -238,11 +238,11 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 	glBegin(GL_LINE_LOOP);
 
 	//Draw camera on minimap
-	float x = (camPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
+	float x = 1-(camPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
 	float y = (camPosition.z + 4 - worldRect.y) / (worldRect.w - worldRect.y);
 	float fov = 20;
-	glm::vec4 dir1 = glm::rotate(glm::mat4(),-camRotation.x+fov,glm::vec3(0.0f,1.0f,0.0f)) * glm::vec4(0,0,-30,0);
-	glm::vec4 dir2 = glm::rotate(glm::mat4(),-camRotation.x-fov,glm::vec3(0.0f,1.0f,0.0f)) * glm::vec4(0,0,-30,0);
+	glm::vec4 dir1 = glm::rotate(glm::mat4(),camRotation.x+fov,glm::vec3(0.0f,1.0f,0.0f)) * glm::vec4(0,0,-30,0);
+	glm::vec4 dir2 = glm::rotate(glm::mat4(),camRotation.x-fov,glm::vec3(0.0f,1.0f,0.0f)) * glm::vec4(0,0,-30,0);
 	
 	glVertex2f(x * _minimapWidth  , y * _minimapHeight);
 	glVertex2f((x) * _minimapWidth + dir1.x , (y) * _minimapHeight + dir1.z );
@@ -250,6 +250,7 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 
 
 	
+
 
 	glEnd();
 

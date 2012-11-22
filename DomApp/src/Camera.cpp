@@ -17,13 +17,13 @@ Camera::Camera(glm::vec3 startPosition)
 	_movingUp = false;
 	_movingDown = false;
 	_speed = 3.0;
-	_rotationSpeed = 0.05;
+	_rotationSpeed = 0.1;
 	_mouseState = false;
 	_position = startPosition;
 	
 	_limitsX.x = -10;
 	_limitsX.y = 10;
-	_limitsY.x = -10;
+	_limitsY.x = 0.04;
 	_limitsY.y = 10;
 	_limitsZ.x = -10;
 	_limitsZ.y = 10;
