@@ -16,7 +16,8 @@
 */
 
 
-TEST (CameraTests, Speed) { 
+TEST (CameraTests, Speed) 
+{ 
 
     Camera *c = new Camera(glm::vec3(1,1.5,3));
 	c->setLimitsX(glm::vec2(-10,10));
@@ -40,7 +41,8 @@ TEST (CameraTests, Speed) {
 
 }
 
-TEST (CameraTests, Movements) { 
+TEST (CameraTests, Movements) 
+{ 
     Camera *c = new Camera(glm::vec3(1,1.5,3));
 	c->setLimitsX(glm::vec2(-10,10));
 	c->setLimitsY(glm::vec2(-10,10));
