@@ -31,7 +31,8 @@ float eyeSeparation = 0.0f;
 int main( int argc, char* argv[] )
 {
 #ifdef _RUN_TESTS_
-	if(runUnitTests(argc, argv )){
+	if(runUnitTests(argc, argv ))
+	{
 		std::cin.get();
 	}
 #endif
@@ -77,7 +78,8 @@ int main( int argc, char* argv[] )
 	exit( EXIT_SUCCESS );
 }
 
-void myInitOGLFun() {
+void myInitOGLFun()
+{
 	// init shaders
 	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_still", "data/Shaders/BatchBillboard_still.vert", "data/Shaders/BatchBillboard_still.frag" );
 	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_turn", "data/Shaders/BatchBillboard_turn.vert", "data/Shaders/BatchBillboard_turn.frag" );
@@ -118,23 +120,28 @@ void myEncodeFun()
 	iKidz->encode();
 }
 
-void myDecodeFun() {
+void myDecodeFun() 
+{
 	stereo = sgct::SharedData::Instance()->readBool();
 	iKidz->decode();
 }
 
 
-void myKeyboardFun(int key,int state){
+void myKeyboardFun(int key,int state)
+{
 	iKidz->keyboardButton(key,state);
 
-	if(gEngine->isMaster() && state == GLFW_PRESS) {
+	if(gEngine->isMaster() && state == GLFW_PRESS) 
+	{
 		if(key == 'P') gEngine->takeScreenshot();
 		if(key == 'X') stereo = !stereo;
 	}
 }
 
-void myMouseMotionFun(int x,int y){
-	if(prevMouseX == -1){
+void myMouseMotionFun(int x,int y)
+{
+	if(prevMouseX == -1)
+	{
 		prevMouseX = x;
 		prevMouseY = y;
 		return;
@@ -147,12 +154,14 @@ void myMouseMotionFun(int x,int y){
 	prevMouseY = y;
 }
 
-void myMouseButtonFun(int button,int state){
+void myMouseButtonFun(int button,int state)
+{
 	iKidz->mouseButton(button,state);
 }
 
 
-void myPostSyncPreDrawFunction(){
+void myPostSyncPreDrawFunction()
+{
 	stereo ? gEngine->getUserPtr()->setEyeSeparation( eyeSeparation ) : gEngine->getUserPtr()->setEyeSeparation( 0.0f );
 	iKidz->postSyncPreDrawFunction();
 }
