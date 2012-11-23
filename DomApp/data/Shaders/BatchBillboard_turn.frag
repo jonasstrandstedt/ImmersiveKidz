@@ -11,9 +11,6 @@ void main()
 	if(rgba.a < 0.5) {
 		discard;
 	}
-	if(gl_FragDepth > 3.0) {
-		discard;
-	}
 	gl_FragColor = vec4( rgba);
 
 }
