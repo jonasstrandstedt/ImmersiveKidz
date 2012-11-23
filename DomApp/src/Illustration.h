@@ -11,11 +11,13 @@
 * @details	Extends the billboard class because a drawing is a billboard, the only difference is the extended metadata.
 *
 * @author 	Jonas Strandstedt, jonast184@student.liu.se
+* @author	Viktor Nilsson, vikni067@student.liu.se
 * @date   	November 1, 2012
 * @version	0.0.1
 *    
 */
-class Illustration: public Billboard {
+class Illustration: public Billboard 
+{
 public:
 	Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, 
 		std::string artist, std::string drawing, std::string desc);

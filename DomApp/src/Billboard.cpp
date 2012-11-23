@@ -6,7 +6,7 @@
 *
 *@details	Creates a billboard at a position, sets the proportions and assignes a texture to it.
 *
-*@param		texturename		Unique name of a texture. Ex: "texture.png".
+*@param		texturename		Unique name of a texture. Ex: "filename.png".
 *@param		position	Contains the positions in world coordinates.
 *@param		proportionsIn	The proportions of the billboardsize according to the world unit length. 
 */
@@ -22,6 +22,7 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
     _listid = glGenLists(1);
     glNewList(_listid, GL_COMPILE);
 	glBegin(GL_QUADS);
+
 	//Vertex 1 
 	glTexCoord2d(0.0,0.0);
 	glVertex3f(-0.5 * _proportions[0] , 0 , 0);
@@ -61,14 +62,15 @@ glm::vec3 Billboard::getPosition()
 *
 *@return    void
 */
-void Billboard::onDraw() {
+void Billboard::onDraw() 
+{
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture));
 	float angle = ImmersiveKidz::getInstance()->getCamera()->getRotation().x;
 	
-	// bind shader and set the angle
+	// Bind shader and set the angle
 	sgct::ShaderManager::Instance()->bindShader( "SingleBillboard" );
 	int angle_loc = sgct::ShaderManager::Instance()->getShader( "SingleBillboard").getUniformLocation( "angle_x" );
-	glUniform1f( angle_loc, angle *3.14/180);
+	glUniform1f( angle_loc, angle * 3.14/180);
 	
     // Draw one obejct from a display list
     glCallList(_listid);

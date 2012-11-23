@@ -30,11 +30,13 @@ typedef struct
 * @details	A object defined by a wavefront obj model and a png texture.
 *
 * @author 	Jonas Strandstedt, jonast184@student.liu.se
+* @author	Viktor Nilsson, vikni067@student.liu.se
 * @date   	November 1, 2012
 * @version	0.0.1
 *    
 */
-class Model: public DrawableObject {
+class Model: public DrawableObject 
+{
 public:
 	Model(std::string filename, std::string texturename, glm::vec3 position = glm::vec3(0.0,0.0,0.0), float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
 	~Model() {};
