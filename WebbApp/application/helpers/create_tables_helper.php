@@ -130,13 +130,13 @@ function get_positions_table_fields()
 			'auto_increment' => TRUE
 			),
 		'xval' => array(
-			'type' => 'DOUBLE',
+			'type' => 'FLOAT',
 			),
 		'yval' => array(
-			'type' => 'DOUBLE',
+			'type' => 'FLOAT',
 			),
 		'zval' => array(
-			'type' => 'DOUBLE',
+			'type' => 'FLOAT',
 			),
 		'classification' => array(
 			'type' => 'VARCHAR',
