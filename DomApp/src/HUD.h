@@ -10,17 +10,17 @@
 *			
 *
 * @author 	Anders Nord, andno922@student.liu.se
+* @author	Viktor Nilsson, vikni067@student.liu.se
 * @date   	November 8, 2012
 * @version	0.0.1
 *    
 */
 
-class HUD {
+class HUD 
+{
 public:
-	//Constructor
 	HUD();
-	//~HUD();
-	//Functions
+
 	void drawIllustrationNames(std::vector<Illustration*> illu);
 	void drawBackgroundToNames();
 	void drawMinimapBackground();
