@@ -15,7 +15,6 @@ BatchBillboard::BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::
 	_texture = texturename;
 	_billboard = billboard;
 	
-
 	int pos_loc = -1;
 	sgct::ShaderManager::Instance()->bindShader( "BatchBillboard_turn" );
 	pos_loc = sgct::ShaderManager::Instance()->getShader( "BatchBillboard_turn").getAttribLocation( "billboard_position" );

@@ -16,31 +16,12 @@
 *			needs to hold down left mouse button
 *
 * @author 	Rickard Englund, gefle.rickard@gmail.com
+* @author 	(Jonas Strandstedt), jonst184@student.liu.se
 * @date   	November 8, 2012
 * @version	0.0.0.1
 *    
 */
 class Camera {
-	enum ButtonsToMove{
-		Forward = 'W',
-		Backward = 'S',
-		Right = 'D',
-		Left = 'A',
-		Up = 'Q',
-		Down = 'E',
-	};
-
-	bool _movingForward,_movingBackward,_movingRight,_movingLeft,_movingUp,_movingDown;
-	bool _mouseState;
-	float _speed;
-	float _rotationSpeed;
-
-	glm::vec3 _position;
-	glm::vec2 _rotation;
-	glm::mat4 _viewMatrix;
-	glm::vec2 _limitsX;
-	glm::vec2 _limitsY;
-	glm::vec2 _limitsZ;
 public:
 	Camera(glm::vec3 startPosition = glm::vec3(0,1.5,0));
 	~Camera();
@@ -69,6 +50,28 @@ public:
 	void setLimitsX(glm::vec2 limits);
 	void setLimitsY(glm::vec2 limits);
 	void setLimitsZ(glm::vec2 limits);
+	
+private:
+	enum ButtonsToMove{
+		_buttonForward 		= 'W',
+		_buttonBackward		= 'S',
+		_buttonRight 		= 'D',
+		_buttonLeft 		= 'A',
+		_buttonUp 			= 'Q',
+		_buttonDown 		= 'E',
+	};
+
+	bool _movingForward,_movingBackward,_movingRight,_movingLeft,_movingUp,_movingDown;
+	bool _mouseState;
+	float _speed;
+	float _rotationSpeed;
+
+	glm::vec3 _position;
+	glm::vec2 _rotation;
+	glm::mat4 _viewMatrix;
+	glm::vec2 _limitsX;
+	glm::vec2 _limitsY;
+	glm::vec2 _limitsZ;
 };
 
 #endif

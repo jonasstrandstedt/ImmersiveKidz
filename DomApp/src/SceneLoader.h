@@ -31,6 +31,7 @@
 *
 * @author 	Jonas Strandstedt, jonst184@student.liu.se
 * @author 	Viktor Nilsson, vikni067@student.liu.se
+* @author	Anders Nord , andno922@student.liu.se
 * @date   	November 15, 2012
 * @version	0.0.2
 *    
@@ -38,9 +39,9 @@
 class SceneLoader {
 public:
 	SceneLoader();
-	~SceneLoader() {};
+	~SceneLoader(){};
 	
-	void setMaster(bool master) { _isMaster = master; };
+	void setMaster(bool master);
 	
 	void keyboardButton(int key,int state);
 	void menu();

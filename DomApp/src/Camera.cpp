@@ -6,7 +6,7 @@
 *
 * @details				Creates a camera at startPosition, sets the speed 
 *
-* @param startPosition		the starting poistion of the camera
+* @param startPosition		the starting poistion of the camera, defaults to vec3(0,1.5,0)
 */
 Camera::Camera(glm::vec3 startPosition)
 {
@@ -29,7 +29,9 @@ Camera::Camera(glm::vec3 startPosition)
 	_limitsZ.y = 10;
 }
 
-
+/**
+* @brief				Destructor for the Camera object
+*/
 Camera::~Camera(void)
 {
 }
@@ -39,7 +41,8 @@ Camera::~Camera(void)
 *
 * @return	void 
 */
-void Camera::setCamera(){
+void Camera::setCamera()
+{
 	glLoadMatrixf(glm::value_ptr(_viewMatrix)); //TODO Consider using glMultmatrix instead
 }
 
@@ -47,33 +50,40 @@ void Camera::setCamera(){
 /**
 * @brief	Updates the position and rotation every time step dt. 
 *
-* @param	dt	  steptime 
+* @param	dt	  The steptime, the time since the last drawn frame. 
 *
 * @return	void 
 */
-void Camera::update(float dt){
+void Camera::update(float dt)
+{
 	glm::vec4 dir = glm::vec4(0,0,_speed*dt,0);
  	glm::mat4x4 mDir = glm::rotate(glm::mat4(),-_rotation[0],glm::vec3(0.0f,1.0f,0.0f));
  	glm::mat4x4 mSide = glm::rotate(glm::mat4(),90.0f,glm::vec3(0.0f,1.0f,0.0f));
  	dir = mDir * dir;
  	glm::vec4 side = mSide * dir;
 
-	if(_movingForward && !_movingBackward){
+	if(_movingForward && !_movingBackward)
+	{
 		_position -= glm::vec3(dir[0],dir[1],dir[2]);
 	}
-	if(!_movingForward && _movingBackward){
+	if(!_movingForward && _movingBackward)
+	{
 		_position += glm::vec3(dir[0],dir[1],dir[2]);
 	}
-	if(_movingLeft && !_movingRight){
+	if(_movingLeft && !_movingRight)
+	{
 		_position -= glm::vec3(side[0],side[1],side[2]);
 	}
-	if(!_movingLeft && _movingRight){
+	if(!_movingLeft && _movingRight)
+	{
 		_position += glm::vec3(side[0],side[1],side[2]);
 	}
-	if(!_movingUp && _movingDown){
+	if(!_movingUp && _movingDown)
+	{
 		_position[1] -= _speed*dt;
 	}
-	if(_movingUp && !_movingDown){
+	if(_movingUp && !_movingDown)
+	{
 		_position[1] += _speed*dt;
 	}
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
@@ -103,18 +113,19 @@ void Camera::update(float dt){
 *
 * @return	void 
 */
-void Camera::keyboardButton(int key,int state){
-	if(key == Forward)
+void Camera::keyboardButton(int key,int state)
+{
+	if(key == _buttonForward)
 		_movingForward = state;
-	if(key == Backward)
+	if(key == _buttonBackward)
 		_movingBackward = state;
-	if(key == Right)
+	if(key == _buttonRight)
 		_movingRight = state;
-	if(key == Left)
+	if(key == _buttonLeft)
 		_movingLeft = state;
-	if(key == Up)
+	if(key == _buttonUp)
 		_movingUp = state;
-	if(key == Down)
+	if(key == _buttonDown)
 		_movingDown = state;
 }
 
@@ -127,8 +138,10 @@ void Camera::keyboardButton(int key,int state){
 * @return	void 
 */
 
-void Camera::mouseButton(int button,int state){
-	if(button == 0){
+void Camera::mouseButton(int button,int state)
+{
+	if(button == 0)
+	{
 		_mouseState = state;
 		sgct::Engine::setMousePointerVisibility(!state);
 	}
@@ -142,22 +155,33 @@ void Camera::mouseButton(int button,int state){
 *
 * @return	void 
 */
-void Camera::mouseMotion(int dx,int dy){
-	if(_mouseState){
+void Camera::mouseMotion(int dx,int dy)
+{
+	if(_mouseState)
+	{
 		_rotation[0] += dx*_rotationSpeed;
 		_rotation[1] += dy*_rotationSpeed;
 		
-		if(_rotation[1]<-89){
+		if(_rotation[1]<-89)
+		{
 			_rotation[1] = -89;
 		}
-		if(_rotation[1]>89){
+		if(_rotation[1]>89)
+		{
 			_rotation[1] = 89;
 		}
 	}
 }
 
-
-void Camera::setPosition(glm::vec3 position){
+/**
+* @brief	Sets the camera position
+*
+* @param	position The position for the camera
+*
+* @return	void
+*/
+void Camera::setPosition(glm::vec3 position)
+{
 	_position = position;
 }
 
@@ -166,7 +190,8 @@ void Camera::setPosition(glm::vec3 position){
 *
 * @return	glm::vec3 
 */
-glm::vec3 Camera::getPosition()const{
+glm::vec3 Camera::getPosition() const
+{
 	return _position;
 }
 
@@ -175,7 +200,8 @@ glm::vec3 Camera::getPosition()const{
 *
 * @return	glm::vec2 
 */
-glm::vec2 Camera::getRotation()const{
+glm::vec2 Camera::getRotation() const
+{
 	return _rotation;
 }
 
@@ -184,27 +210,34 @@ glm::vec2 Camera::getRotation()const{
 *
 * @return	float 
 */
-float Camera::getSpeed()const{
+float Camera::getSpeed() const
+{
 	return _speed;
 }
 
 /**
 * @brief	Sets the camera speed 
 *
+* @param	speed 	The camera speed, must be larger than 0
+*
 * @return	void 
 */
-void Camera::setSpeed(float speed){
+void Camera::setSpeed(float speed)
+{
 	this->_speed = speed;
 	if(this->_speed < 0)
 		this->_speed = 0;
 }
 
 /**
-* @brief	Sends the data to the master.   
+* @brief	Sends the data to the master.
+*
+* @param	data 	The SGCT shared data object
 *
 * @return	void 
 */
-void Camera::encode(sgct::SharedData *data){
+void Camera::encode(sgct::SharedData *data)
+{
 	data->writeFloat(_position[0]);
 	data->writeFloat(_position[1]);
 	data->writeFloat(_position[2]);
@@ -213,11 +246,14 @@ void Camera::encode(sgct::SharedData *data){
 }
 
 /**
-* @brief	Receives the data to the master.   
+* @brief	Receives the data from the master.
+*
+* @param	data 	The SGCT shared data object   
 *
 * @return	void 
 */
-void Camera::decode(sgct::SharedData *data){
+void Camera::decode(sgct::SharedData *data)
+{
 	_position[0]   = data->readFloat();
 	_position[1]   = data->readFloat();
 	_position[2]   = data->readFloat();
@@ -226,27 +262,68 @@ void Camera::decode(sgct::SharedData *data){
 }
 
 
-
-glm::vec2 Camera::getLimitsX(){
+/**
+* @brief	Get the Camera limts for the x-axis  
+*
+* @return	vec2 	The limits, vec2[0] is min and vec2[1] is max 
+*/
+glm::vec2 Camera::getLimitsX()
+{
 	return _limitsX;
 }
 
-glm::vec2 Camera::getLimitsY(){
+/**
+* @brief	Get the Camera limts for the y-axis  
+*
+* @return	vec2 	The limits, vec2[0] is min and vec2[1] is max 
+*/
+glm::vec2 Camera::getLimitsY()
+{
 	return _limitsY;
 }
 
-glm::vec2 Camera::getLimitsZ(){
+/**
+* @brief	Get the Camera limts for the z-axis  
+*
+* @return	vec2 	The limits, vec2[0] is min and vec2[1] is max 
+*/
+glm::vec2 Camera::getLimitsZ()
+{
 	return _limitsZ;
 }
 
-void Camera::setLimitsX(glm::vec2 limits){
+/**
+* @brief	Set the Camera limts for the x-axis  
+*
+* @param	limits 	The limitx for the axis. limits[0] is min and limits[1] is max
+*
+* @return	void 
+*/
+void Camera::setLimitsX(glm::vec2 limits)
+{
 	this->_limitsX = limits;
 }
 
-void Camera::setLimitsY(glm::vec2 limits){
+/**
+* @brief	Set the Camera limts for the y-axis  
+*
+* @param	limits 	The limitx for the axis. limits[0] is min and limits[1] is max
+*
+* @return	void 
+*/
+void Camera::setLimitsY(glm::vec2 limits)
+{
 	this->_limitsY = limits;
 }
 
-void Camera::setLimitsZ(glm::vec2 limits){
+/**
+* @brief	Set the Camera limts for the z-axis  
+*
+* @param	limits 	The limitx for the axis. limits[0] is min and limits[1] is max
+*
+* @return	void 
+*/
+void Camera::setLimitsZ(glm::vec2 limits)
+{
 	this->_limitsZ = limits;
 }
