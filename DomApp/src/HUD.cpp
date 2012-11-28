@@ -12,24 +12,38 @@ HUD::HUD()
 	_minimapHeight = 150;
 };
 
+
+/**
+* @brief Handles drawing of HUD elements 
+* 
+* @details The drawing of each component is done in its own functions
+*/
+void HUD::draw(std::vector<Illustration*> illu)
+{
+	//Draw menu	
+	_drawIllustrationNames(illu);
+
+	//Draw Minimap
+	_drawMinimap(illu);
+}
+
 /**
 *@brief	    Draws the names of the painters
 *
-*@details	Function called from ImmersiveKidz::draw()
+*@details	Loops through all illustrations and draws the name of the artist on a new line
 *
 *@param	illu	A vector containing the illustrations
-*
-*@return    void
 */
 
-void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
+void HUD::_drawIllustrationNames(std::vector<Illustration*> illu)
 {
-	int x , y;
+	_drawBackgroundToNames();
+	int textX , textY;
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
 
-	x = 20;
-	y = 15 + _offset;
+	textX = 20;
+	textY = 15 + _offset;
 
 	for(int i = 0; i < illu.size(); i++)
 	{
@@ -38,13 +52,13 @@ void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
 		if(i == _selection) 
 		{
 			glColor3f(0.0f,0.0f,0.0f);
-		} else 
+		} 
+		else 
 		{
 			glColor3f(0.7f,0.7f,0.7f);
 		}
 
-		Freetype::print( sgct::FontManager::Instance()->
-			GetFont( "SGCTFont", 12 ), 0 + x, winSizeY - y, illu[i]->getName().c_str());
+		Freetype::print( sgct::FontManager::Instance()->GetFont( "SGCTFont", 12 ), textX, winSizeY - textY, illu[i]->getName().c_str());
 
 		glColor3f(1.0f,1.0f,1.0f);
 
@@ -53,27 +67,27 @@ void HUD::drawIllustrationNames(std::vector<Illustration*> illu)
 		if(illu[i]->getSeen()) 
 		{
 			glColor3f(0.0f,0.0f,0.0f);
-		} else {
+		} 
+		else 
+		{
 			glColor3f(0.7f,0.7f,0.7f);
 		}
-
-		Freetype::print( sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ), -15 + x, winSizeY - y, "#");
+		
+		Freetype::print( sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ), textX - 15, winSizeY - textY, "#");
 
 		glColor3f(1.0f,1.0f,1.0f);
 
-		y = y + 14;
+		textY = textY + 14;
 	};
 };
 
 /**
-*@brief	    Draws the background to the painters of the illustrations names
+*@brief	    Draws the background to the list of painters
 *
-*@details	Function called from ImmersiveKidz::draw()
-*
-*@return    void
+*@details	Draws the background to the list of painters
 */
 
-void HUD::drawBackgroundToNames()
+void HUD::_drawBackgroundToNames()
 {
 	glDisable(GL_DEPTH_TEST);
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName("menu"));
@@ -125,7 +139,7 @@ void HUD::drawBackgroundToNames()
 *
 *@return    void
 */
-void HUD::drawMinimapBackground()
+void HUD::_drawMinimapBackground()
 {
 	glDisable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName("minimap"));
@@ -174,14 +188,15 @@ void HUD::drawMinimapBackground()
 }
 
 /**
-*@brief	    Draws the minimap background
+*@brief	    Draws the minimap
 *
 *@param	illu	A vector containing the illustrations
 *
 *@return    void
 */
-void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
+void HUD::_drawMinimap(std::vector<Illustration*> illu)
 {
+	_drawMinimapBackground();
 	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	glm::vec3 camPosition = ImmersiveKidz::getInstance()->getCamera()->getPosition();
 	glm::vec2 camRotation = ImmersiveKidz::getInstance()->getCamera()->getRotation();
@@ -259,40 +274,6 @@ void HUD::drawMinimapPositions(std::vector<Illustration*> illu)
 
 }
 
-/**
-* @brief	A method to set the state of a mouse button
-*
-* @param	button	The key pressed 
-* @param	state	the state, if the button is pressed or not 
-*
-* @return	void 
-*/
-void HUD::mouseButton(int button,int state)
-{
-	if(button == 0)
-	{
-		
-		std::cout << "button pressed" << std::endl;
-
-	}
-}
-
-/**
-* @brief	A method that updates the HUD with the mouse state 
-*
-* @param	dx		The key pressed 
-* @param	dy		the state, if the button is pressed or not 
-*
-* @return	void 
-*/
-void HUD::mouseMotion(int dx,int dy)
-{
-	if(_mouseState)
-	{
-		std::cout << dx << std::endl; 
-		std::cout << dy << std::endl;
-	}
-}
 
 /**
 * @brief	A method to set the state of a keyboard button
@@ -300,8 +281,6 @@ void HUD::mouseMotion(int dx,int dy)
 * @param	key			The key that is interacted with 
 * @param	state		The state, if the button is pressed or not 
 * @param    illu		A vector containing the illustrations		
-* 
-*@return	void 
 */
 void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
 {
