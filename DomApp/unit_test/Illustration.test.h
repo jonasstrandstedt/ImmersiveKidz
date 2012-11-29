@@ -15,13 +15,21 @@
 */
 TEST (IllustrationTests, Constructors) 
 { 
+    Illustration *i = new Illustration("data/HUD/minimap.png", glm::vec3(1.0,1.0,1.0), glm::vec2(1.0,1.0), "Testname", "animal", "description");
+	
+	EXPECT_EQ("Testname",i->getName());
+	EXPECT_EQ(false,i->getSeen());
+}
+
+TEST (IllustrationTests, Seen) 
+{ 
 
     Illustration *i = new Illustration("data/HUD/minimap.png", glm::vec3(1.0,1.0,1.0), glm::vec2(1.0,1.0), "Testname", "animal", "description");
-	/*
-	EXPECT_EQ("Testname",i->getName());
 	EXPECT_EQ(false,i->getSeen());
 	
 	i->setSeen(true);
 	EXPECT_EQ(true,i->getSeen());
-	*/
+	
+	i->setSeen(false);
+	EXPECT_EQ(false,i->getSeen());
 }
