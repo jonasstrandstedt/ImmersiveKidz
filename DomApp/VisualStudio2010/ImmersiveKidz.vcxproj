@@ -44,6 +44,7 @@
     <ClInclude Include="..\unit_test\Camera.test.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Animation.cpp" />
     <ClCompile Include="..\src\AudioHandler.cpp" />
     <ClCompile Include="..\src\BatchBillboard.cpp" />
     <ClCompile Include="..\src\Billboard.cpp" />

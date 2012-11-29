@@ -25,13 +25,21 @@ DrawableObject::DrawableObject()
 */
 void DrawableObject::draw(double t) 
 {
-
+	bool pop = false;
 	// pre-animate
-	if (_animationFunc != 0)
+	if ( _animationFunc != 0 )
 	{
+		pop = true;
 		glPushMatrix();
 		_animationFunc(t, _seed);
 	}
+	else if ( !animationVector.empty() )
+	{
+		pop = true;
+		glPushMatrix();
+		if ( !animationVector.begin()->animate() ) animationVector.erase(animationVector.begin());
+	}
+
 	glPushMatrix();
 	//Appllying the transform matrix
 	glMultMatrixf(glm::value_ptr(_transform));
@@ -40,10 +48,15 @@ void DrawableObject::draw(double t)
 	onDraw();
 	glPopMatrix();
 	// post-animate
-	if (_animationFunc != 0)
+	if ( pop )
 	{
 		glPopMatrix();
 	}
+}
+
+void DrawableObject::addAnimation(double duration, std::string type)
+{
+	animationVector.push_back(Animation(duration, type));
 }
 
 /**
