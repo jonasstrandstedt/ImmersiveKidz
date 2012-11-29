@@ -18,18 +18,18 @@ TEST (IllustrationTests, Constructors)
     Illustration *i = new Illustration("data/HUD/minimap.png", glm::vec3(1.0,1.0,1.0), glm::vec2(1.0,1.0), "Testname", "animal", "description");
 	
 	EXPECT_EQ("Testname",i->getName());
-	EXPECT_EQ(false,i->getSeen());
+	EXPECT_EQ(0,i->getSeen()); // 0 == false
 }
 
 TEST (IllustrationTests, Seen) 
 { 
 
     Illustration *i = new Illustration("data/HUD/minimap.png", glm::vec3(1.0,1.0,1.0), glm::vec2(1.0,1.0), "Testname", "animal", "description");
-	EXPECT_EQ(false,i->getSeen());
+	EXPECT_EQ(0,i->getSeen()); // 0 == false
 	
-	i->setSeen(true);
-	EXPECT_EQ(true,i->getSeen());
+	i->setSeen(1); // 1 == true
+	EXPECT_EQ(1,i->getSeen()); // 1 == true
 	
-	i->setSeen(false);
-	EXPECT_EQ(false,i->getSeen());
+	i->setSeen(0); // 0 == false
+	EXPECT_EQ(0,i->getSeen()); // 0 == false
 }

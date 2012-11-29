@@ -13,8 +13,8 @@ CXXFLAGS ?=
 INCPATH ?= -I"sgct_0_9_5/include"
 
 OPENGL=1
-#NOSOUND=1
-#TEST=1
+#SOUND=1
+TEST=1
 
 # check if argument OPENGL=1 is set, reguires glfw to be properly installed
 ifdef OPENGL
@@ -23,11 +23,6 @@ ifdef OPENGL
 		FLAGS += -lsgct -lGL -lGLU -lX11 -lXrandr -static-libgcc -static-libstdc++ -L"sgct_0_9_5/linux_lib"
 	else ifeq ($(OS),Darwin)
 		FLAGS += -framework Cocoa -framework OpenGL -lglfw -lsgct -L"sgct_0_9_5/mac_lib"
-		ifdef TEST
-			OBJECTS += unit_test/UnitTests.o
-			INCPATH += -I"unit_test" -D"_RUN_TESTS_AT_STARTUP_" -D"_RUN_TESTS_"
-			FLAGS += -lgtest -L"unit_test/lib/mac_lib"
-		endif
 	else ifeq ($(OS),MINGW32_NT-6.1)
 		OUTPUT = Program.exe
 		FLAGS += -L"sgct_0_9_5/win_mingw32_lib" -lsgct32 -lopengl32 -lglu32 -lws2_32 -static-libgcc -static-libstdc++
@@ -35,18 +30,30 @@ ifdef OPENGL
 endif
 
 # check if argument OPENGL=1 is set, reguires glfw to be properly installed
-ifndef NOSOUND
-	MESSAGE += OpenAL,
+ifdef TEST
+	MESSAGE += OpenGL,
+	OBJECTS += unit_test/UnitTests.o
+	INCPATH += -I"unit_test" -D"_RUN_TESTS_AT_STARTUP_" -D"_RUN_TESTS_"
 	ifeq ($(OS),Linux)
-		FLAGS += 
+		FLAGS += -lgtest -L"unit_test/lib/linux_lib"
 	else ifeq ($(OS),Darwin)
-		FLAGS += -framework ALUT -framework OpenAL
+		FLAGS += -lgtest -L"unit_test/lib/mac_lib"
 	else ifeq ($(OS),MINGW32_NT-6.1)
 		FLAGS += 
 	endif
 endif
 
-ifdef NOSOUND
+# check if argument OPENGL=1 is set, reguires glfw to be properly installed
+ifdef SOUND
+	MESSAGE += OpenAL,
+	ifeq ($(OS),Linux)
+		FLAGS += -lalut
+	else ifeq ($(OS),Darwin)
+		FLAGS += -framework ALUT -framework OpenAL
+	else ifeq ($(OS),MINGW32_NT-6.1)
+		FLAGS += 
+	endif
+else
 	INCPATH += -D"NO_SOUND"
 endif
 
@@ -61,6 +68,7 @@ all: $(OBJECTS)
 clean:
 	-@echo "Cleaning"
 	-$(RM) src/*.o
+	-$(RM) unit_test/*.o
 
 # pattern that compiles all .o files
 %.o: %.cpp
