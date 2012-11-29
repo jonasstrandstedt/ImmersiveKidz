@@ -1,4 +1,5 @@
 #include "ImmersiveKidz.h"
+#include "AudioHandler.h"
 
 ImmersiveKidz* ImmersiveKidz::_instance = 0;
 ImmersiveKidz* ImmersiveKidz::getInstance()
@@ -27,6 +28,8 @@ void ImmersiveKidz::init()
 {
 	_hud = new HUD();
 	_camera = new Camera();
+	AudioHandler::getInstance()->init();
+	AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
 }
 
 
@@ -228,6 +231,7 @@ void ImmersiveKidz::keyboardButton(int key,int state)
 void ImmersiveKidz::postSyncPreDrawFunction()
 {
 	_camera->update(_dt);
+	AudioHandler::getInstance()->update();
 }
 
 /**

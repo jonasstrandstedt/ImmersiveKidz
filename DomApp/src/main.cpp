@@ -4,9 +4,17 @@
 int runUnitTests(int argc, char **argv);
 #endif
 
-
 #include "sgct.h"
 #include "ImmersiveKidz.h"
+
+//include open AL
+#ifdef __APPLE__
+    #include <OpenAL/al.h>
+    #include <ALUT/alut.h>
+#else
+    #include <AL/al.h>
+    #include <AL/alut.h>
+#endif
 
 sgct::Engine * gEngine;
 ImmersiveKidz *iKidz;
@@ -16,7 +24,7 @@ void myDrawFun();
 void myPreSyncFun();
 void myEncodeFun();
 void myDecodeFun();
-
+void myCleanUpFun(); //openAL clean
 void myPostSyncPreDrawFunction();
 
 void myKeyboardFun(int,int);
@@ -28,6 +36,12 @@ int prevMouseY = -1;
 bool stereo = true;
 float eyeSeparation = 0.0f;
 
+//OpenAL data & functions
+void setAudioSource(ALuint &buffer,ALuint &source, char * filename);
+ALuint audio_buffer0 = AL_NONE;
+ALuint source0;
+glm::vec4 audioPos;
+
 int main( int argc, char* argv[] )
 {
 #ifdef _RUN_TESTS_
@@ -36,7 +50,6 @@ int main( int argc, char* argv[] )
 		std::cin.get();
 	}
 #endif
-
 
 	// Allocate
 	gEngine = new sgct::Engine( argc, argv );
@@ -52,8 +65,7 @@ int main( int argc, char* argv[] )
 	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
 
 	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
-
-	
+	//gEngine->setCleanUpFunction( myCleanUpFun );
 	
 	// Init the engine
 	if( !gEngine->init() )
@@ -158,7 +170,6 @@ void myMouseButtonFun(int button,int state)
 {
 	iKidz->mouseButton(button,state);
 }
-
 
 void myPostSyncPreDrawFunction()
 {
