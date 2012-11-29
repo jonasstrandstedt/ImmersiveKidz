@@ -1,6 +1,7 @@
 #ifdef _RUN_TESTS_
 #include "gtest/gtest.h"
 #include "Camera.test.h"
+#include "Illustration.test.h"
 
 int runUnitTests(int argc, char **argv)
 {
