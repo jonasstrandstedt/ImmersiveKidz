@@ -213,4 +213,24 @@ class Site extends CI_Controller
 		$this->load->view("content_about");
 		$this->load->view("site_footer");
 	}
+
+//Page for instructions
+	function instructions()
+{
+	$this->load->view("site_header");
+	$this->load->view("site_nav");
+	$this->load->view("content_instructions");
+	$this->load->view("site_footer");
 }
+}
+
+
+
+
+
+
+
+
+
+
+
