@@ -36,6 +36,10 @@ public:
 	void myCleanUpFun();
 	void init();
 	void update();
+	void playSound(SoundObject* s);
+	void pausSound(SoundObject* s);
+	void stopSound(SoundObject* s);
+	std::vector<SoundObject*> getSounds();
 	
 protected:
 	std::vector<SoundObject*> sounds;

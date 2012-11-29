@@ -26,10 +26,15 @@ ImmersiveKidz::ImmersiveKidz()
 
 void ImmersiveKidz::init()
 {
-	_hud = new HUD();
+	
 	_camera = new Camera();
-	AudioHandler::getInstance()->init();
-	AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
+	if(_isMaster)
+	{
+		_hud = new HUD();
+		AudioHandler::getInstance()->init();
+		AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
+		AudioHandler::getInstance()->playSound(AudioHandler::getInstance()->getSounds()[0]);
+	}
 }
 
 
