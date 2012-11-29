@@ -122,10 +122,14 @@
     <ClInclude Include="..\src\Skybox.h">
       <Filter>h</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="..\src\Animation.h">
+=======
     <ClInclude Include="..\src\AudioHandler.h">
       <Filter>h</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SoundObject.h">
+>>>>>>> a0d15ccdf2de9ec40dc0ba1f683022e580135ccf
       <Filter>h</Filter>
     </ClInclude>
   </ItemGroup>

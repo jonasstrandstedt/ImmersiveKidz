@@ -27,7 +27,11 @@
     <None Include="..\data\Shaders\SingleBillboard.vert" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <ClInclude Include="..\src\Animation.h" />
+=======
     <ClInclude Include="..\src\AudioHandler.h" />
+>>>>>>> a0d15ccdf2de9ec40dc0ba1f683022e580135ccf
     <ClInclude Include="..\src\BatchBillboard.h" />
     <ClInclude Include="..\src\Billboard.h" />
     <ClInclude Include="..\src\Camera.h" />

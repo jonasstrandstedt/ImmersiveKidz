@@ -2,6 +2,7 @@
 #define DRAWABLEOBJECT_H
 
 #include "sgct.h"
+#include "Animation.h"
 
 // Animation functions
 void bounce(double t, double seed);
@@ -31,6 +32,9 @@ public:
 	// draw functionality
 	void draw(double t);
 	virtual void onDraw() = 0;
+
+	// Animation vector for temporary animations, e.g. illustrations
+	std::vector<Animation> animatationVector;
 private:
 
 protected:
