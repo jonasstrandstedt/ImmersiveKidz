@@ -25,7 +25,7 @@ public:
 
 	void keyboardButton(int key,int state, std::vector<Illustration*> illu);
 
-	void setTextureMinimap(std::string texture) { _textureMinimap = texture; };
+	void setTextureMinimap(std::string texture);
 
 private:
 

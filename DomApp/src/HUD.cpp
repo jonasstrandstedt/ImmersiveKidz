@@ -3,13 +3,13 @@
 
 HUD::HUD()
 {
-	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0); //Load HUD(menu) into OpenGL
-	sgct::TextureManager::Instance()->loadTexure("minimap", "data/HUD/minimap.png", true, 0); //Load HUD(minimap) into OpenGL
-	_selection = 0;
-	_offset = 0;
-
-	_minimapWidth = 150;
-	_minimapHeight = 150;
+	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0);			//Load HUD(menu) into OpenGL
+	sgct::TextureManager::Instance()->loadTexure("minimap", "data/HUD/minimap.png", true, 0);	//Load HUD(minimap) into OpenGL
+	_selection	= 0;
+	_offset		= 0;
+	_textureMinimap = "minimap";
+	_minimapWidth	= 150;
+	_minimapHeight	= 150;
 };
 
 
@@ -26,6 +26,59 @@ void HUD::draw(std::vector<Illustration*> illu)
 	//Draw Minimap
 	_drawMinimap(illu);
 }
+
+/**
+* @brief	A method to set the state of a keyboard button
+*
+* @param	key			The key that is interacted with 
+* @param	state		The state, if the button is pressed or not 
+* @param    illu		A vector containing the illustrations		
+*/
+void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
+{
+	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
+	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
+
+	if(_selection < 0) _selection = 0;
+	if(_selection >= illu.size()) _selection = illu.size() -1;
+
+	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
+	{
+		illu[_selection]->setSeen(true);
+	};
+
+	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
+	int list_height = winSizeY - _minimapHeight;
+
+	// check if need to increase offset for animal list
+	if(list_height - ( 15 + _selection *14 + _offset) < 0) 
+	{
+		_offset -= 14*4;
+	}
+
+	// check if need to decrease offset for animal list
+	if((-15-_selection *14 - _offset) > -15)
+	{
+		_offset += 14*4;
+
+		if(_offset > 0) 
+		{
+			_offset = 0;
+		}
+	}
+}
+
+
+/**
+*@brief	    Sets the name of the minimap - texture
+*
+*@param		texture	- A string with the alias of the loaded texture
+*/
+
+void HUD::setTextureMinimap(std::string texture) 
+{
+	_textureMinimap = texture; 
+};
 
 /**
 *@brief	    Draws the names of the painters
@@ -142,7 +195,7 @@ void HUD::_drawBackgroundToNames()
 void HUD::_drawMinimapBackground()
 {
 	glDisable(GL_DEPTH_TEST);
-	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName("minimap"));
+	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
 
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
@@ -236,7 +289,6 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 			glColor3f( 1.0f, 0.0f, 0.0f);
 		}
 
-
 		glm::vec3 illuPosition = illu[i]->getPosition();
 
 		float x = (illuPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
@@ -275,43 +327,3 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 }
 
 
-/**
-* @brief	A method to set the state of a keyboard button
-*
-* @param	key			The key that is interacted with 
-* @param	state		The state, if the button is pressed or not 
-* @param    illu		A vector containing the illustrations		
-*/
-void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
-{
-	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
-	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
-
-	if(_selection < 0) _selection = 0;
-	if(_selection >= illu.size()) _selection = illu.size() -1;
-
-	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
-	{
-		illu[_selection]->setSeen(true);
-	};
-
-	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
-	int list_height = winSizeY - _minimapHeight;
-
-	// check if need to increase offset for animal list
-	if(list_height - ( 15 + _selection *14 + _offset) < 0) 
-	{
-		_offset -= 14*4;
-	}
-
-	// check if need to decrease offset for animal list
-	if((-15-_selection *14 - _offset) > -15)
-	{
-		_offset += 14*4;
-
-		if(_offset > 0) 
-		{
-			_offset = 0;
-		}
-	}
-}

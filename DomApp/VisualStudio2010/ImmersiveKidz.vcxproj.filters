@@ -116,5 +116,11 @@
     <ClInclude Include="..\src\Skybox.h">
       <Filter>h</Filter>
     </ClInclude>
+    <ClInclude Include="..\unit_test\HUD.test.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_test\Billboard.test.h">
+      <Filter>tests</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

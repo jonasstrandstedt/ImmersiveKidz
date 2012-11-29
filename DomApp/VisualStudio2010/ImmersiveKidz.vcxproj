@@ -38,7 +38,9 @@
     <ClInclude Include="..\src\Plane.h" />
     <ClInclude Include="..\src\SceneLoader.h" />
     <ClInclude Include="..\src\Skybox.h" />
+    <ClInclude Include="..\unit_test\Billboard.test.h" />
     <ClInclude Include="..\unit_test\Camera.test.h" />
+    <ClInclude Include="..\unit_test\HUD.test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BatchBillboard.cpp" />
