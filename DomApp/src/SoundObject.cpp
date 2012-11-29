@@ -23,9 +23,9 @@ SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* own
 	alSource3f(s->_source, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 
 	//loop the sound track
-	alSourcei(s->_source, AL_LOOPING, AL_TRUE);
+	//alSourcei(s->_source, AL_LOOPING, AL_TRUE)
  
-	alSourcePlay(s->_source);
+	//alSourcePlay(s->_source);
 	return s;
 }
 
