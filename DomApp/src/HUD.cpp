@@ -294,7 +294,6 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 		float x = (illuPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
 		float y = (illuPosition.z - worldRect.y) / (worldRect.w - worldRect.y);
 
-
 		glVertex2f(x * _minimapWidth  , y * _minimapHeight);
 
 
