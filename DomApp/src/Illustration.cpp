@@ -10,9 +10,9 @@ Illustration::Illustration(std::string texturename , glm::vec3 position, glm::ve
 	_nameArtist = artist;
 	_nameDrawing = drawing;
 	_description = desc;
-
 	_seen = false;
 };
+
 /**
 *@brief	    Returns the name of the drawing
 *

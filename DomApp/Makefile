@@ -6,7 +6,7 @@ RM = rm
 MESSAGE =
 
 #specify dependency list
-OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/BatchBillboard.o src/Illustration.o src/Camera.o src/SceneLoader.o src/Skybox.o src/HUD.o src/Plane.o
+OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/Billboard.o src/BatchBillboard.o src/Illustration.o src/Camera.o src/SceneLoader.o src/Skybox.o src/HUD.o src/Plane.o src/AudioHandler.o src/SoundObject.o
 OUTPUT ?= Program
 FLAGS ?=
 CXXFLAGS ?= 
@@ -21,10 +21,10 @@ ifdef OPENGL
 	ifeq ($(OS),Linux)
 		FLAGS += -lsgct -lGL -lGLU -lX11 -lXrandr -static-libgcc -static-libstdc++ -L"sgct_0_9_5/linux_lib"
 	else ifeq ($(OS),Darwin)
-		FLAGS += -framework Cocoa -framework OpenGL -lglfw -lsgct -L"sgct_0_9_5/mac_lib"
+		FLAGS += -framework Cocoa -framework OpenGL -lglfw -lsgct -L"sgct_0_9_5/mac_lib" -framework ALUT -framework OpenAL
 		ifdef TEST
 			OBJECTS += unit_test/UnitTests.o
-			INCPATH += -D"_RUN_TESTS_AT_STARTUP_" -D"_RUN_TESTS_"
+			INCPATH += -I"unit_test" -D"_RUN_TESTS_AT_STARTUP_" -D"_RUN_TESTS_"
 			FLAGS += -lgtest -L"unit_test/lib/mac_lib"
 		endif
 	else ifeq ($(OS),MINGW32_NT-6.1)

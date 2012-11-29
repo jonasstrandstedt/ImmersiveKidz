@@ -33,8 +33,8 @@ public:
 	void draw(double t);
 	virtual void onDraw() = 0;
 
-	// Animation vector for temporary animations, e.g. illustrations
-	std::vector<Animation> animatationVector;
+	void addAnimation(double duration, std::string type);
+
 private:
 
 protected:
@@ -42,6 +42,9 @@ protected:
 	void (*_animationFunc)(double, double);
 
 	glm::mat4x4 _transform;
+
+	// Animation vector for temporary animations, e.g. illustrations
+	std::vector<Animation> animationVector;
 };
 
 #endif

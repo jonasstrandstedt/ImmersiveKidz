@@ -111,8 +111,9 @@ void myInitOGLFun()
 	eyeSeparation = gEngine->getUserPtr()->getEyeSeparation();
 
 	iKidz = ImmersiveKidz::getInstance();
-	iKidz->init();
 	iKidz->setMaster(gEngine->isMaster());
+	iKidz->init();
+	
 }
 
 
