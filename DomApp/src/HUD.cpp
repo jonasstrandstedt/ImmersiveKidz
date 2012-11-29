@@ -28,48 +28,6 @@ void HUD::draw(std::vector<Illustration*> illu)
 }
 
 /**
-* @brief	A method to set the state of a keyboard button
-*
-* @param	key			The key that is interacted with 
-* @param	state		The state, if the button is pressed or not 
-* @param    illu		A vector containing the illustrations		
-*/
-void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
-{
-	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
-	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
-
-	if(_selection < 0) _selection = 0;
-	if(_selection >= illu.size()) _selection = illu.size() -1;
-
-	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
-	{
-		illu[_selection]->setSeen(true);
-	};
-
-	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
-	int list_height = winSizeY - _minimapHeight;
-
-	// check if need to increase offset for animal list
-	if(list_height - ( 15 + _selection *14 + _offset) < 0) 
-	{
-		_offset -= 14*4;
-	}
-
-	// check if need to decrease offset for animal list
-	if((-15-_selection *14 - _offset) > -15)
-	{
-		_offset += 14*4;
-
-		if(_offset > 0) 
-		{
-			_offset = 0;
-		}
-	}
-}
-
-
-/**
 *@brief	    Sets the name of the minimap - texture
 *
 *@param		texture	- A string with the alias of the loaded texture
@@ -326,3 +284,47 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 }
 
 
+
+/**
+* @brief	A method to set the state of a keyboard button
+*
+* @param	key			The key that is interacted with 
+* @param	state		The state, if the button is pressed or not 
+* @param    illu		A vector containing the illustrations		
+*/
+void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
+{
+	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
+	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
+
+	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(1, "jump");
+	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(1, "strafe");
+
+	if(_selection < 0) _selection = 0;
+	if(_selection >= illu.size()) _selection = illu.size() -1;
+
+	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
+	{
+		illu[_selection]->setSeen(true);
+	};
+
+	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
+	int list_height = winSizeY - _minimapHeight;
+
+	// check if need to increase offset for animal list
+	if(list_height - ( 15 + _selection *14 + _offset) < 0) 
+	{
+		_offset -= 14*4;
+	}
+
+	// check if need to decrease offset for animal list
+	if((-15-_selection *14 - _offset) > -15)
+	{
+		_offset += 14*4;
+
+		if(_offset > 0) 
+		{
+			_offset = 0;
+		}
+	}
+}
