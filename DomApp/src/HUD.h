@@ -27,6 +27,13 @@ public:
 
 	void setTextureMinimap(std::string texture);
 
+	//For testing
+	int getMinimapWidth();
+	int getMinimapHeight();
+	int getSelection();
+	std::string getMinimapTextureName();
+
+
 private:
 
 	void _drawIllustrationNames(std::vector<Illustration*> illu);
