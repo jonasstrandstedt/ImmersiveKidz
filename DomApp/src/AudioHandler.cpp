@@ -14,17 +14,22 @@ AudioHandler::AudioHandler()
 }
 void AudioHandler::init()
 {
+#ifndef NO_SOUND
 	alutInit(NULL, 0);
 	//Check for errors if any
 	sgct::MessageHandler::Instance()->print("ALUT init: %s\n", alutGetErrorString( alutGetError() ));
+#endif
 }
 void AudioHandler::addSound(SoundObject* sound)
 {
+#ifndef NO_SOUND
 	sounds.push_back(sound);
+#endif
 }
 
 void AudioHandler::update()
 {
+#ifndef NO_SOUND
 	//set the listeners properties
 	glm::vec3 userPos = ImmersiveKidz::getInstance()->getCamera()->getPosition()+sgct::Engine::getUserPtr()->getPos();
 	ALfloat ori[6] = {1,0,0,0,1,0};
@@ -37,7 +42,16 @@ void AudioHandler::update()
 		sounds[i]->update();
 	}
 	//set the audio source's properties
+#endif
+}
 
+SoundObject* AudioHandler::getSoundObjectAt(int i) 
+{
+	if(sounds.size() <= i)
+		return new SoundObject();
+#ifndef NO_SOUND
+	return sounds.at(i);
+#endif
 }
 
 std::vector<SoundObject*> AudioHandler::getSounds()
@@ -47,6 +61,7 @@ std::vector<SoundObject*> AudioHandler::getSounds()
 
 void AudioHandler::playSound(SoundObject* s)
 {
+#ifndef NO_SOUND
 	if(s->_ambient)
 	{
 		alSourcei(s->_source, AL_LOOPING, AL_TRUE);
@@ -57,25 +72,32 @@ void AudioHandler::playSound(SoundObject* s)
 		alSourcei(s->_source, AL_LOOPING, AL_FALSE);
 		alSourcePlay(s->_source);
 	}
+#endif
 }
 
 void AudioHandler::pausSound(SoundObject* s)
 {
+#ifndef NO_SOUND
 	alSourcePause(s->_source);
+#endif
 }
 
 void AudioHandler::stopSound(SoundObject* s)
 {
+#ifndef NO_SOUND
 	alSourceStop(s->_source);
+#endif
 }
 
 
 void AudioHandler::myCleanUpFun()
 {
+#ifndef NO_SOUND
 	while(sounds.size()){
 		delete sounds.back();
 		sounds.pop_back();
 	}
 	alutExit();
+#endif
 }
 

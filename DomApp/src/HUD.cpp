@@ -297,8 +297,8 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
 	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 
-	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(1, "jump");
-	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(1, "strafe");
+	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1));
+	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Strafe(1));
 
 	if(_selection < 0) _selection = 0;
 	if(_selection >= illu.size()) _selection = illu.size() -1;

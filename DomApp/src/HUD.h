@@ -2,6 +2,7 @@
 #define HUD_H
 
 #include "Illustration.h"
+#include "Animation.h"
 
 /**
 * @brief  	The Heads Up Display (Interface)
