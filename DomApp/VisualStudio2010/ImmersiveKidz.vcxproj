@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;_MBCS;%(PreprocessorDefinitions);NO_SOUND</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -113,7 +113,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_NDEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_NDEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;%(PreprocessorDefinitions);NO_SOUND</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -126,7 +126,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugWithTests|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;NO_SOUND</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -142,7 +142,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnitTests|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>_RUN_TESTS_AT_STARTUP_;_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_RUN_TESTS_AT_STARTUP_;_RUN_TESTS_;WIN32;_DEBUG;_CONSOLE;_WIN32;_MBCS;__WIN32__;NO_SOUND</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\src\ext\include;..\sgct_0_9_5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>

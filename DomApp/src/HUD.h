@@ -29,10 +29,10 @@ public:
 	void setTextureMinimap(std::string texture);
 
 	//For testing
-	int getMinimapWidth();
-	int getMinimapHeight();
-	int getSelection();
-	std::string getMinimapTextureName();
+	int getMinimapWidth()				{return _minimapWidth;	};
+	int getMinimapHeight()				{return _minimapWidth;	};
+	int getSelection()					{return _selection;		};
+	std::string getMinimapTextureName()	{return _textureMinimap;};
 
 
 private:

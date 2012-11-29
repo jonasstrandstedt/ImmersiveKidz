@@ -20,10 +20,10 @@ TEST (BillboardTest, Billtest)
 	
 	Billboard *b = new Billboard(std::string("testString"), glm::vec3(0, 0, 0), glm::vec2(0 , 0));
 
-	
+	EXPECT_EQ(glm::vec3(0, 0, 0),b->getPosition());
 
+	EXPECT_EQ(glm::vec2(0 , 0),b->getProportions());
 
-
-
+	EXPECT_EQ("testString",b->getTexture());
 
 }

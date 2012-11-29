@@ -20,10 +20,14 @@ TEST (HUDtest, minimap)
 	
 	HUD *h = new HUD();
 
+	EXPECT_EQ(150,h->getMinimapWidth());
+
+	EXPECT_EQ(150,h->getMinimapWidth());
+
+	EXPECT_EQ(0,h->getSelection());
 	
-
-
-
-
-
+	h->setTextureMinimap("testtesttest");
+	
+	EXPECT_EQ("testtesttest",h->getMinimapTextureName());
+	
 }
