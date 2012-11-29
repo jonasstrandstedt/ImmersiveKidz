@@ -33,7 +33,7 @@ void ImmersiveKidz::init()
 		_hud = new HUD();
 		AudioHandler::getInstance()->init();
 		AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
-		AudioHandler::getInstance()->playSound(AudioHandler::getInstance()->getSounds()[0]);
+		AudioHandler::getInstance()->playSound(AudioHandler::getInstance()->getSoundObjectAt(0));
 	}
 }
 

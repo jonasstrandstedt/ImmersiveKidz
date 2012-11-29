@@ -1,7 +1,6 @@
 #ifndef SOUNDOBJECT_H
 #define SOUNDOBJECT_H
 
-
 #include "sgct.h"
 #include "glm/glm.hpp"
 #include "Illustration.h"
@@ -40,4 +39,4 @@ public:
 	static SoundObject* CreateFromFile(const char* file,Illustration* owner = 0);
 };
 
-#endif
+#endif // SOUNDOBJECT_H

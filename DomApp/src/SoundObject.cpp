@@ -3,7 +3,9 @@
 #include "ImmersiveKidz.h"
 
 SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* owner){
+
 	SoundObject* s = new SoundObject();
+#ifndef NO_SOUND
 	s->_buffer = AL_NONE;
 	alGenBuffers(1, &s->_buffer);
 	alGenSources(1, &s->_source);
@@ -26,10 +28,14 @@ SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* own
 	//alSourcei(s->_source, AL_LOOPING, AL_TRUE)
  
 	//alSourcePlay(s->_source);
+#endif
 	return s;
+
 }
 
 void SoundObject::update(){
+
+#ifndef NO_SOUND
 	glm::vec3 pos;
 	if(_ambient){
 		pos = sgct::Engine::getUserPtr()->getPos() + ImmersiveKidz::getInstance()->getCamera()->getPosition();
@@ -39,11 +45,15 @@ void SoundObject::update(){
 	}
 	//pos = glm::vec3(0,0,4);
 	alSource3f(_source, AL_POSITION, pos.x, pos.y, pos.z);
+
+#endif
 }
 
 SoundObject::~SoundObject()
 {
-		alDeleteSources(1, &_buffer);
-		alDeleteBuffers(1, &_buffer);
+#ifndef NO_SOUND
+	alDeleteSources(1, &_buffer);
+	alDeleteBuffers(1, &_buffer);
+#endif
 }
 
