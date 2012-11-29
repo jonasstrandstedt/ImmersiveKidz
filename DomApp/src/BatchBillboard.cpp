@@ -4,24 +4,29 @@
 /**
 *@brief	    Constructor to the billboard class
 *
-*@details	Creates a billboard at a position, sets the proportions and assignes a texture to it.
+*@details	Create a batch of billboards/quads with one texture. The positions for each billboard is randomly generated between pos_min and pos_max.
 *
 *@param		texturename		Unique name of a texture. Ex: "texture.png".
-*@param		position	Contains the positions in world coordinates.
-*@param		proportionsIn	The proportions of the billboardsize according to the world unit length. 
+*@param		pos_min  		the minimum position on which billboards will be rendered 	   
+*@param		pos_max  	    the maximum position on which billboards will be rendered
+*@param		seed  			A seed to be used for c++ random function so that it will generate the same random positions each run
+*@param		count  			The number of billboards to create
+*@param		proportionsIn	The proportions of the billboard size according to the world unit length. 
+*@param		billboard		if true each quad will be rotated at each frame so that it faces the camera. If false all billboards will be rendered as two perpendicular quads  
 */
 BatchBillboard::BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::vec3 pos_max, int seed, int count, glm::vec2 proportionsIn, bool billboard){
 	ImmersiveKidz::getInstance()->loadTexture(texturename);
 	_texture = texturename;
 	_billboard = billboard;
 	
-
 	int pos_loc = -1;
 	sgct::ShaderManager::Instance()->bindShader( "BatchBillboard_turn" );
 	pos_loc = sgct::ShaderManager::Instance()->getShader( "BatchBillboard_turn").getAttribLocation( "billboard_position" );
 	sgct::ShaderManager::Instance()->unBindShader();
 
-	//std::cout << "Pos loc = " << pos_loc << std::endl;
+	_angle_loc = sgct::ShaderManager::Instance()->getShader( "BatchBillboard_turn").getUniformLocation( "angle_x" );
+	_campos_loc = sgct::ShaderManager::Instance()->getShader( "BatchBillboard_turn").getUniformLocation( "camera_position" );
+
 
 	srand(seed);
     _listid = glGenLists(1);
@@ -66,14 +71,11 @@ BatchBillboard::BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::
 			//Vertex 4 
 			glTexCoord2d(0.0,1.0);
 			glVertex3f(posx, posy+proportionsIn[1] , posz - 0.5 * proportionsIn[0] );
+
 		} else {
 
-			//float arr[] = {posx, posy, posz};
-			//glVertexAttrib3fv( pos_loc, arr);
-
 			glVertexAttrib3f( pos_loc, posx, posy, posz);
-			//glColor3f(posx, posy, posz);
-
+			
 			//Vertex 1 
 			glTexCoord2d(0.0,0.0);
 			glVertex3f(-0.5 * proportionsIn[0] , 0 , 0);
@@ -99,11 +101,9 @@ BatchBillboard::BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::
 };
 
 /**
-*@brief		Draws the Billboard. 
+*@brief		Using the OpenGL draw list compiled in the constructor to render all billboards
 *
-*@details	Draws a texture on a Billboard(Quad perpendicual to the camera position).
-*
-*@return    void
+*@details	Using the OpenGL draw list compiled in the constructor to render all billboards
 */
 void BatchBillboard::onDraw() {
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture));
@@ -113,17 +113,13 @@ void BatchBillboard::onDraw() {
 		glm::vec3 campos = ImmersiveKidz::getInstance()->getCamera()->getPosition();
 		float angle = ImmersiveKidz::getInstance()->getCamera()->getRotation().x;
 		sgct::ShaderManager::Instance()->bindShader( "BatchBillboard_turn" );
-		int angle_loc = sgct::ShaderManager::Instance()->getShader( "BatchBillboard_turn").getUniformLocation( "angle_x" );
-		glUniform1f( angle_loc, angle *3.14/180);
-		int campos_loc = sgct::ShaderManager::Instance()->getShader( "BatchBillboard_turn").getUniformLocation( "camera_position" );
-		glUniform3f( campos_loc, campos[0], campos[1], campos[2]);
-		//std::cout << "pos: (" << campos[0] << "," << campos[1] << "," << campos[2] << ")" << std::endl;
+		
+		glUniform1f( _angle_loc, angle *3.14/180);
+		glUniform3f( _campos_loc, campos[0], campos[1], campos[2]);
 	} else {
 		sgct::ShaderManager::Instance()->bindShader( "BatchBillboard_still" );
 	}
 	
-	
-    // Draw one obejct from a display list
     glCallList(_listid);
 	
 	sgct::ShaderManager::Instance()->unBindShader();

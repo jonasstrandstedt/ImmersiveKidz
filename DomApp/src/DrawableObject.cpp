@@ -5,7 +5,8 @@
 *
 *@details   Defines the animation function to be 0.
 */
-DrawableObject::DrawableObject() {
+DrawableObject::DrawableObject() 
+{
 	_animationFunc = 0;
 	_seed = 0;
 	
@@ -22,7 +23,8 @@ DrawableObject::DrawableObject() {
 *
 *@return     void
 */
-void DrawableObject::draw(double t) {
+void DrawableObject::draw(double t) 
+{
 
 	// pre-animate
 	if (_animationFunc != 0)
@@ -53,10 +55,11 @@ void DrawableObject::draw(double t) {
 *
 *@return     void
 */
-void DrawableObject::setAnimationFuncByName(std::string name, double seed) { 
+void DrawableObject::setAnimationFuncByName(std::string name, double seed) 
+{ 
 	if ( name == "bounce" ) setAnimationFunc(bounce, seed);
 	if ( name == "pendulum" ) setAnimationFunc(pendulum, seed);
-	//if ( name == "none" ) setAnimationFunc(none, seed);
+	if ( name == "fly" ) setAnimationFunc(fly, seed);
 };
 
 /**
@@ -64,8 +67,8 @@ void DrawableObject::setAnimationFuncByName(std::string name, double seed) {
 *
 *@return     void
 */
-void bounce(double t, double seed) {
-	// translates the object up and down along the y-axis (never below 0)
+void bounce(double t, double seed) 
+{
 	t += seed;
 	glTranslatef(0.0f,fabsf(sin(t*2))*0.5,0.0f);
 }
@@ -75,20 +78,19 @@ void bounce(double t, double seed) {
 *
 *@return     void
 */
-void pendulum(double t, double seed) {
-	// translates the object side to side along the x-axis
+void pendulum(double t, double seed) 
+{
 	t += seed;
 	glTranslatef(sin(t),0.0f,0.0f);
 }
 
 /**
-*@brief	    Does nothing
-*
-*@param t
-*@param seed
+*@brief	    Translates the object in a "8" shape up and down.
 *
 *@return     void
 */
-void none(double t, double seed) {
-	// dafuq?! :D
+void fly(double t, double seed) 
+{
+	t += seed;
+	glTranslatef(sin(t),fabs(sin(t*0.8))*0.5,cos(t*0.5)*1.5);
 }

@@ -10,7 +10,8 @@
 *
 *@return     void
 */
-SceneLoader::SceneLoader() {
+SceneLoader::SceneLoader() 
+{
 	
 	_selection = 0;
 	_isMaster = false;
@@ -24,14 +25,16 @@ SceneLoader::SceneLoader() {
 	
 	while (entry != NULL)
 	{
-		if (entry->d_type == DT_DIR) {
+		if (entry->d_type == DT_DIR) 
+		{
 			std::string sceneXML = PATH;
 			sceneXML += "/";
 			sceneXML += entry->d_name;
 			sceneXML += "/scene.xml";
 			const char *filename = sceneXML.c_str();
 			std::ifstream ifile(filename);
-			if(ifile) {
+			if(ifile) 
+			{
 				_scenes.push_back(entry->d_name);
 				ifile.close();
 			}
@@ -40,6 +43,19 @@ SceneLoader::SceneLoader() {
 	}
 	
 }
+
+/**
+*@brief	    Sets if the node if master or slave
+*
+*@param		master : if set to true then the node is master over the other slave-nodes
+*
+*@return     void
+*/
+
+void SceneLoader::setMaster(bool master) 
+{ 
+	_isMaster = master; 
+};
 
 /**
 *@brief	    Reads the keyboard for menu management
@@ -51,8 +67,10 @@ SceneLoader::SceneLoader() {
 *
 *@return     void
 */
-void SceneLoader::keyboardButton(int key,int state) {
-	if(_isMaster) {
+void SceneLoader::keyboardButton(int key,int state) 
+{
+	if(_isMaster) 
+	{
 		if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
 		if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 		
@@ -60,9 +78,11 @@ void SceneLoader::keyboardButton(int key,int state) {
 		if(_selection >= _scenes.size()) _selection = 0;
 		
 
-		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) {
+		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
+		{
 			_loaded = loadScene();
-			if(_loaded != -1) {
+			if(_loaded != -1) 
+			{
 				ImmersiveKidz::getInstance()->setSceneLoaded(true);
 
 			}
@@ -77,15 +97,20 @@ void SceneLoader::keyboardButton(int key,int state) {
 *
 *@return     void
 */
-void SceneLoader::menu() {
-	if(_isMaster) {
+void SceneLoader::menu() 
+{
+	if(_isMaster) 
+	{
 		int h = sgct::Engine::getWindowPtr()->getVResolution();
 	
-		for(int i = 0; i < _scenes.size(); i++) {
+		for(int i = 0; i < _scenes.size(); i++) 
+		{
 		
-			if(i == _selection) {
+			if(i == _selection) 
+			{
 				glColor3f(1.0f,0.0f,0.0f);
-			} else {
+			} else 
+			{
 				glColor3f(1.0f,1.0f,1.0f);
 			}
 		
@@ -94,10 +119,13 @@ void SceneLoader::menu() {
 			glColor3f(1.0f,1.0f,1.0f);
 		
 		}
-	} else {
-		if(_loaded != _masterLoaded && _masterLoaded != -1) {
+	} else 
+	{
+		if(_loaded != _masterLoaded && _masterLoaded != -1) 
+		{
 			_loaded = loadScene();
-			if(_loaded != -1) {
+			if(_loaded != -1) 
+			{
 				ImmersiveKidz::getInstance()->setSceneLoaded(true);
 			}
 		}
@@ -112,7 +140,8 @@ void SceneLoader::menu() {
 *
 *@return     int The selection loaded, -1 in case of error
 */
-int SceneLoader::loadScene() {
+int SceneLoader::loadScene() 
+{
 
 	std::string folder =_scenes.at(_selection);
 	sgct::MessageHandler::Instance()->print("Loading scene %s\n", folder.c_str());
@@ -141,7 +170,8 @@ int SceneLoader::loadScene() {
 	tinyxml2::XMLHandle hDoc(&doc);
 
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
-	if(scene){
+	if(scene)
+	{
 		tinyxml2::XMLElement* item;
 
 		double randminx = -50;
@@ -149,42 +179,50 @@ int SceneLoader::loadScene() {
 		double randmaxx = 50;
 		double randmaxy = 50;
 		tinyxml2::XMLElement* world = scene->FirstChildElement( "world" );
-		if(world){
+		if(world)
+		{
 			tinyxml2::XMLElement* camera = world->FirstChildElement( "camera" );
-			if(camera){
+			if(camera)
+			{
 				Camera *cam = ImmersiveKidz::getInstance()->getCamera();
 				tinyxml2::XMLElement* start = camera->FirstChildElement( "start" );
-				if(start){
+				if(start)
+				{
 					cam->setPosition(glm::vec3(start->DoubleAttribute("x"),start->DoubleAttribute("y"),start->DoubleAttribute("z")));
 				}
 				tinyxml2::XMLElement* limitx = camera->FirstChildElement( "limitx" );
-				if(limitx){
+				if(limitx)
+				{
 					cam->setLimitsX(glm::vec2(limitx->DoubleAttribute("min"),limitx->DoubleAttribute("max")));
 				}
 				tinyxml2::XMLElement* limity = camera->FirstChildElement( "limity" );
-				if(limity){
+				if(limity)
+				{
 					cam->setLimitsY(glm::vec2(limity->DoubleAttribute("min"),limity->DoubleAttribute("max")));
-			
 				}
 				tinyxml2::XMLElement* limitz = camera->FirstChildElement( "limitz" );
-				if(limitz){
+				if(limitz)
+				{
 					cam->setLimitsZ(glm::vec2(limitz->DoubleAttribute("min"),limitz->DoubleAttribute("max")));
-			
 				}
 			}
 			tinyxml2::XMLElement* plane = world->FirstChildElement( "plane" );
-			if(plane){
+			if(plane)
+			{
 				std::string texture = "";
 				tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
-				if(textureElement) {
+				if(textureElement) 
+				{
 					texture = textureElement->GetText();
 					
 					double minx = -50;
 					double miny = -50;
 					double maxx = 50;
 					double maxy = 50;
+
 					tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
-					if(sizeElement){
+					if(sizeElement)
+					{
 						minx = sizeElement->DoubleAttribute( "minx" );
 						miny = sizeElement->DoubleAttribute( "miny" );
 						maxx = sizeElement->DoubleAttribute( "maxx" );
@@ -195,7 +233,8 @@ int SceneLoader::loadScene() {
 					ImmersiveKidz::getInstance()->addDrawableObject(new Plane(glm::vec4(minx,miny,maxx,maxy), scenePath + texture, 0.0));
 					
 					tinyxml2::XMLElement* randElement = world->FirstChildElement( "rand" );
-					if(randElement){
+					if(randElement)
+					{
 						randminx = randElement->DoubleAttribute( "minx" );
 						randminy = randElement->DoubleAttribute( "miny" );
 						randmaxx = randElement->DoubleAttribute( "maxx" );
@@ -206,19 +245,23 @@ int SceneLoader::loadScene() {
 			}
 		}
 		tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
-		if(models){
+		if(models)
+		{
 			item = models->FirstChildElement( "item" );
-			for(item;item; item = item->NextSiblingElement( "item" )){
+			for(item;item; item = item->NextSiblingElement( "item" ))
+			{
 				std::string filename = "";
 				tinyxml2::XMLElement* fileElement = item->FirstChildElement( "filename" );
-				if(fileElement) {
+				if(fileElement) 
+				{
 					filename = fileElement->GetText();
 				}
 				else	continue;
 
 				std::string texture = "";
 				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
-				if(textureElement) {
+				if(textureElement) 
+				{
 					texture = textureElement->GetText();
 				}
 				else	continue;
@@ -226,7 +269,8 @@ int SceneLoader::loadScene() {
 				std::string animation = "none";
 				double animseed = 0;
 				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
-				if(aniElement) {
+				if(aniElement) 
+				{
 					animation = aniElement->Attribute( "name" );
 					animseed = aniElement->DoubleAttribute( "seed" );
 				}
@@ -236,7 +280,8 @@ int SceneLoader::loadScene() {
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
 				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
-				if(posElement){
+				if(posElement)
+				{
 					posx = posElement->DoubleAttribute( "x" );
 					posy = posElement->DoubleAttribute( "y" );
 					posz = posElement->DoubleAttribute( "z" );
@@ -244,7 +289,8 @@ int SceneLoader::loadScene() {
 
 				double scale = 1;
 				tinyxml2::XMLElement* scaleElement = item->FirstChildElement( "scale" );
-				if(scaleElement){
+				if(scaleElement)
+				{
 					scale = scaleElement->DoubleAttribute( "val" );
 				}
 
@@ -252,20 +298,23 @@ int SceneLoader::loadScene() {
 				double roty = 0;
 				double rotz = 0;
 				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "rot" );
-				if(rotElement){
+				if(rotElement)
+				{
 					rotx = rotElement->DoubleAttribute( "x" );
 					roty = rotElement->DoubleAttribute( "y" );
 					rotz = rotElement->DoubleAttribute( "z" );
 				}
 
 				tinyxml2::XMLElement* multElement = item->FirstChildElement( "mult" );
-				if(multElement){
+				if(multElement)
+				{
 					int count = multElement->IntAttribute( "count" );
 					int seed = multElement->IntAttribute( "seed" );
 					std::string map = multElement->Attribute( "map" );
 
 					srand(seed);
-					for(int c = 1; c <= count ; c++){
+					for(int c = 1; c <= count ; c++)
+					{
 						posx = glm::compRand1(randminx,randmaxx); 
 						posy = 0;
 						posz  = glm::compRand1(randminy,randmaxy);
@@ -274,19 +323,23 @@ int SceneLoader::loadScene() {
 						ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz)), animation, animseed);
 					}
 				}
-				else {
+				else 
+				{
 					ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz)), animation, animseed);
 				}
 			}
 		}
 
 		tinyxml2::XMLElement* billboards = scene->FirstChildElement( "billboards" );
-		if(billboards){
+		if(billboards)
+		{
 			item = billboards->FirstChildElement( "item" );
-			for(item;item; item = item->NextSiblingElement( "item" )){
+			for(item;item; item = item->NextSiblingElement( "item" ))
+			{
 				std::string texture = "";
 				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
-				if(textureElement) {
+				if(textureElement)
+				{
 					texture = textureElement->GetText();
 				}
 				else	continue;
@@ -294,7 +347,8 @@ int SceneLoader::loadScene() {
 				std::string animation = "none";
 				double animseed = 0;
 				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
-				if(aniElement) {
+				if(aniElement) 
+				{
 					animation = aniElement->Attribute( "name" );
 					animseed = aniElement->DoubleAttribute( "seed" );
 				}
@@ -304,7 +358,8 @@ int SceneLoader::loadScene() {
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
 				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
-				if(posElement){
+				if(posElement)
+				{
 					posx = posElement->DoubleAttribute( "x" );
 					posy = posElement->DoubleAttribute( "y" );
 					posz = posElement->DoubleAttribute( "z" );
@@ -313,19 +368,22 @@ int SceneLoader::loadScene() {
 				double sizex = 1;
 				double sizey = 1;
 				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
-				if(rotElement){
+				if(rotElement)
+				{
 					sizex = rotElement->DoubleAttribute( "x" );
 					sizey = rotElement->DoubleAttribute( "y" );
 				}
 
 				tinyxml2::XMLElement* multElement = item->FirstChildElement( "mult" );
-				if(multElement){
+				if(multElement)
+				{
 					int count = multElement->IntAttribute( "count" );
 					int seed = multElement->IntAttribute( "seed" );
 					std::string map = multElement->Attribute( "map" );
 					bool billboard = false;
 					const char* bb = multElement->Attribute( "billboard" );
-					if(bb) {
+					if(bb) 
+					{
 						std::string bbstring = bb;
 						if(bbstring == "yes") billboard = true;
 					}
@@ -334,45 +392,53 @@ int SceneLoader::loadScene() {
 					ImmersiveKidz::getInstance()->addDrawableObject(new BatchBillboard(scenePath + texture, glm::vec3(randminx , 0 , randminy),glm::vec3(randmaxx , 0 , randmaxy), seed, count, glm::vec2(sizex , sizey), billboard), animation, animseed);
 					
 				}
-				else {
+				else 
+				{
 					ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation, animseed);
 				}
 			}
 		}
 
 		tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
-		if(illustrations){
+		if(illustrations)
+		{
 			item = illustrations->FirstChildElement( "item" );
-			for(item;item; item = item->NextSiblingElement( "item" )){
-				std::string name_artist = "Dolan";
+			for(item;item; item = item->NextSiblingElement( "item" ))
+			{
+				std::string name_artist = "Unnamed artist";
 				tinyxml2::XMLElement* artistElement = item->FirstChildElement( "name_artist" );
-				if(artistElement) {
+				if(artistElement) 
+				{
 					name_artist = artistElement->GetText();
 				}
 
-				std::string name_drawing = "Goobey";
+				std::string name_drawing = "Unnamed drawing";
 				tinyxml2::XMLElement* drawingeElement = item->FirstChildElement( "name_drawing" );
-				if(drawingeElement) {
+				if(drawingeElement) 
+				{
 					name_drawing = drawingeElement->GetText();
 				}
 
-				std::string description = "Goobey pls";
+				std::string description = "Unnamed description";
 				tinyxml2::XMLElement* descElement = item->FirstChildElement( "description" );
-				if(descElement) {
+				if(descElement)
+				{
 					description = descElement->GetText();
 				}					
 		
 				std::string animation = "none";
 				double animseed = 0;
 				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
-				if(aniElement) {
+				if(aniElement) 
+				{
 					animation = aniElement->Attribute( "name" );
 					animseed = aniElement->DoubleAttribute( "seed" );
 				}
 
 				std::string texture = "";
 				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
-				if(textureElement) {
+				if(textureElement) 
+				{
 					texture = textureElement->GetText();
 				}
 				else	continue;
@@ -382,7 +448,8 @@ int SceneLoader::loadScene() {
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
 				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
-				if(posElement){
+				if(posElement)
+				{
 					posx = posElement->DoubleAttribute( "x" );
 					posy = posElement->DoubleAttribute( "y" );
 					posz = posElement->DoubleAttribute( "z" );
@@ -391,7 +458,8 @@ int SceneLoader::loadScene() {
 				double sizex = 1;
 				double sizey = 1;
 				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
-				if(rotElement){
+				if(rotElement)
+				{
 					sizex = rotElement->DoubleAttribute( "x" );
 					sizey = rotElement->DoubleAttribute( "y" );
 				}
@@ -400,8 +468,6 @@ int SceneLoader::loadScene() {
 			}
 		}
 	}
-	
-
 	return _selection;
 }
 
@@ -412,7 +478,8 @@ int SceneLoader::loadScene() {
 *
 *@return    void
 */
-void SceneLoader::encode(sgct::SharedData *data){
+void SceneLoader::encode(sgct::SharedData *data)
+{
 	data->writeInt32(_selection);
 	data->writeInt32(_loaded);
 }
@@ -424,7 +491,8 @@ void SceneLoader::encode(sgct::SharedData *data){
 *
 *@return    void
 */
-void SceneLoader::decode(sgct::SharedData *data){
+void SceneLoader::decode(sgct::SharedData *data)
+{
 	_selection	= data->readInt32();
 	_masterLoaded	= data->readInt32();
 	

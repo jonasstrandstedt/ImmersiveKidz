@@ -4,9 +4,17 @@
 int runUnitTests(int argc, char **argv);
 #endif
 
-
 #include "sgct.h"
 #include "ImmersiveKidz.h"
+
+//include open AL
+#ifdef __APPLE__
+    #include <OpenAL/al.h>
+    #include <ALUT/alut.h>
+#else
+    #include <AL/al.h>
+    #include <AL/alut.h>
+#endif
 
 sgct::Engine * gEngine;
 ImmersiveKidz *iKidz;
@@ -16,7 +24,7 @@ void myDrawFun();
 void myPreSyncFun();
 void myEncodeFun();
 void myDecodeFun();
-
+void myCleanUpFun(); //openAL clean
 void myPostSyncPreDrawFunction();
 
 void myKeyboardFun(int,int);
@@ -28,14 +36,20 @@ int prevMouseY = -1;
 bool stereo = true;
 float eyeSeparation = 0.0f;
 
+//OpenAL data & functions
+void setAudioSource(ALuint &buffer,ALuint &source, char * filename);
+ALuint audio_buffer0 = AL_NONE;
+ALuint source0;
+glm::vec4 audioPos;
+
 int main( int argc, char* argv[] )
 {
 #ifdef _RUN_TESTS_
-	if(runUnitTests(argc, argv )){
+	if(runUnitTests(argc, argv ))
+	{
 		std::cin.get();
 	}
 #endif
-
 
 	// Allocate
 	gEngine = new sgct::Engine( argc, argv );
@@ -51,8 +65,7 @@ int main( int argc, char* argv[] )
 	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
 
 	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
-
-	
+	//gEngine->setCleanUpFunction( myCleanUpFun );
 	
 	// Init the engine
 	if( !gEngine->init() )
@@ -77,7 +90,8 @@ int main( int argc, char* argv[] )
 	exit( EXIT_SUCCESS );
 }
 
-void myInitOGLFun() {
+void myInitOGLFun()
+{
 	// init shaders
 	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_still", "data/Shaders/BatchBillboard_still.vert", "data/Shaders/BatchBillboard_still.frag" );
 	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_turn", "data/Shaders/BatchBillboard_turn.vert", "data/Shaders/BatchBillboard_turn.frag" );
@@ -118,23 +132,28 @@ void myEncodeFun()
 	iKidz->encode();
 }
 
-void myDecodeFun() {
+void myDecodeFun() 
+{
 	stereo = sgct::SharedData::Instance()->readBool();
 	iKidz->decode();
 }
 
 
-void myKeyboardFun(int key,int state){
+void myKeyboardFun(int key,int state)
+{
 	iKidz->keyboardButton(key,state);
 
-	if(gEngine->isMaster() && state == GLFW_PRESS) {
+	if(gEngine->isMaster() && state == GLFW_PRESS) 
+	{
 		if(key == 'P') gEngine->takeScreenshot();
 		if(key == 'X') stereo = !stereo;
 	}
 }
 
-void myMouseMotionFun(int x,int y){
-	if(prevMouseX == -1){
+void myMouseMotionFun(int x,int y)
+{
+	if(prevMouseX == -1)
+	{
 		prevMouseX = x;
 		prevMouseY = y;
 		return;
@@ -147,12 +166,13 @@ void myMouseMotionFun(int x,int y){
 	prevMouseY = y;
 }
 
-void myMouseButtonFun(int button,int state){
+void myMouseButtonFun(int button,int state)
+{
 	iKidz->mouseButton(button,state);
 }
 
-
-void myPostSyncPreDrawFunction(){
+void myPostSyncPreDrawFunction()
+{
 	stereo ? gEngine->getUserPtr()->setEyeSeparation( eyeSeparation ) : gEngine->getUserPtr()->setEyeSeparation( 0.0f );
 	iKidz->postSyncPreDrawFunction();
 }

@@ -1,7 +1,9 @@
 #include "ImmersiveKidz.h"
+#include "AudioHandler.h"
 
 ImmersiveKidz* ImmersiveKidz::_instance = 0;
-ImmersiveKidz* ImmersiveKidz::getInstance(){
+ImmersiveKidz* ImmersiveKidz::getInstance()
+{
 	//WARNING _ NOT THREAD SAFE
 	if(_instance == 0)
 		_instance = new ImmersiveKidz();
@@ -11,7 +13,8 @@ ImmersiveKidz* ImmersiveKidz::getInstance(){
 /**
 *@brief	    ImmersiveKidz constructor
 */
-ImmersiveKidz::ImmersiveKidz() {
+ImmersiveKidz::ImmersiveKidz() 
+{
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
 
 	// initialize all variables
@@ -21,16 +24,20 @@ ImmersiveKidz::ImmersiveKidz() {
 
 }
 
-void ImmersiveKidz::init(){
+void ImmersiveKidz::init()
+{
 	_hud = new HUD();
 	_camera = new Camera();
+	AudioHandler::getInstance()->init();
+	AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
 }
 
 
 /**
 *@brief	    ImmersiveKidz destructor
 */
-ImmersiveKidz::~ImmersiveKidz() {
+ImmersiveKidz::~ImmersiveKidz() 
+{
 	sgct::MessageHandler::Instance()->print("Destroying ImmersiveKidz engine\n");
 	delete _camera;
 }
@@ -42,7 +49,8 @@ ImmersiveKidz::~ImmersiveKidz() {
 *
 *@param		folder The name of the folder containing the scene
 */
-void ImmersiveKidz::setScenePath(std::string folder) {
+void ImmersiveKidz::setScenePath(std::string folder) 
+{
 #ifdef __WIN32__
 		_scenePath = folder + "/";
 #else // mac, linux
@@ -59,10 +67,12 @@ void ImmersiveKidz::setScenePath(std::string folder) {
 *
 *@return     void
 */
-void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double animseed) {
+void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double animseed)
+{
 	
 	Illustration *ill = dynamic_cast<Illustration*>(o);
-	if(ill) {
+	if(ill) 
+	{
 		_illustrations.push_back(ill);
 	}
 	
@@ -70,8 +80,10 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double a
 	_objects.back()->setAnimationFuncByName(f, animseed);
 }
 
-bool ImmersiveKidz::loadTexture(std::string texture) {
-	if ( _textures.find(texture) == _textures.end()) {
+bool ImmersiveKidz::loadTexture(std::string texture)
+{
+	if ( _textures.find(texture) == _textures.end())
+	{
 		_textures.insert(texture);
 		return sgct::TextureManager::Instance()->loadTexure(texture, texture, true, 4);
 	}
@@ -83,7 +95,8 @@ bool ImmersiveKidz::loadTexture(std::string texture) {
 *
 *@return     void
 */
-void ImmersiveKidz::preSyncFunc() {
+void ImmersiveKidz::preSyncFunc()
+{
 	//set the time only on the master
 	if( _isMaster )
 	{
@@ -98,23 +111,24 @@ void ImmersiveKidz::preSyncFunc() {
 *
 *@return     void
 */
-void ImmersiveKidz::draw() {
+void ImmersiveKidz::draw() 
+{
 	
-	if(_sceneLoaded) {
+	if(_sceneLoaded) 
+	{
 		_camera->setCamera();
 		for (int i = 0; i < _objects.size(); ++i)
 		{
 			_objects.at(i)->draw(_currTime);
 		}
 
-		if( _isMaster ) {
+		if( _isMaster ) 
+		{
 			//Draw text for illustrations
-			_hud->drawBackgroundToNames();	
-			_hud->drawIllustrationNames(_illustrations);
-			_hud->drawMinimapBackground();
-			_hud->drawMinimapPositions(_illustrations);
+			_hud->draw(_illustrations);
 		}
-	} else {
+	} else 
+	{
 		_loader.menu();
 	}
 }
@@ -124,7 +138,8 @@ void ImmersiveKidz::draw() {
 *
 *@return     void
 */
-void ImmersiveKidz::encode() {
+void ImmersiveKidz::encode() 
+{
 	sgct::SharedData::Instance()->writeDouble( _currTime );
 	sgct::SharedData::Instance()->writeDouble( _dt );
 
@@ -137,9 +152,8 @@ void ImmersiveKidz::encode() {
 *
 *@return     void
 */
-void ImmersiveKidz::decode(){
-
-
+void ImmersiveKidz::decode()
+{
 	_currTime = sgct::SharedData::Instance()->readDouble();
 	_dt = sgct::SharedData::Instance()->readDouble();
 	
@@ -159,11 +173,10 @@ void ImmersiveKidz::decode(){
 * @return	void 
 */
 
-void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
+void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy)
+{
 	if(_camera == 0)
-		return;
-
-	
+		return;	
 
 	_camera->mouseMotion(dx,dy);
 
@@ -179,11 +192,10 @@ void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy){
 * @return	void 
 */
 
-void ImmersiveKidz::mouseButton(int button,int state){
+void ImmersiveKidz::mouseButton(int button,int state)
+{
 	if(_camera == 0)
 		return;
-
-	
 
 	_camera->mouseButton(button,state);
 
@@ -197,13 +209,16 @@ void ImmersiveKidz::mouseButton(int button,int state){
 *
 * @return	void 
 */
-void ImmersiveKidz::keyboardButton(int key,int state){
+void ImmersiveKidz::keyboardButton(int key,int state)
+{
 	if(_camera == 0)
 		return;
-	if(_sceneLoaded) {
+	if(_sceneLoaded)
+	{
 		_camera->keyboardButton(key,state);
 		_hud->keyboardButton(key, state, _illustrations);
-	} else {
+	} else 
+	{
 		_loader.keyboardButton(key,state);
 	}
 }
@@ -213,8 +228,10 @@ void ImmersiveKidz::keyboardButton(int key,int state){
 *
 *@return     void
 */
-void ImmersiveKidz::postSyncPreDrawFunction(){
+void ImmersiveKidz::postSyncPreDrawFunction()
+{
 	_camera->update(_dt);
+	AudioHandler::getInstance()->update();
 }
 
 /**
@@ -222,7 +239,8 @@ void ImmersiveKidz::postSyncPreDrawFunction(){
 *
 *@return     Camera* Pointer to the ImmersiveKidz enginge Camera object
 */
-Camera* ImmersiveKidz::getCamera(){
+Camera* ImmersiveKidz::getCamera()
+{
 	return _camera;
 }
 
@@ -231,7 +249,8 @@ Camera* ImmersiveKidz::getCamera(){
 *
 *@param    worldRect	a vec4 on the form [minX,minY,maxX,maxX]
 */
-void ImmersiveKidz::setWorldRect(glm::vec4 worldRect){
+void ImmersiveKidz::setWorldRect(glm::vec4 worldRect)
+{
 	_worldRect = worldRect;
 }
 
@@ -240,6 +259,7 @@ void ImmersiveKidz::setWorldRect(glm::vec4 worldRect){
 *
 *@return    rect	rect of [minX,minY,maxX,maxX] eg, the 2d corner points of the world	
 */
-glm::vec4 ImmersiveKidz::getWorldRect(){
+glm::vec4 ImmersiveKidz::getWorldRect()
+{
 	return _worldRect;
 }
