@@ -2,7 +2,6 @@
 #define SKYBOX_H
 
 #include "sgct.h"
-#include "glm/glm.hpp"
 #include "DrawableObject.h"
 
 #define CUBEMAP_TEX_X_POSITIVE 0
@@ -24,16 +23,17 @@
     * @version    0.0.1
     *
 	*/
-class Skybox: public DrawableObject {
+class Skybox: public DrawableObject 
+{
 
 public:
-	Skybox(){}
+	Skybox();
 	void loadTextures(std::string textureNames[6]);
 	void onDraw();
 	
 private:
-	std::string texturename;
-	void drawCube();
+	std::string _texturename;
+	void _drawCube();
 };
 
 

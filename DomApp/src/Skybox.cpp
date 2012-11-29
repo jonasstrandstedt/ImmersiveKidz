@@ -1,6 +1,15 @@
 #include "Skybox.h"
 #include "ImmersiveKidz.h"
 
+/**
+*@brief Constructor for skybox
+*
+*@details Default constructor for skybox, does not do any logic. LoadTextures should be used to add textures to the skybox
+*/
+
+Skybox::Skybox(){
+
+}
 
 /**
 *@brief	    Loads textures to skybox
@@ -8,8 +17,6 @@
 *@details   Loads textures with sgct:s texture manager
 *
 *@param		textureNames		The names of the skybox textures
-*
-*@return	void
 */
 void Skybox::loadTextures(std::string textureNames[6])
 {
@@ -25,10 +32,8 @@ void Skybox::loadTextures(std::string textureNames[6])
 *@brief	    Creates the skybox 
 *
 *@details   Assigns the textures to each face and defines the skyboxparameters. 
-*
-*@return	void
 */
-void Skybox::drawCube(){
+void Skybox::_drawCube(){
 
 		//Back Face
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_zneg"));
@@ -125,7 +130,6 @@ void Skybox::onDraw()
 	glPushMatrix();
 	glm::vec3 camPos = ImmersiveKidz::getInstance()->getCamera()->getPosition();
 	glTranslatef(camPos[0],camPos[1],camPos[2]);
-	drawCube();
+	_drawCube();
 	glPopMatrix();
-
 }

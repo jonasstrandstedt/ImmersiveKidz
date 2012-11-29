@@ -21,19 +21,19 @@ class HUD
 public:
 	HUD();
 
-	void drawIllustrationNames(std::vector<Illustration*> illu);
-	void drawBackgroundToNames();
-	void drawMinimapBackground();
-	void drawMinimapPositions(std::vector<Illustration*> illu);
+	void draw(std::vector<Illustration*> illu);
 
-
-	void mouseButton(int button,int state);
-	void mouseMotion(int dx,int dy);
 	void keyboardButton(int key,int state, std::vector<Illustration*> illu);
 
 	void setTextureMinimap(std::string texture) { _textureMinimap = texture; };
 
 private:
+
+	void _drawIllustrationNames(std::vector<Illustration*> illu);
+	void _drawBackgroundToNames();
+	void _drawMinimapBackground();
+	void _drawMinimap(std::vector<Illustration*> illu);
+
 
 	bool _mouseState;
 	int _offset;
