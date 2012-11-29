@@ -69,7 +69,8 @@ void SceneLoader::setMaster(bool master)
 */
 void SceneLoader::keyboardButton(int key,int state) 
 {
-	if(_isMaster) {
+	if(_isMaster) 
+	{
 		if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
 		if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 		
@@ -77,9 +78,11 @@ void SceneLoader::keyboardButton(int key,int state)
 		if(_selection >= _scenes.size()) _selection = 0;
 		
 
-		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) {
+		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
+		{
 			_loaded = loadScene();
-			if(_loaded != -1) {
+			if(_loaded != -1) 
+			{
 				ImmersiveKidz::getInstance()->setSceneLoaded(true);
 
 			}
@@ -94,7 +97,8 @@ void SceneLoader::keyboardButton(int key,int state)
 *
 *@return     void
 */
-void SceneLoader::menu() {
+void SceneLoader::menu() 
+{
 	if(_isMaster) 
 	{
 		int h = sgct::Engine::getWindowPtr()->getVResolution();
@@ -136,7 +140,8 @@ void SceneLoader::menu() {
 *
 *@return     int The selection loaded, -1 in case of error
 */
-int SceneLoader::loadScene() {
+int SceneLoader::loadScene() 
+{
 
 	std::string folder =_scenes.at(_selection);
 	sgct::MessageHandler::Instance()->print("Loading scene %s\n", folder.c_str());
@@ -165,7 +170,8 @@ int SceneLoader::loadScene() {
 	tinyxml2::XMLHandle hDoc(&doc);
 
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
-	if(scene){
+	if(scene)
+	{
 		tinyxml2::XMLElement* item;
 
 		double randminx = -50;
@@ -472,7 +478,8 @@ int SceneLoader::loadScene() {
 *
 *@return    void
 */
-void SceneLoader::encode(sgct::SharedData *data){
+void SceneLoader::encode(sgct::SharedData *data)
+{
 	data->writeInt32(_selection);
 	data->writeInt32(_loaded);
 }
@@ -484,7 +491,8 @@ void SceneLoader::encode(sgct::SharedData *data){
 *
 *@return    void
 */
-void SceneLoader::decode(sgct::SharedData *data){
+void SceneLoader::decode(sgct::SharedData *data)
+{
 	_selection	= data->readInt32();
 	_masterLoaded	= data->readInt32();
 	

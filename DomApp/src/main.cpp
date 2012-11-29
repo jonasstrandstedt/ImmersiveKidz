@@ -4,7 +4,6 @@
 int runUnitTests(int argc, char **argv);
 #endif
 
-
 #include "sgct.h"
 #include "ImmersiveKidz.h"
 
@@ -37,13 +36,11 @@ int prevMouseY = -1;
 bool stereo = true;
 float eyeSeparation = 0.0f;
 
-
 //OpenAL data & functions
 void setAudioSource(ALuint &buffer,ALuint &source, char * filename);
 ALuint audio_buffer0 = AL_NONE;
 ALuint source0;
 glm::vec4 audioPos;
-
 
 int main( int argc, char* argv[] )
 {
@@ -53,7 +50,6 @@ int main( int argc, char* argv[] )
 		std::cin.get();
 	}
 #endif
-
 
 	// Allocate
 	gEngine = new sgct::Engine( argc, argv );
@@ -70,8 +66,6 @@ int main( int argc, char* argv[] )
 
 	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
 	//gEngine->setCleanUpFunction( myCleanUpFun );
-
-	
 	
 	// Init the engine
 	if( !gEngine->init() )
@@ -119,7 +113,6 @@ void myInitOGLFun()
 	iKidz = ImmersiveKidz::getInstance();
 	iKidz->init();
 	iKidz->setMaster(gEngine->isMaster());
-
 }
 
 
@@ -178,13 +171,10 @@ void myMouseButtonFun(int button,int state)
 	iKidz->mouseButton(button,state);
 }
 
-
 void myPostSyncPreDrawFunction()
 {
 	stereo ? gEngine->getUserPtr()->setEyeSeparation( eyeSeparation ) : gEngine->getUserPtr()->setEyeSeparation( 0.0f );
 	iKidz->postSyncPreDrawFunction();
-
 }
-
 
 #endif

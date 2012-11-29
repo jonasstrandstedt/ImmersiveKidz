@@ -29,8 +29,7 @@ void ImmersiveKidz::init()
 	_hud = new HUD();
 	_camera = new Camera();
 	AudioHandler::getInstance()->init();
-	AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("file1.wav"));
-
+	AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
 }
 
 
