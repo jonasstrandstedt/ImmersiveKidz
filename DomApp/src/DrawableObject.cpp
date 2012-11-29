@@ -33,11 +33,11 @@ void DrawableObject::draw(double t)
 		glPushMatrix();
 		_animationFunc(t, _seed);
 	}
-	else if ( !animationVector.empty() )
+	else if ( !_animationVector.empty() )
 	{
 		pop = true;
 		glPushMatrix();
-		if ( !animationVector.begin()->animate() ) animationVector.erase(animationVector.begin());
+		if ( !(*_animationVector.begin())->animate() ) _animationVector.erase(_animationVector.begin());
 	}
 
 	glPushMatrix();
@@ -52,11 +52,21 @@ void DrawableObject::draw(double t)
 	{
 		glPopMatrix();
 	}
+	
 }
 
-void DrawableObject::addAnimation(double duration, std::string type)
+/**
+*@brief	    Add animation
+*
+*@details   Add a temporary animation depending on the given Animation type
+*
+*@param		type		the animation type
+*
+*@return     void
+*/
+void DrawableObject::addAnimation(Animation *type)
 {
-	animationVector.push_back(Animation(duration, type));
+	_animationVector.push_back(type);
 }
 
 /**
