@@ -3,6 +3,8 @@
 #include "Camera.test.h"
 #include "HUD.test.h"
 #include "Billboard.test.h"
+#include "Illustration.test.h"
+
 
 int runUnitTests(int argc, char **argv)
 {

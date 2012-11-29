@@ -1,4 +1,5 @@
 #include "ImmersiveKidz.h"
+#include "AudioHandler.h"
 
 ImmersiveKidz* ImmersiveKidz::_instance = 0;
 ImmersiveKidz* ImmersiveKidz::getInstance()
@@ -27,6 +28,15 @@ void ImmersiveKidz::init()
 {
 	_hud = new HUD();
 	_camera = new Camera();
+	AudioHandler::getInstance()->init();
+	AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
+}
+
+
+void ImmersiveKidz::setMaster(bool m) 
+{
+	_isMaster = m; 
+	_loader.setMaster(m); 
 }
 
 
@@ -53,6 +63,12 @@ void ImmersiveKidz::setScenePath(std::string folder)
 #else // mac, linux
 		_scenePath = folder + "/";
 #endif
+}
+
+
+void ImmersiveKidz::setSceneLoaded(bool isLoaded)
+{
+	_sceneLoaded = isLoaded;
 }
 
 /**
@@ -228,6 +244,7 @@ void ImmersiveKidz::keyboardButton(int key,int state)
 void ImmersiveKidz::postSyncPreDrawFunction()
 {
 	_camera->update(_dt);
+	AudioHandler::getInstance()->update();
 }
 
 /**

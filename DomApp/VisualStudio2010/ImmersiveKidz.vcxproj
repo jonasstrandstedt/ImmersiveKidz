@@ -27,6 +27,8 @@
     <None Include="..\data\Shaders\SingleBillboard.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\Animation.h" />
+    <ClInclude Include="..\src\AudioHandler.h" />
     <ClInclude Include="..\src\BatchBillboard.h" />
     <ClInclude Include="..\src\Billboard.h" />
     <ClInclude Include="..\src\Camera.h" />
@@ -39,10 +41,12 @@
     <ClInclude Include="..\src\SceneLoader.h" />
     <ClInclude Include="..\src\Skybox.h" />
     <ClInclude Include="..\unit_test\Billboard.test.h" />
+    <ClInclude Include="..\src\SoundObject.h" />
     <ClInclude Include="..\unit_test\Camera.test.h" />
     <ClInclude Include="..\unit_test\HUD.test.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\AudioHandler.cpp" />
     <ClCompile Include="..\src\BatchBillboard.cpp" />
     <ClCompile Include="..\src\Billboard.cpp" />
     <ClCompile Include="..\src\Camera.cpp" />
@@ -55,6 +59,7 @@
     <ClCompile Include="..\src\Plane.cpp" />
     <ClCompile Include="..\src\SceneLoader.cpp" />
     <ClCompile Include="..\src\Skybox.cpp" />
+    <ClCompile Include="..\src\SoundObject.cpp" />
     <ClCompile Include="..\unit_test\UnitTests.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -95,8 +100,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Anders Nord\Kodprojekt\Immersivekidz\ImmersiveKidz\DomApp\sgct_0_9_5\win_msvc10_lib;..\sgct_0_9_5\win_msvc10_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sgct32_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\sgct_0_9_5\win_msvc10_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sgct32_d.lib;OpenAL32.lib;alut.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -126,7 +131,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sgct32_d.lib;gtestd.lib;gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sgct32_d.lib;gtestd.lib;gtest_maind.lib;OpenAL32.lib;alut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
