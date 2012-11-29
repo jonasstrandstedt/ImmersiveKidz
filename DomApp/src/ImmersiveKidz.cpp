@@ -33,6 +33,13 @@ void ImmersiveKidz::init()
 }
 
 
+void ImmersiveKidz::setMaster(bool m) 
+{
+	_isMaster = m; 
+	_loader.setMaster(m); 
+}
+
+
 /**
 *@brief	    ImmersiveKidz destructor
 */
@@ -56,6 +63,12 @@ void ImmersiveKidz::setScenePath(std::string folder)
 #else // mac, linux
 		_scenePath = folder + "/";
 #endif
+}
+
+
+void ImmersiveKidz::setSceneLoaded(bool isLoaded)
+{
+	_sceneLoaded = isLoaded;
 }
 
 /**

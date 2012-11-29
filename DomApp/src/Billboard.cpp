@@ -14,33 +14,12 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 {
 	this->_proportions = proportionsIn;
 	this->_position = position;
-	ImmersiveKidz::getInstance()->loadTexture(texturename);
 	_texture = texturename;
 	_proportions = proportionsIn;
 	_transform = glm::translate(_transform, position);
 	
-    _listid = glGenLists(1);
-    glNewList(_listid, GL_COMPILE);
-	glBegin(GL_QUADS);
-
-	//Vertex 1 
-	glTexCoord2d(0.0,0.0);
-	glVertex3f(-0.5 * _proportions[0] , 0 , 0);
-	
-	//Vertex 2 
-	glTexCoord2d(1.0,0.0);
-	glVertex3f(0.5 * _proportions[0] , 0 , 0);
-	
-	//Vertex 3 
-	glTexCoord2d(1.0,1.0);
-	glVertex3f(0.5 * _proportions[0] , _proportions[1] , 0);
-	
-	//Vertex 4 
-	glTexCoord2d(0.0,1.0);
-	glVertex3f(-0.5 * _proportions[0] , _proportions[1] , 0);
-
-	glEnd();
-    glEndList();
+	_listid = -1;
+    
 };
 
 
@@ -64,6 +43,32 @@ glm::vec3 Billboard::getPosition()
 */
 void Billboard::onDraw() 
 {
+	if(_listid == -1) {
+		ImmersiveKidz::getInstance()->loadTexture(_texture);
+	    _listid = glGenLists(1);
+	    glNewList(_listid, GL_COMPILE);
+		glBegin(GL_QUADS);
+
+		//Vertex 1 
+		glTexCoord2d(0.0,0.0);
+		glVertex3f(-0.5 * _proportions[0] , 0 , 0);
+	
+		//Vertex 2 
+		glTexCoord2d(1.0,0.0);
+		glVertex3f(0.5 * _proportions[0] , 0 , 0);
+	
+		//Vertex 3 
+		glTexCoord2d(1.0,1.0);
+		glVertex3f(0.5 * _proportions[0] , _proportions[1] , 0);
+	
+		//Vertex 4 
+		glTexCoord2d(0.0,1.0);
+		glVertex3f(-0.5 * _proportions[0] , _proportions[1] , 0);
+
+		glEnd();
+	    glEndList();
+	}
+	
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture));
 	float angle = ImmersiveKidz::getInstance()->getCamera()->getRotation().x;
 	

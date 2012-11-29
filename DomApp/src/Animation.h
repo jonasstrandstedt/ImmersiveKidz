@@ -15,7 +15,7 @@
 class Animation
 {
 public:
-	void animate() = 0;
+	void animate();
 private:
 	
 protected:
