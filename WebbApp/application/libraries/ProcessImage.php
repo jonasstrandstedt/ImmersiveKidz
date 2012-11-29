@@ -85,7 +85,35 @@ class ProcessImage {
             //------------ Create result using value from the intensity calculation as thresh --------------------//
             //create mask, save to folder "mask".
             $phMagick = new phMagick($images[$i], $mask);
-            $amount = 10*$intensityPercent . "%";
+            $amount = 10*$intensityPercent-0.5;
+            if($intensityPercent <= 0.15){
+                $amount = 2.7;
+            }
+            else if($intensityPercent <= 0.16){
+                $amount = 2.2;
+            }
+            else if($intensityPercent <= 0.19){
+                $amount = 1.7;
+            }
+            else if($intensityPercent <= 0.24){
+                $amount = 1.5;
+            }
+            else if($intensityPercent <= 0.28){
+                $amount = 1.2;
+            }
+            else if($intensityPercent <= 0.30){
+                $amount = 1;
+            }
+            else if($intensityPercent <= 0.34){
+                $amount = 0.8;
+            }
+            else if($intensityPercent <= 0.36){
+                $amount = 0.6;
+            }
+            else{
+                $amount = 0.4;
+            }
+            $amount = $amount . "%";
             $phMagick->threshold($amount);
 
             //Add white border to avoid errors when filling holes
