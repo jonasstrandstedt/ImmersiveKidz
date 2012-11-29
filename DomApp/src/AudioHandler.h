@@ -37,7 +37,7 @@ public:
 	void init();
 	void update();
 	void playSound(SoundObject* s);
-	void pausSound(SoundObject* s);
+	void pauseSound(SoundObject* s);
 	void stopSound(SoundObject* s);
 	std::vector<SoundObject*> getSounds();
 	

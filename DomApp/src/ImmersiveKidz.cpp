@@ -33,6 +33,7 @@ void ImmersiveKidz::init()
 		_hud = new HUD();
 		AudioHandler::getInstance()->init();
 		AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
+
 		AudioHandler::getInstance()->playSound(AudioHandler::getInstance()->getSounds()[0]);
 	}
 }
@@ -249,7 +250,10 @@ void ImmersiveKidz::keyboardButton(int key,int state)
 void ImmersiveKidz::postSyncPreDrawFunction()
 {
 	_camera->update(_dt);
-	AudioHandler::getInstance()->update();
+	if(_isMaster)
+	{
+		AudioHandler::getInstance()->update();
+	}
 }
 
 /**
