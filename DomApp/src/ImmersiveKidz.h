@@ -24,6 +24,7 @@
 *
 * @author 	Jonas Strandstedt, jonst184@student.liu.se
 * @author	Viktor Nilsson, vikni067@student.liu.se
+* @author   Karl Gyllensten, kargy291@student.liu.se
 * @date   	November 1, 2012
 * @version	0.0.1
 *    
