@@ -1,10 +1,10 @@
 #ifndef AUDIOHANDLER_H
 #define AUDIOHANDLER_H
 
-
 #include "sgct.h"
 #include "glm/glm.hpp"
 #include "SoundObject.h"
+
 //include open AL
 #ifdef __APPLE__
     #include <OpenAL/al.h>
@@ -13,6 +13,7 @@
     #include <AL/al.h>
     #include <AL/alut.h>
 #endif
+
 
 /**
     * @brief      A class for handling of 3D audio in SGCT
@@ -37,8 +38,9 @@ public:
 	void init();
 	void update();
 	void playSound(SoundObject* s);
-	void pausSound(SoundObject* s);
+	void pauseSound(SoundObject* s);
 	void stopSound(SoundObject* s);
+	SoundObject *getSoundObjectAt(int i);
 	std::vector<SoundObject*> getSounds();
 	
 protected:

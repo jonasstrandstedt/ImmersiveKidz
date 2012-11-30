@@ -1,6 +1,6 @@
 #include "../src/Camera.h"
 
-#include "../src/ImmersiveKidz.h";
+#include "../src/ImmersiveKidz.h"
 
 /**
 * @file CameraTests.h

@@ -19,15 +19,30 @@
 class Animation
 {
 public:
-	Animation(double duration, std::string type);
+	Animation(double duration);
 
 	bool animate();
+	virtual void doAnimate() = 0;
 private:
 	
 protected:
 	int _duration;
 	int _frame;
 	std::string _type;
+};
+
+class Jump : public Animation
+{
+public:
+	Jump(double duration);
+	virtual void doAnimate();
+};
+
+class Strafe : public Animation
+{
+public:
+	Strafe(double duration);
+	virtual void doAnimate();
 };
 
 #endif

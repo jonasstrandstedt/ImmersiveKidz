@@ -14,30 +14,56 @@ AudioHandler::AudioHandler()
 }
 void AudioHandler::init()
 {
+#ifndef NO_SOUND
 	alutInit(NULL, 0);
 	//Check for errors if any
 	sgct::MessageHandler::Instance()->print("ALUT init: %s\n", alutGetErrorString( alutGetError() ));
+#endif
 }
 void AudioHandler::addSound(SoundObject* sound)
 {
+#ifndef NO_SOUND
 	sounds.push_back(sound);
+#endif
 }
 
 void AudioHandler::update()
 {
+#ifndef NO_SOUND
 	//set the listeners properties
 	glm::vec3 userPos = ImmersiveKidz::getInstance()->getCamera()->getPosition()+sgct::Engine::getUserPtr()->getPos();
-	ALfloat ori[6] = {1,0,0,0,1,0};
+	glm::vec4 at(0,0,1,0);
+	glm::vec4 up(0,1,0,0);
+
+
+	glm::vec2 rot = ImmersiveKidz::getInstance()->getCamera()->getRotation();
+	glm::mat4 rotations = glm::rotate(glm::mat4(),rot[1],glm::vec3(1.0f,0.0f,0.0f));
+ 	rotations = glm::rotate(rotations,rot[0],glm::vec3(0.0f,1.0f,0.0f));
+	at = rotations * at;
+	up = rotations * up;
+
+	ALfloat ori[6] = {at.x,at.y,at.z,up.x,up.y,up.z};
+
+
 	
 	alListener3f(AL_POSITION, userPos.x, userPos.y, userPos.z);
 	alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-	//alListenerfv(AL_ORIENTATION,ori);
+	alListenerfv(AL_ORIENTATION,ori);
 	for(int i = 0; i < sounds.size();i++)
 	{
 		sounds[i]->update();
 	}
 	//set the audio source's properties
+#endif
+}
 
+SoundObject* AudioHandler::getSoundObjectAt(int i) 
+{
+	if(sounds.size() <= i)
+		return new SoundObject();
+#ifndef NO_SOUND
+	return sounds.at(i);
+#endif
 }
 
 std::vector<SoundObject*> AudioHandler::getSounds()
@@ -47,6 +73,7 @@ std::vector<SoundObject*> AudioHandler::getSounds()
 
 void AudioHandler::playSound(SoundObject* s)
 {
+#ifndef NO_SOUND
 	if(s->_ambient)
 	{
 		alSourcei(s->_source, AL_LOOPING, AL_TRUE);
@@ -57,25 +84,32 @@ void AudioHandler::playSound(SoundObject* s)
 		alSourcei(s->_source, AL_LOOPING, AL_FALSE);
 		alSourcePlay(s->_source);
 	}
+#endif
 }
 
-void AudioHandler::pausSound(SoundObject* s)
+void AudioHandler::pauseSound(SoundObject* s)
 {
+#ifndef NO_SOUND
 	alSourcePause(s->_source);
+#endif
 }
 
 void AudioHandler::stopSound(SoundObject* s)
 {
+#ifndef NO_SOUND
 	alSourceStop(s->_source);
+#endif
 }
 
 
 void AudioHandler::myCleanUpFun()
 {
+#ifndef NO_SOUND
 	while(sounds.size()){
 		delete sounds.back();
 		sounds.pop_back();
 	}
 	alutExit();
+#endif
 }
 
