@@ -43,7 +43,7 @@ BatchBillboard::BatchBillboard(std::string texturename, std::vector<std::vector<
 		int maskCount = 0;
 		while ( maskCount < 20 )
 		{
-			float r1 = (double)rand()/(RAND_MAX+1.0);
+			float r1 = (double)(rand())/(RAND_MAX+1.0);
 			float r2 = (double)rand()/(RAND_MAX+1.0);
 			posx = rect.x + r1 * (rect.z - rect.x);
 			posy = 0;

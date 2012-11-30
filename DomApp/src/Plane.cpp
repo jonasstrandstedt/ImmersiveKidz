@@ -14,13 +14,13 @@ void Plane::onDraw() {
 
 	glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName(_texture));
 	glBegin(GL_QUADS);
-	glTexCoord2f(0,0);     
-	glVertex3f(_bounds[0],_y,_bounds[1]);
 	glTexCoord2f(0,1);     
-	glVertex3f(_bounds[2],_y,_bounds[1]);
+	glVertex3f(_bounds[0],_y,_bounds[1]);
 	glTexCoord2f(1,1);     
-	glVertex3f(_bounds[2],_y,_bounds[3]);
+	glVertex3f(_bounds[2],_y,_bounds[1]);
 	glTexCoord2f(1,0);     
+	glVertex3f(_bounds[2],_y,_bounds[3]);
+	glTexCoord2f(0,0);     
 	glVertex3f(_bounds[0],_y,_bounds[3]);
 	glEnd();
 	glBindTexture(GL_TEXTURE_2D,0);
