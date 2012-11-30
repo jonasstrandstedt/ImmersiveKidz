@@ -31,6 +31,7 @@ void ImmersiveKidz::init()
 	if(_isMaster)
 	{
 		_hud = new HUD();
+		_hud->init();
 		AudioHandler::getInstance()->init();
 		AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
 		AudioHandler::getInstance()->playSound(AudioHandler::getInstance()->getSounds()[0]);

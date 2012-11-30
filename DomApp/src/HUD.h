@@ -23,6 +23,8 @@ public:
 
 	void draw(std::vector<Illustration*> illu);
 
+	void init();
+
 	void keyboardButton(int key,int state, std::vector<Illustration*> illu);
 
 	void setTextureMinimap(std::string texture) { _textureMinimap = texture; };
