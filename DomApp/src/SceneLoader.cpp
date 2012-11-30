@@ -595,6 +595,7 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
 
 		}
 
+
 		for (y=0; y<height; y++) {
 			png_byte* row = row_pointers[y];
 			_mask[maskName].push_back(std::vector<bool>());
