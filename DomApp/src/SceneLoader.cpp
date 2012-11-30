@@ -586,6 +586,7 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
 		switch(png_get_color_type(png_ptr, info_ptr)){
 		case PNG_COLOR_TYPE_GRAY:
 			c = 1;
+			break;
 		case PNG_COLOR_TYPE_RGB:
 			c = 3;
 			break;
