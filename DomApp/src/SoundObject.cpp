@@ -24,13 +24,8 @@ SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* own
 	alSourcef(s->_source, AL_GAIN, 1.0f);
 	alSource3f(s->_source, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 
-	//loop the sound track
-	//alSourcei(s->_source, AL_LOOPING, AL_TRUE)
- 
-	//alSourcePlay(s->_source);
 #endif
 	return s;
-
 }
 
 void SoundObject::update(){
@@ -43,7 +38,6 @@ void SoundObject::update(){
 	else{
 		pos = _owner->getPosition();
 	}
-	//pos = glm::vec3(0,0,4);
 	alSource3f(_source, AL_POSITION, pos.x, pos.y, pos.z);
 
 #endif

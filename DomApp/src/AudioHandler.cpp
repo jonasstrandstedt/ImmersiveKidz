@@ -32,11 +32,23 @@ void AudioHandler::update()
 #ifndef NO_SOUND
 	//set the listeners properties
 	glm::vec3 userPos = ImmersiveKidz::getInstance()->getCamera()->getPosition()+sgct::Engine::getUserPtr()->getPos();
-	ALfloat ori[6] = {1,0,0,0,1,0};
+	glm::vec4 at(0,0,1,0);
+	glm::vec4 up(0,1,0,0);
+
+
+	glm::vec2 rot = ImmersiveKidz::getInstance()->getCamera()->getRotation();
+	glm::mat4 rotations = glm::rotate(glm::mat4(),rot[1],glm::vec3(1.0f,0.0f,0.0f));
+ 	rotations = glm::rotate(rotations,rot[0],glm::vec3(0.0f,1.0f,0.0f));
+	at = rotations * at;
+	up = rotations * up;
+
+	ALfloat ori[6] = {at.x,at.y,at.z,up.x,up.y,up.z};
+
+
 	
 	alListener3f(AL_POSITION, userPos.x, userPos.y, userPos.z);
 	alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
-	//alListenerfv(AL_ORIENTATION,ori);
+	alListenerfv(AL_ORIENTATION,ori);
 	for(int i = 0; i < sounds.size();i++)
 	{
 		sounds[i]->update();
@@ -75,7 +87,7 @@ void AudioHandler::playSound(SoundObject* s)
 #endif
 }
 
-void AudioHandler::pausSound(SoundObject* s)
+void AudioHandler::pauseSound(SoundObject* s)
 {
 #ifndef NO_SOUND
 	alSourcePause(s->_source);
