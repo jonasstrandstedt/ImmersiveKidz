@@ -2,8 +2,19 @@
 #include "AudioHandler.h"
 #include "ImmersiveKidz.h"
 
+
+
+/**
+*@brief	    SoundObject creation method. 
+*
+*@detailed	The method reads a .wav-file and with it, instanciates a Sound object. If it's a background object it won't get a owner. 
+*
+*@return	SoundObject*
+*/
 SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* owner){
+
 	SoundObject* s = new SoundObject();
+#ifndef NO_SOUND
 	s->_buffer = AL_NONE;
 	alGenBuffers(1, &s->_buffer);
 	alGenSources(1, &s->_source);
@@ -22,14 +33,19 @@ SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* own
 	alSourcef(s->_source, AL_GAIN, 1.0f);
 	alSource3f(s->_source, AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 
-	//loop the sound track
-	//alSourcei(s->_source, AL_LOOPING, AL_TRUE)
- 
-	//alSourcePlay(s->_source);
+#endif
 	return s;
 }
 
+
+/**
+*@brief	    SoundObject update method.
+*
+*@detailed	Updates the position of the sound. If it is a background sound it follows the camera. Otherwise it gets the owners position. 
+*/
 void SoundObject::update(){
+
+#ifndef NO_SOUND
 	glm::vec3 pos;
 	if(_ambient){
 		pos = sgct::Engine::getUserPtr()->getPos() + ImmersiveKidz::getInstance()->getCamera()->getPosition();
@@ -37,13 +53,20 @@ void SoundObject::update(){
 	else{
 		pos = _owner->getPosition();
 	}
-	//pos = glm::vec3(0,0,4);
 	alSource3f(_source, AL_POSITION, pos.x, pos.y, pos.z);
+
+#endif
 }
 
+
+/**
+*@brief	    SoundObject destructor
+*/
 SoundObject::~SoundObject()
 {
-		alDeleteSources(1, &_buffer);
-		alDeleteBuffers(1, &_buffer);
+#ifndef NO_SOUND
+	alDeleteSources(1, &_buffer);
+	alDeleteBuffers(1, &_buffer);
+#endif
 }
 

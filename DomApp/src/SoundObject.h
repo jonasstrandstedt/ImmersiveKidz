@@ -1,7 +1,6 @@
 #ifndef SOUNDOBJECT_H
 #define SOUNDOBJECT_H
 
-
 #include "sgct.h"
 #include "glm/glm.hpp"
 #include "Illustration.h"
@@ -16,13 +15,12 @@
 #endif
 
 /**
-    * @brief      A class for handling of 3D audio in SGCT
+    * @brief      A class for a Sound object of positional 3D audio in SGCT
     *
-    * @details    
-	*
+    * @details    This class has all the neccesary variables and methods for instantiating a sound. Note that it also has got a pointer to an illustration object. 
     * @author     Karl Gyllensten, kargy291@student.liu.se
-    * @date       November 20, 2012
-    * @version    0.0.1
+	* @author     Rickard Englund, ricen256@student.liu.se
+    * @date       November 29, 2012
     *
 	*/
 class SoundObject
@@ -40,4 +38,4 @@ public:
 	static SoundObject* CreateFromFile(const char* file,Illustration* owner = 0);
 };
 
-#endif
+#endif // SOUNDOBJECT_H
