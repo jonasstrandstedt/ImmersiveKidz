@@ -16,7 +16,7 @@ ImmersiveKidz* ImmersiveKidz::getInstance()
 ImmersiveKidz::ImmersiveKidz() 
 {
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
-
+	
 	// initialize all variables
 	_isMaster = false;
 	_sceneLoaded = false;

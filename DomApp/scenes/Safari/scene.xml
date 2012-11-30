@@ -9,6 +9,7 @@
   		</camera>
   		<plane>
     		<texture>textures/map.png</texture>
+        <mask name="water">textures/map_water256.png</mask>
     		<size minx="-256"  miny="-256" maxx="256" maxy="256"/>
     	</plane>
     	<rand minx="-256" miny="-256" maxx="256"  maxy="256"/>
@@ -19,47 +20,47 @@
 		<item>
 			<texture>textures/tree.png</texture>
 			<size x="2.5" y="2.5"/>
-			<mult count="1000" seed="4124" map="water.png" />
+			<mult count="1000" seed="4124" mask="water" />
 		</item>
 		<item>
 			<texture>textures/tree2.png</texture>
 			<size x="2.5" y="2.5"/>
-			<mult count="1000" seed="534534" map="water.png" />
+			<mult count="1000" seed="534534" mask="water" />
 		</item>
 		<item>
 			<texture>textures/tree3.png</texture>
 			<size x="2.5" y="2.5"/>
-     		<mult count="1000" seed="3132" map="water.png" />
+     		<mult count="1000" seed="3132" mask="water" />
 		</item>
 		<item>
 			<texture>textures/tree4.png</texture>
 			<size x="2.5" y="2.5"/>
-     		<mult count="1000" seed="34" map="water.png" />
+     		<mult count="1000" seed="34" mask="water" />
 		</item>
 		<item>
 			<texture>textures/flower.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="345" map="water.png" billboard="yes" />
+     		<mult count="1000" seed="345" mask="water" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower2.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="756" map="water.png" billboard="yes" />
+     		<mult count="1000" seed="756" mask="water" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower3.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="868" map="water.png" billboard="yes" />
+     		<mult count="1000" seed="868" mask="water" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower4.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="6866" map="water.png" billboard="yes" />
+     		<mult count="1000" seed="6866" mask="water" billboard="yes" />
 		</item>
 		<item>
 			<texture>textures/flower5.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="6868" map="water.png" billboard="yes" />
+     		<mult count="1000" seed="6868" mask="water" billboard="yes" />
 		</item>
 	</billboards>
 	<illustrations>
