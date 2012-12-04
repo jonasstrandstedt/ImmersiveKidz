@@ -263,6 +263,7 @@ margin-top: 10px;
 	color: white;
 	font-size: 12px;
 	margin: 0 auto;
+	margin-bottom: 50px;
 	padding-top: 30px;
 	width: 50%
 }
@@ -271,7 +272,7 @@ margin-top: 10px;
 	margin-top: 20px;
 }
 
-#contentInstructions a{
+#contentInstructions a:link, a:visited{
 	color: orange;
 	text-decoration: none;
 }
@@ -285,7 +286,7 @@ margin-top: 10px;
 	background-color: #2e2e2d;
 	height: 30px;
 	text-align: center;
-	margin-top: 15px;
+	margin-top: 30px;
 	border: rgba(112, 112, 112, .5);
 	border-style: groove ;
 	border-bottom:1px;
