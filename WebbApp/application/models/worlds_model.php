@@ -87,13 +87,14 @@ class Worlds_model extends CI_Model
 	 * @param  int	$id			The id of the world
 	 * @return array	
 	 */ 
-	function get_plane($id)
+	function get_world($id)
 	{
-		$this->db->select("plane, plane_min_x, plane_min_y, plane_max_x, plane_max_y, rand_min_x, rand_min_y, rand_max_x, rand_max_y");
+		$this->db->select("*");
 		$this->db->from("worlds");
 		$where = "`id` = '$id'"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
 	}
+
 }
