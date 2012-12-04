@@ -1,14 +1,3 @@
-/* @brief    User manual
-*
-* @details  -
-*
-* @author   Svante Berg, svabe170@student.liu.se
-* @date     20121129
-* @version  
-*/
-
-
-
 <div id="contentInstructions">
 
 	<h1>Användarmanual</h1>
