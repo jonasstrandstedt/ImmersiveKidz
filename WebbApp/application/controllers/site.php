@@ -10,7 +10,6 @@
 *
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
-* @author   Svante Berg, svabe170@student.liu.se
 * @date     November 21, 2012
 * @version  2.1 (Added more comments...)
 *    
@@ -92,7 +91,7 @@ class Site extends CI_Controller
 				$this->Images_model->add_image("","", $fileurl,$fileouturl,"", $date, $group, "", $world); // adds the information to the database.
 			}
 
-			echo "<script>window.location.href = 'add_information/".$date."/".$group."/".$world."';</script>"; // Javascript, loads the add_information view with the variables $date and $group
+			echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, loads the add_information view with the variables $date and $group
 
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
@@ -107,7 +106,7 @@ class Site extends CI_Controller
 	 * @param  string	$group		The group
 	 *	
 	 */ 
-	function add_information($date = NULL , $group = NULL, $world = NULL)
+	function add_information($date = NULL , $group = NULL)
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
@@ -148,7 +147,7 @@ class Site extends CI_Controller
 			$group = $_POST['group'];
 			$date = $_POST['date'];
 
-			echo "<script>window.location.href = 'download_info/".$date."/".$group."/".$world."';</script>";// Javascript, loads the download_info view with the variables $date and $group
+			echo "<script>window.location.href = 'download_info/".$date."/".$group."';</script>";// Javascript, loads the download_info view with the variables $date and $group
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
 		
@@ -163,11 +162,13 @@ class Site extends CI_Controller
 	 *	
 	 */ 
 
-	function download_info($date = NULL, $group = NULL, $world = NULL){
+	function download_info($date = NULL, $group = NULL){
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
 		$this->load->view("content_create");
 		$this->load->model("Images_model");
+		$this->load->model("Worlds_model");
+		$this->load->model("Create_xml_model");
 
 		if(!(isset($date) || isset($group)) && !isset($_POST['download'])){ // if the date or group is NULL, and the user has not submited
 			$info = $this->Images_model->get_all_groups();	// gets an array of all the groups.
@@ -180,16 +181,15 @@ class Site extends CI_Controller
 		
 		$data = array( // Makes an array of the array, so that the sub_download view gets an array as variabel.
 				"group" => $group,
-				"date" => $date,
-				"world" => $world
+				"date" => $date
 				);
 
 		$this->load->view("sub_download", $data); // loads the sub_download view, where the user can download a zip.
 		}else{// isset($_POST['download'])
-			print_r($data);
+
 			//$world = $_POST['world']; // The chosen world
-			echo "world ".$world;
-			$this->load->model("Create_xml_model");
+			$world = $this->Worlds_model->get_world();
+			print_r($world);
 			$xml_url = $this->Create_xml_model->get_xml_file($world);
 			//echo '<pre>', htmlentities($xml_file), '</pre>';
 			
@@ -223,24 +223,4 @@ class Site extends CI_Controller
 		$this->load->view("content_about");
 		$this->load->view("site_footer");
 	}
-
-//Page for instructions
-	function instructions()
-{
-	$this->load->view("site_header");
-	$this->load->view("site_nav");
-	$this->load->view("content_instructions");
-	$this->load->view("site_footer");
 }
-}
-
-
-
-
-
-
-
-
-
-
-
