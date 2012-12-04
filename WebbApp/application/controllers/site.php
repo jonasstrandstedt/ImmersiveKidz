@@ -42,6 +42,11 @@ class Site extends CI_Controller
 		$this->load->view("site_nav");
 		$this->load->view("content_create");
 
+		//If no upload folder exists, create it.
+        if(!is_dir("./uploads")){
+            mkdir("./uploads", 0777);
+        }
+
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
