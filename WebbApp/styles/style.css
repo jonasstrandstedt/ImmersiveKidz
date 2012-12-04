@@ -267,6 +267,15 @@ margin-top: 10px;
 	width: 50%
 }
 
+#contentInstructions h2{
+	margin-top: 20px;
+}
+
+#contentInstructions a{
+	color: orange;
+	text-decoration: none;
+}
+
 #contentInstructions p{
 margin-top: 10px;
 }
@@ -276,6 +285,7 @@ margin-top: 10px;
 	background-color: #2e2e2d;
 	height: 30px;
 	text-align: center;
+	margin-top: 15px;
 	border: rgba(112, 112, 112, .5);
 	border-style: groove ;
 	border-bottom:1px;
