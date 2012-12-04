@@ -187,21 +187,18 @@ class Site extends CI_Controller
 		$this->load->view("sub_download", $data); // loads the sub_download view, where the user can download a zip.
 		}else{// isset($_POST['download'])
 
-			//$world = $_POST['world']; // The chosen world
-			$world = $this->Worlds_model->get_world();
-			print_r($world);
-			$xml_url = $this->Create_xml_model->get_xml_file($world);
-			//echo '<pre>', htmlentities($xml_file), '</pre>';
-			
-			
 			$filename = $group."_".$date.".Zip"; // Name of the zip-file to create.
 			$images = $this->Images_model->get_all_images_from_group($group, $date); // Get all images from a specific group and date.
 			$this->zip->clear_data(); // clear all data in the zip, just in case ;)
 			foreach ($images as $row){ // For all images
 				$path = $row -> imgouturl; // save the path to the image on the server.
 				$this->zip->read_file($path, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
-
+				$world_id = $path = $row -> world;
 			}
+
+			$world = $this->Worlds_model->get_world($world_id);
+			//Create xml file using the world and images
+			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images);
 
 			$this->zip->read_file($xml_url, TRUE);
 			$this->zip->download($filename); // Makes the user download the zip-file
