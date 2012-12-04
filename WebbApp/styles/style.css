@@ -3,6 +3,7 @@
 * @details  -
 *
 * @author   Emil Lindström, emili250@student.liu.se
+* @author   Svante Berg, svabe170@student.liu.se
 * @date     ?
 * @version  
 */
@@ -255,6 +256,18 @@ padding: 40px 0px 80px 0px;
 }
 
 #contentAbout p{
+margin-top: 10px;
+}
+
+#contentInstructions{
+	color: white;
+	font-size: 12px;
+	margin: 0 auto;
+	padding-top: 30px;
+	width: 50%
+}
+
+#contentInstructions p{
 margin-top: 10px;
 }
 
