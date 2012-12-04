@@ -48,4 +48,5 @@
 	<p>Nedåt - E</p>
 	<p>Stereo AV/PÅ - X </p>
 	<p>Avsluta - Esc</p>
+	
 </div>
