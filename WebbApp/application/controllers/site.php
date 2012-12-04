@@ -10,6 +10,7 @@
 *
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
+* @author   Svante Berg, svabe170@student.liu.se
 * @date     November 21, 2012
 * @version  2.1 (Added more comments...)
 *    
