@@ -66,14 +66,14 @@ class Install_model extends CI_Model
 		{
 			$this->load->dbforge();
 			// the table configurations from /application/helpers/create_tables_helper.php
-			$this->dbforge->add_field(get_worlds_table_fields()); 	// get_images_table_fields() returns an array with the fields
+			$this->dbforge->add_field(get_worlds_table_fields()); 	// get_worlds_table_fields() returns an array with the fields
 			$this->dbforge->add_key('id',true);						// set the primary key
 			$this->dbforge->create_table('worlds');
 			log_message('info', "Created table: worlds");
 
 			// inserting worlds
 			$this->load->model("Worlds_model");
-			$this->Worlds_model->add_world("JonasWorld","../../../JonasWorld/grass.png", "../../../JonasWorld/skybox_xpos.png", "../../../JonasWorld/skybox_xneg.png", "../../../JonasWorld/skybox_ypos.png", "../../../JonasWorld/skybox_yneg.png", "../../../JonasWorld/skybox_zpos.png", "../../../JonasWorld/skybox_zneg.png", "../../../JonasWorld/blomma.png", "../../../JonasWorld/bush.png", "../../../JonasWorld/tree.png");
+			$this->Worlds_model->add_world("JonasWorld", "grass.png", "-100","-100","100", "100",NULL,NULL,NULL,NULL, "skybox_xpos.png", "skybox_xneg.png", "skybox_ypos.png", "skybox_yneg.png", "skybox_zpos.png", "skybox_zneg.png", "blomma.png", "bush.png", "tree.png");
 			}
 	}
 

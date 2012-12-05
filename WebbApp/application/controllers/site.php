@@ -42,6 +42,11 @@ class Site extends CI_Controller
 		$this->load->view("site_nav");
 		$this->load->view("content_create");
 
+		//If no upload folder exists, create it.
+        if(!is_dir("./uploads")){
+            mkdir("./uploads", 0777);
+        }
+
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
@@ -205,6 +210,8 @@ class Site extends CI_Controller
 		$this->load->view("site_nav");
 		$this->load->view("content_create");
 		$this->load->model("Images_model");
+		$this->load->model("Worlds_model");
+		$this->load->model("Create_xml_model");
 
 		if(!(isset($date) || isset($group)) && !isset($_POST['download'])){ // if the date or group is NULL, and the user has not submited
 			$info = $this->Images_model->get_all_groups();	// gets an array of all the groups.
@@ -222,16 +229,21 @@ class Site extends CI_Controller
 
 		$this->load->view("sub_download", $data); // loads the sub_download view, where the user can download a zip.
 		}else{// isset($_POST['download'])
-			
+
 			$filename = $group."_".$date.".Zip"; // Name of the zip-file to create.
 			$images = $this->Images_model->get_all_images_from_group($group, $date); // Get all images from a specific group and date.
 			$this->zip->clear_data(); // clear all data in the zip, just in case ;)
 			foreach ($images as $row){ // For all images
 				$path = $row -> imgouturl; // save the path to the image on the server.
 				$this->zip->read_file($path, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
-
+				$world_id = $path = $row -> world;
 			}
 
+			$world = $this->Worlds_model->get_world($world_id);
+			//Create xml file using the world and images
+			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images);
+
+			$this->zip->read_file($xml_url, TRUE);
 			$this->zip->download($filename); // Makes the user download the zip-file
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
@@ -249,6 +261,14 @@ class Site extends CI_Controller
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
 		$this->load->view("content_about");
+		$this->load->view("site_footer");
+	}
+
+	function instructions()
+	{
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_instructions");
 		$this->load->view("site_footer");
 	}
 }

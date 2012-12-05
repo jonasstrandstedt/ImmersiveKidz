@@ -3,6 +3,7 @@
 * @details  -
 *
 * @author   Emil Lindström, emili250@student.liu.se
+* @author   Svante Berg, svabe170@student.liu.se
 * @date     ?
 * @version  
 */
@@ -18,6 +19,7 @@
 		<ul>
 			<li><?php echo anchor('index.php/site/upload', 'Skapa ny värld');?></li>
 			<li><?php echo anchor('index.php/site/add_information', 'Ändra befintlig värld');?></li>
+			<li><?php echo anchor('index.php/site/instructions', 'Manual');?></li>
 			<li><?php echo anchor('index.php/site/about', 'Om');?></li>
 		</ul> 	
 	</div>                            
