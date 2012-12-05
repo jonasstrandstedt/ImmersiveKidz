@@ -113,10 +113,47 @@ class Site extends CI_Controller
 		$this->load->view("content_create");
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Images_model");
-
-		if(!(isset($date) || isset($group)) && !isset($_POST['update'])){ // if the date or group is NULL, and the user has not submited
-
-
+		
+		if(isset($_POST['delete'])){ //if the user pressed a deletebutton
+			$group = $_POST['group'];
+			$date = $_POST['date'];
+			$counter = 0; // count the number of images.
+			$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
+			foreach ($idArray as $id) 
+			{
+				if($counter == $_POST['delete']) //if the image should be deleted	
+				{
+					$this->Images_model->remove_image($id->id);
+				}
+				else //save the filled data
+				{
+					$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
+					$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
+					// Lägg till för type.
+					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
+					//$soundurl = $_POST['soundurl'.$counter];
+					$soundurl = "";
+					$this->Images_model->update_image($id ->id, $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
+				}
+				$counter ++; 
+			}
+			$images = $this->Images_model->get_all_images_from_group($group, $date); // Get all images from a specific group and date.
+			$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
+			"images" => $images
+						);
+			if( sizeof($idArray) == 1 ) //if its only 1 image left before delete
+			{
+				$info = $this->Images_model->get_all_groups(); // gets an array of all the groups.
+				$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
+				"info" => $info);
+				$this->load->view("content_edit", $data); // loads the content_edit view, where the user can chose a group to edit.
+			}else
+			{
+				echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			}
+				
+		}else if(!(isset($date) || isset($group)) && !isset($_POST['update'])){ // if the date or group is NULL, and the user has not submited
+			
 			$info = $this->Images_model->get_all_groups(); // gets an array of all the groups.
 			$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
 				"info" => $info);
@@ -129,8 +166,9 @@ class Site extends CI_Controller
 				"images" => $images
 				);
 			$this->load->view('sub_info', $data); // Loads the sub_info view, where the user can add information for all the images.
-
+			
 		}else{ // isset($_POST['update'])
+				
 				$counter = 0; // count the number of images.
 				$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
 

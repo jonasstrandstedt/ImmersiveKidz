@@ -99,7 +99,7 @@ class Images_model extends CI_Model
 				$q = $this->db->insert('images', $data);
 				return $q;
 			}
-		/**
+	/**
 	 * Updates an image-post
 	 *
 	 * @param  string	$artist		The name of the artist
@@ -128,7 +128,24 @@ class Images_model extends CI_Model
 				$this->db->where($where);
 				$q = $this->db->update('images', $data);
 		}
-			    /**
+	
+	
+	/*
+	* Removes an image-post
+	* @author   Emil Lindström, emili250@student.liu.se
+	* @date     December 5, 2012
+	*/ 
+	function remove_image($id) 
+	{
+		$where = array( // the id to update
+					'id' => $id
+					);
+		$this->db->where($where);
+		$q = $this->db->delete('images');
+	}
+	
+	
+	/**
 	 * Gets all the worlds from the database
 	 *
 	 * @return array 	
