@@ -271,4 +271,21 @@ class Site extends CI_Controller
 		$this->load->view("content_instructions");
 		$this->load->view("site_footer");
 	}
+	/**
+	*
+	* coord(): function to acess the sub_coord view, will be removed later.
+	*
+	*/
+	function coord($id)
+	{	
+
+		$this->load->model("Worlds_model");
+
+		$info = $this->Worlds_model->get_world($id);
+		$data  = array('data' => $info);
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("sub_coord", $data);
+		$this->load->view("site_footer");
+	}
 }
