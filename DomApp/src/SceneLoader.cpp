@@ -409,7 +409,8 @@ int SceneLoader::loadScene()
 					std::string mask = "default";
 					if(maskElement) 
 					{
-						mask = multElement->Attribute( "name" );
+						mask = maskElement->Attribute( "name" );
+						if ( _mask.count(mask) == 0 ) mask = "default";
 					}
 					bool billboard = false;
 					const char* bb = multElement->Attribute( "billboard" );
