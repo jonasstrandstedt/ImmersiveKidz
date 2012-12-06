@@ -69,7 +69,7 @@ void AudioHandler::update()
 	alListener3f(AL_POSITION, userPos.x, userPos.y, userPos.z);
 	alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 	alListenerfv(AL_ORIENTATION,ori);
-	for(int i = 0; i < sounds.size();i++)
+	for(unsigned int i = 0; i < sounds.size();i++)
 	{
 		sounds[i]->update();
 	}
@@ -77,20 +77,20 @@ void AudioHandler::update()
 #endif
 }
 
-
 /**
 *@brief		Audiohandler getSoundObjectAt method
 *@detailed	Gets the sound object at a specified position in the vector containing all sounds.
 *@param i	integer of which position of interest
 *@return SoundObject*
 */
-SoundObject* AudioHandler::getSoundObjectAt(int i) 
+SoundObject* AudioHandler::getSoundObjectAt(unsigned int i) 
 {
 	if(sounds.size() <= i)
 		return new SoundObject();
 #ifndef NO_SOUND
 	return sounds.at(i);
 #endif
+	return new SoundObject();
 }
 
 /**

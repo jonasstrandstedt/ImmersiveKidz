@@ -83,7 +83,7 @@ void DrawableObject::setAnimationFuncByName(std::string name, double seed)
 	if ( name == "bounce" ) setAnimationFunc(bounce, seed);
 	if ( name == "pendulum" ) setAnimationFunc(pendulum, seed);
 	if ( name == "fly" ) setAnimationFunc(fly, seed);
-};
+}
 
 /**
 *@brief	    Translates the object up and down

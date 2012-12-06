@@ -51,7 +51,7 @@ private:
 	std::string _texture;
     
 	void initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize);
-	void loadObj(const char *filename, float scale = 1.0, glm::vec3 rotation = glm::vec3(0.0,0.0,0.0), glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
+	void loadObj(const char *filename, glm::vec3 base_color = glm::vec3(1.0,1.0,1.0));
 	
 };
 

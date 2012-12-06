@@ -62,7 +62,7 @@ SceneLoader::SceneLoader()
 void SceneLoader::setMaster(bool master) 
 { 
 	_isMaster = master; 
-};
+}
 
 /**
 *@brief	    Reads the keyboard for menu management
@@ -110,7 +110,7 @@ void SceneLoader::menu()
 	{
 		int h = sgct::Engine::getWindowPtr()->getVResolution();
 	
-		for(int i = 0; i < _scenes.size(); i++) 
+		for(unsigned int i = 0; i < _scenes.size(); i++) 
 		{
 		
 			if(i == _selection) 
@@ -228,6 +228,10 @@ int SceneLoader::loadScene()
 						std::string maskName = maskElement->Attribute( "name" );
 						std::string fileName = maskElement->GetText();
 						
+						_mask["default"].clear();
+						_mask["default"].push_back(std::vector<bool>());
+						_mask["default"][0].push_back(true);
+
 						if ( !_createMask((scenePath + fileName).c_str(), maskName) ) 
 						{
 							_mask[maskName].clear();
@@ -269,7 +273,7 @@ int SceneLoader::loadScene()
 		if(models)
 		{
 			item = models->FirstChildElement( "item" );
-			for(item;item; item = item->NextSiblingElement( "item" ))
+			for(;item; item = item->NextSiblingElement( "item" ))
 			{
 				std::string filename = "";
 				tinyxml2::XMLElement* fileElement = item->FirstChildElement( "filename" );
@@ -355,7 +359,7 @@ int SceneLoader::loadScene()
 		if(billboards)
 		{
 			item = billboards->FirstChildElement( "item" );
-			for(item;item; item = item->NextSiblingElement( "item" ))
+			for(;item; item = item->NextSiblingElement( "item" ))
 			{
 				std::string texture = "";
 				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
@@ -400,7 +404,14 @@ int SceneLoader::loadScene()
 				{
 					int count = multElement->IntAttribute( "count" );
 					int seed = multElement->IntAttribute( "seed" );
-					std::string mask = multElement->Attribute( "mask" );
+
+					tinyxml2::XMLElement* maskElement = item->FirstChildElement( "mask" );
+					std::string mask = "default";
+					if(maskElement) 
+					{
+						mask = maskElement->Attribute( "name" );
+						if ( _mask.count(mask) == 0 ) mask = "default";
+					}
 					bool billboard = false;
 					const char* bb = multElement->Attribute( "billboard" );
 					if(bb) 
@@ -424,7 +435,7 @@ int SceneLoader::loadScene()
 		if(illustrations)
 		{
 			item = illustrations->FirstChildElement( "item" );
-			for(item;item; item = item->NextSiblingElement( "item" ))
+			for(;item; item = item->NextSiblingElement( "item" ))
 			{
 				std::string name_artist = "Unnamed artist";
 				tinyxml2::XMLElement* artistElement = item->FirstChildElement( "name_artist" );
@@ -540,7 +551,6 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
         fread(header, 1, 8, fp);
         if (png_sig_cmp((png_const_bytep)header, 0, 8))
                 return false;
-
 
         /* Initialize stuff */
         png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);

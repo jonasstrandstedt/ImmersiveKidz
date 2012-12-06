@@ -88,7 +88,7 @@ void Camera::update(float dt)
 	}
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
 
-	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	//glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	if(_position.x+headPos.x < _limitsX.x) _position.x = _limitsX.x-headPos.x;
 	if(_position.x+headPos.x > _limitsX.y) _position.x = _limitsX.y-headPos.x;
 	if(_position.y+headPos.y < _limitsY.x) _position.y = _limitsY.x-headPos.y;
