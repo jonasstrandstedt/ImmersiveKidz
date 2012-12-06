@@ -21,7 +21,7 @@ Model::Model(std::string filename, std::string texturename, glm::vec3 position, 
 	std::ifstream ifile(filename.c_str());
 	if(ifile)
 	{
-		loadObj(filename.c_str(), scale, rotation, base_color);
+		loadObj(filename.c_str(), base_color);
 		ifile.close();
 	} else 
 	{
@@ -224,7 +224,7 @@ void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize
 *
 *@return     void
 */
-void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::vec3 base_color)
+void Model::loadObj(const char *filename, glm::vec3 base_color)
 {
 	Vertex *varray;
 	int *iarray;
@@ -234,7 +234,7 @@ void Model::loadObj(const char *filename, float scale, glm::vec3 rotation, glm::
 	int vertexTextureSize = 0;
 	int indicesSize = 0;
 	
-	float f1,f2,f3,f4,f5,f6,f7,f8,f9;
+	float f1,f2,f3;
 	int i1,i2,i3,i4,i5,i6,i7,i8,i9;
 	char line[150];
 	float maxtex = 0.0;

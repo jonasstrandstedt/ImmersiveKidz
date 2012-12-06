@@ -14,7 +14,7 @@
 *@param		proportionsIn	The proportions of the billboard size according to the world unit length. 
 *@param		billboard		if true each quad will be rotated at each frame so that it faces the camera. If false all billboards will be rendered as two perpendicular quads  
 */
-BatchBillboard::BatchBillboard(std::string texturename, std::vector<std::vector<bool>> *mask, int seed, int count, glm::vec2 proportionsIn, bool billboard){
+BatchBillboard::BatchBillboard(std::string texturename, std::vector< std::vector<bool> > *mask, int seed, int count, glm::vec2 proportionsIn, bool billboard){
 	ImmersiveKidz::getInstance()->loadTexture(texturename);
 	_texture = texturename;
 	_billboard = billboard;
@@ -120,7 +120,7 @@ BatchBillboard::BatchBillboard(std::string texturename, std::vector<std::vector<
 
 	glEnd();
     glEndList();
-};
+}
 
 /**
 *@brief		Using the OpenGL draw list compiled in the constructor to render all billboards

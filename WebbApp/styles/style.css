@@ -228,6 +228,58 @@ padding: 40px 0px 80px 0px;
 	padding: 20px 0px 40px 50px;	 
 }
 
+#sub .button{
+text-align:center;
+}
+
+#sub .styledDeleteButton {
+	background:#cd3500;
+	background:-moz-linear-gradient(top,#cd3500 0%,#a42e00 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#cd3500),color-stop(100%,#a42e00));
+	background:-webkit-linear-gradient(top,#cd3500 0%,#a42e00 100%);
+	background:-o-linear-gradient(top,#cd3500 0%,#a42e00 100%);
+	background:-ms-linear-gradient(top,#cd3500 0%,#a42e00 100%);
+	background:linear-gradient(top,#cd3500 0%,#a42e00 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#cd3500',endColorstr='#a42e00',GradientType=0);
+	
+	color:#fff;
+	font-size:10px;
+	border:1px solid #b13f12
+}
+#sub .styledRotatePlus img {
+height:10px;
+
+}
+#sub .styledRotatePlus {
+	background:#25A6E1;
+	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
+	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#25A6E1',endColorstr='#188BC0',GradientType=0);
+	
+	color:#fff;	
+	font-size:10px;
+	border:1px solid #1A87B9
+}
+
+#sub .styledRotateMinus{
+	background:#25A6E1;
+	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
+	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#25A6E1',endColorstr='#188BC0',GradientType=0);
+	
+	color:#fff;	
+	font-size:10px;
+	border:1px solid #1A87B9
+}
+
 #sub .styledbutton {
 	width: 200px;
 	background:#5CCD00;

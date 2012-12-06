@@ -58,7 +58,7 @@ private:
 	int _loaded;
 
 	bool _createMask(const char* fileName, std::string maskName);
-	std::map<std::string, std::vector<std::vector<bool>> > _mask;
+	std::map<std::string, std::vector <std::vector<bool> > > _mask;
 };
 
 

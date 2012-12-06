@@ -55,7 +55,7 @@ $plane_max_y = $data[0] -> plane_max_y;
 
 $images_coord = array();
 
-for ($i=0; $i < sizeof($images); $i++){ // Slumpa fram 
+for ($i=0; $i < sizeof($images); $i++){ // Slumpa fram koordinater för alla bilder. 
 	
 	$x_coord = mt_rand($x_min*10, $x_max*10)/10;
 	$y_coord = mt_rand($y_min*10, $y_max*10)/10;
@@ -63,6 +63,7 @@ for ($i=0; $i < sizeof($images); $i++){ // Slumpa fram
 	$coord = array(
 		"x" => $x_coord,
 		"y" => $y_coord,
+		"imgurl" => $images[$i] -> imgouturl 
 		);
 	$images_coord[$i] = $coord;
 	
