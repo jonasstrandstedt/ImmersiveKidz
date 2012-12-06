@@ -156,7 +156,115 @@ class Site extends CI_Controller
 			{
 				echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			}
-				
+		}else if(isset($_POST['rotateplus'])){
+			
+			$group = $_POST['group'];
+			$date = $_POST['date'];
+			$counter = 0; // count the number of images.
+			$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
+			foreach ($idArray as $id) 
+			{
+				if($counter == $_POST['rotateplus'])
+				{ 
+					$images = $this->Images_model->get_all_images_from_group($group, $date);
+					$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
+					"images" => $images
+								);
+					
+					//echo $images[$counter]->imgouturl . "<br>";
+					$filename = $images[$counter]->imgouturl ;
+					$rotang = -90; // Rotation angle
+					$source = imagecreatefrompng($filename) or die('Error opening file '.$filename);
+					imagealphablending($source, false);
+					imagesavealpha($source, true);
+
+					$rotation = imagerotate($source, $rotang, imageColorAllocateAlpha($source, 0, 0, 0, 127));
+					imagealphablending($rotation, false);
+					imagesavealpha($rotation, true);
+
+					// header('Content-type: image/png');
+					imagepng($rotation,$filename);
+					imagedestroy($source);
+					imagedestroy($rotation);
+					
+					$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
+					$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
+					// Lägg till för type.
+					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
+					//$soundurl = $_POST['soundurl'.$counter];
+					$soundurl = "";
+					$this->Images_model->update_image($id ->id, $images[$counter]->imgurl, $filename, $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
+					
+				}	
+				else //save the filled data
+				{
+					$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
+					$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
+					// Lägg till för type.
+					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
+					//$soundurl = $_POST['soundurl'.$counter];
+					$soundurl = "";
+					$this->Images_model->update_image($id ->id, $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
+				}
+				$counter ++; 
+			}
+			echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			
+		}else if(isset($_POST['rotateminus'])){
+			
+			$group = $_POST['group'];
+			$date = $_POST['date'];
+			$counter = 0; // count the number of images.
+			$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
+			foreach ($idArray as $id) 
+			{
+				if($counter == $_POST['rotateminus'])
+				{ 
+					$images = $this->Images_model->get_all_images_from_group($group, $date);
+					$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
+					"images" => $images
+								);
+					
+					//echo $images[$counter]->imgouturl . "<br>";
+					$filename = $images[$counter]->imgouturl ;
+					$rotang = 90; // Rotation angle
+					$source = imagecreatefrompng($filename) or die('Error opening file '.$filename);
+					imagealphablending($source, false);
+					imagesavealpha($source, true);
+
+					$rotation = imagerotate($source, $rotang, imageColorAllocateAlpha($source, 0, 0, 0, 127));
+					imagealphablending($rotation, false);
+					imagesavealpha($rotation, true);
+
+					// header('Content-type: image/png');
+					imagepng($rotation,$filename);
+					imagedestroy($source);
+					imagedestroy($rotation);
+					
+					$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
+					$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
+					// Lägg till för type.
+					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
+					//$soundurl = $_POST['soundurl'.$counter];
+					$soundurl = "";
+					$this->Images_model->update_image($id ->id, $images[$counter]->imgurl, $filename, $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
+					
+				}	
+				else //save the filled data
+				{
+					$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
+					$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
+					// Lägg till för type.
+					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
+					//$soundurl = $_POST['soundurl'.$counter];
+					$soundurl = "";
+					$this->Images_model->update_image($id ->id, $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
+				}
+				$counter ++; 
+			}
+			echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			
+		
 		}else if(!(isset($date) || isset($group)) && !isset($_POST['next']) && !isset($_POST['update'])){ // if the date or group is NULL, and the user has not submited
 			$info = $this->Images_model->get_all_groups(); // gets an array of all the groups.
 			$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
