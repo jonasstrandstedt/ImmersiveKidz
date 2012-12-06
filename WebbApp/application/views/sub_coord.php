@@ -55,7 +55,7 @@ $plane_max_y = $data[0] -> plane_max_y;
 
 $images_coord = array();
 
-for ($i=0; $i < 10; $i++) { 
+for ($i=0; $i < sizeof($images); $i++){ // Slumpa fram 
 	
 	$x_coord = mt_rand($x_min*10, $x_max*10)/10;
 	$y_coord = mt_rand($y_min*10, $y_max*10)/10;
@@ -73,7 +73,7 @@ for ($i=0; $i < 10; $i++) {
 
 ?>
 <script src="<?php echo base_url(); ?>js/kinetic.js" ></script>
-<!--<canvas id='plane' width='500' height='500'></canvas>-->
+
 <div id='plane'>
 </div>
 
@@ -95,7 +95,7 @@ for ($i=0; $i < 10; $i++) {
 			$counter++;
 			} 
 
-			?>]; // SKapa en javascript array över alla coordinater, r:4 är radien på cirkeln
+			?>]; // SKapa en javascript array över alla coordinater, radius:6 är radien på cirkeln, id: är cirkelns id.
 	
 	var circleList; // Array för alla cirklar
 	
