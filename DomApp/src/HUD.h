@@ -41,7 +41,7 @@ private:
 
 	void _drawIllustrationNames(std::vector<Illustration*> illu);
 	void _drawBackgroundToNames();
-	void _drawMinimapBackground();
+	void _drawMinimapBackground(glm::vec3 camPos);
 	void _drawMinimap(std::vector<Illustration*> illu);
 
 

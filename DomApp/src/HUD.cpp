@@ -18,7 +18,7 @@ HUD::HUD()
 void HUD::init()
 {
 	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0); //Load HUD(menu) into OpenGL
-	sgct::TextureManager::Instance()->loadTexure("minimap", "data/HUD/minimap.png", true, 0); //Load HUD(minimap) into OpenGL
+	sgct::TextureManager::Instance()->loadTexure("minimap", "scenes/JonasWorld/grass.png", true, 0); //Load HUD(minimap) into OpenGL
 }
 
 
@@ -159,51 +159,38 @@ void HUD::_drawBackgroundToNames()
 *
 *@return    void
 */
-void HUD::_drawMinimapBackground()
+void HUD::_drawMinimapBackground(glm::vec3 camPos)
 {
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
 
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-
-	glLoadIdentity();
-	glOrtho(0,winSizeX,0,winSizeY ,-100,100);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-
 	glBegin(GL_QUADS);
-
+	//OBS KOLLA TEXCOORD FFFFFS
+	camPos.x = camPos.x /winSizeX;
+	camPos.z = camPos.z /winSizeY;
+	float width		= _minimapWidth/winSizeX;
+	float height	= _minimapWidth/winSizeY;
 	//Vertex 1 
-	glTexCoord2d(0.0,0.0);
+	glTexCoord2d(-width/2,-height/2);
 	glVertex3f(0 , 0 , 0);
 	
 	//Vertex 2 
-	glTexCoord2d(1.0,0.0);
+	glTexCoord2d(width/2,-height/2);
 	glVertex3f(_minimapWidth , 0 , 0);
 	
 	//Vertex 3 
-	glTexCoord2d(1.0,1.0);
+	glTexCoord2d(width/2,height/2);
 	glVertex3f(_minimapWidth , _minimapHeight , 0);
 	
 	//Vertex 4 
-	glTexCoord2d(0.0,1.0);
+	glTexCoord2d(-width/2,height/2);
 	glVertex3f(0 , _minimapHeight , 0);
 
 	glEnd();
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix(); 
-
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
 	glBindTexture( GL_TEXTURE_2D, 0);
-	glEnable(GL_DEPTH_TEST);
 
 }
 
@@ -216,18 +203,27 @@ void HUD::_drawMinimapBackground()
 */
 void HUD::_drawMinimap(std::vector<Illustration*> illu)
 {
-	_drawMinimapBackground();
+	
 	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	glm::vec3 camPosition = ImmersiveKidz::getInstance()->getCamera()->getPosition();
 	glm::vec2 camRotation = ImmersiveKidz::getInstance()->getCamera()->getRotation();
 
 	glDisable(GL_DEPTH_TEST);
 
-	glBindTexture( GL_TEXTURE_2D, 0);
-
-
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
+	
+	//Get cameraposition on minimap..?
+	float x = 1-(camPosition.x - worldRect.x/100) / (worldRect.z/100 - worldRect.x/100);
+	float y = (camPosition.z + 4 - worldRect.y/100) / (worldRect.w/100 - worldRect.y/100);
+	float fov = 20;
+	std::cout << x << std::endl;
+	//Create a wordrect but in zoomed format, contains (xmin,ymin,xmax,ymax) of the minimap
+	float zoom = 0.2;
+	glm::vec4 zoomRect(camPosition.x - _minimapWidth * zoom,
+		camPosition.z + 4 - _minimapHeight * zoom, 
+		camPosition.x +  _minimapWidth * zoom,
+		camPosition.z +4  + _minimapHeight * zoom);
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -239,50 +235,54 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	glPushMatrix();
 	glLoadIdentity();
 
+	//Draw the background to the minimap
+	_drawMinimapBackground(camPosition);
+
+	//Draw the illustrations on the minimap
 	glPointSize(5.0f);
 	glBegin(GL_POINTS);
 
 	//Draw illustrations on minimap
 	for(int i = 0; i < illu.size(); i++)
 	{
-		
 		if(i == _selection)
 		{
 			glColor3f( 0.0f, 0.0f, 1.0f);	
 		}else if(illu[i]->getSeen())
 		{
 			glColor3f( 0.0f, 1.0f, 0.0f);			
-		}else		{
+		}else{
 			glColor3f( 1.0f, 0.0f, 0.0f);
 		}
-
+		
 		glm::vec3 illuPosition = illu[i]->getPosition();
 
-		float x = (illuPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
-		float y = (illuPosition.z - worldRect.y) / (worldRect.w - worldRect.y);
+		float illux = 1-(illuPosition.x - zoomRect.x) / (zoomRect.z - zoomRect.x);
+		float illuy = (illuPosition.z - zoomRect.y) / (zoomRect.w - zoomRect.y);
 
-		glVertex2f(x * _minimapWidth  , y * _minimapHeight);
-
+		if(illux >= 0 && illux <= 1 && illuy >= 0 && illuy <= 1)
+			glVertex2f(illux * _minimapWidth, illuy * _minimapHeight);
 
 		glColor3f( 1.0f, 1.0f, 1.0f);
 	}
-
+	//Set camera to black
+	glColor3f(0,0,0);
+	//Cameradot in middle of the map
+	glVertex2f(_minimapWidth /2,_minimapHeight /2);
 	glEnd();
 	glBegin(GL_LINE_LOOP);
 
-	//Draw camera on minimap
-	float x = 1-(camPosition.x - worldRect.x) / (worldRect.z - worldRect.x);
-	float y = (camPosition.z + 4 - worldRect.y) / (worldRect.w - worldRect.y);
-	float fov = 20;
+	
 	glm::vec4 dir1 = glm::rotate(glm::mat4(),camRotation.x+fov,glm::vec3(0.0f,1.0f,0.0f)) * glm::vec4(0,0,-30,0);
 	glm::vec4 dir2 = glm::rotate(glm::mat4(),camRotation.x-fov,glm::vec3(0.0f,1.0f,0.0f)) * glm::vec4(0,0,-30,0);
 	
-	glVertex2f(x * _minimapWidth  , y * _minimapHeight);
-	glVertex2f((x) * _minimapWidth + dir1.x , (y) * _minimapHeight + dir1.z );
-	glVertex2f((x) * _minimapWidth + dir2.x , (y) * _minimapHeight + dir2.z );
+	//Paints the cameralines.
+	glVertex2f(_minimapWidth /2,_minimapHeight /2);
+	glVertex2f(_minimapWidth/2 + dir1.x , _minimapHeight/2 + dir1.z );
+	glVertex2f(_minimapWidth/2 + dir2.x , _minimapHeight/2 + dir2.z );
 
 	glEnd();
-
+	glColor3f(1,1,1);
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix(); 
 
@@ -301,6 +301,7 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 * @param	state		The state, if the button is pressed or not 
 * @param    illu		A vector containing the illustrations		
 */
+
 void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
 {
 	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
