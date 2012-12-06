@@ -81,6 +81,7 @@ class Images_model extends CI_Model
 	 * @param  string	$date		The date for this group
 	 * @param  string	$group		The group this image belongs to
 	 * @param  string	$story		The story of the image
+	 * @param  string	$world		The world for this image belongs to
 	 * @return bool 	
 	 */ 
 	function add_image($artist, $imgname, $imgurl, $imgouturl,$soundurl ,$date, $group, $story, $world) 
@@ -99,7 +100,7 @@ class Images_model extends CI_Model
 				$q = $this->db->insert('images', $data);
 				return $q;
 			}
-		/**
+	/**
 	 * Updates an image-post
 	 *
 	 * @param  string	$artist		The name of the artist
@@ -128,7 +129,48 @@ class Images_model extends CI_Model
 				$this->db->where($where);
 				$q = $this->db->update('images', $data);
 		}
-			    /**
+
+	/*
+	* Removes an image-post
+	* @author   Emil Lindström, emili250@student.liu.se
+	* @date     December 5, 2012
+	*/ 
+	function remove_image($id) 
+	{
+		$where = array( // the id to update
+					'id' => $id
+					);
+		$this->db->where($where);
+		$q = $this->db->delete('images');
+	}
+	
+
+	/**
+	 * Updates the coordinates of an image
+	 *
+	 * @param  int		$id			The id of the image
+	 * @param  float	$x_coord	The x-coordinate of the image
+	 * @param  float	$y_coord	The y-coordinate of the image
+	 * @param  float	$z_coord	The z-coordinate of the image
+	 * @return bool 	
+	 */ 
+	function update_coordinates($id, $x_coord, $y_coord, $z_coord) 
+	{
+				$data = array( // what to update
+				   'x_coord' => $x_coord,
+				   'y_coord' => $y_coord,
+				   'z_coord' => $z_coord
+				);
+
+				$where = array( // the id to update
+    				'id' => $id
+				);
+
+				$this->db->where($where);
+				$q = $this->db->update('images', $data);
+		}
+
+	/**
 	 * Gets all the worlds from the database
 	 *
 	 * @return array 	

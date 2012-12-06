@@ -9,8 +9,8 @@
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @author 	Belinda Bernfort, belbe886@studetn.liu.se
-* @date     November 15, 2012
-* @version  1.2 Added get table fields functions for worlds and positions
+* @date     December 4, 2012
+* @version  1.3 Added get table fields functions for worlds and positions
 *    
 */
 
@@ -58,7 +58,26 @@ function get_images_table_fields()
 			),
 		'world' => array(
 			'type' => 'INT',
-			'constraint' => 5)
+			'constraint' => 5),
+		'x_coord' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE,
+			),
+		'y_coord' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE,
+			),
+		'z_coord' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
+			)
+
 		);
 	return $fields;
 }
@@ -74,47 +93,79 @@ function get_worlds_table_fields()
 			),
 		'name' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '40',
+			'constraint' => '400',
 			),
-		'floor' => array(
+		'plane' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '40',
+			'constraint' => '400',
 			),
-		'sky_xpos' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '40',
-			),
-		'sky_xneg' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '40',
-			),
-		'sky_ypos' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '40',
-			),
-		'sky_yneg' => array(
+		'plane_min_x' => array(
 			'type' => 'VARCHAR',
 			'constraint' => '10',
 			),
+		'plane_max_x' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'plane_min_y' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'plane_max_y' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'rand_min_x' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'rand_max_x' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'rand_min_y' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'rand_max_y' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'sky_xpos' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400',
+			),
+		'sky_xneg' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400',
+			),
+		'sky_ypos' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400',
+			),
+		'sky_yneg' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400',
+			),
 		'sky_zpos' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '30',
+			'constraint' => '400',
 			),
 		'sky_zneg' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '30',
+			'constraint' => '400',
 			),
 		'smallobj' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '30',
+			'constraint' => '400',
 			),
 		'mediumobj' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '30',
+			'constraint' => '400',
 			),
 		'bigobj' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '30',
+			'constraint' => '400',
 			)
 		);
 	return $fields;

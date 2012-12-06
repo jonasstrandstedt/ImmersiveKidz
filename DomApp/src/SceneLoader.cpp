@@ -228,6 +228,10 @@ int SceneLoader::loadScene()
 						std::string maskName = maskElement->Attribute( "name" );
 						std::string fileName = maskElement->GetText();
 						
+						_mask["default"].clear();
+						_mask["default"].push_back(std::vector<bool>());
+						_mask["default"][0].push_back(true);
+
 						if ( !_createMask((scenePath + fileName).c_str(), maskName) ) 
 						{
 							_mask[maskName].clear();
@@ -400,7 +404,13 @@ int SceneLoader::loadScene()
 				{
 					int count = multElement->IntAttribute( "count" );
 					int seed = multElement->IntAttribute( "seed" );
-					std::string mask = multElement->Attribute( "mask" );
+
+					tinyxml2::XMLElement* maskElement = item->FirstChildElement( "mask" );
+					std::string mask = "default";
+					if(maskElement) 
+					{
+						mask = multElement->Attribute( "name" );
+					}
 					bool billboard = false;
 					const char* bb = multElement->Attribute( "billboard" );
 					if(bb) 
@@ -540,7 +550,6 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
         fread(header, 1, 8, fp);
         if (png_sig_cmp((png_const_bytep)header, 0, 8))
                 return false;
-
 
         /* Initialize stuff */
         png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
