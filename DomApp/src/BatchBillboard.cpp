@@ -53,7 +53,6 @@ BatchBillboard::BatchBillboard(std::string texturename, std::vector<std::vector<
 			
 			if ( (*mask)[masky][maskx] == true ) 
 			{
-				(*mask)[masky][maskx] = false;
 				break;
 			}
 

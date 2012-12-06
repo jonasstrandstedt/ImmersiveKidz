@@ -33,11 +33,7 @@ echo("You clicked button one!");
 	{ 
 	//<img src='".base_url()."styles/images/rotateplus.png' alt=''/>
 		echo "<div id='imgform".$column."' class='imgform'>
-		
-		
-
-
-		<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> </div>
+		<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Image' width='90' /> </div>
 		<div class='button'>
 		<button class='styledDeleteButton' type='submit' name='delete' value='".$column."' >X</button>
 		<button class='styledRotatePlus' type='submit' name='rotateplus' value='".$column."' >ROTERA +90&#176;</button>
@@ -55,6 +51,8 @@ echo("You clicked button one!");
 	 	<input type='text' name='story".$column."' value='".$row -> story."' />
     	<label>Ljud:</label>
 		<input type='file' name='soundurl".$column."' />
+		<label>Byt ut bild:</label>
+		<input type='file' name='imageurl".$column."'/>
 		</div>";
  
  		$column++;
@@ -65,6 +63,9 @@ echo("You clicked button one!");
 	}
 echo "</div></div>";
 ?>
-<div id="buttoninfo"><input class="styledbutton" type="submit" value="Gå vidare" name="update"></div>
+<div id="buttoninfo">
+	<input class="styledbutton" type="submit" value="Uppdatera bilder" name="update">
+	<input class="styledbutton" type="submit" value="Gå vidare" name="next">
+</div>
 </form>
 </div>		

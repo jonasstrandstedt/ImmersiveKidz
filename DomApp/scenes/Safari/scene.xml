@@ -20,54 +20,63 @@
 		<item>
 			<texture>textures/tree.png</texture>
 			<size x="2.5" y="2.5"/>
-			<mult count="1000" seed="4124" mask="water" />
+			<mult count="1000" seed="4124" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/tree2.png</texture>
 			<size x="2.5" y="2.5"/>
-			<mult count="1000" seed="534534" mask="water" />
+      <mult count="1000" seed="534534" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/tree3.png</texture>
 			<size x="2.5" y="2.5"/>
-     		<mult count="1000" seed="3132" mask="water" />
+     	<mult count="1000" seed="3132" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/tree4.png</texture>
 			<size x="2.5" y="2.5"/>
-     		<mult count="1000" seed="34" mask="water" />
+     	<mult count="1000" seed="34" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/flower.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="345" mask="water" billboard="yes" />
+     	<mult count="1000" seed="345" billboard="yes" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/flower2.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="756" mask="water" billboard="yes" />
+     	<mult count="1000" seed="756" billboard="yes" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/flower3.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="868" mask="water" billboard="yes" />
+     	<mult count="1000" seed="868" billboard="yes" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/flower4.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="6866" mask="water" billboard="yes" />
+     	<mult count="1000" seed="6866" billboard="yes" />
+      <mask name="water" />
 		</item>
 		<item>
 			<texture>textures/flower5.png</texture>
 			<size x="0.3" y="0.3"/>
-     		<mult count="1000" seed="6868" mask="water" billboard="yes" />
+     	<mult count="1000" seed="6868" billboard="yes" />
+      <mask name="water" />
 		</item>
 	</billboards>
 	<illustrations>
 		<item>
 			<name_artist>Ananaskanin</name_artist>
 			<name_drawing>Ananaskanin</name_drawing>
-      	  	<description>Beskrivning</description>
+      <description>Beskrivning</description>
 			<texture>textures/animal.png</texture>
 			<pos x="0.0" y="0.0" z="-5.0"/>
 			<size x="1.0" y="1.0"/>

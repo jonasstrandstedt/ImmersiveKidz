@@ -3,7 +3,9 @@
 * @brief    Functions to generate resulting xml file.
 *
 * @details  
-*			
+			function xml_dom() Creates a DOMDocument
+*			create_xml($world, $images) Creates the xml structure
+			get_xml_file($world, $images) Writes the generated structure to an xml file
 *
 * @author   Gabriella Ivarsson gabiv132
 * @date     December 4, 2012
@@ -27,13 +29,6 @@ class Create_xml_model extends CI_Model
 		return new DOMDocument('1.0');
 	}
 
-    /**
-	 * Gets all the images from a specific group and date
-	 *
-	 * @param  string	$date		The date
-	 * @param  string	$group		The group
-	 * @return array 	
-	 */ 
     function create_xml($world, $images) 
     {
     	/***Variables world****/
