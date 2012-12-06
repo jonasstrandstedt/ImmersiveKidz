@@ -14,11 +14,11 @@
 *@param		proportionsIn	The proportions of the billboard size according to the world unit length. 
 *@param		billboard		if true each quad will be rotated at each frame so that it faces the camera. If false all billboards will be rendered as two perpendicular quads  
 */
-BatchBillboard::BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::vec3 pos_max, int seed, int count, glm::vec2 proportionsIn, bool billboard){
+BatchBillboard::BatchBillboard(std::string texturename, std::vector<std::vector<bool>> *mask, int seed, int count, glm::vec2 proportionsIn, bool billboard){
 	ImmersiveKidz::getInstance()->loadTexture(texturename);
 	_texture = texturename;
 	_billboard = billboard;
-	
+
 	int pos_loc = -1;
 	sgct::ShaderManager::Instance()->bindShader( "BatchBillboard_turn" );
 	pos_loc = sgct::ShaderManager::Instance()->getShader( "BatchBillboard_turn").getAttribLocation( "billboard_position" );
@@ -34,9 +34,32 @@ BatchBillboard::BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::
 	glBegin(GL_QUADS);
 	for(int c = 1; c <= count ; c++){
 		
-		float posx = glm::compRand1(pos_min[0],pos_max[0]); 
+		glm::vec4 rect = ImmersiveKidz::getInstance()->getWorldRect();
+
+		float posx = 0;
 		float posy = 0;
-		float posz  = glm::compRand1(pos_min[2],pos_max[2]);
+		float posz = 0;
+
+		int maskCount = 0;
+		while ( maskCount < 20 )
+		{
+			float r1 = (double)(rand())/(RAND_MAX+1.0);
+			float r2 = (double)rand()/(RAND_MAX+1.0);
+			posx = rect.x + r1 * (rect.z - rect.x);
+			posy = 0;
+			posz  = rect.y + r2 * (rect.w - rect.y);
+			int masky = r2 * mask->size();
+			int maskx = r1 * mask[0].size();
+			
+			if ( (*mask)[masky][maskx] == true ) 
+			{
+				(*mask)[masky][maskx] = false;
+				break;
+			}
+
+			maskCount++;
+		}
+		if ( maskCount >= 20 ) break;
 
 		if( ! billboard) {
 			//Vertex 1 

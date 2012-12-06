@@ -16,13 +16,13 @@
 
 
 /**
-    * @brief      A class for handling of 3D audio in SGCT
+    * @brief      A class for handling of all 3D audio in the program
     *
-    * @details    
+    * @details    Is a singleton. This class has got methods that handles sound objects and stores all sound objects in a vector. 
 	*
     * @author     Karl Gyllensten, kargy291@student.liu.se
-    * @date       November 20, 2012
-    * @version    0.0.1
+	* @author     Rickard Englund, ricen256@student.liu.se
+    * @date       November 29, 2012
     *
 	*/
 class AudioHandler{

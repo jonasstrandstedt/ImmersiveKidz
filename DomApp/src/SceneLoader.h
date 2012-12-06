@@ -51,13 +51,14 @@ public:
 	void decode(sgct::SharedData *data);
 
 private:
-	
 	std::vector< std::string > _scenes;
 	bool _isMaster;
-
 	int _selection;
 	int _masterLoaded;
 	int _loaded;
+
+	bool _createMask(const char* fileName, std::string maskName);
+	std::map<std::string, std::vector<std::vector<bool>> > _mask;
 };
 
 
