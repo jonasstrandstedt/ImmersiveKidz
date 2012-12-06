@@ -28,7 +28,14 @@ public:
 
 	void keyboardButton(int key,int state, std::vector<Illustration*> illu);
 
-	void setTextureMinimap(std::string texture) { _textureMinimap = texture; };
+	void setTextureMinimap(std::string texture);
+
+	//For testing
+	int getMinimapWidth()				{return _minimapWidth;	};
+	int getMinimapHeight()				{return _minimapWidth;	};
+	int getSelection()					{return _selection;		};
+	std::string getMinimapTextureName()	{return _textureMinimap;};
+
 
 private:
 
@@ -43,7 +50,7 @@ private:
 	std::string _textureMinimap;
 	int _minimapWidth;
 	int _minimapHeight;
-
+	float _zoom;
 	int _selection;
 
 };

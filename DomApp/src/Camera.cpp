@@ -17,7 +17,7 @@ Camera::Camera(glm::vec3 startPosition)
 	_movingUp = false;
 	_movingDown = false;
 	_speed = 3.0;
-	_rotationSpeed = 0.1;
+	_rotationSpeed = 0.033;
 	_mouseState = false;
 	_position = startPosition;
 	
@@ -27,6 +27,8 @@ Camera::Camera(glm::vec3 startPosition)
 	_limitsY.y = 10;
 	_limitsZ.x = -10;
 	_limitsZ.y = 10;
+
+	_velocity = glm::vec3(0,0,0);
 }
 
 /**
@@ -56,39 +58,54 @@ void Camera::setCamera()
 */
 void Camera::update(float dt)
 {
-	glm::vec4 dir = glm::vec4(0,0,_speed*dt,0);
+	glm::vec4 dir = glm::vec4(0,0,1,0);
  	glm::mat4x4 mDir = glm::rotate(glm::mat4(),-_rotation[0],glm::vec3(0.0f,1.0f,0.0f));
  	glm::mat4x4 mSide = glm::rotate(glm::mat4(),90.0f,glm::vec3(0.0f,1.0f,0.0f));
  	dir = mDir * dir;
  	glm::vec4 side = mSide * dir;
 
+	glm::vec3 force;
 	if(_movingForward && !_movingBackward)
 	{
-		_position -= glm::vec3(dir[0],dir[1],dir[2]);
+		force -= glm::vec3(dir[0],dir[1],dir[2]);
 	}
 	if(!_movingForward && _movingBackward)
 	{
-		_position += glm::vec3(dir[0],dir[1],dir[2]);
+		force += glm::vec3(dir[0],dir[1],dir[2]);
 	}
 	if(_movingLeft && !_movingRight)
 	{
-		_position -= glm::vec3(side[0],side[1],side[2]);
+		force -= glm::vec3(side[0],side[1],side[2]);
 	}
 	if(!_movingLeft && _movingRight)
 	{
-		_position += glm::vec3(side[0],side[1],side[2]);
+		force += glm::vec3(side[0],side[1],side[2]);
 	}
 	if(!_movingUp && _movingDown)
 	{
-		_position[1] -= _speed*dt;
+		force += glm::vec3(0,1,0);
 	}
 	if(_movingUp && !_movingDown)
 	{
-		_position[1] += _speed*dt;
+		force -= glm::vec3(0,1,0);
 	}
+	float l = glm::length(_velocity);
+
+	if(l!=0)
+		force -= _velocity * dt * 30.0f;
+
+	_velocity += force*(dt*7.5f); //mass = 1;
+	_position += _velocity*dt;
+
+	float m = glm::length(_velocity);
+	if(m<0.001)
+		_velocity = glm::vec3(0,0,0);
+	if(m>_speed)
+		_velocity *= _speed/m;
+
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
 
-	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	//glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	if(_position.x+headPos.x < _limitsX.x) _position.x = _limitsX.x-headPos.x;
 	if(_position.x+headPos.x > _limitsX.y) _position.x = _limitsX.y-headPos.x;
 	if(_position.y+headPos.y < _limitsY.x) _position.y = _limitsY.x-headPos.y;

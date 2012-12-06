@@ -54,7 +54,6 @@ class MY_Upload extends CI_Upload {
 		if( is_array( $_FILES[$field]['name'] ) )
 		{	
 			//$count = count($_FILES[$field]['name']); //Number of files to process
-			
 			foreach( $_FILES[$field]['name'] as $k => $file )
 			{
 				// Was the file able to be uploaded? If not, determine the reason why.
@@ -161,13 +160,14 @@ class MY_Upload extends CI_Upload {
 				{
 					$this->file_name = $this->limit_filename_length($this->file_name, $this->max_filename);
 				}
-		
+				
 				// Remove white spaces in the name
 				if ($this->remove_spaces == TRUE)
 				{
 					$this->file_name = preg_replace("/\s+/", "_", $this->file_name);
 				}
 		
+
 				/*
 				 * Validate the file name
 				 * This function appends an number onto the end of

@@ -18,10 +18,9 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 	_proportions = proportionsIn;
 	_transform = glm::translate(_transform, position);
 	
-	_listid = -1;
+	_listid = 0;
     
-};
-
+}
 
 /**
 *@brief	    Gets the position of the billboard
@@ -43,7 +42,7 @@ glm::vec3 Billboard::getPosition()
 */
 void Billboard::onDraw() 
 {
-	if(_listid == -1) {
+	if(_listid == 0) {
 		ImmersiveKidz::getInstance()->loadTexture(_texture);
 	    _listid = glGenLists(1);
 	    glNewList(_listid, GL_COMPILE);

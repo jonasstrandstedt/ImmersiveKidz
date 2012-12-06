@@ -34,11 +34,26 @@ ImmersiveKidz::ImmersiveKidz()
 */
 void ImmersiveKidz::init()
 {
+	// init shaders
+	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_still", "data/Shaders/BatchBillboard_still.vert", "data/Shaders/BatchBillboard_still.frag" );
+	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_turn", "data/Shaders/BatchBillboard_turn.vert", "data/Shaders/BatchBillboard_turn.frag" );
+	sgct::ShaderManager::Instance()->addShader( "SingleBillboard", "data/Shaders/SingleBillboard.vert", "data/Shaders/SingleBillboard.frag" );
+
+	//Add font information
+	if( !sgct::FontManager::Instance()->AddFont( "Verdana", "verdana.ttf" ) )
+			sgct::FontManager::Instance()->GetFont( "Verdana", 14 );
+
+	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+
+	// Allocate and initialize ImmersiveKidz
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
 	
 	_camera = new Camera();
 	if(_isMaster)
 	{
 		_hud = new HUD();
+		_hud->init();
 		AudioHandler::getInstance()->init();
 		AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
 
@@ -143,7 +158,7 @@ void ImmersiveKidz::draw()
 	if(_sceneLoaded) 
 	{
 		_camera->setCamera();
-		for (int i = 0; i < _objects.size(); ++i)
+		for (unsigned int i = 0; i < _objects.size(); ++i)
 		{
 			_objects.at(i)->draw(_currTime);
 		}

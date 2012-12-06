@@ -58,7 +58,7 @@ private:
 		_buttonRight 		= 'D',
 		_buttonLeft 		= 'A',
 		_buttonUp 			= 'Q',
-		_buttonDown 		= 'E',
+		_buttonDown 		= 'E'
 	};
 
 	bool _movingForward,_movingBackward,_movingRight,_movingLeft,_movingUp,_movingDown;
@@ -72,6 +72,9 @@ private:
 	glm::vec2 _limitsX;
 	glm::vec2 _limitsY;
 	glm::vec2 _limitsZ;
+
+
+	glm::vec3 _velocity;
 };
 
 #endif

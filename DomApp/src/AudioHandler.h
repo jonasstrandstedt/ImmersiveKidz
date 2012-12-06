@@ -40,7 +40,7 @@ public:
 	void playSound(SoundObject* s);
 	void pauseSound(SoundObject* s);
 	void stopSound(SoundObject* s);
-	SoundObject *getSoundObjectAt(int i);
+	SoundObject *getSoundObjectAt(unsigned int i);
 	std::vector<SoundObject*> getSounds();
 	
 protected:

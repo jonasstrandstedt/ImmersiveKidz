@@ -28,7 +28,6 @@ private:
 protected:
 	int _duration;
 	int _frame;
-	std::string _type;
 };
 
 class Jump : public Animation
