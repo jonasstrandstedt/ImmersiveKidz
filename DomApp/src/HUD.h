@@ -41,7 +41,7 @@ private:
 
 	void _drawIllustrationNames(std::vector<Illustration*> illu);
 	void _drawBackgroundToNames();
-	void _drawMinimapBackground(glm::vec3 camPos);
+	void _drawMinimapBackground();
 	void _drawMinimap(std::vector<Illustration*> illu);
 
 
@@ -50,7 +50,7 @@ private:
 	std::string _textureMinimap;
 	int _minimapWidth;
 	int _minimapHeight;
-
+	float _zoom;
 	int _selection;
 
 };
