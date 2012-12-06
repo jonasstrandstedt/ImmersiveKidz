@@ -72,6 +72,9 @@ private:
 	glm::vec2 _limitsX;
 	glm::vec2 _limitsY;
 	glm::vec2 _limitsZ;
+
+
+	glm::vec3 _velocity;
 };
 
 #endif
