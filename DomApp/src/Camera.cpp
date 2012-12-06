@@ -89,20 +89,23 @@ void Camera::update(float dt)
 	{
 		force -= glm::vec3(0,1,0);
 	}
+	float l = glm::length(_velocity);
+
+	if(l!=0)
+		force -= _velocity * dt * 30.0f;
 
 	_velocity += force*(dt*7.5f); //mass = 1;
 	_position += _velocity*dt;
 
-	_velocity *= 1 - dt;
 	float m = glm::length(_velocity);
-	if(m<0.0001)
+	if(m<0.001)
 		_velocity = glm::vec3(0,0,0);
 	if(m>_speed)
 		_velocity *= _speed/m;
 
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
 
-	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	//glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	if(_position.x+headPos.x < _limitsX.x) _position.x = _limitsX.x-headPos.x;
 	if(_position.x+headPos.x > _limitsX.y) _position.x = _limitsX.y-headPos.x;
 	if(_position.y+headPos.y < _limitsY.x) _position.y = _limitsY.x-headPos.y;

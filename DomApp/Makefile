@@ -10,11 +10,12 @@ OBJECTS ?= src/main.o src/ImmersiveKidz.o src/Model.o src/DrawableObject.o src/B
 OUTPUT ?= Program
 FLAGS ?=
 CXXFLAGS ?= 
-INCPATH ?= -I"sgct_0_9_5/include"
+INCPATH ?= -isystem"sgct_0_9_5/include"
 
 OPENGL=1
-#SOUND=1
-TEST=1
+SOUND=1
+#TEST=1
+RELEASE=1
 
 # check if argument OPENGL=1 is set, reguires glfw to be properly installed
 ifdef OPENGL
@@ -33,7 +34,8 @@ endif
 ifdef TEST
 	MESSAGE += OpenGL,
 	OBJECTS += unit_test/UnitTests.o
-	INCPATH += -I"unit_test" -D"_RUN_TESTS_AT_STARTUP_" -D"_RUN_TESTS_"
+	INCPATH += -isystem"unit_test" -D"_RUN_TESTS_AT_STARTUP_" -D"_RUN_TESTS_"
+	CXXFLAGS += -pedantic -Wall -Wshadow -Wextra -O2
 	ifeq ($(OS),Linux)
 		FLAGS += -lgtest -L"unit_test/lib/linux_lib"
 	else ifeq ($(OS),Darwin)
@@ -43,9 +45,9 @@ ifdef TEST
 	endif
 endif
 
-# check if argument OPENGL=1 is set, reguires glfw to be properly installed
+# check if argument SOUND=1 is set
 ifdef SOUND
-	MESSAGE += OpenAL,
+	MESSAGE += Test,
 	ifeq ($(OS),Linux)
 		FLAGS += -lalut
 	else ifeq ($(OS),Darwin)
@@ -57,6 +59,12 @@ else
 	INCPATH += -D"NO_SOUND"
 endif
 
+# check if argument RELEASE=1 is set, reguires glfw to be properly installed
+ifdef RELEASE
+	CXXFLAGS += -O3
+else
+	CXXFLAGS += -g
+endif
 
 
 all: $(OBJECTS)

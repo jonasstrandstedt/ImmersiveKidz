@@ -7,15 +7,6 @@ int runUnitTests(int argc, char **argv);
 #include "sgct.h"
 #include "ImmersiveKidz.h"
 
-//include open AL
-#ifdef __APPLE__
-    #include <OpenAL/al.h>
-    #include <ALUT/alut.h>
-#else
-    #include <AL/al.h>
-    #include <AL/alut.h>
-#endif
-
 sgct::Engine * gEngine;
 ImmersiveKidz *iKidz;
 
@@ -24,7 +15,6 @@ void myDrawFun();
 void myPreSyncFun();
 void myEncodeFun();
 void myDecodeFun();
-void myCleanUpFun(); //openAL clean
 void myPostSyncPreDrawFunction();
 
 void myKeyboardFun(int,int);
@@ -35,12 +25,6 @@ int prevMouseX = -1;
 int prevMouseY = -1;
 bool stereo = true;
 float eyeSeparation = 0.0f;
-
-//OpenAL data & functions
-void setAudioSource(ALuint &buffer,ALuint &source, char * filename);
-ALuint audio_buffer0 = AL_NONE;
-ALuint source0;
-glm::vec4 audioPos;
 
 int main( int argc, char* argv[] )
 {
@@ -60,17 +44,18 @@ int main( int argc, char* argv[] )
 	gEngine->setDrawFunction( myDrawFun );
 	gEngine->setPreSyncFunction( myPreSyncFun );
 	
-
-	
 	gEngine->setKeyboardCallbackFunction(myKeyboardFun);
 	gEngine->setMousePosCallbackFunction(myMouseMotionFun);
 	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
 	
 	
+	gEngine->setKeyboardCallbackFunction(myKeyboardFun);
+	gEngine->setMousePosCallbackFunction(myMouseMotionFun);
+	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
+
 	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
-	//gEngine->setCleanUpFunction( myCleanUpFun );
 	
-	// Init the engine
+	// Init the sgct engine
 	if( !gEngine->init() )
 	{
 		delete gEngine;
@@ -96,24 +81,13 @@ int main( int argc, char* argv[] )
 
 void myInitOGLFun()
 {
-	// init shaders
-	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_still", "data/Shaders/BatchBillboard_still.vert", "data/Shaders/BatchBillboard_still.frag" );
-	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_turn", "data/Shaders/BatchBillboard_turn.vert", "data/Shaders/BatchBillboard_turn.frag" );
-	sgct::ShaderManager::Instance()->addShader( "SingleBillboard", "data/Shaders/SingleBillboard.vert", "data/Shaders/SingleBillboard.frag" );
-	
-	//Add font information
-	if( !sgct::FontManager::Instance()->AddFont( "Verdana", "verdana.ttf" ) )
-			sgct::FontManager::Instance()->GetFont( "Verdana", 14 );
+	//sets far plane bigger than 100f which is default
+	gEngine->setNearAndFarClippingPlanes(gEngine->getNearClippingPlane(),600.0);	
 
-	// Allocate and initialize ImmersiveKidz
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
-	
-	gEngine->setNearAndFarClippingPlanes(gEngine->getNearClippingPlane(),600.0);	//sets far plane bigger than 100f which is default
-
-	sgct::TextureManager::Instance()->setAnisotropicFilterSize(4.0f);
+	// get the eye spearation to allow use of toggle
 	eyeSeparation = gEngine->getUserPtr()->getEyeSeparation();
 
+	// init the ImmeriveKidz engine
 	iKidz = ImmersiveKidz::getInstance();
 	iKidz->setMaster(gEngine->isMaster());
 	iKidz->init();
