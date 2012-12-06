@@ -31,12 +31,18 @@ echo("You clicked button one!");
 		<input type='hidden' name='group' value='".$images[0] -> group."' />";
 	foreach ($images as $row)
 	{ 
+	//<img src='".base_url()."styles/images/rotateplus.png' alt=''/>
 		echo "<div id='imgform".$column."' class='imgform'>
 		
 		
 
 
 		<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> </div>
+		<div class='button'>
+		<button class='styledDeleteButton' type='submit' name='delete' value='".$column."' >X</button>
+		<button class='styledRotatePlus' type='submit' name='rotateplus' value='".$column."' >ROTERA +90&#176;</button>
+		<button class='styledRotateMinus' type='submit' name='rotateminus' value='".$column."' >ROTERA -90&#176;</button>
+		</div>
 		<label>Konstnär:</label>
 		<input type='text' name='artist".$column."' value='".$row -> artist."' />
     	<label>Titel:</label>
@@ -49,7 +55,6 @@ echo("You clicked button one!");
 	 	<input type='text' name='story".$column."' value='".$row -> story."' />
     	<label>Ljud:</label>
 		<input type='file' name='soundurl".$column."' />
-		<button type='submit' name='delete' value='".$column."' >Ta bort bild</button>
 		</div>";
  
  		$column++;
