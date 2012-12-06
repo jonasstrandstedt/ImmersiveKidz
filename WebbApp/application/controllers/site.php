@@ -49,8 +49,8 @@ class Site extends CI_Controller
 
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '10000';
+		$config['allowed_types'] = 'gif|jpg|png|jpeg';
+		$config['max_size']	= '0';
 		$config['max_width']  = '10000';
 		$config['max_height']  = '10000';
 		
@@ -167,20 +167,24 @@ class Site extends CI_Controller
 		else if(isset($_POST['update'])){ // else if, update the images.
 			// Config-file for the upload library.
 			$config['upload_path'] = './uploads/';
-			$config['allowed_types'] = 'gif|jpg|png';
-			$config['max_size']	= '10000';
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['max_size']	= '0';
 			$config['max_width']  = '10000';
 			$config['max_height']  = '10000';
 
 			$counter = 0; // count the number of images.
 			$newImages = array();
 			$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
-			
+			$check = array();
+			$editId = array();
 			//Get new info from form
 			foreach ($idArray as $id) {
 				if(isset($_FILES['imageurl'.$counter]['name']) && ($_FILES['imageurl'.$counter]['name']) != ''){//Change image
 					$replaceimageurl = "uploads/" . $_FILES['imageurl'.$counter]['name'];
 					array_push($newImages, 'imageurl'.$counter);
+					//array_push($check, array($id->id, "uploads/" . $_FILES['imageurl'.$counter]['name']));
+					$check[$id->id]= $replaceimageurl;
+					array_push($editId, $id->id);
 				}
 				else{
 					$replaceimageurl = "";
@@ -191,37 +195,44 @@ class Site extends CI_Controller
 				$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 				//$soundurl = $_POST['soundurl'.$counter];
 				$soundurl = $_FILES['soundurl'.$counter]['name'];
+				//exit(print_r($idArray));
 				$this->Images_model->update_image($id ->id, $replaceimageurl, "", $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
-					
+
 				$counter++;
 			}
 			$group = $_POST['group'];
 			$date = $_POST['date'];
 			// loads the upload library with the config-file.
 			$this->load->library('upload', $config);
-			
+
+			$data = array();
 			//upload new data to database
 			foreach ($newImages as $inputName) {
 				$this->upload->do_multi_upload($inputName);
-				$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
-				
+				$temp = $this->upload->get_multi_upload();
+				array_push($data, $temp[0]);
+				//$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
 			}
+			
 			$this->load->library('ProcessImage'); // loads  the ProcessImage library.
 			$imagesIn = array(); // Array for all the uploaded images.
-
-			for($i = 0; $i < count($data['upload_data']); $i++)// Loop for all images.
+			$test = array();
+			for($i = 0; $i < count($data); $i++)// Loop for all images.
 			{ 
-				array_push($imagesIn, "uploads/".$data['upload_data'][$i]['file_name']); // Add an image to the array.
+				array_push($imagesIn, "uploads/".$data[$i]['file_name']); // Add an image to the array.
 			}
-
+			
 			$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
-
+			//exit(print_r($editId) . print_r($imagesIn) . print_r($imagesOut));
+			//exit(print_r($check));
 			for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
 			{	
-				$id = $idArray[$i];
+				$id = $editId[$i];
+
 				$fileurl = $imagesIn[$i]; // Save the url of the original image
+				//exit($fileurl . $check[$fileurl]);
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
-				$this->Images_model->update_image($id ->id, $fileurl, $fileouturl, "", "", "", ""); // updates the database for the specific image.
+				$this->Images_model->update_image($id, $fileurl, $fileouturl, "", "", "", ""); // updates the database for the specific image.
 			}
 
 			echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, reload the page
@@ -268,6 +279,73 @@ class Site extends CI_Controller
 	 * @param  string	$group		The group
 	 *	
 	 */ 
+
+	 /*function add_sound(){
+		// Config-file for the upload library.
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '10000';
+		$config['max_width']  = '10000';
+		$config['max_height']  = '10000';
+
+		$counter = 0; // count the number of images.
+		$newImages = array();
+		$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
+		
+		//Get new info from form
+		foreach ($idArray as $id) {
+			if(isset($_FILES['imageurl'.$counter]['name']) && ($_FILES['imageurl'.$counter]['name']) != ''){//Change image
+				$replaceimageurl = "uploads/" . $_FILES['imageurl'.$counter]['name'];
+				array_push($newImages, 'imageurl'.$counter);
+			}
+			else{
+				$replaceimageurl = "";
+			}
+			$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
+			$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
+			// Lägg till för type.
+			$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
+			//$soundurl = $_POST['soundurl'.$counter];
+			$soundurl = $_FILES['soundurl'.$counter]['name'];
+			$this->Images_model->update_image($id ->id, $replaceimageurl, "", $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
+				
+			$counter++;
+		}
+		$group = $_POST['group'];
+		$date = $_POST['date'];
+		// loads the upload library with the config-file.
+		$this->load->library('upload', $config);
+		
+		//upload new data to database
+		foreach ($newImages as $inputName) {
+			$this->upload->do_multi_upload($inputName);
+			$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
+			
+		}
+		$this->load->library('ProcessImage'); // loads  the ProcessImage library.
+		$imagesIn = array(); // Array for all the uploaded images.
+
+		for($i = 0; $i < count($data['upload_data']); $i++)// Loop for all images.
+		{ 
+			array_push($imagesIn, "uploads/".$data['upload_data'][$i]['file_name']); // Add an image to the array.
+		}
+
+		$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
+
+		for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
+		{	
+			$id = $idArray[$i];
+			$fileurl = $imagesIn[$i]; // Save the url of the original image
+			$fileouturl = $imagesOut[$i]; // save the url of the processed image.
+			$this->Images_model->update_image($id ->id, $fileurl, $fileouturl, "", "", "", ""); // updates the database for the specific image.
+		}
+
+		echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, reload the page
+
+
+		$this->load->view("site_footer"); // Finally, add the footer.
+
+	 }*/
 
 	function download_info($date = NULL, $group = NULL){
 		$this->load->view("site_header");
