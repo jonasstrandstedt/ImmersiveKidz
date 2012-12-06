@@ -22,7 +22,7 @@
 class BatchBillboard: public DrawableObject {
 
 public:
-	BatchBillboard(std::string texturename, std::vector<std::vector<bool>> *mask, int seed, int count, glm::vec2 proportionsIn, bool billboard = false);
+	BatchBillboard(std::string texturename, std::vector <std::vector<bool> > *mask, int seed, int count, glm::vec2 proportionsIn, bool billboard = false);
 	void onDraw();
 protected:
 	std::string _texture;

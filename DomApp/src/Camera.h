@@ -58,7 +58,7 @@ private:
 		_buttonRight 		= 'D',
 		_buttonLeft 		= 'A',
 		_buttonUp 			= 'Q',
-		_buttonDown 		= 'E',
+		_buttonDown 		= 'E'
 	};
 
 	bool _movingForward,_movingBackward,_movingRight,_movingLeft,_movingUp,_movingDown;
