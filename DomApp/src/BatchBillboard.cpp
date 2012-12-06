@@ -98,7 +98,7 @@ BatchBillboard::BatchBillboard(std::string texturename, glm::vec3 pos_min, glm::
 
 	glEnd();
     glEndList();
-};
+}
 
 /**
 *@brief		Using the OpenGL draw list compiled in the constructor to render all billboards

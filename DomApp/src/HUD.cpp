@@ -10,7 +10,7 @@ HUD::HUD()
 
 	_minimapWidth = 150;
 	_minimapHeight = 150;
-};
+}
 
 
 /**
@@ -40,12 +40,12 @@ void HUD::_drawIllustrationNames(std::vector<Illustration*> illu)
 	_drawBackgroundToNames();
 	int textX , textY;
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
-	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
+	//int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
 
 	textX = 20;
 	textY = 15 + _offset;
 
-	for(int i = 0; i < illu.size(); i++)
+	for(unsigned int i = 0; i < illu.size(); i++)
 	{
 
 		//Set color of menu text
@@ -79,7 +79,7 @@ void HUD::_drawIllustrationNames(std::vector<Illustration*> illu)
 
 		textY = textY + 14;
 	};
-};
+}
 
 /**
 *@brief	    Draws the background to the list of painters
@@ -223,7 +223,7 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	glBegin(GL_POINTS);
 
 	//Draw illustrations on minimap
-	for(int i = 0; i < illu.size(); i++)
+	for(unsigned int i = 0; i < illu.size(); i++)
 	{
 		
 		if(i == _selection)

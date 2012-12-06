@@ -22,7 +22,6 @@
 	*
     * @author     Karl Gyllensten, kargy291@student.liu.se
     * @date       November 20, 2012
-    * @version    0.0.1
     *
 	*/
 class AudioHandler{
@@ -40,7 +39,7 @@ public:
 	void playSound(SoundObject* s);
 	void pauseSound(SoundObject* s);
 	void stopSound(SoundObject* s);
-	SoundObject *getSoundObjectAt(int i);
+	SoundObject *getSoundObjectAt(unsigned int i);
 	std::vector<SoundObject*> getSounds();
 	
 protected:

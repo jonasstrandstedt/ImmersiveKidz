@@ -49,7 +49,7 @@ void AudioHandler::update()
 	alListener3f(AL_POSITION, userPos.x, userPos.y, userPos.z);
 	alListener3f(AL_VELOCITY, 0.0f, 0.0f, 0.0f);
 	alListenerfv(AL_ORIENTATION,ori);
-	for(int i = 0; i < sounds.size();i++)
+	for(unsigned int i = 0; i < sounds.size();i++)
 	{
 		sounds[i]->update();
 	}
@@ -57,13 +57,14 @@ void AudioHandler::update()
 #endif
 }
 
-SoundObject* AudioHandler::getSoundObjectAt(int i) 
+SoundObject* AudioHandler::getSoundObjectAt(unsigned int i) 
 {
 	if(sounds.size() <= i)
 		return new SoundObject();
 #ifndef NO_SOUND
 	return sounds.at(i);
 #endif
+	return new SoundObject();
 }
 
 std::vector<SoundObject*> AudioHandler::getSounds()
