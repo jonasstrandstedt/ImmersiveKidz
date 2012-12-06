@@ -3,14 +3,20 @@
 * @brief    Function that creates the table for the images.
 *
 * @details  get_images_table_fields(), returns an array containing all the columns that should be in the images table. 
-*			function get_worlds_table_fields(), returns an array containing all the columns that should be in the worlds table.
-*			function get_positions_table_fields(), returns an array containing all the columns that should be in the positions table.
+*			get_worlds_table_fields(), returns an array containing all the columns that should be in the worlds table.
+*			get_models_table_fields(), returns an array containing all the columns that should be in the models table.
+*			get_maps_table_fields(), returns an array containing all the columns that should be in the maps table.
+*			get_masks_table_fields(), returns an array containing all the columns that should be in the masks table.
+*			get_animations_table_fields(), returns an array containing all the columns that should be in the animations table.
+*			get_planes_table_fields(), returns an array containing all the columns that should be in the planes table.
+*			get_groups_table_fields(), returns an array containing all the columns that should be in the groups table.
+*			get_billboards_table_fields(), returns an array containing all the columns that should be in the billboards table.
 *			the install model class is using these functions when creating the tables
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @author 	Belinda Bernfort, belbe886@studetn.liu.se
-* @date     December 4, 2012
-* @version  1.3 Added get table fields functions for worlds and positions
+* @date     December 6, 2012
+* @version  1.4 Added get table fields functions for all tables
 *    
 */
 
@@ -36,42 +42,37 @@ function get_images_table_fields()
 			'type' => 'VARCHAR',
 			'constraint' => '400',
 			),
-		'imgouturl' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
-			),
 		'soundurl' => array(
 			'type' => 'VARCHAR',
 			'constraint' => '400',
 			),
-		'date' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
-			),
-		'group' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '30',
+		'group_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
 			),
 		'story' => array(
 			'type' => 'TEXT',
 			'constraint' => '400'
 			),
-		'world' => array(
+		'billboard_id' => array(
 			'type' => 'INT',
-			'constraint' => 5),
-		'x_coord' => array(
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'pos_x' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
 			'unsigned' => TRUE,
-			'null' => TRUE,
+			'null' => TRUE
 			),
-		'y_coord' => array(
+		'pos_y' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
 			'unsigned' => TRUE,
-			'null' => TRUE,
+			'null' => TRUE
 			),
-		'z_coord' => array(
+		'pos_z' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
 			'unsigned' => TRUE,
@@ -82,7 +83,7 @@ function get_images_table_fields()
 	return $fields;
 }
 
-function get_worlds_table_fields()
+function get_worlds_table_fields()  //Kanske är saker som inte ska kunna vara null..? Ska saker vara unsigned?
 {	
 	$fields = array(
 		'id' => array(
@@ -93,85 +94,121 @@ function get_worlds_table_fields()
 			),
 		'name' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '400',
+			'constraint' => '40',
 			),
-		'plane' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'camlim_xpos' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'plane_min_x' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camlim_xmin' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'plane_max_x' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camlim_ypos' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'plane_min_y' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camlim_ymin' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'plane_max_y' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camlim_zpos' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'rand_min_x' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camlim_zmin' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'rand_max_x' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camstart_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'rand_min_y' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camstart_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'rand_max_y' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '10',
+		'camstart_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'sky_xpos' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'camdir_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'sky_xneg' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'camdir_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'sky_ypos' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'camdir_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'sky_yneg' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'randmin_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'sky_zpos' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'randmin_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'sky_zneg' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'randmin_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'smallobj' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'randmax_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'mediumobj' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'randmax_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			),
-		'bigobj' => array(
-			'type' => 'VARCHAR',
-			'constraint' => '400',
+		'randmax_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE,
+			'null' => TRUE
 			)
 		);
 	return $fields;
 }
 
-function get_positions_table_fields()
+function get_models_table_fields()
 {	
 	$fields = array(
 		'id' => array(
@@ -180,18 +217,332 @@ function get_positions_table_fields()
 			'unsigned' => TRUE,
 			'auto_increment' => TRUE
 			),
-		'xval' => array(
-			'type' => 'FLOAT',
-			),
-		'yval' => array(
-			'type' => 'FLOAT',
-			),
-		'zval' => array(
-			'type' => 'FLOAT',
-			),
-		'classification' => array(
+		'obj_fileurl' => array(
 			'type' => 'VARCHAR',
-			'constraint' => '40',
+			'constraint' => '400'
+			),
+		'textureurl' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400'
+			)
+		);
+	return $fields;
+}
+
+function get_billboards_table_fields()  //size unsigned?
+{	
+	$fields = array(
+		'id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE,
+			'auto_increment' => TRUE
+			),
+		'imgurl' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400'
+			),
+		'size_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE
+			),
+		'size_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1,
+			'unsigned' => TRUE
+			)
+		);
+	return $fields;
+}
+
+
+function get_groups_table_fields()
+{	
+	$fields = array(
+		'id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE,
+			'auto_increment' => TRUE
+			),
+		'name' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40'
+			),
+		'date' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '10',
+			),
+		'world_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			)
+		);
+	return $fields;
+}
+
+
+function get_planes_table_fields()
+{	
+	$fields = array(
+		'id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE,
+			'auto_increment' => TRUE
+			),
+		'width' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			),
+		'height' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			),
+		'textureurl' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400'
+			),
+		'rot_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			),
+		'rot_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			),
+		'rot_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			),
+		'pos_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			),
+		'pos_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			),
+		'pos_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1
+			)
+		);
+	return $fields;
+}
+
+
+function get_masks_table_fields()
+{	
+	$fields = array(
+		'id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE,
+			'auto_increment' => TRUE
+			),
+		'textureurl' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '400'
+			),
+		'name' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40'
+			),
+		'map_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			)
+		);
+	return $fields;
+}
+
+
+function get_animations_table_fields()
+{	
+	$fields = array(
+		'id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE,
+			'auto_increment' => TRUE
+			),
+		'name' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40'
+			)
+		);
+	return $fields;
+}
+
+
+function get_maps_table_fields()
+{	
+	$fields = array(
+		'id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE,
+			'auto_increment' => TRUE
+			),
+		'name' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40'
+			),
+		'plane_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			)
+		);
+	return $fields;
+}
+
+
+function get_billboard_world_table_fields()
+{	
+	$fields = array(
+		'world_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'billboard_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'mask_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'pos_x' => array(           //typ?
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'pos_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'pos_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'mult_count' => array(  
+			'type' => 'INT',
+			'constraint' => 7 
+			),
+		'mult_seed' => array(
+			'type' => 'INT',
+			'constraint' => 7 
+			),
+		'type' => array(
+			'type' => 'VARCHAR',
+			'constraint' => '40' 
+			)
+		);
+	return $fields;
+}
+
+
+function get_model_world_table_fields()
+{	
+	$fields = array(
+		'world_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'model_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'pos_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'pos_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'pos_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'rot_x' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'rot_y' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			),
+		'rot_z' => array(
+			'type' => 'FLOAT',
+			'constraint' => 4,1 
+			)
+		);
+	return $fields;
+}
+
+
+function get_billboard_animation_table_fields()
+{	
+	$fields = array(
+		'animation_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'billboard_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'seed' => array(           
+			'type' => 'INT',
+			'constraint' => 7 
+			)
+		);
+	return $fields;
+}
+
+
+function get_plane_world_table_fields()
+{	
+	$fields = array(
+		'plane_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'world_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			)
+		);
+	return $fields;
+}
+
+
+function get_map_world_table_fields()
+{	
+	$fields = array(
+		'map_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'world_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
 			)
 		);
 	return $fields;

@@ -21,19 +21,18 @@ echo("You clicked button one!");
 * @date     November 14, 2012 
 * @version  1.0
 *    
-*/
-
+*/	//echo print_r($images);
 	echo "<div id='sub'>". form_open_multipart('index.php/site/add_information/');
 	$column = 0;
 	$idArray = array();
 	echo "<div class='form'><div class='row'>
-		<input type='hidden' name='date' value='".$images[0] -> date."' />
-		<input type='hidden' name='group' value='".$images[0] -> group."' />";
+		<input type='hidden' name='group_id' value='".$group_id[0] -> id."' />";
 	foreach ($images as $row)
 	{ 
+
 	//<img src='".base_url()."styles/images/rotateplus.png' alt=''/>
 		echo "<div id='imgform".$column."' class='imgform'>
-		<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Image' width='90' /> </div>
+		<div class='image'><img src='../../../../".$outImages[$column]."' alt='Image' width='90' /> </div>
 		<div class='button'>
 		<button class='styledDeleteButton' type='submit' name='delete' value='".$column."' >X</button>
 		<button class='styledRotatePlus' type='submit' name='rotateplus' value='".$column."' >ROTERA +90&#176;</button>
