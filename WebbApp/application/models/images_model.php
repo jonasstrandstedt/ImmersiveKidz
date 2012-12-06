@@ -113,14 +113,26 @@ class Images_model extends CI_Model
 	 * @param  string	$story		The story of the image
 	 * @return bool 	
 	 */ 
-	function update_image($id, $artist, $imgname, $soundurl, $story) 
+	function update_image($id, $imageurl, $imgouturl, $artist, $imgname, $soundurl, $story) 
 	{
-				$data = array( // what to update
-				   'artist' => $artist,
-				   'imgname' => $imgname,
-				   'soundurl' => $soundurl,
-				   'story' => $story
-				);
+		if($imageurl != ''){
+			$data = array( // what to update
+			   'artist' => $artist,
+			   'imgurl' => $imageurl,
+			   'imgouturl' => $imgouturl,
+			   'imgname' => $imgname,
+			   'soundurl' => $soundurl,
+			   'story' => $story
+			);
+		}
+		else{
+			$data = array( // what to update
+			   'artist' => $artist,
+			   'imgname' => $imgname,
+			   'soundurl' => $soundurl,
+			   'story' => $story
+			);
+		}
 
 				$where = array( // the id to update
     				'id' => $id
