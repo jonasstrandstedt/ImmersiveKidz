@@ -43,9 +43,16 @@ int main( int argc, char* argv[] )
 	gEngine->setInitOGLFunction( myInitOGLFun );
 	gEngine->setDrawFunction( myDrawFun );
 	gEngine->setPreSyncFunction( myPreSyncFun );
+	
 	gEngine->setKeyboardCallbackFunction(myKeyboardFun);
 	gEngine->setMousePosCallbackFunction(myMouseMotionFun);
 	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
+	
+	
+	gEngine->setKeyboardCallbackFunction(myKeyboardFun);
+	gEngine->setMousePosCallbackFunction(myMouseMotionFun);
+	gEngine->setMouseButtonCallbackFunction(myMouseButtonFun);
+
 	gEngine->setPostSyncPreDrawFunction(myPostSyncPreDrawFunction);
 	
 	// Init the sgct engine
@@ -55,6 +62,7 @@ int main( int argc, char* argv[] )
 		return EXIT_FAILURE;
 	}
 	
+
 	// set encode and decode (after init to prevent segmentationfault from decode function)
 	sgct::SharedData::Instance()->setEncodeFunction(myEncodeFun);
 	sgct::SharedData::Instance()->setDecodeFunction(myDecodeFun);
@@ -112,6 +120,8 @@ void myDecodeFun()
 
 void myKeyboardFun(int key,int state)
 {
+	if(!gEngine->isMaster())
+		return;
 	iKidz->keyboardButton(key,state);
 
 	if(gEngine->isMaster() && state == GLFW_PRESS) 
@@ -123,6 +133,8 @@ void myKeyboardFun(int key,int state)
 
 void myMouseMotionFun(int x,int y)
 {
+	if(!gEngine->isMaster())
+		return;
 	if(prevMouseX == -1)
 	{
 		prevMouseX = x;
@@ -139,6 +151,8 @@ void myMouseMotionFun(int x,int y)
 
 void myMouseButtonFun(int button,int state)
 {
+	if(!gEngine->isMaster())
+		return;
 	iKidz->mouseButton(button,state);
 }
 
