@@ -17,6 +17,9 @@ html{  /*footer to bottom of page*/
 	min-height: 100%; 
 	overflow-y: scroll;
 }
+p {
+	color:  #e8e8e8; 
+}
 
 body {
 	background-color: #302b29; /*mörk grå, bakgrund till större del av sidan*/
