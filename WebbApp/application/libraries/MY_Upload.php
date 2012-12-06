@@ -46,13 +46,12 @@ class MY_Upload extends CI_Upload {
 		// Is the upload path valid?
 		if ( ! $this->validate_upload_path($field) )
 		{
-
 			// errors will already be set by validate_upload_path() so just return FALSE
 			return FALSE;
 		}
 
 		//Multiple file upload
-		if( is_array( $_FILES[$field] ) )
+		if( is_array( $_FILES[$field]['name'] ) )
 		{	
 			//$count = count($_FILES[$field]['name']); //Number of files to process
 			
@@ -243,9 +242,11 @@ class MY_Upload extends CI_Upload {
 		}
 		else //Single file upload, rely on native CI upload class
 		{		
-			$upload = self::do_upload();
-			
-			return $upload;
+			$field_name = $field;
+			$upload = self::do_upload($field_name);
+			$return_value[0] = self::data();
+			$_SESSION['return_value'] = $return_value;
+			return $return_value;
 		}	
 	}
 	

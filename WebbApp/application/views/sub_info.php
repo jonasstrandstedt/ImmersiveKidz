@@ -32,11 +32,7 @@ echo("You clicked button one!");
 	foreach ($images as $row)
 	{ 
 		echo "<div id='imgform".$column."' class='imgform'>
-		
-		
-
-
-		<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> </div>
+		<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Image' width='90' /> </div>
 		<label>Konstnär:</label>
 		<input type='text' name='artist".$column."' value='".$row -> artist."' />
     	<label>Titel:</label>
@@ -49,6 +45,8 @@ echo("You clicked button one!");
 	 	<input type='text' name='story".$column."' value='".$row -> story."' />
     	<label>Ljud:</label>
 		<input type='file' name='soundurl".$column."' />
+		<label>Byt ut bild:</label>
+		<input type='file' name='imageurl".$column."'/>
 		<button type='submit' name='delete' value='".$column."' >Ta bort bild</button>
 		</div>";
  
@@ -60,6 +58,9 @@ echo("You clicked button one!");
 	}
 echo "</div></div>";
 ?>
-<div id="buttoninfo"><input class="styledbutton" type="submit" value="Gå vidare" name="update"></div>
+<div id="buttoninfo">
+	<input class="styledbutton" type="submit" value="Uppdatera bilder" name="update">
+	<input class="styledbutton" type="submit" value="Gå vidare" name="next">
+</div>
 </form>
 </div>		
