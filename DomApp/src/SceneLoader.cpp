@@ -2,6 +2,13 @@
 #include "ImmersiveKidz.h"
 #include "Skybox.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
+#include "png.h"
+
+
 
 /**
 *@brief	    Scenloader constructor
@@ -214,6 +221,24 @@ int SceneLoader::loadScene()
 				if(textureElement) 
 				{
 					texture = textureElement->GetText();
+
+					tinyxml2::XMLElement* maskElement = plane->FirstChildElement( "mask" );
+					if(maskElement)
+					{
+						std::string maskName = maskElement->Attribute( "name" );
+						std::string fileName = maskElement->GetText();
+						
+						_mask["default"].clear();
+						_mask["default"].push_back(std::vector<bool>());
+						_mask["default"][0].push_back(true);
+
+						if ( !_createMask((scenePath + fileName).c_str(), maskName) ) 
+						{
+							_mask[maskName].clear();
+							_mask[maskName].push_back(std::vector<bool>());
+							_mask[maskName][0].push_back(true);
+						}
+					}
 					
 					double minx = -50;
 					double miny = -50;
@@ -379,7 +404,14 @@ int SceneLoader::loadScene()
 				{
 					int count = multElement->IntAttribute( "count" );
 					int seed = multElement->IntAttribute( "seed" );
-					std::string map = multElement->Attribute( "map" );
+
+					tinyxml2::XMLElement* maskElement = item->FirstChildElement( "mask" );
+					std::string mask = "default";
+					if(maskElement) 
+					{
+						mask = maskElement->Attribute( "name" );
+						if ( _mask.count(mask) == 0 ) mask = "default";
+					}
 					bool billboard = false;
 					const char* bb = multElement->Attribute( "billboard" );
 					if(bb) 
@@ -389,7 +421,7 @@ int SceneLoader::loadScene()
 					}
 
 
-					ImmersiveKidz::getInstance()->addDrawableObject(new BatchBillboard(scenePath + texture, glm::vec3(randminx , 0 , randminy),glm::vec3(randmaxx , 0 , randmaxy), seed, count, glm::vec2(sizex , sizey), billboard), animation, animseed);
+					ImmersiveKidz::getInstance()->addDrawableObject(new BatchBillboard(scenePath + texture, &_mask[mask], seed, count, glm::vec2(sizex , sizey), billboard), animation, animseed);
 					
 				}
 				else 
@@ -496,4 +528,93 @@ void SceneLoader::decode(sgct::SharedData *data)
 	_selection	= data->readInt32();
 	_masterLoaded	= data->readInt32();
 	
+}
+
+bool SceneLoader::_createMask(const char* fileName, std::string maskName)
+{
+		int x, y;
+
+		int width, height;
+		png_byte color_type;
+		png_byte bit_depth;
+
+		png_structp png_ptr;
+		png_infop info_ptr;
+		int number_of_passes;
+		png_bytep * row_pointers;
+        char header[8]; 
+
+        /* Open file and test for it being a png */
+        FILE *fp = fopen(fileName, "rb");
+        if (!fp)
+                return false;
+        fread(header, 1, 8, fp);
+        if (png_sig_cmp((png_const_bytep)header, 0, 8))
+                return false;
+
+        /* Initialize stuff */
+        png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+
+        if (!png_ptr)
+               return false;
+
+        info_ptr = png_create_info_struct(png_ptr);
+        if (!info_ptr)
+                return false;
+
+        if (setjmp(png_jmpbuf(png_ptr)))
+                return false;
+
+        png_init_io(png_ptr, fp);
+        png_set_sig_bytes(png_ptr, 8);
+
+        png_read_info(png_ptr, info_ptr);
+
+        width = png_get_image_width(png_ptr, info_ptr);
+        height = png_get_image_height(png_ptr, info_ptr);
+        color_type = png_get_color_type(png_ptr, info_ptr);
+        bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+
+        number_of_passes = png_set_interlace_handling(png_ptr);
+        png_read_update_info(png_ptr, info_ptr);
+
+
+        /* Read file */
+        if (setjmp(png_jmpbuf(png_ptr)))
+                return false;
+
+        row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * height);
+        for (y=0; y<height; y++)
+                row_pointers[y] = (png_byte*) malloc(png_get_rowbytes(png_ptr,info_ptr));
+
+        png_read_image(png_ptr, row_pointers);
+
+        fclose(fp);
+
+
+		int c = 3;
+		switch(png_get_color_type(png_ptr, info_ptr)){
+		case PNG_COLOR_TYPE_GRAY:
+			c = 1;
+			break;
+		case PNG_COLOR_TYPE_RGB:
+			c = 3;
+			break;
+		case PNG_COLOR_TYPE_RGBA:
+			c = 4;
+			break;
+
+		}
+
+
+		for (y=0; y<height; y++) {
+			png_byte* row = row_pointers[y];
+			_mask[maskName].push_back(std::vector<bool>());
+			for (x=0; x<width; x++) {
+					png_byte* ptr = &(row[x*c]);
+					_mask[maskName][y].push_back(ptr[0] == 255);
+			}
+		}
+
+		return true;
 }

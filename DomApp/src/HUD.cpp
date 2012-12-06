@@ -3,13 +3,22 @@
 
 HUD::HUD()
 {
-	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0); //Load HUD(menu) into OpenGL
-	sgct::TextureManager::Instance()->loadTexure("minimap", "data/HUD/minimap.png", true, 0); //Load HUD(minimap) into OpenGL
 	_selection = 0;
 	_offset = 0;
 
 	_minimapWidth = 150;
 	_minimapHeight = 150;
+};
+
+/**
+* @brief 
+* 
+* @details 
+*/
+void HUD::init()
+{
+	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0); //Load HUD(menu) into OpenGL
+	sgct::TextureManager::Instance()->loadTexure("minimap", "data/HUD/minimap.png", true, 0); //Load HUD(minimap) into OpenGL
 }
 
 

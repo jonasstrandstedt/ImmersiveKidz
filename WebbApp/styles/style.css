@@ -3,6 +3,7 @@
 * @details  -
 *
 * @author   Emil Lindström, emili250@student.liu.se
+* @author   Svante Berg, svabe170@student.liu.se
 * @date     ?
 * @version  
 */
@@ -55,14 +56,39 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	width: 50%;
 	text-align: center;
 	list-style: none;
-	margin: 0 0 0 22%;
+	margin: 0 0 0 23%;
 	height: 30px;
 }
 
 #nav .image{ /*logotype in header*/
-	width: 10%;
 	margin: 5px 0 0 10%;
 	float: left;
+}
+#nav .image img{ /*logotype in header*/
+	height:20px;
+	margin-right: 5px;
+}
+#nav .logo{
+	color: #cbcbcb;
+	margin: 5px 0 0 0;
+	float:left;
+	width: 5%;
+	font-size: 9px;	
+	font-weight: normal;
+}
+#nav .logo a{
+	color: #cbcbcb;
+	width: 130%;
+	display:block;
+}
+#nav .logo a:hover{
+	color: #cbcbcb;
+}
+
+#nav .image .vis{
+	font-size: 8px;
+	width: 30%;
+	background-color: green;
 }
 
 #nav ul li{ /*links in navigation bar in header*/
@@ -154,7 +180,7 @@ h1,h2,h3,h4,p,a,li,ul, html{
 .row{ /*each row with uploaded images*/
 	clear: both;
 	overflow: hidden;
-	width: 80%;
+	width: 55%;
 	margin: 0 auto;
 }
 
@@ -162,6 +188,7 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	margin: 50px 20px 50px 20px;
 	float:left;
 	width: 300px;
+	
 }
 
 .row label{ 
@@ -174,19 +201,18 @@ h1,h2,h3,h4,p,a,li,ul, html{
 
 .row .image{
 	width: 100%;
+	text-align:center;
 }
 
 .row img{ /*the image*/
-	margin-left: 140px;
 	padding-bottom: 10px;
-	text-align: center;
 	height: 100px;
 	width: auto;
 }
 
 .row input {
 	color: gray; 
-	width:150px;
+	width:160px;
 	padding: 0 5px;
 	vertical-align: middle;
 }
@@ -258,11 +284,34 @@ padding: 40px 0px 80px 0px;
 margin-top: 10px;
 }
 
+#contentInstructions{
+	color: white;
+	font-size: 12px;
+	margin: 0 auto;
+	margin-bottom: 50px;
+	padding-top: 30px;
+	width: 50%
+}
+
+#contentInstructions h2{
+	margin-top: 20px;
+}
+
+#contentInstructions a:link, a:visited{
+	color: orange;
+	text-decoration: none;
+}
+
+#contentInstructions p{
+margin-top: 10px;
+}
+
 #footer{
 	width: 100%;
 	background-color: #2e2e2d;
 	height: 30px;
 	text-align: center;
+	margin-top: 30px;
 	border: rgba(112, 112, 112, .5);
 	border-style: groove ;
 	border-bottom:1px;

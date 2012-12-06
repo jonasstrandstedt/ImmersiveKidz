@@ -2,6 +2,15 @@
 #include "AudioHandler.h"
 #include "ImmersiveKidz.h"
 
+
+
+/**
+*@brief	    SoundObject creation method. 
+*
+*@detailed	The method reads a .wav-file and with it, instanciates a Sound object. If it's a background object it won't get a owner. 
+*
+*@return	SoundObject*
+*/
 SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* owner){
 
 	SoundObject* s = new SoundObject();
@@ -28,6 +37,12 @@ SoundObject* SoundObject::CreateFromFile(const char* fileName, Illustration* own
 	return s;
 }
 
+
+/**
+*@brief	    SoundObject update method.
+*
+*@detailed	Updates the position of the sound. If it is a background sound it follows the camera. Otherwise it gets the owners position. 
+*/
 void SoundObject::update(){
 
 #ifndef NO_SOUND
@@ -43,6 +58,10 @@ void SoundObject::update(){
 #endif
 }
 
+
+/**
+*@brief	    SoundObject destructor
+*/
 SoundObject::~SoundObject()
 {
 #ifndef NO_SOUND

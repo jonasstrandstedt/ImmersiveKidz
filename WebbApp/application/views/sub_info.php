@@ -1,4 +1,16 @@
+<!--<form name="form" method="post">
+<input type="submit" name="button1" value="Button 1" /> 
+<input type="submit" name="button2" value="Button 2" /> 
+<input type="submit" name="button3" value="Button 3" /> 
+<input type="submit" name="button4" value="Button 4" />
+
+</form> -->
 <?php 
+if(isset($_POST['delete1'])){
+
+echo("You clicked button one!");
+
+}//if isset
 /*
 * @brief   	The page where you view and edit pictures and related information
 *
@@ -11,8 +23,6 @@
 *    
 */
 
-$counter = 0;
-
 	echo "<div id='sub'>". form_open_multipart('index.php/site/add_information/');
 	$column = 0;
 	$idArray = array();
@@ -21,9 +31,8 @@ $counter = 0;
 		<input type='hidden' name='group' value='".$images[0] -> group."' />";
 	foreach ($images as $row)
 	{ 
-
-	echo "<div class='imgform'>
-	<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Bildjävel' width='90' /> </div>
+		echo "<div id='imgform".$column."' class='imgform'>
+		<div class='image'><img src='../../../../".$row -> imgouturl."' alt='Image' width='90' /> </div>
 		<label>Konstnär:</label>
 		<input type='text' name='artist".$column."' value='".$row -> artist."' />
     	<label>Titel:</label>
@@ -36,8 +45,11 @@ $counter = 0;
 	 	<input type='text' name='story".$column."' value='".$row -> story."' />
     	<label>Ljud:</label>
 		<input type='file' name='soundurl".$column."' />
+		<label>Byt ut bild:</label>
+		<input type='file' name='imageurl".$column."'/>
+		<button type='submit' name='delete' value='".$column."' >Ta bort bild</button>
 		</div>";
- 			
+ 
  		$column++;
 
  		if($column%3 == 0){
@@ -46,6 +58,9 @@ $counter = 0;
 	}
 echo "</div></div>";
 ?>
-<div id="buttoninfo"><input class="styledbutton" type="submit" value="Gå vidare" name="update"></div>
+<div id="buttoninfo">
+	<input class="styledbutton" type="submit" value="Uppdatera bilder" name="update">
+	<input class="styledbutton" type="submit" value="Gå vidare" name="next">
+</div>
 </form>
 </div>		

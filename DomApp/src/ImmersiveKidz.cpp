@@ -2,6 +2,11 @@
 #include "AudioHandler.h"
 
 ImmersiveKidz* ImmersiveKidz::_instance = 0;
+
+/**
+*@brief	    ImmersiveKidz singleton getInstance class. Returns the instance if already instanciated.
+*@return	ImmersiveKidz*
+*/
 ImmersiveKidz* ImmersiveKidz::getInstance()
 {
 	//WARNING _ NOT THREAD SAFE
@@ -16,7 +21,7 @@ ImmersiveKidz* ImmersiveKidz::getInstance()
 ImmersiveKidz::ImmersiveKidz() 
 {
 	sgct::MessageHandler::Instance()->print("Initializing ImmersiveKidz engine\n");
-
+	
 	// initialize all variables
 	_isMaster = false;
 	_sceneLoaded = false;
@@ -24,6 +29,9 @@ ImmersiveKidz::ImmersiveKidz()
 
 }
 
+/**
+*@brief	    ImmersiveKidz initialize method. Note that some things is only initialised in master.
+*/
 void ImmersiveKidz::init()
 {
 	// init shaders
@@ -52,7 +60,10 @@ void ImmersiveKidz::init()
 	}
 }
 
-
+/**
+*@brief		setMaster method
+*@param		m boolean. Sets the master to true or false
+*/
 void ImmersiveKidz::setMaster(bool m) 
 {
 	_isMaster = m; 
@@ -98,7 +109,6 @@ void ImmersiveKidz::setSceneLoaded(bool isLoaded)
 *
 *@param		o is a subclass of DrawableObject (because DrawableObject is abstract)
 *
-*@return     void
 */
 void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double animseed)
 {
@@ -126,7 +136,6 @@ bool ImmersiveKidz::loadTexture(std::string texture)
 /**
 *@brief	    Function called from sgct presync
 *
-*@return     void
 */
 void ImmersiveKidz::preSyncFunc()
 {
@@ -141,8 +150,6 @@ void ImmersiveKidz::preSyncFunc()
 
 /**
 *@brief	    Function called from sgct draw
-*
-*@return     void
 */
 void ImmersiveKidz::draw() 
 {
@@ -169,7 +176,6 @@ void ImmersiveKidz::draw()
 /**
 *@brief	    Function called from sgct encode
 *
-*@return     void
 */
 void ImmersiveKidz::encode() 
 {
@@ -182,8 +188,6 @@ void ImmersiveKidz::encode()
 
 /**
 *@brief	    Function called from sgct decode
-*
-*@return     void
 */
 void ImmersiveKidz::decode()
 {
@@ -201,9 +205,7 @@ void ImmersiveKidz::decode()
 * @param	x
 * @param	y
 * @param	dx			delta x, amount of movement in x-axis
-* @param	dy			delta y, amount of movement in y-axis
-*
-* @return	void 
+* @param	dy			delta y, amount of movement in y-axis 
 */
 
 void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy)
@@ -221,8 +223,6 @@ void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy)
 *
 * @param	button		The button which is interacted with
 * @param	state		The state, if the button is pressed or not 
-*
-* @return	void 
 */
 
 void ImmersiveKidz::mouseButton(int button,int state)
@@ -239,8 +239,6 @@ void ImmersiveKidz::mouseButton(int button,int state)
 *
 * @param	key			The key which is interacted with
 * @param	state		The state, if the key is pressed or not 
-*
-* @return	void 
 */
 void ImmersiveKidz::keyboardButton(int key,int state)
 {
@@ -258,8 +256,6 @@ void ImmersiveKidz::keyboardButton(int key,int state)
 
 /**
 *@brief	    Function called from sgct setPostSyncPreDrawFunction, updates the Camera
-*
-*@return     void
 */
 void ImmersiveKidz::postSyncPreDrawFunction()
 {

@@ -2,16 +2,26 @@
 #include "ImmersiveKidz.h"
 
 AudioHandler* AudioHandler::_instance = 0;
+
+/**
+*@brief	    AudioHandler singleton getInstance class. Returns the instance if already instanciated.
+*@return	AudioHandler*
+*/
 AudioHandler* AudioHandler::getInstance(){
 	//WARNING - NOT THREAD SAFE
 	if(_instance == 0)
 		_instance = new AudioHandler();
 	return _instance;
 }
-AudioHandler::AudioHandler()
-{
-	
-}
+
+/**
+*@brief	    AudioHandler default constructor
+*/
+AudioHandler::AudioHandler(){}
+
+/**
+*@brief	    AudioHandler init class. Initializes alut.
+*/
 void AudioHandler::init()
 {
 #ifndef NO_SOUND
@@ -20,6 +30,11 @@ void AudioHandler::init()
 	sgct::MessageHandler::Instance()->print("ALUT init: %s\n", alutGetErrorString( alutGetError() ));
 #endif
 }
+
+/**
+*@brief	   Audiohandler add sound method.
+*@detailed  Adds a sound to the vector containing soundobjects
+*/
 void AudioHandler::addSound(SoundObject* sound)
 {
 #ifndef NO_SOUND
@@ -27,6 +42,11 @@ void AudioHandler::addSound(SoundObject* sound)
 #endif
 }
 
+/**
+*@brief	   Audiohandler update method
+*@detailed  Updates how the sound will be perceived depending on positions of the camera and sound objects, 
+*	the camera alignment and what kind of sound it is. Uses the update function in Sound object.
+*/
 void AudioHandler::update()
 {
 #ifndef NO_SOUND
@@ -57,6 +77,12 @@ void AudioHandler::update()
 #endif
 }
 
+/**
+*@brief		Audiohandler getSoundObjectAt method
+*@detailed	Gets the sound object at a specified position in the vector containing all sounds.
+*@param i	integer of which position of interest
+*@return SoundObject*
+*/
 SoundObject* AudioHandler::getSoundObjectAt(unsigned int i) 
 {
 	if(sounds.size() <= i)
@@ -67,11 +93,21 @@ SoundObject* AudioHandler::getSoundObjectAt(unsigned int i)
 	return new SoundObject();
 }
 
+/**
+*@brief		Audiohandler getSounds method
+*@detailed	Gets the sound objects vector
+*@return std::vector<SoundObject*>
+*/
 std::vector<SoundObject*> AudioHandler::getSounds()
 {
 	return sounds;
 }
 
+
+/**
+*@brief		Audiohandler playSound method
+*@detailed	Plays the sound. If it's a background sound: loop.
+*/
 void AudioHandler::playSound(SoundObject* s)
 {
 #ifndef NO_SOUND
@@ -88,6 +124,10 @@ void AudioHandler::playSound(SoundObject* s)
 #endif
 }
 
+/**
+*@brief		Audiohandler pauseSound method
+*@detailed	pauses the sound.
+*/
 void AudioHandler::pauseSound(SoundObject* s)
 {
 #ifndef NO_SOUND
@@ -95,6 +135,10 @@ void AudioHandler::pauseSound(SoundObject* s)
 #endif
 }
 
+/**
+*@brief		Audiohandler stopSound method
+*@detailed	stops the sound.
+*/
 void AudioHandler::stopSound(SoundObject* s)
 {
 #ifndef NO_SOUND
@@ -102,7 +146,10 @@ void AudioHandler::stopSound(SoundObject* s)
 #endif
 }
 
-
+/**
+*@brief		Audiohandler myCleanUpFun
+*@detailed	deletes the vector containing the sounds and exits alut.
+*/
 void AudioHandler::myCleanUpFun()
 {
 #ifndef NO_SOUND
