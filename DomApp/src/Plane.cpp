@@ -19,7 +19,8 @@ Plane::Plane(std::string texture, glm::vec2 size, glm::vec3 position, glm::vec3 
 void Plane::onDraw() {
 
 	glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName(_texture));
-	
+
+	sgct::ShaderManager::Instance()->bindShader( "Simple" );
 	
 	glBegin(GL_QUADS);
 	glTexCoord2f(0,1);     
@@ -32,5 +33,7 @@ void Plane::onDraw() {
 	glVertex3f(0,0,_size[1]);
 	glEnd();
 
+
+	sgct::ShaderManager::Instance()->unBindShader();
 	glBindTexture(GL_TEXTURE_2D,0);
 }
