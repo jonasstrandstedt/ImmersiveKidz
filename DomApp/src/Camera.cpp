@@ -16,8 +16,8 @@ Camera::Camera(glm::vec3 startPosition)
 	_movingLeft = false;
 	_movingUp = false;
 	_movingDown = false;
-	_speed = 3.0;
-	_rotationSpeed = 0.033;
+	_speed = 6.0;
+	_rotationSpeed = 45.033;
 	_mouseState = false;
 	_position = startPosition;
 	
@@ -28,7 +28,11 @@ Camera::Camera(glm::vec3 startPosition)
 	_limitsZ.x = -10;
 	_limitsZ.y = 10;
 
-	_velocity = glm::vec3(0,0,0);
+	_velocity     = glm::vec3(0,0,0);
+	_rotVelocityV = 0;
+	_rotVelocityH = 0;
+	_rotForceV    = 0;
+	_rotForceH   = 0;
 }
 
 /**
@@ -93,20 +97,55 @@ void Camera::update(float dt)
 	_velocity += force*(dt*7.5f); 
 	_position += _velocity*dt;
 
-
 	float m = glm::length(_velocity);
 	if(m!=0){
 		glm::vec3 velDir = glm::normalize(_velocity);
 		_velocity -= velDir*dt*3.5f;
 	}
-	m = glm::length(_velocity);
+
 	if(m<0.001)
 		_velocity = glm::vec3(0,0,0);
 	if(m>_speed)
 		_velocity *= _speed/m;
 
 
+
+	int sign;
+
+
+	_rotVelocityV += _rotForceV*(dt*7.5f); 
+	sign = _rotVelocityV == 0 ? 0 : _rotVelocityV > 0 ? 1 : -1;
+	_rotVelocityV -= sign*dt*_rotationSpeed*0.8;
+	if(abs(_rotVelocityV)>_rotationSpeed)
+		_rotVelocityV = sign*_rotationSpeed;
+	if(abs(_rotVelocityV)<0.1){
+		_rotVelocityV = 0;
+	}
+	_rotation.y += _rotVelocityV*dt;
+	_rotForceV = 0;
+
+
+	_rotVelocityH += _rotForceH*(dt*7.5f); 
+	sign = _rotVelocityH == 0 ? 0 : _rotVelocityH > 0 ? 1 : -1;
+	_rotVelocityH -= sign*dt*_rotationSpeed*0.8;
+	if(abs(_rotVelocityH)>_rotationSpeed)
+		_rotVelocityH = sign*_rotationSpeed;
+	if(abs(_rotVelocityH)<0.1){
+		_rotVelocityH = 0;
+	}
+	_rotation.x += _rotVelocityH*dt;
+	_rotForceH = 0;
+
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
+
+	if(_rotation[1]<-89)
+	{
+		_rotation[1] = -89;
+	}
+	if(_rotation[1]>89)
+	{
+		_rotation[1] = 89;
+	}
 
 	//glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	if(_position.x+headPos.x < _limitsX.x) _position.x = _limitsX.x-headPos.x;
@@ -179,17 +218,20 @@ void Camera::mouseMotion(int dx,int dy)
 {
 	if(_mouseState)
 	{
-		_rotation[0] += dx*_rotationSpeed;
+		_rotForceH += dx;
+		_rotForceV += dy;
+
+		/*_rotation[0] += dx*_rotationSpeed;
 		_rotation[1] += dy*_rotationSpeed;
-		
+
 		if(_rotation[1]<-89)
 		{
-			_rotation[1] = -89;
+		_rotation[1] = -89;
 		}
 		if(_rotation[1]>89)
 		{
-			_rotation[1] = 89;
-		}
+		_rotation[1] = 89;
+		}*/
 	}
 }
 

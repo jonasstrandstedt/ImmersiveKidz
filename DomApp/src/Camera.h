@@ -75,6 +75,10 @@ private:
 
 
 	glm::vec3 _velocity;
+	float _rotVelocityV;
+	float _rotVelocityH;
+	float _rotForceV;
+	float _rotForceH;
 };
 
 #endif
