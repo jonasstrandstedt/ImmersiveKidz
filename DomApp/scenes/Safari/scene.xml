@@ -42,7 +42,6 @@
     <pos x="-256" y="128" z="256"/>
     <rot x="90" y="0" z="270"/>
   </plane>
-
   <plane>
     <texture>textures/moln.png</texture>
     <size width="128" height="128"/>

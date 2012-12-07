@@ -82,7 +82,7 @@ int main( int argc, char* argv[] )
 void myInitOGLFun()
 {
 	//sets far plane bigger than 100f which is default
-	gEngine->setNearAndFarClippingPlanes(gEngine->getNearClippingPlane(),600.0);	
+	gEngine->setNearAndFarClippingPlanes(gEngine->getNearClippingPlane(),10000.0);	
 
 	// get the eye spearation to allow use of toggle
 	eyeSeparation = gEngine->getUserPtr()->getEyeSeparation();
