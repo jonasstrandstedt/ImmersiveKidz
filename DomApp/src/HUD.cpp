@@ -217,7 +217,7 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	float x = 1-(camPosition.x - worldRect.x/100) / (worldRect.z/100 - worldRect.x/100);
 	float y = (camPosition.z + 4 - worldRect.y/100) / (worldRect.w/100 - worldRect.y/100);
 	float fov = 20;
-	std::cout << x << std::endl;
+	//std::cout << x << std::endl;
 	//Create a wordrect but in zoomed format, contains (xmin,ymin,xmax,ymax) of the minimap
 	float zoom = 0.2;
 	glm::vec4 zoomRect(camPosition.x - _minimapWidth * zoom,

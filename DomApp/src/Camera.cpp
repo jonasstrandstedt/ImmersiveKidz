@@ -89,14 +89,11 @@ void Camera::update(float dt)
 	{
 		force -= glm::vec3(0,1,0);
 	}
-	float l = glm::length(_velocity);
-
-	if(l!=0)
-		force -= _velocity * dt * 30.0f;
 
 	_velocity += force*(dt*7.5f); //mass = 1;
 	_position += _velocity*dt;
 
+	_velocity *= 0.99;
 	float m = glm::length(_velocity);
 	if(m<0.001)
 		_velocity = glm::vec3(0,0,0);
