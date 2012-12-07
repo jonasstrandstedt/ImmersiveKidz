@@ -13,9 +13,9 @@ CXXFLAGS ?=
 INCPATH ?= -isystem"sgct_0_9_5/include"
 
 OPENGL=1
-SOUND=1
+#SOUND=1
 #TEST=1
-RELEASE=1
+#RELEASE=1
 
 # check if argument OPENGL=1 is set, reguires glfw to be properly installed
 ifdef OPENGL
