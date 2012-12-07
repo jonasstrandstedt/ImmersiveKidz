@@ -18,12 +18,11 @@
 */
 class Plane: public DrawableObject {
 public:
-	Plane(glm::vec4 bounds, std::string texture, float y = 0.0);
+	Plane(std::string texture, glm::vec2 size, glm::vec3 position = glm::vec3(0.0,0.0,0.0), glm::vec3 rotation = glm::vec3(0.0,0.0,0.0));
 	void onDraw();
 private:
 	std::string _texture;
-	glm::vec4 _bounds;
-	float _y;
+	glm::vec2 _size;
 };
 
 

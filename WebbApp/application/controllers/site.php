@@ -595,8 +595,26 @@ class Site extends CI_Controller
 
 		$this->load->model("Tables_model");
 
-		$info = $this->Tables_model->get_world($id);
-		$data  = array('data' => $info);
+		$world = $this->Tables_model->get_world($id);
+		$illustrations = $this->Tables_model->get_all_illustrations_from_group($world[0] -> id);
+		print_r($world);
+		//echo$world[0]-> map_id;
+		$map = $this->Tables_model->get_map($world[0]-> map_id);
+		print_r($map);
+		$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
+		$billboards = array();
+		foreach ($illustrations as $image) {
+			$billboard = $this->Tables_model->get_billboard_image($image -> id);
+			array_push($billboards,$billboard[0]);
+		}
+		$data  = array(
+			'world' => $world[0],
+			'map' => $map[0],
+			'plane' => $plane[0],
+			'illustrations' => $illustrations,
+			'billboards' => $billboards
+				);
+
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
 		$this->load->view("sub_coord", $data);
