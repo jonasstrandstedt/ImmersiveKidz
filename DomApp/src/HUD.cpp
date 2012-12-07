@@ -274,7 +274,7 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 		glColor3f( 1.0f, 1.0f, 1.0f);
 	}
 	//Set camera to black
-	glColor3f(0,0,0);
+	glColor3f(1,1,1);
 	//Cameradot in middle of the map
 	glVertex2f(_minimapWidth /2,_minimapHeight /2);
 	glEnd();
@@ -287,6 +287,10 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	//Paints the cameralines.
 	glVertex2f(_minimapWidth /2,_minimapHeight /2);
 	glVertex2f(_minimapWidth/2 + dir1.x , _minimapHeight/2 + dir1.z );
+	glEnd();
+	glBegin(GL_LINE_LOOP);
+
+	glVertex2f(_minimapWidth /2,_minimapHeight /2);
 	glVertex2f(_minimapWidth/2 + dir2.x , _minimapHeight/2 + dir2.z );
 
 	glEnd();
