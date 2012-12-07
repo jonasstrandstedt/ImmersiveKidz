@@ -114,31 +114,43 @@ class Tables_model extends CI_Model
 	 * @return bool 	
 	 */ 
 
-	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story) 
-	{			if($imgurl == NULL || $imgurl == ""){
-					$data = array( // what to update
-				   		'artist' => $artist,
-				   		'imgname' => $imgname,
-				   		'soundurl' => $soundurl,
-				   		'story' => $story,
-				);
-
-				}else{
-					$data = array( // what to update
-					   'artist' => $artist,
-					   'imgname' => $imgname,
-					   'soundurl' => $soundurl,
-					   'story' => $story,
-					   'imgurl' => $imgurl
-					);
-				}
-				$where = array( // the id to update
-    				'id' => $id
-				);
-
-				$this->db->where($where);
-				$q = $this->db->update('illustrations', $data);
+	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh) 
+	{	
+		if($imageurl != ''){
+			$data = array( // what to update
+			   'artist' => $artist,
+			   'imgurl' => $imageurl,
+			   'imgouturl' => $imgouturl,
+			   'imgname' => $imgname,
+			   'soundurl' => $soundurl,
+			   'story' => $story
+			);
 		}
+		else if(!empty($thresh)){
+			$data = array( // what to update
+			   'artist' => $artist,
+			   'imgname' => $imgname,
+			   'soundurl' => $soundurl,
+			   'thresh' => $thresh,
+			   'story' => $story
+			);
+		}
+		else{
+			$data = array( // what to update
+			   'artist' => $artist,
+			   'imgname' => $imgname,
+			   'soundurl' => $soundurl,
+			   'story' => $story
+			);
+		}
+
+		$where = array( // the id to update
+			'id' => $id
+		);
+
+		$this->db->where($where);
+		$q = $this->db->update('illustrations', $data);
+	}
 	/**
 	 * Gets all the worlds from the database
 	 *
@@ -161,6 +173,16 @@ class Tables_model extends CI_Model
 		$where = array(
 			'id' => $id
 			);
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_url_from_id($id) 
+    {
+		$this->db->select("imgurl");
+		$this->db->from("illustrations");
+		$where = "`id` = '$id'"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();

@@ -296,20 +296,31 @@ class Site extends CI_Controller
 			$group_id = $_POST['group_id'];
 			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
 			$group = $this->Tables_model->get_group($group_id);
-			$check = array();
 			$editId = array();
+			$threshId = array();
+			$thresholdValues = array();
 			//Get new info from form
 			foreach ($idArray as $id) {
 				if(isset($_FILES['imageurl'.$counter]['name']) && ($_FILES['imageurl'.$counter]['name']) != ''){//Change image
 					$replaceimageurl = "uploads/" . $_FILES['imageurl'.$counter]['name'];
 					array_push($newImages, 'imageurl'.$counter);
-					//array_push($check, array($id->id, "uploads/" . $_FILES['imageurl'.$counter]['name']));
-					$check[$id->id]= $replaceimageurl;
 					array_push($editId, $id->id);
 				}
 				else{
 					$replaceimageurl = "";
 				}
+
+				//Update threshold
+				if($_POST['threshold'.$counter] != '5' && ($_POST['threshold'.$counter]) != ''){//Change image
+					//exit($_POST['threshold'.$counter]);
+					$threshvalue = $_POST['threshold'.$counter];
+					array_push($thresholdValues, $_POST['threshold'.$counter]);
+					array_push($threshId, $id->id);
+				}
+				else{
+					$threshvalue = "5";
+				}
+
 				$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
 				$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
 				// Lägg till för type.
@@ -317,7 +328,7 @@ class Site extends CI_Controller
 				//$soundurl = $_POST['soundurl'.$counter];
 				$soundurl = $_FILES['soundurl'.$counter]['name'];
 				//exit(print_r($idArray));
-				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story);  // updates the database for the specific image.
+				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story, intval($threshvalue));  // updates the database for the specific image.
 
 				$counter++;
 			}
@@ -329,10 +340,8 @@ class Site extends CI_Controller
 			//upload new data to database
 			foreach ($newImages as $inputName) {
 				$this->upload->do_multi_upload($inputName);
-
 				$temp = $this->upload->get_multi_upload();
 				array_push($data, $temp[0]);
-				//$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
 			}
 			
 			$this->load->library('ProcessImage'); // loads  the ProcessImage library.
@@ -342,10 +351,25 @@ class Site extends CI_Controller
 			{ 
 				array_push($imagesIn, "uploads/".$data[$i]['file_name']); // Add an image to the array.
 			}
+
+			$threshImagesIn = array();
+			foreach ($threshId as $id) {
+				$temp = $this->Tables_model->get_url_from_id($id);
+				$temp = $temp[0];
+				array_push($threshImagesIn, $temp->imgurl); // Add an image to the array.
+			}
 			
 			$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
-			//exit(print_r($editId) . print_r($imagesIn) . print_r($imagesOut));
-			//exit(print_r($check));
+			
+			$threshImagesOut = array();
+			$i = 0;
+			foreach ($thresholdValues as $value) {
+				$out = $this->processimage->findDrawing(array($threshImagesIn[$i]), "uploads", $value);
+				$out = $out[0];
+				array_push($threshImagesOut, $out); // Gets an new array with all the processed images. 
+				$i++;
+			}
+
 			for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
 			{	
 				$id = $editId[$i];
@@ -355,7 +379,17 @@ class Site extends CI_Controller
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id);
 				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl);
+			}
 
+			for($i = 0; $i < count($threshImagesIn); $i++) // Loop for all images.
+			{	
+				$id = $threshId[$i];
+
+				$fileurl = $threshImagesIn[$i]; // Save the url of the original image
+				//exit($fileurl . $check[$fileurl]);
+				$fileouturl = $threshImagesOut[$i]; // save the url of the processed image.
+				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id);
+				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl);
 			}
 
 			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".$group[0] -> name."';</script>"; // Javascript, reload the page

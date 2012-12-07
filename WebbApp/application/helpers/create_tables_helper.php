@@ -77,6 +77,11 @@ function get_images_table_fields()
 			'constraint' => 4,1,
 			'unsigned' => TRUE,
 			'null' => TRUE
+			),
+		'thresh' => array(
+			'type' => 'INT',
+			'constraint' => 15,
+			'default' => 5
 			)
 
 		);

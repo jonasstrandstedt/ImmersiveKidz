@@ -39,7 +39,7 @@ class ProcessImage {
         return $images;
     }
 
-    public function findDrawing($images, $folder)
+    public function findDrawing($images, $folder, $threshvalue = '')
     {   
         //Array containing the modified images
         $imagesOut = array();
@@ -114,6 +114,16 @@ class ProcessImage {
             else{
                 $amount = 0.4;
             }
+
+            if($threshvalue != ''){
+                if($threshvalue <5){
+                $amount = $threshvalue/6;
+                }
+                else{
+                    $amount = $threshvalue/2;
+                }
+            }
+            
             $amount = $amount . "%";
             $phMagick->threshold($amount);
 

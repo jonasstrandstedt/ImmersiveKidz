@@ -45,7 +45,7 @@ echo("You clicked button one!");
     	<label>Typ:</label>
 		<input type='text' name='type".$column."' value='' />
     	<label>Tröskelvärde:</label>
-		<input type='range' name='threshold".$column."' min='1' max='10' value='5' />
+		<input type='range' name='threshold".$column."' min='1' max='10' value='".$row -> thresh."' />
     	<label>Historia:</label>
 	 	<input type='text' name='story".$column."' value='".$row -> story."' />
     	<label>Ljud:</label>
