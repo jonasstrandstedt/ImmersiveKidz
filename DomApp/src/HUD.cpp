@@ -162,7 +162,7 @@ void HUD::_drawBackgroundToNames()
 */
 void HUD::_drawMinimapBackground()
 {
-	//glDisable(GL_DEPTH_TEST);
+
 	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
 
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
@@ -300,8 +300,6 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 
 }
 
-
-
 /**
 * @brief	A method to set the state of a keyboard button
 *
@@ -312,9 +310,17 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 
 void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
 {
+	//Changes selected illustration in the list
 	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
 	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 
+	//Zoomes in & out on the minimap
+	if(_zoom > 0.11)
+		if(key == GLFW_KEY_KP_SUBTRACT && state == GLFW_PRESS) _zoom = _zoom - 0.1;
+	if(_zoom <= 1)
+		if(key == GLFW_KEY_KP_ADD && state == GLFW_PRESS) _zoom = _zoom + 0.1;
+	
+	//Gives the selected illustration a specific animation
 	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1));
 	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Strafe(1));
 
