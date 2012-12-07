@@ -1,16 +1,4 @@
-<!--<form name="form" method="post">
-<input type="submit" name="button1" value="Button 1" /> 
-<input type="submit" name="button2" value="Button 2" /> 
-<input type="submit" name="button3" value="Button 3" /> 
-<input type="submit" name="button4" value="Button 4" />
-
-</form> -->
 <?php 
-if(isset($_POST['delete1'])){
-
-echo("You clicked button one!");
-
-}//if isset
 /*
 * @brief   	The page where you view and edit pictures and related information
 *
@@ -24,7 +12,6 @@ echo("You clicked button one!");
 */	//echo print_r($images);
 	echo "<div id='sub'>". form_open_multipart('index.php/site/add_information/');
 	$column = 0;
-	$idArray = array();
 	echo "<div class='form'><div class='row'>
 		<input type='hidden' name='group_id' value='".$group_id[0] -> id."' />";
 	foreach ($images as $row)
@@ -39,15 +26,15 @@ echo("You clicked button one!");
 		<button class='styledRotateMinus' type='submit' name='rotateminus' value='".$column."' >ROTERA -90&#176;</button>
 		</div>
 		<label>Konstnär:</label>
-		<input type='text' name='artist".$column."' value='".$row -> artist."' />
+		<input type='text' name='artist".$column."' value='".htmlentities($row -> artist)."' />
     	<label>Titel:</label>
-		<input type='text' name='imgname".$column."' value='".$row -> imgname."' />
+		<input type='text' name='imgname".$column."' value='".htmlentities($row -> imgname)."' />
     	<label>Typ:</label>
 		<input type='text' name='type".$column."' value='' />
     	<label>Tröskelvärde:</label>
 		<input type='range' name='threshold".$column."' min='1' max='10' value='".$row -> thresh."' />
     	<label>Historia:</label>
-	 	<input type='text' name='story".$column."' value='".$row -> story."' />
+	 	<input type='text' name='story".$column."' value='".htmlentities($row -> story)."' />
     	<label>Ljud:</label>
 		<input type='file' name='soundurl".$column."' />
 		<label>Byt ut bild:</label>

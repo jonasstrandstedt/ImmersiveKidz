@@ -116,7 +116,7 @@ class Tables_model extends CI_Model
 
 	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh) 
 	{	
-		if($imageurl != ''){
+		if($imgurl != ''){
 			$data = array( // what to update
 			   'artist' => $artist,
 			   'imgurl' => $imageurl,
@@ -190,7 +190,7 @@ class Tables_model extends CI_Model
 
 	/* ADD WORLD */
 
-	function add_world($name, $camlim_xpos, $camlim_xmin, $camlim_ypos, $camlim_ymin, $camlim_zpos, $camlim_zmin, $camstart_x, $camstart_y, $camstart_z, $camdir_x, $camdir_y, $camdir_z, $randmin_x, $randmin_y, $randmin_z, $randmax_x, $randmax_y, $randmax_z) 
+	function add_world($name, $camlim_xpos, $camlim_xmin, $camlim_ypos, $camlim_ymin, $camlim_zpos, $camlim_zmin, $camstart_x, $camstart_y, $camstart_z, $camdir_x, $camdir_y, $camdir_z, $randmin_x, $randmin_y, $randmin_z, $randmax_x, $randmax_y, $randmax_z, $map_id) 
 	{
 				$data = array(
 				   'name' => $name ,
@@ -211,7 +211,8 @@ class Tables_model extends CI_Model
 				   'randmin_z' => $randmin_z,
 				   'randmax_x' => $randmax_x,
 				   'randmax_y' => $randmax_y,
-				   'randmax_z' => $randmax_z
+				   'randmax_z' => $randmax_z,
+				   'map_id' => $map_id
 				);
 				$q = $this->db->insert('worlds', $data);
 				return $q;
@@ -369,6 +370,10 @@ class Tables_model extends CI_Model
 		$this->db->select("*");
 
 		$this->db->from("groups");
+		$where = array( 
+				'id' => $id
+				);
+		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -468,7 +473,7 @@ class Tables_model extends CI_Model
 				   'pos_z' => $pos_z,
 				   'mult_count' => $mult_count,	
 				   'mult_seed' => $mult_seed,	
-				   'type' => $type	
+				   'type' => $type
 				);
 				$q = $this->db->insert('billboard_world', $data);
 				return $q;
@@ -515,15 +520,35 @@ class Tables_model extends CI_Model
 				$q = $this->db->insert('plane_world', $data);
 				return $q;
 	}
-	function add_map_to_world($map_id, $world_id) 
-	{			
-
-				$data = array(
-				   'map_id' => $map_id,
-				   'world_id' => $world_id
-				);
-				$q = $this->db->insert('map_world', $data);
-				return $q;
+	function get_map($id)
+	{	
+		$this->db->select("*");
+		$this->db->from("maps");
+		$where = array(
+			'id' => $id);
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
 	}
+	function get_plane($id)
+	{	$this->db->select("*");
+		$where = array(
+    				'id' => $id
+				);
+		$this->db->from("planes");
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+	// function add_map_to_world($map_id, $world_id) 
+	// {			
+
+	// 			$data = array(
+	// 			   'map_id' => $map_id,
+	// 			   'world_id' => $world_id
+	// 			);
+	// 			$q = $this->db->insert('map_world', $data);
+	// 			return $q;
+	// }
 
 }
