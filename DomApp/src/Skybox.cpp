@@ -41,7 +41,7 @@ void Skybox::_drawCube(){
 		glTexCoord2f(0,1);     
 		glVertex3f(1000,1000,1000);
 		glTexCoord2f(1,1);
-		glVertex3f(-1000,1000,101000);
+		glVertex3f(-1000,1000,1000);
 		glTexCoord2f(1,0);
 		glVertex3f(-1000,-1000,1000);
 		glTexCoord2f(0,0);
