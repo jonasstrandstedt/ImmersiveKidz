@@ -74,7 +74,8 @@ class Site extends CI_Controller
 		// if the user has submited data from the form.
 		else if(isset($_POST['submit']))
 		{	
-			$group = $_POST['group']; // Group name
+			$group = ($_POST['group']); // Group name
+			//echo $group;
 			$date = $_POST['date']; // The date for this group
 			$world = $_POST['world']; // The chosen world
 
@@ -100,8 +101,7 @@ class Site extends CI_Controller
 				$group_id = $this->Tables_model->get_group_id($date, $group);
 				$this->Tables_model->add_illustration("","", $fileurl,"", $bilboard_id, $group_id[0]-> id, ""); // adds the information to the database.
 			}
-
-			echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, loads the add_information view with the variables $date and $group
+			echo "<script>window.location.href = 'add_information/".$date."/".urlencode($group)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group
 
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
@@ -125,10 +125,9 @@ class Site extends CI_Controller
 		$this->load->model("Tables_model");
 		
 		if(isset($_POST['delete'])){ //if the user pressed a deletebutton
-			//$group = $_POST['group'];
-			//$date = $_POST['date'];
+			
 			$group_id = $_POST['group_id']; // Använd istället för name och date.
-
+			$group = $this->Tables_model->get_group($group_id);
 			$counter = 0; // count the number of images.
 
 			//$group_id_vec = $this->Tables_model->get_group_id($group, $date);
@@ -148,7 +147,7 @@ class Site extends CI_Controller
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -167,14 +166,16 @@ class Site extends CI_Controller
 				$this->load->view("content_edit", $data); // loads the content_edit view, where the user can chose a group to edit.
 			}else
 			{
-				echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+				echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			}
 		}else if(isset($_POST['rotateplus'])){
 			
 			//$group = $_POST['group'];
 			//$date = $_POST['date'];
+			
 			$group_id = $_POST['group_id']; // Använd istället för name och date.
-			$group = $this->Tables_model->get_group($group_id[0] -> id);
+			//print_r($group_id);
+			$group = $this->Tables_model->get_group($group_id);
 			$counter = 0; // count the number of images.
 			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
 			foreach ($idArray as $id) 
@@ -205,7 +206,7 @@ class Site extends CI_Controller
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, ""); // updates the database for the specific image.
 					
 				}	
 				else //save the filled data
@@ -220,14 +221,16 @@ class Site extends CI_Controller
 				}
 				$counter ++; 
 			}
-			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".$group[0] -> name."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			// echo urlencode($group[0] -> name);
+			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			
 		}else if(isset($_POST['rotateminus'])){
 			
 			//$group = $_POST['group'];
 			//$date = $_POST['date'];
 			$group_id = $_POST['group_id']; // Använd istället för name och date.
-			$group = $this->Tables_model->get_group($group_id[0] -> id);
+			
+			$group = $this->Tables_model->get_group($group_id);
 			$counter = 0; // count the number of images.
 			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
 			foreach ($idArray as $id) 
@@ -258,7 +261,7 @@ class Site extends CI_Controller
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
 					
 				}	
 				else //save the filled data
@@ -269,11 +272,11 @@ class Site extends CI_Controller
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
 				}
 				$counter ++; 
 			}
-			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".$group[0] -> name."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			
 		
 		}else if(!(isset($date) || isset($group)) && !isset($_POST['next']) && !isset($_POST['update'])){ // if the date or group is NULL, and the user has not submited
@@ -392,14 +395,16 @@ class Site extends CI_Controller
 				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl);
 			}
 
-			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".$group[0] -> name."';</script>"; // Javascript, reload the page
+			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, reload the page
 
 
 			$this->load->view("site_footer"); // Finally, add the footer.
 		}
 		else if(!isset($_POST['next'])){ // else if, the user has not submited.
-			
-			$group_id = $this->Tables_model->get_group_id($date, $group);
+			// echo htmlentities($group,ENT_QUOTES, "ISO-8859-1");
+			 // echo urldecode($group);
+			 //echo $group;
+			$group_id = $this->Tables_model->get_group_id($date, urldecode($group));
 
 			$images = $this->Tables_model->get_all_illustrations_from_group($group_id[0] -> id); // Get all images from a specific group and date.
 			
@@ -421,7 +426,7 @@ class Site extends CI_Controller
 		else{ // isset($_POST['next']) Submit form
 			$counter = 0; // count the number of images.
 			$group_id = $_POST['group_id'];
-			$group = $group = $this->Tables_model->get_group($group_id);
+			$group = $this->Tables_model->get_group($group_id);
 
 			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
 			foreach ($idArray as $id) {
@@ -435,7 +440,7 @@ class Site extends CI_Controller
 				$counter ++; // 
 			}
 
-			echo "<script>window.location.href = 'download_info/".$group[0] -> date."/".$group[0] -> name."';</script>";// Javascript, loads the download_info view with the variables $date and $group
+			echo "<script>window.location.href = 'download_info/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the download_info view with the variables $date and $group
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
 		

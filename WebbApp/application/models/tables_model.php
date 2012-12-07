@@ -116,7 +116,7 @@ class Tables_model extends CI_Model
 
 	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh) 
 	{	
-		if($imageurl != ''){
+		if($imgurl != ''){
 			$data = array( // what to update
 			   'artist' => $artist,
 			   'imgurl' => $imageurl,
@@ -356,6 +356,10 @@ class Tables_model extends CI_Model
 		$this->db->select("*");
 
 		$this->db->from("groups");
+		$where = array( 
+				'id' => $id
+				);
+		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
 	}
