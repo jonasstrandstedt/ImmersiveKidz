@@ -10,6 +10,7 @@
   		<plane>
     		<texture>textures/map.png</texture>
         <mask name="water">textures/map_water256.png</mask>
+        <mask name="water2">textures/map_water128.png</mask>
     		<size minx="-256"  miny="-256" maxx="256" maxy="256"/>
     	</plane>
     	<rand minx="-256" miny="-256" maxx="256"  maxy="256"/>
@@ -21,7 +22,7 @@
 			<texture>textures/tree.png</texture>
 			<size x="2.5" y="2.5"/>
 			<mult count="1000" seed="4124" />
-      <mask name="water" />
+      <mask name="water2" />
 		</item>
 		<item>
 			<texture>textures/tree2.png</texture>

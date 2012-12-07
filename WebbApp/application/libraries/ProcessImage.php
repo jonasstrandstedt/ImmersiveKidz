@@ -19,6 +19,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 include "phmagick.php";
 class ProcessImage {
 
+    //Only used for testing the image processing
     public function readIms($folder)
     {
         //Use 'opendir(".")' if the PHP file is in the same folder as your images. Or set a relative path 'opendir("../path/to/folder")'.
@@ -38,7 +39,7 @@ class ProcessImage {
         return $images;
     }
 
-    public function findDrawing($images, $folder)
+    public function findDrawing($images, $folder, $threshvalue = '')
     {   
         //Array containing the modified images
         $imagesOut = array();
@@ -81,7 +82,7 @@ class ProcessImage {
             $image = new phMagick($out, $int);
             $intensityValue = $image->getAverageIntensity();
             $intensityPercent = $intensityValue / 255;
-
+            
             //------------ Create result using value from the intensity calculation as thresh --------------------//
             //create mask, save to folder "mask".
             $phMagick = new phMagick($images[$i], $mask);
@@ -113,6 +114,16 @@ class ProcessImage {
             else{
                 $amount = 0.4;
             }
+
+            if($threshvalue != ''){
+                if($threshvalue <5){
+                $amount = $threshvalue/6;
+                }
+                else{
+                    $amount = $threshvalue/2;
+                }
+            }
+            
             $amount = $amount . "%";
             $phMagick->threshold($amount);
 

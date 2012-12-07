@@ -9,7 +9,7 @@
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @author 	Belinda Bernfort, belbe886@student.liu.se
-* @date     November (9) 14, 2012 
+* @date     November (9) 14, 2012 (December 4, 2012)
 * @version  1.2 Added create_positions_table
 *    
 */
@@ -27,9 +27,20 @@ class Install_model extends CI_Model
 		}
 
 		// check the table
-		$this->create_images_table();
+		$this->create_illustrations_table();
 		$this->create_worlds_table();
-		$this->create_positions_table();
+		$this->create_models_table();
+		$this->create_billboards_table();
+		$this->create_groups_table();
+		$this->create_planes_table();
+		$this->create_maps_table();
+		$this->create_masks_table();
+		$this->create_animations_table();
+		$this->create_billboard_world_table();
+		$this->create_model_world_table();
+		$this->create_billboard_animation_table();
+		$this->create_plane_world_table();
+		$this->create_map_world_table();
 
 		// Log a debug message
 		log_message('debug', "Install_model Class Initialized");
@@ -37,24 +48,36 @@ class Install_model extends CI_Model
 
 	function drop_tables() {
 		$this->load->dbforge();
-		$this->dbforge->drop_table('images');
+		$this->dbforge->drop_table('illustrations');
 		$this->dbforge->drop_table('worlds');
-		$this->dbforge->drop_table('positions');
+		$this->dbforge->drop_table('models');
+		$this->dbforge->drop_table('billboards');
+		$this->dbforge->drop_table('groups');
+		$this->dbforge->drop_table('planes');
+		$this->dbforge->drop_table('maps');
+		$this->dbforge->drop_table('masks');
+		$this->dbforge->drop_table('animations');
+		$this->dbforge->drop_table('worlds');
+		$this->dbforge->drop_table('billboard_world');
+		$this->dbforge->drop_table('model_world');
+		$this->dbforge->drop_table('billboard_animation');
+		$this->dbforge->drop_table('plane_world');
+		$this->dbforge->drop_table('map_world');
+		
 	}
  	
 
-	function create_images_table()
+	function create_illustrations_table()
 	{	
 		// if the images table does not exist, create it
-		if(!$this->db->table_exists('images') || isset($_GET['drop']))
+		if(!$this->db->table_exists('illustrations') || isset($_GET['drop']))
 		{
 			$this->load->dbforge();
 			// the table configurations from /application/helpers/create_tables_helper.php
 			$this->dbforge->add_field(get_images_table_fields()); 	// get_images_table_fields() returns an array with the fields
 			$this->dbforge->add_key('id',true);						// set the primary key
-			$this->dbforge->create_table('images');
-			log_message('info', "Created table: images");
-
+			$this->dbforge->create_table('illustrations');
+			log_message('info', "Created table: illustrations");
 		}
 	}
 
@@ -72,27 +95,187 @@ class Install_model extends CI_Model
 			log_message('info', "Created table: worlds");
 
 			// inserting worlds
-			$this->load->model("Worlds_model");
-			$this->Worlds_model->add_world("JonasWorld", "grass.png", "-100","-100","100", "100",NULL,NULL,NULL,NULL, "skybox_xpos.png", "skybox_xneg.png", "skybox_ypos.png", "skybox_yneg.png", "skybox_zpos.png", "skybox_zneg.png", "blomma.png", "bush.png", "tree.png");
+
+			$this->load->model("Tables_model");
+			$this->Tables_model->add_world("JonasWorld",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, "-100","-100","-100","100", "100","100");
 			}
 	}
 
-	function create_positions_table()
+
+	function create_models_table()
 	{	
 		// if the images table does not exist, create it
-		if(!$this->db->table_exists('positions') || isset($_GET['drop']))
+		if(!$this->db->table_exists('models') || isset($_GET['drop']))
 		{
 			$this->load->dbforge();
 			// the table configurations from /application/helpers/create_tables_helper.php
-			$this->dbforge->add_field(get_positions_table_fields()); // get_images_table_fields() returns an array with the fields
+			$this->dbforge->add_field(get_models_table_fields()); // get_models_table_fields() returns an array with the fields
 			$this->dbforge->add_key('id',true);						// set the primary key
-			$this->dbforge->create_table('positions');
-			log_message('info', "Created table: positions");
+			$this->dbforge->create_table('models');
+			log_message('info', "Created table: models");
+		}
+	}
 
-			// inserting positions
-			$this->load->model("Positions_model");
-			$this->Positions_model->add_position("2.0", "0.0", "2.5", "grass");
-			}
+	function create_billboards_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('billboards') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_billboards_table_fields()); // get_billboards_table_fields() returns an array with the fields
+			$this->dbforge->add_key('id',true);						// set the primary key
+			$this->dbforge->create_table('billboards');
+			log_message('info', "Created table: billboards");
+
+		}
+	}
+
+	function create_groups_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('groups') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_groups_table_fields()); // get_groups_table_fields() returns an array with the fields
+			$this->dbforge->add_key('id',true);						// set the primary key
+			$this->dbforge->create_table('groups');
+			log_message('info', "Created table: groups");
+		}
+	}
+
+
+	function create_planes_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('planes') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_planes_table_fields()); // get_planes_table_fields() returns an array with the fields
+			$this->dbforge->add_key('id',true);						// set the primary key
+			$this->dbforge->create_table('planes');
+			log_message('info', "Created table: planes");
+		}
+	}
+
+	function create_maps_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('maps') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_maps_table_fields()); // get_maps_table_fields() returns an array with the fields
+			$this->dbforge->add_key('id',true);						// set the primary key
+			$this->dbforge->create_table('maps');
+			log_message('info', "Created table: maps");
+		}
+	}
+
+
+	function create_masks_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('masks') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_masks_table_fields()); // get_masks_table_fields() returns an array with the fields
+			$this->dbforge->add_key('id',true);						// set the primary key
+			$this->dbforge->create_table('masks');
+			log_message('info', "Created table: masks");
+		}
+	}
+
+	function create_animations_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('animations') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_animations_table_fields()); // get_animations_table_fields() returns an array with the fields
+			$this->dbforge->add_key('id',true);						// set the primary key
+			$this->dbforge->create_table('animations');
+			log_message('info', "Created table: animations");
+		}
+	}
+
+	function create_billboard_world_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('billboard_world') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_billboard_world_table_fields()); //get_billboard_world_table_fields() returns an array with the fields
+			$this->dbforge->add_key('world_id',true);
+			$this->dbforge->add_key('billboard_id',true);						// set the primary key
+			$this->dbforge->create_table('billboard_world');
+			log_message('info', "Created table: billboard_world");
+		}
+	}
+
+	function create_model_world_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('model_world') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_model_world_table_fields()); //get_model_world_table_fields() returns an array with the fields
+			$this->dbforge->add_key('world_id',true);
+			$this->dbforge->add_key('model_id',true);						// set the primary key
+			$this->dbforge->create_table('model_world');
+			log_message('info', "Created table: model_world");
+		}
+	}
+
+	function create_billboard_animation_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('billboard_animation') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_billboard_animation_table_fields()); //get_billboard_animation_table_fields() returns an array with the fields
+			$this->dbforge->add_key('animation_id',true);
+			$this->dbforge->add_key('billboard_id',true);						// set the primary key
+			$this->dbforge->create_table('billboard_animation');
+			log_message('info', "Created table: billboard_animation");
+		}
+	}
+
+	function create_plane_world_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('plane_world') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_plane_world_table_fields()); //get_plane_world_table_fields() returns an array with the fields
+			$this->dbforge->add_key('plane_id',true);
+			$this->dbforge->add_key('world_id',true);						// set the primary key
+			$this->dbforge->create_table('plane_world');
+			log_message('info', "Created table: plane_world");
+		}
+	}
+
+	function create_map_world_table()
+	{	
+		// if the images table does not exist, create it
+		if(!$this->db->table_exists('map_world') || isset($_GET['drop']))
+		{
+			$this->load->dbforge();
+			// the table configurations from /application/helpers/create_tables_helper.php
+			$this->dbforge->add_field(get_map_world_table_fields()); //get_plane_world_table_fields() returns an array with the fields
+			$this->dbforge->add_key('map_id',true);
+			$this->dbforge->add_key('world_id',true);						// set the primary key
+			$this->dbforge->create_table('map_world');
+			log_message('info', "Created table: map_world");
+		}
 	}
 
 

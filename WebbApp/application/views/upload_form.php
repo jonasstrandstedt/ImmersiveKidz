@@ -7,6 +7,7 @@
 *
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
+* @author 	(Belinda Bernfort, belbe886@student.liu.se)
 * @date     November 9, 2012
 * @version  1.1 (added forms for date and group)
 */
@@ -16,36 +17,40 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 <div id="sub">
 	<div class='uploadform'>
 		<?php echo form_open_multipart('index.php/site/upload');?>
-		<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
-		
-		<div id="group">
-			<label for="group">
-				Gruppnamn
-			</label>
-			<input type="text" name="group" size="20"/>
-		</div>
-		
-		<div id="date">
-			<label for="date">
-				Datum
-			</label>
-			<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
-		</div>
-		<div id="world">
-			<label for"world">
-				Värld
-			</label>
-			<select name="world">
-				<?php
-				foreach ($worlds as $world)
-				{ 
-					echo "<option value='".$world-> id."'>".$world-> name."</option>";
-				}
-				?>
-			</select>
+			<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
+			
+			<div id="group">
+				<label for="group">
+					Gruppnamn
+				</label>
+				<input type="text" name="group" size="20"/>
+			</div>
+			
+			<div id="date">
+				<label for="date">
+					Datum
+				</label>
+				<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
+			</div>
 
-		<div id="button"><input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" /></div>
+			<div id="world">
+				<label for"world">
+					Värld
+				</label>
+				<select name="world">
+					<?php
+					foreach ($worlds as $world)
+					{ 
+						echo "<option value='".$world-> id."'>".$world-> name."</option>";
+					}
+					?>
+				</select>
+			</div>
+
+			<div id="button">
+				<p>Max filstorlek 2MB.</p>
+				<input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" />
+			</div>
 		</form>
 	</div>
-
 </div>

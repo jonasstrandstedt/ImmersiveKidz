@@ -8,6 +8,7 @@ HUD::HUD()
 	_offset = 0;
 	_minimapWidth = 150;
 	_minimapHeight = 150;
+	_zoom = 0.2;
 };
 
 /**
@@ -18,7 +19,7 @@ HUD::HUD()
 void HUD::init()
 {
 	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0); //Load HUD(menu) into OpenGL
-	sgct::TextureManager::Instance()->loadTexure("minimap", "scenes/JonasWorld/grass.png", true, 0); //Load HUD(minimap) into OpenGL
+	sgct::TextureManager::Instance()->loadTexure("minimap", "scenes/Safari/textures/map.png", true, 0); //Load HUD(minimap) into OpenGL
 }
 
 
@@ -159,7 +160,7 @@ void HUD::_drawBackgroundToNames()
 *
 *@return    void
 */
-void HUD::_drawMinimapBackground(glm::vec3 camPos)
+void HUD::_drawMinimapBackground()
 {
 	//glDisable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
@@ -168,25 +169,35 @@ void HUD::_drawMinimapBackground(glm::vec3 camPos)
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
 
 	glBegin(GL_QUADS);
-	//OBS KOLLA TEXCOORD FFFFFS
-	camPos.x = camPos.x /winSizeX;
-	camPos.z = camPos.z /winSizeY;
-	float width		= _minimapWidth/winSizeX;
-	float height	= _minimapWidth/winSizeY;
+	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	glm::vec3 camPosition = ImmersiveKidz::getInstance()->getCamera()->getPosition();
+	
+	glm::vec4 zoomMap(camPosition.x - _minimapWidth * _zoom,
+					camPosition.z + 4 - _minimapHeight * _zoom, 
+					camPosition.x +  _minimapWidth * _zoom,
+					camPosition.z + 4  + _minimapHeight * _zoom);
+
+	float minx = (zoomMap.x - worldRect.x) / (worldRect.z - worldRect.x);
+	float maxy = 1-(zoomMap.y - worldRect.y) / (worldRect.w - worldRect.y);
+
+	float maxx = (zoomMap.z - worldRect.x) / (worldRect.z - worldRect.x);
+	float miny = 1-(zoomMap.w - worldRect.y) / (worldRect.w - worldRect.y);
+
+
 	//Vertex 1 
-	glTexCoord2d(-width/2,-height/2);
+	glTexCoord2d(maxx,maxy);
 	glVertex3f(0 , 0 , 0);
 	
 	//Vertex 2 
-	glTexCoord2d(width/2,-height/2);
+	glTexCoord2d(minx,maxy);
 	glVertex3f(_minimapWidth , 0 , 0);
 	
 	//Vertex 3 
-	glTexCoord2d(width/2,height/2);
+	glTexCoord2d(minx,miny);
 	glVertex3f(_minimapWidth , _minimapHeight , 0);
 	
 	//Vertex 4 
-	glTexCoord2d(-width/2,height/2);
+	glTexCoord2d(maxx,miny);
 	glVertex3f(0 , _minimapHeight , 0);
 
 	glEnd();
@@ -213,17 +224,14 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution();//Gives us the hight of the window
 	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution();//Gives us the width of the window
 	
-	//Get cameraposition on minimap..?
-	float x = 1-(camPosition.x - worldRect.x/100) / (worldRect.z/100 - worldRect.x/100);
-	float y = (camPosition.z + 4 - worldRect.y/100) / (worldRect.w/100 - worldRect.y/100);
+	
 	float fov = 20;
-	//std::cout << x << std::endl;
-	//Create a wordrect but in zoomed format, contains (xmin,ymin,xmax,ymax) of the minimap
-	float zoom = 0.2;
-	glm::vec4 zoomRect(camPosition.x - _minimapWidth * zoom,
-		camPosition.z + 4 - _minimapHeight * zoom, 
-		camPosition.x +  _minimapWidth * zoom,
-		camPosition.z +4  + _minimapHeight * zoom);
+
+	//Create a wordrect but in zoomed format, contains (xmin,ymin,xmax,ymax) * zoomfactor relative to the minimap
+	glm::vec4 zoomRect(camPosition.x - _minimapWidth * _zoom,
+		camPosition.z + 4 - _minimapHeight * _zoom, 
+		camPosition.x +  _minimapWidth * _zoom,
+		camPosition.z +4  + _minimapHeight * _zoom);
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -236,7 +244,7 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	glLoadIdentity();
 
 	//Draw the background to the minimap
-	_drawMinimapBackground(camPosition);
+	_drawMinimapBackground();
 
 	//Draw the illustrations on the minimap
 	glPointSize(5.0f);

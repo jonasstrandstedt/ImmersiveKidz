@@ -222,21 +222,24 @@ int SceneLoader::loadScene()
 				{
 					texture = textureElement->GetText();
 
+					_mask["default"].clear();
+					_mask["default"].push_back(std::vector<bool>());
+					_mask["default"][0].push_back(true);
+
 					tinyxml2::XMLElement* maskElement = plane->FirstChildElement( "mask" );
 					if(maskElement)
 					{
-						std::string maskName = maskElement->Attribute( "name" );
-						std::string fileName = maskElement->GetText();
-						
-						_mask["default"].clear();
-						_mask["default"].push_back(std::vector<bool>());
-						_mask["default"][0].push_back(true);
-
-						if ( !_createMask((scenePath + fileName).c_str(), maskName) ) 
+						for(maskElement;maskElement; maskElement = maskElement->NextSiblingElement( "mask" ))
 						{
-							_mask[maskName].clear();
-							_mask[maskName].push_back(std::vector<bool>());
-							_mask[maskName][0].push_back(true);
+							std::string maskName = maskElement->Attribute( "name" );
+							std::string fileName = maskElement->GetText();
+
+							if ( !_createMask((scenePath + fileName).c_str(), maskName) ) 
+							{
+								_mask[maskName].clear();
+								_mask[maskName].push_back(std::vector<bool>());
+								_mask[maskName][0].push_back(true);
+							}
 						}
 					}
 					
