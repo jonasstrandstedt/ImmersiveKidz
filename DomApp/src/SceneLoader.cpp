@@ -179,12 +179,6 @@ int SceneLoader::loadScene()
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
 	if(scene)
 	{
-		tinyxml2::XMLElement* item;
-
-		double randminx = -50;
-		double randminy = -50;
-		double randmaxx = 50;
-		double randmaxy = 50;
 		tinyxml2::XMLElement* world = scene->FirstChildElement( "world" );
 		if(world)
 		{
@@ -213,73 +207,100 @@ int SceneLoader::loadScene()
 					cam->setLimitsZ(glm::vec2(limitz->DoubleAttribute("min"),limitz->DoubleAttribute("max")));
 				}
 			}
+
 			tinyxml2::XMLElement* plane = world->FirstChildElement( "plane" );
 			if(plane)
 			{
-				std::string texture = "";
-				tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
-				if(textureElement) 
+				for(;plane; plane = plane->NextSiblingElement( "plane" ))
 				{
-					texture = textureElement->GetText();
-
-					_mask["default"].clear();
-					_mask["default"].push_back(std::vector<bool>());
-					_mask["default"][0].push_back(true);
-
-					tinyxml2::XMLElement* maskElement = plane->FirstChildElement( "mask" );
-					if(maskElement)
+					std::string texture = "";
+					tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
+					if(textureElement) 
 					{
-						for(maskElement;maskElement; maskElement = maskElement->NextSiblingElement( "mask" ))
+						texture = textureElement->GetText();
+					
+						double minx = -50;
+						double miny = -50;
+						double maxx = 50;
+						double maxy = 50;
+
+						tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
+						if(sizeElement)
 						{
-							std::string maskName = maskElement->Attribute( "name" );
-							std::string fileName = maskElement->GetText();
-
-							if ( !_createMask((scenePath + fileName).c_str(), maskName) ) 
-							{
-								_mask[maskName].clear();
-								_mask[maskName].push_back(std::vector<bool>());
-								_mask[maskName][0].push_back(true);
-							}
+							minx = sizeElement->DoubleAttribute( "minx" );
+							miny = sizeElement->DoubleAttribute( "minz" );
+							maxx = sizeElement->DoubleAttribute( "maxx" );
+							maxy = sizeElement->DoubleAttribute( "maxz" );
+							ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(minx,miny,maxx,maxy));
 						}
-					}
-					
-					double minx = -50;
-					double miny = -50;
-					double maxx = 50;
-					double maxy = 50;
-
-					tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
-					if(sizeElement)
-					{
-						minx = sizeElement->DoubleAttribute( "minx" );
-						miny = sizeElement->DoubleAttribute( "miny" );
-						maxx = sizeElement->DoubleAttribute( "maxx" );
-						maxy = sizeElement->DoubleAttribute( "maxy" );
-						ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(minx,miny,maxx,maxy));
-					}
-					ImmersiveKidz::getInstance()->loadTexture(texture);
-					ImmersiveKidz::getInstance()->addDrawableObject(new Plane(glm::vec4(minx,miny,maxx,maxy), scenePath + texture, 0.0));
-					
-					tinyxml2::XMLElement* randElement = world->FirstChildElement( "rand" );
-					if(randElement)
-					{
-						randminx = randElement->DoubleAttribute( "minx" );
-						randminy = randElement->DoubleAttribute( "miny" );
-						randmaxx = randElement->DoubleAttribute( "maxx" );
-						randmaxy = randElement->DoubleAttribute( "maxy" );
-						
+						ImmersiveKidz::getInstance()->loadTexture(texture);
+						ImmersiveKidz::getInstance()->addDrawableObject(new Plane(glm::vec4(minx,miny,maxx,maxy), scenePath + texture, 0.0));
 					}
 				}
 			}
+
+			_mask["default"].clear();
+			_mask["default"].push_back(std::vector<bool>());
+			_mask["default"][0].push_back(true);
+
+			tinyxml2::XMLElement* maskElement = world->FirstChildElement( "mask" );
+			if(maskElement)
+			{
+				for(;maskElement; maskElement = maskElement->NextSiblingElement( "mask" ))
+				{
+					std::string maskName = maskElement->Attribute( "name" );
+					std::string fileName = maskElement->GetText();
+
+					if ( !_createMask((scenePath + fileName).c_str(), maskName) ) 
+					{
+						_mask[maskName].clear();
+						_mask[maskName].push_back(std::vector<bool>());
+						_mask[maskName][0].push_back(true);
+					}
+				}
+			}
+
 		}
-		tinyxml2::XMLElement* models = scene->FirstChildElement( "models" );
-		if(models)
+
+
+		tinyxml2::XMLElement* plane = scene->FirstChildElement( "plane" );
+		if(plane)
 		{
-			item = models->FirstChildElement( "item" );
-			for(;item; item = item->NextSiblingElement( "item" ))
+			std::string texture = "";
+			tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
+			if(textureElement) 
+			{
+				texture = textureElement->GetText();
+					
+				double minx = -50;
+				double miny = -50;
+				double maxx = 50;
+				double maxy = 50;
+
+				tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
+				if(sizeElement)
+				{
+					minx = sizeElement->DoubleAttribute( "minx" );
+					miny = sizeElement->DoubleAttribute( "minz" );
+					maxx = sizeElement->DoubleAttribute( "maxx" );
+					maxy = sizeElement->DoubleAttribute( "maxz" );
+					ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(minx,miny,maxx,maxy));
+				}
+				ImmersiveKidz::getInstance()->loadTexture(texture);
+				ImmersiveKidz::getInstance()->addDrawableObject(new Plane(glm::vec4(minx,miny,maxx,maxy), scenePath + texture, 0.0));
+			}
+		}
+
+
+
+
+		tinyxml2::XMLElement* model = scene->FirstChildElement( "model" );
+		if(model)
+		{
+			for(;model; model = model->NextSiblingElement( "model" ))
 			{
 				std::string filename = "";
-				tinyxml2::XMLElement* fileElement = item->FirstChildElement( "filename" );
+				tinyxml2::XMLElement* fileElement = model->FirstChildElement( "filename" );
 				if(fileElement) 
 				{
 					filename = fileElement->GetText();
@@ -287,7 +308,7 @@ int SceneLoader::loadScene()
 				else	continue;
 
 				std::string texture = "";
-				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
+				tinyxml2::XMLElement* textureElement = model->FirstChildElement( "texture");
 				if(textureElement) 
 				{
 					texture = textureElement->GetText();
@@ -296,7 +317,7 @@ int SceneLoader::loadScene()
 		
 				std::string animation = "none";
 				double animseed = 0;
-				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
+				tinyxml2::XMLElement* aniElement = model->FirstChildElement( "animation" );
 				if(aniElement) 
 				{
 					animation = aniElement->Attribute( "name" );
@@ -307,7 +328,7 @@ int SceneLoader::loadScene()
 				double posx = 20*((double)rand()/RAND_MAX-0.5);
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
-				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
+				tinyxml2::XMLElement* posElement = model->FirstChildElement( "pos" );
 				if(posElement)
 				{
 					posx = posElement->DoubleAttribute( "x" );
@@ -316,7 +337,7 @@ int SceneLoader::loadScene()
 				}
 
 				double scale = 1;
-				tinyxml2::XMLElement* scaleElement = item->FirstChildElement( "scale" );
+				tinyxml2::XMLElement* scaleElement = model->FirstChildElement( "scale" );
 				if(scaleElement)
 				{
 					scale = scaleElement->DoubleAttribute( "val" );
@@ -325,7 +346,7 @@ int SceneLoader::loadScene()
 				double rotx = 0;
 				double roty = 0;
 				double rotz = 0;
-				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "rot" );
+				tinyxml2::XMLElement* rotElement = model->FirstChildElement( "rot" );
 				if(rotElement)
 				{
 					rotx = rotElement->DoubleAttribute( "x" );
@@ -333,39 +354,17 @@ int SceneLoader::loadScene()
 					rotz = rotElement->DoubleAttribute( "z" );
 				}
 
-				tinyxml2::XMLElement* multElement = item->FirstChildElement( "mult" );
-				if(multElement)
-				{
-					int count = multElement->IntAttribute( "count" );
-					int seed = multElement->IntAttribute( "seed" );
-					std::string map = multElement->Attribute( "map" );
-
-					srand(seed);
-					for(int c = 1; c <= count ; c++)
-					{
-						posx = glm::compRand1(randminx,randmaxx); 
-						posy = 0;
-						posz  = glm::compRand1(randminy,randmaxy);
-						animseed = 100*((double)rand()/RAND_MAX);
-
-						ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz)), animation, animseed);
-					}
-				}
-				else 
-				{
-					ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz)), animation, animseed);
-				}
+				ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz)), animation, animseed);
 			}
 		}
 
-		tinyxml2::XMLElement* billboards = scene->FirstChildElement( "billboards" );
-		if(billboards)
+		tinyxml2::XMLElement* billboard = scene->FirstChildElement( "billboard" );
+		if(billboard)
 		{
-			item = billboards->FirstChildElement( "item" );
-			for(;item; item = item->NextSiblingElement( "item" ))
+			for(;billboard; billboard = billboard->NextSiblingElement( "billboard" ))
 			{
 				std::string texture = "";
-				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
+				tinyxml2::XMLElement* textureElement = billboard->FirstChildElement( "texture");
 				if(textureElement)
 				{
 					texture = textureElement->GetText();
@@ -374,7 +373,7 @@ int SceneLoader::loadScene()
 		
 				std::string animation = "none";
 				double animseed = 0;
-				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
+				tinyxml2::XMLElement* aniElement = billboard->FirstChildElement( "animation" );
 				if(aniElement) 
 				{
 					animation = aniElement->Attribute( "name" );
@@ -385,7 +384,7 @@ int SceneLoader::loadScene()
 				double posx = 20*((double)rand()/RAND_MAX-0.5);
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
-				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
+				tinyxml2::XMLElement* posElement = billboard->FirstChildElement( "pos" );
 				if(posElement)
 				{
 					posx = posElement->DoubleAttribute( "x" );
@@ -395,20 +394,20 @@ int SceneLoader::loadScene()
 
 				double sizex = 1;
 				double sizey = 1;
-				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
+				tinyxml2::XMLElement* rotElement = billboard->FirstChildElement( "size" );
 				if(rotElement)
 				{
 					sizex = rotElement->DoubleAttribute( "x" );
-					sizey = rotElement->DoubleAttribute( "y" );
+					sizey = rotElement->DoubleAttribute( "z" );
 				}
 
-				tinyxml2::XMLElement* multElement = item->FirstChildElement( "mult" );
+				tinyxml2::XMLElement* multElement = billboard->FirstChildElement( "mult" );
 				if(multElement)
 				{
 					int count = multElement->IntAttribute( "count" );
 					int seed = multElement->IntAttribute( "seed" );
 
-					tinyxml2::XMLElement* maskElement = item->FirstChildElement( "mask" );
+					tinyxml2::XMLElement* maskElement = billboard->FirstChildElement( "mask" );
 					std::string mask = "default";
 					if(maskElement) 
 					{
@@ -434,28 +433,27 @@ int SceneLoader::loadScene()
 			}
 		}
 
-		tinyxml2::XMLElement* illustrations = scene->FirstChildElement( "illustrations" );
-		if(illustrations)
+		tinyxml2::XMLElement* illustration = scene->FirstChildElement( "illustration" );
+		if(illustration)
 		{
-			item = illustrations->FirstChildElement( "item" );
-			for(;item; item = item->NextSiblingElement( "item" ))
+			for(;illustration; illustration = illustration->NextSiblingElement( "illustration" ))
 			{
 				std::string name_artist = "Unnamed artist";
-				tinyxml2::XMLElement* artistElement = item->FirstChildElement( "name_artist" );
+				tinyxml2::XMLElement* artistElement = illustration->FirstChildElement( "name_artist" );
 				if(artistElement) 
 				{
 					name_artist = artistElement->GetText();
 				}
 
 				std::string name_drawing = "Unnamed drawing";
-				tinyxml2::XMLElement* drawingeElement = item->FirstChildElement( "name_drawing" );
+				tinyxml2::XMLElement* drawingeElement = illustration->FirstChildElement( "name_drawing" );
 				if(drawingeElement) 
 				{
 					name_drawing = drawingeElement->GetText();
 				}
 
 				std::string description = "Unnamed description";
-				tinyxml2::XMLElement* descElement = item->FirstChildElement( "description" );
+				tinyxml2::XMLElement* descElement = illustration->FirstChildElement( "description" );
 				if(descElement)
 				{
 					description = descElement->GetText();
@@ -463,7 +461,7 @@ int SceneLoader::loadScene()
 		
 				std::string animation = "none";
 				double animseed = 0;
-				tinyxml2::XMLElement* aniElement = item->FirstChildElement( "animation" );
+				tinyxml2::XMLElement* aniElement = illustration->FirstChildElement( "animation" );
 				if(aniElement) 
 				{
 					animation = aniElement->Attribute( "name" );
@@ -471,7 +469,7 @@ int SceneLoader::loadScene()
 				}
 
 				std::string texture = "";
-				tinyxml2::XMLElement* textureElement = item->FirstChildElement( "texture");
+				tinyxml2::XMLElement* textureElement = illustration->FirstChildElement( "texture");
 				if(textureElement) 
 				{
 					texture = textureElement->GetText();
@@ -482,7 +480,7 @@ int SceneLoader::loadScene()
 				double posx = 20*((double)rand()/RAND_MAX-0.5);
 				double posy = 0;
 				double posz  = 20*((double)rand()/RAND_MAX-0.5);
-				tinyxml2::XMLElement* posElement = item->FirstChildElement( "pos" );
+				tinyxml2::XMLElement* posElement = illustration->FirstChildElement( "pos" );
 				if(posElement)
 				{
 					posx = posElement->DoubleAttribute( "x" );
@@ -492,11 +490,11 @@ int SceneLoader::loadScene()
 
 				double sizex = 1;
 				double sizey = 1;
-				tinyxml2::XMLElement* rotElement = item->FirstChildElement( "size" );
+				tinyxml2::XMLElement* rotElement = illustration->FirstChildElement( "size" );
 				if(rotElement)
 				{
 					sizex = rotElement->DoubleAttribute( "x" );
-					sizey = rotElement->DoubleAttribute( "y" );
+					sizey = rotElement->DoubleAttribute( "z" );
 				}
 			
 				ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation, animseed);
