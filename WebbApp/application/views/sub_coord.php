@@ -9,8 +9,8 @@
 * @version  1.0
 */
 
-$url =base_url() ."worlds/".$data[0] -> name ."/" .$data[0] -> plane;
-
+//$url =base_url() ."worlds/".$data[0] -> name ."/" .$data[0] -> plane;
+$textureUrl =  base_url() . $plane -> textureurl;
 $rand_min_x = $data[0] -> rand_min_x;
 $rand_max_x = $data[0] -> rand_max_x;
 $rand_min_y = $data[0] -> rand_min_y;

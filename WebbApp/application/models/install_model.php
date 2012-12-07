@@ -40,7 +40,7 @@ class Install_model extends CI_Model
 		$this->create_model_world_table();
 		$this->create_billboard_animation_table();
 		$this->create_plane_world_table();
-		$this->create_map_world_table();
+		//$this->create_map_world_table();
 
 		// Log a debug message
 		log_message('debug', "Install_model Class Initialized");
@@ -62,7 +62,7 @@ class Install_model extends CI_Model
 		$this->dbforge->drop_table('model_world');
 		$this->dbforge->drop_table('billboard_animation');
 		$this->dbforge->drop_table('plane_world');
-		$this->dbforge->drop_table('map_world');
+		//$this->dbforge->drop_table('map_world');
 		
 	}
  	
@@ -97,7 +97,7 @@ class Install_model extends CI_Model
 			// inserting worlds
 
 			$this->load->model("Tables_model");
-			$this->Tables_model->add_world("JonasWorld",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, "-100","-100","-100","100", "100","100");
+			$this->Tables_model->add_world("JonasWorld",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, "-100","-100","-100","100", "100","200", "1");
 			}
 	}
 
@@ -157,6 +157,8 @@ class Install_model extends CI_Model
 			$this->dbforge->add_key('id',true);						// set the primary key
 			$this->dbforge->create_table('planes');
 			log_message('info', "Created table: planes");
+			$this->load->model("Tables_model");
+			$this->Tables_model->add_plane("200", "200", "plane/grass.png", "0", "0", "0", "-100", "0", "-100");
 		}
 	}
 
@@ -171,6 +173,8 @@ class Install_model extends CI_Model
 			$this->dbforge->add_key('id',true);						// set the primary key
 			$this->dbforge->create_table('maps');
 			log_message('info', "Created table: maps");
+			$this->load->model("Tables_model");
+			$this->Tables_model->add_map("Grass", "1"); 
 		}
 	}
 

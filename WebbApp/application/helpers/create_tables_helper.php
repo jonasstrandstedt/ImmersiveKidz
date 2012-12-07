@@ -88,7 +88,7 @@ function get_images_table_fields()
 	return $fields;
 }
 
-function get_worlds_table_fields()  //Kanske är saker som inte ska kunna vara null..? Ska saker vara unsigned?
+function get_worlds_table_fields() 
 {	
 	$fields = array(
 		'id' => array(
@@ -104,110 +104,97 @@ function get_worlds_table_fields()  //Kanske är saker som inte ska kunna vara n
 		'camlim_xpos' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camlim_xmin' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camlim_ypos' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camlim_ymin' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camlim_zpos' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camlim_zmin' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camstart_x' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camstart_y' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camstart_z' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camdir_x' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camdir_y' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'camdir_z' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'randmin_x' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'randmin_y' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'randmin_z' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'randmax_x' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'randmax_y' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'randmax_z' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
+			),
+		'map_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE,
 			)
 		);
 	return $fields;
@@ -536,19 +523,19 @@ function get_plane_world_table_fields()
 }
 
 
-function get_map_world_table_fields()
-{	
-	$fields = array(
-		'map_id' => array(
-			'type' => 'INT',
-			'constraint' => 5, 
-			'unsigned' => TRUE
-			),
-		'world_id' => array(
-			'type' => 'INT',
-			'constraint' => 5, 
-			'unsigned' => TRUE
-			)
-		);
-	return $fields;
-}
+// function get_map_world_table_fields()
+// {	
+// 	$fields = array(
+// 		'map_id' => array(
+// 			'type' => 'INT',
+// 			'constraint' => 5, 
+// 			'unsigned' => TRUE
+// 			),
+// 		'world_id' => array(
+// 			'type' => 'INT',
+// 			'constraint' => 5, 
+// 			'unsigned' => TRUE
+// 			)
+// 		);
+// 	return $fields;
+// }
