@@ -211,32 +211,50 @@ int SceneLoader::loadScene()
 			tinyxml2::XMLElement* plane = world->FirstChildElement( "plane" );
 			if(plane)
 			{
-				for(;plane; plane = plane->NextSiblingElement( "plane" ))
-				{
 					std::string texture = "";
 					tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
 					if(textureElement) 
 					{
 						texture = textureElement->GetText();
 					
-						double minx = -50;
-						double miny = -50;
-						double maxx = 50;
-						double maxy = 50;
+						double width = 1;
+						double height = 1;
 
 						tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
 						if(sizeElement)
 						{
-							minx = sizeElement->DoubleAttribute( "minx" );
-							miny = sizeElement->DoubleAttribute( "minz" );
-							maxx = sizeElement->DoubleAttribute( "maxx" );
-							maxy = sizeElement->DoubleAttribute( "maxz" );
-							ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(minx,miny,maxx,maxy));
+							width = sizeElement->DoubleAttribute( "width" );
+							height = sizeElement->DoubleAttribute( "height" );
+
 						}
-						ImmersiveKidz::getInstance()->loadTexture(texture);
-						ImmersiveKidz::getInstance()->addDrawableObject(new Plane(glm::vec4(minx,miny,maxx,maxy), scenePath + texture, 0.0));
+
+						double x = 0;
+						double y = 0;
+						double z = 0;
+						tinyxml2::XMLElement* positionElement = plane->FirstChildElement( "pos" );
+						if(positionElement)
+						{
+							x = positionElement->DoubleAttribute( "x" );
+							y = positionElement->DoubleAttribute( "y" );
+							z = positionElement->DoubleAttribute( "z" );
+
+						}
+
+						double rotx = 0;
+						double roty = 0;
+						double rotz = 0;
+						tinyxml2::XMLElement* rotElement = plane->FirstChildElement( "rot" );
+						if(rotElement)
+						{
+							rotx = rotElement->DoubleAttribute( "x" );
+							roty = rotElement->DoubleAttribute( "y" );
+							rotz = rotElement->DoubleAttribute( "z" );
+						}
+
+						ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(x,z,x+width,z+height));
+						ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
+						ImmersiveKidz::getInstance()->addDrawableObject(new Plane(scenePath + texture, glm::vec2(width, height), glm::vec3(x,y,z), glm::vec3(rotx,roty,rotz)));
 					}
-				}
 			}
 
 			_mask["default"].clear();
@@ -266,32 +284,52 @@ int SceneLoader::loadScene()
 		tinyxml2::XMLElement* plane = scene->FirstChildElement( "plane" );
 		if(plane)
 		{
-			std::string texture = "";
-			tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
-			if(textureElement) 
+			for(;plane; plane = plane->NextSiblingElement( "plane" ))
 			{
-				texture = textureElement->GetText();
-					
-				double minx = -50;
-				double miny = -50;
-				double maxx = 50;
-				double maxy = 50;
-
-				tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
-				if(sizeElement)
+				std::string texture = "";
+				tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
+				if(textureElement) 
 				{
-					minx = sizeElement->DoubleAttribute( "minx" );
-					miny = sizeElement->DoubleAttribute( "minz" );
-					maxx = sizeElement->DoubleAttribute( "maxx" );
-					maxy = sizeElement->DoubleAttribute( "maxz" );
-					ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(minx,miny,maxx,maxy));
+					texture = textureElement->GetText();				
+					
+					double width = 1;
+					double height = 1;
+					tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
+					if(sizeElement)
+					{
+						width = sizeElement->DoubleAttribute( "width" );
+						height = sizeElement->DoubleAttribute( "height" );
+
+					}
+
+					double x = 0;
+					double y = 0;
+					double z = 0;
+					tinyxml2::XMLElement* positionElement = plane->FirstChildElement( "pos" );
+					if(positionElement)
+					{
+						x = positionElement->DoubleAttribute( "x" );
+						y = positionElement->DoubleAttribute( "y" );
+						z = positionElement->DoubleAttribute( "z" );
+
+					}
+
+					double rotx = 0;
+					double roty = 0;
+					double rotz = 0;
+					tinyxml2::XMLElement* rotElement = plane->FirstChildElement( "rot" );
+					if(rotElement)
+					{
+						rotx = rotElement->DoubleAttribute( "x" );
+						roty = rotElement->DoubleAttribute( "y" );
+						rotz = rotElement->DoubleAttribute( "z" );
+					}
+
+					ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
+					ImmersiveKidz::getInstance()->addDrawableObject(new Plane(scenePath + texture, glm::vec2(width, height), glm::vec3(x,y,z), glm::vec3(rotx,roty,rotz)));
 				}
-				ImmersiveKidz::getInstance()->loadTexture(texture);
-				ImmersiveKidz::getInstance()->addDrawableObject(new Plane(glm::vec4(minx,miny,maxx,maxy), scenePath + texture, 0.0));
 			}
 		}
-
-
 
 
 		tinyxml2::XMLElement* model = scene->FirstChildElement( "model" );

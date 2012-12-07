@@ -89,19 +89,22 @@ void Camera::update(float dt)
 	{
 		force -= glm::vec3(0,1,0);
 	}
-	float l = glm::length(_velocity);
 
-	if(l!=0)
-		force -= _velocity * dt * 30.0f;
-
-	_velocity += force*(dt*7.5f); //mass = 1;
+	_velocity += force*(dt*7.5f); 
 	_position += _velocity*dt;
 
+
 	float m = glm::length(_velocity);
+	if(m!=0){
+		glm::vec3 velDir = glm::normalize(_velocity);
+		_velocity -= velDir*dt*3.5f;
+	}
+	m = glm::length(_velocity);
 	if(m<0.001)
 		_velocity = glm::vec3(0,0,0);
 	if(m>_speed)
 		_velocity *= _speed/m;
+
 
 	glm::vec3 headPos = sgct::Engine::getUserPtr()->getPos();
 

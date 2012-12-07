@@ -162,7 +162,7 @@ void HUD::_drawBackgroundToNames()
 */
 void HUD::_drawMinimapBackground()
 {
-	//glDisable(GL_DEPTH_TEST);
+
 	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
 
 	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
@@ -274,7 +274,7 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 		glColor3f( 1.0f, 1.0f, 1.0f);
 	}
 	//Set camera to black
-	glColor3f(0,0,0);
+	glColor3f(1,1,1);
 	//Cameradot in middle of the map
 	glVertex2f(_minimapWidth /2,_minimapHeight /2);
 	glEnd();
@@ -287,6 +287,10 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	//Paints the cameralines.
 	glVertex2f(_minimapWidth /2,_minimapHeight /2);
 	glVertex2f(_minimapWidth/2 + dir1.x , _minimapHeight/2 + dir1.z );
+	glEnd();
+	glBegin(GL_LINE_LOOP);
+
+	glVertex2f(_minimapWidth /2,_minimapHeight /2);
 	glVertex2f(_minimapWidth/2 + dir2.x , _minimapHeight/2 + dir2.z );
 
 	glEnd();
@@ -300,8 +304,6 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 
 }
 
-
-
 /**
 * @brief	A method to set the state of a keyboard button
 *
@@ -312,9 +314,17 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 
 void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu) 
 {
+	//Changes selected illustration in the list
 	if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
 	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 
+	//Zoomes in & out on the minimap
+	if(_zoom > 0.11)
+		if(key == GLFW_KEY_KP_SUBTRACT && state == GLFW_PRESS) _zoom = _zoom - 0.1;
+	if(_zoom <= 1)
+		if(key == GLFW_KEY_KP_ADD && state == GLFW_PRESS) _zoom = _zoom + 0.1;
+	
+	//Gives the selected illustration a specific animation
 	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1));
 	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Strafe(1));
 

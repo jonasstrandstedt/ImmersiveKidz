@@ -10,16 +10,45 @@
   		</camera>
       <plane>
         <texture>textures/map.png</texture>
-        <size minx="-256"  minz="-256" maxx="256" maxz="256"/>
+        <size width="512" height="512"/>
+        <pos x="-256" y="0" z="-256"/>
+        <rot x="0" y="0" z="0"/>
       </plane>
       <mask name="water">textures/map_water256.png</mask>
       <mask name="water2">textures/map_water128.png</mask>
 	</world>
-  
+
   <plane>
-    <texture>textures/map.png</texture>
-    <size minx="-256"  minz="-256" maxx="256" maxz="256"/>
+    <texture>textures/berg.png</texture>
+    <size width="512" height="128"/>
+    <pos x="-256" y="128" z="-256"/>
+    <rot x="90" y="0" z="0"/>
   </plane>
+  <plane>
+    <texture>textures/berg.png</texture>
+    <size width="512" height="128"/>
+    <pos x="256" y="128" z="-256"/>
+    <rot x="90" y="0" z="90"/>
+  </plane>
+  <plane>
+    <texture>textures/berg.png</texture>
+    <size width="512" height="128"/>
+    <pos x="256" y="128" z="256"/>
+    <rot x="90" y="0" z="180"/>
+  </plane>
+  <plane>
+    <texture>textures/berg.png</texture>
+    <size width="512" height="128"/>
+    <pos x="-256" y="128" z="256"/>
+    <rot x="90" y="0" z="270"/>
+  </plane>
+
+  <plane>
+    <texture>textures/moln.png</texture>
+    <size width="128" height="128"/>
+    <pos x="0" y="100" z="0"/>
+  </plane>
+
   
 	<model>
 	</model>

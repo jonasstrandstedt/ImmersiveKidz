@@ -292,6 +292,19 @@ class Tables_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+	function get_billboard_from_billboard_world($id) 
+    {
+		$this->db->select("*");
+
+		$this->db->from("billboard_world");
+		$where = array( // the id to update
+    				'world_id' => $id
+				);
+
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
 	function update_billboard_image($id, $imgurl) 
     {
 		$data = array( // what to update
