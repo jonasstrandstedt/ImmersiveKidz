@@ -36,6 +36,9 @@ private:
 public:
 	virtual ~SoundObject();
 	static SoundObject* CreateFromFile(const char* file,Illustration* owner = 0);
+	ALuint getSoundObjectSource();
+	ALuint getSoundObjectBuffer();
+	bool getSoundObjectAmbient();
 };
 
 #endif // SOUNDOBJECT_H
