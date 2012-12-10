@@ -568,6 +568,312 @@ class Site extends CI_Controller
 		$this->load->view("site_footer"); // Finally, add the footer.
 		
 	}
+	
+
+	function add_world_and_objects()
+	{
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_addworldandobjects");
+		
+		// Config-file for the upload library.
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png|jpeg';
+		$config['max_size']	= '0';
+		$config['max_width']  = '10000';
+		$config['max_height']  = '10000';
+		
+		// loads the upload library with the config-file.
+		$this->load->library('upload', $config);
+		
+		// Loads the Images_model model, to access the database functions.
+		$this->load->model("Tables_model");
+		
+		if ( ! $this->upload->do_multi_upload()) //if upload didnt work
+		{
+			$error = array('error' => $this->upload->display_errors());
+			$this->load->view('sub_addworldandobjects');
+		}
+		else if(isset($_POST['submitworld'])) // if the user has submited the world
+		{	
+			$world_name= $_POST['world'];
+			
+ 			$this->Tables_model->add_world($world_name , "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+			$world = $this->Tables_model->get_world_by_name($world_name);
+			$world_id = $world[0]->id;			
+			
+			$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
+			$this->load->library('ProcessImage'); // loads  the ProcessImage library.
+			$imagesIn = array(); // Array for all the uploaded images.
+			for($i = 0; $i < count($data['upload_data']); $i++)// Loop for all images.
+			{ 
+				array_push($imagesIn, "uploads/".$data['upload_data'][$i]['file_name']); // Add an image to the array.
+			}
+
+			$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
+
+			for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
+			{	
+				$fileurl = $imagesIn[$i]; // Save the url of the original image
+				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
+				$billboard_id_vec = $this->Tables_model->add_billboard($fileouturl);
+				$billboard_id = $billboard_id_vec[0] -> id;
+				$this->Tables_model->add_billboard_to_world($world_id, $billboard_id, "", "", "", "", "", "", "") ;
+			}
+			echo "<script>window.location.href = 'add_object_information/".urlencode($world_name)."';</script>"; // Javascript, loads the add_object_information view with the variables $world_name
+
+		}
+		$this->load->view("site_footer"); // Finally, add the footer.		
+	}
+	
+	
+	
+	function add_object_information($world_name = NULL)
+	{
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_addobjectinformation");
+		
+		// Loads the Images_model model, to access the database functions.
+		$this->load->model("Tables_model");		
+		
+		if(isset($_POST['delete'])){ //if the user pressed a deletebutton
+			
+			$world_id = $_POST['world_id']; // Använd istället för name och date.
+			$world = $this->Tables_model->get_world($world_id);
+			$counter = 0; // count the number of images.
+
+			$billboards = $this->Tables_model->get_billboards_from_billboard_world($world_id); // Get all billboards from a specific world.
+			foreach ($billboards as $billboard) 
+			{
+				if($counter == $_POST['delete']) //if the image should be deleted	
+				{
+					 $this->Tables_model->remove_billboard_from_world($world_id,$billboard->billboard_id);
+				}
+				else //save the filled data
+				{
+					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
+					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+				}
+				$counter ++; 
+			}
+
+			if( sizeof($billboards) == 1 ) //if its only 1 image left before delete
+			{
+				$info = $this->Tables_model->get_all_worlds(); // gets an array of all the groups.
+				$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
+				"info" => $info);
+				$this->load->view("content_edit_world", $data); // loads the content_edit view, where the user can chose a group to edit.
+			}else
+			{
+				echo "<script>window.location.href = 'add_object_information/".urlencode($world[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			}
+		}else if(isset($_POST['rotateplus'])){
+
+			$world_id = $_POST['world_id']; 
+			$world = $this->Tables_model->get_world($world_id);
+			$counter = 0; // count the number of images.
+			$billboards = $this->Tables_model->get_billboards_from_billboard_world($world_id); // Get all billboards from a specific world.
+			foreach ($billboards as $billboard) 
+			{
+				if($counter == $_POST['rotateplus'])
+				{ 
+					$imageUrl = $this->Tables_model->get_billboard_image($billboards[$counter] -> billboard_id);
+					$filename = $imageUrl[0]->imgurl;
+					$rotang = -90; // Rotation angle
+					$source = imagecreatefrompng($filename) or die('Error opening file '.$filename);
+					imagealphablending($source, false);
+					imagesavealpha($source, true);
+
+					$rotation = imagerotate($source, $rotang, imageColorAllocateAlpha($source, 0, 0, 0, 127));
+					imagealphablending($rotation, false);
+					imagesavealpha($rotation, true);
+
+					// header('Content-type: image/png');
+					imagepng($rotation,$filename);
+					imagedestroy($source);
+					imagedestroy($rotation);
+					
+					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
+					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+				}	
+				else //save the filled data
+				{
+					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
+					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+				}
+				$counter ++; 
+			}
+			echo "<script>window.location.href = 'add_object_information/".urlencode($world[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			
+		}else if(isset($_POST['rotateminus'])){
+
+			$world_id = $_POST['world_id']; 
+			$world = $this->Tables_model->get_world($world_id);
+			$counter = 0; // count the number of images.
+			$billboards = $this->Tables_model->get_billboards_from_billboard_world($world_id); // Get all billboards from a specific world.
+			foreach ($billboards as $billboard) 
+			{
+				if($counter == $_POST['rotateminus'])
+				{ 
+					$imageUrl = $this->Tables_model->get_billboard_image($billboards[$counter] -> billboard_id);
+					$filename = $imageUrl[0]->imgurl;
+					$rotang = 90; // Rotation angle
+					$source = imagecreatefrompng($filename) or die('Error opening file '.$filename);
+					imagealphablending($source, false);
+					imagesavealpha($source, true);
+
+					$rotation = imagerotate($source, $rotang, imageColorAllocateAlpha($source, 0, 0, 0, 127));
+					imagealphablending($rotation, false);
+					imagesavealpha($rotation, true);
+
+					// header('Content-type: image/png');
+					imagepng($rotation,$filename);
+					imagedestroy($source);
+					imagedestroy($rotation);
+					
+					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
+					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+				}	
+				else //save the filled data
+				{
+					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
+					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+				}
+				$counter ++; 
+			}
+			echo "<script>window.location.href = 'add_object_information/".urlencode($world[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+				
+		}else if(!isset($world_name) && !isset($_POST['next']) && !isset($_POST['update']))
+		{
+			$info = $this->Tables_model->get_all_worlds(); // gets an array of all the groups.
+			$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
+			"info" => $info);
+			$this->load->view("content_edit_world", $data); // loads the content_edit view, where the user can chose a group to edit.
+		
+		}
+		else if(!isset($_POST['next'])) // if, the user has not submited.
+		{ 		
+			$world = $this->Tables_model->get_world_by_name(urldecode($world_name));
+			$world_id = $world[0]->id;
+			$billboards = $this->Tables_model->get_billboards_from_billboard_world($world_id); // Get all billboards from a specific world.
+			$outImagesArray = array();
+			foreach($billboards as $billboard)
+			{
+				$billboard_id = $billboard->billboard_id;
+				$billboard_image = $billboard->imgurl; 
+				array_push($outImagesArray, $billboard_image);
+			}
+
+			$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
+				"billboards" => $billboards,
+				"world_id" => $world_id,
+				"outImages" => $outImagesArray
+						);
+			$this->load->view('sub_addobjectinformation', $data); // Loads the sub_addobjectinformation view, where the user can add information for all the images.
+		}else{ // isset($_POST['next']) Submit form
+			$counter = 0; // count the number of images.
+			$world_id = $_POST['world_id'];
+			$world = $this->Tables_model->get_world($world_id);
+			$world_name = $world[0]->name;
+		
+
+			$idArray = $this->Tables_model->get_billboard_id_from_billboard_world($world_id); // an array with all the id's in the group
+			foreach ($idArray as $id) 
+			{
+				$quantity = $_POST['quantity'.$counter]; // gets the quantity from form.
+				$type = $_POST['type'.$counter]; // gets the specific type
+				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type);// updates the database for the specific image.
+				$counter ++; 
+			}
+			echo "<script>window.location.href = 'add_plane/".urlencode($world_name)."';</script>"; // Javascript, loads the add_plane view with the variable $world_name
+		}
+		$this->load->view("site_footer"); // Finally, add the footer.
+	}
+	
+	function add_plane($world_name = NULL)
+	{
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_addplane");
+		
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '10000';
+		$config['max_width']  = '1024';
+		$config['max_height']  = '768';
+		
+				
+		// Loads the Images_model model, to access the database functions.
+		$this->load->model("Tables_model");		
+		// Loads the upload library with the config-file.
+		$this->load->library('upload', $config);
+		
+		if(!isset($world_name) && !isset($_POST['submitplane']))
+		{
+			$info = $this->Tables_model->get_all_worlds(); // gets an array of all the groups.
+			$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
+			"info" => $info);
+			$this->load->view("content_plane", $data); // loads the content_edit view, where the user can chose a group to edit.
+		
+		}else if(!isset($_POST['submitplane'])) //if user didnt submited plane
+		{	
+			$world = $this->Tables_model->get_world_by_name($world_name);
+			// get an array of all the planes
+			$info = $this->Tables_model->get_all_planes();
+			// Makes an array of the array, so that the sub_addplane view gets an array as variabel.
+			$data = array(
+			"planes" => $info,
+			"world_id" => $world[0] -> id
+			);
+			$this->load->view("sub_addplane", $data);
+			
+		}else if(isset($_POST['submitplane']) && isset($_POST['plane']) && !$this->upload->do_upload() ) //if user submited and didnt upload file
+		{
+			$plane_id = $_POST['plane'];
+			$world_id = $_POST['world_id'];
+			$this->Tables_model->add_plane_to_world($plane_id,$world_id);
+		}
+		else if(isset($_POST['submitplane'])) //if user submited and uploaded file
+		{
+			if ( ! $this->upload->do_upload()) //if upload didnt work
+			{
+				$error = array('error' => $this->upload->display_errors());
+				print_r($error);
+			}
+			else //if upload did work
+			{
+			$data = array('upload_data' => $this->upload->data());
+			$textureurl = "plane/".$data['upload_data']['file_name']; // url to texture
+			$plane_id_vec = $this->Tables_model->add_plane("" ,"", $textureurl, "", "", "", "", "", ""); //returns plane id
+			$plane_id = $plane_id_vec[0] -> id;
+			$world_id = $_POST['world_id'];
+			
+			 $this->Tables_model->add_plane_to_world($plane_id,$world_id);
+			}
+		}
+		$this->load->view("site_footer"); // Finally, add the footer.
+	}
+	
+
+	
+
+	
+	
+	function instructions()
+	{	
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
+		$this->load->view("content_instructions");
+		$this->load->view("site_footer");
+	}
+	
+	
 	/**
 	 * about(): information about the webapp
 	 * Librarys:
@@ -583,13 +889,7 @@ class Site extends CI_Controller
 		$this->load->view("site_footer");
 	}
 
-	function instructions()
-	{
-		$this->load->view("site_header");
-		$this->load->view("site_nav");
-		$this->load->view("content_instructions");
-		$this->load->view("site_footer");
-	}
+
 	/**
 	*
 	* coord(): function to acess the sub_coord view, will be removed later.
@@ -599,7 +899,6 @@ class Site extends CI_Controller
 	{	
 
 		$this->load->model("Tables_model");
-
 		$world = $this->Tables_model->get_world($id);
 		$illustrations = $this->Tables_model->get_all_illustrations_from_group($world[0] -> id);
 		print_r($world);
