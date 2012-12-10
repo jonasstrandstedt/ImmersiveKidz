@@ -86,10 +86,8 @@ class Create_xml_model extends CI_Model
 		$size = xml_add_child($theplane, "texture", $plane->textureurl);
 
 		$size = xml_add_child($theplane, "size");
-		xml_add_attribute($size, 'minx', $theMinX_rand);
-		xml_add_attribute($size, 'minz', $theMinZ_rand);
-		xml_add_attribute($size, 'maxx', $theMaxX_rand);
-		xml_add_attribute($size, 'maxz', $theMaxZ_rand);
+		xml_add_attribute($size, 'width', $plane->width);
+		xml_add_attribute($size, 'height', $plane->height);
 
 		$rot = xml_add_child($theplane, "rot");
 		xml_add_attribute($rot, 'x', $plane->rot_x);
@@ -123,9 +121,9 @@ class Create_xml_model extends CI_Model
 					$size = xml_add_child($themodel, "filename", $m->obj_fileurl);
 					$texture = xml_add_child($themodel, 'texture', substr($m->textureurl, strrpos($m->textureurl, '/')+1));
 
-					$animation = xml_add_child($themodel, "animation");
 					foreach ($animation as $a) {
 						if ($m->animation_id == $a->id){
+							$animation = xml_add_child($themodel, "animation");
 							xml_add_attribute($animation, 'name', $a->name);
 						}
 					}
@@ -157,11 +155,10 @@ class Create_xml_model extends CI_Model
 
 					foreach ($bill_ani as $ba) {
 						if (isset($ba['b_id']) && $ba['b_id'] == $b->id){
-							$theanimation = xml_add_child($thebillboard, "animation");
-							xml_add_attribute($theanimation, 'seed', $ba['seed']);
-
 							foreach ($animation as $a) {
 								if ($ba['a_id'] == $a->id){
+									$theanimation = xml_add_child($thebillboard, "animation");
+									xml_add_attribute($theanimation, 'seed', $ba['seed']);
 									xml_add_attribute($theanimation, 'name', $a->name);
 								}
 							}
@@ -207,11 +204,11 @@ class Create_xml_model extends CI_Model
 
 						foreach ($bill_ani as $ba) {
 							if (isset($ba['b_id']) && $ba['b_id'] == $b->id){
-								$theanimation = xml_add_child($illustration, "animation");
-								xml_add_attribute($theanimation, 'seed', $ba['seed']);
 
 								foreach ($animation as $a) {
 									if ($ba['a_id'] == $a->id){
+										$theanimation = xml_add_child($illustration, "animation");
+										xml_add_attribute($theanimation, 'seed', $ba['seed']);
 										xml_add_attribute($theanimation, 'name', $a->name);
 									}
 								}
@@ -232,7 +229,7 @@ class Create_xml_model extends CI_Model
 
     function get_xml_file($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world) 
     {
-    	$url = "uploads/out/result.xml";
+    	$url = "uploads/out/scene.xml";
     	file_put_contents($url, $this->create_xml($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world));
 		return $url;
 
