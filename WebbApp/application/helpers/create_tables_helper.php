@@ -63,19 +63,16 @@ function get_images_table_fields()
 		'pos_x' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'pos_y' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'pos_z' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
-			'unsigned' => TRUE,
 			'null' => TRUE
 			),
 		'thresh' => array(

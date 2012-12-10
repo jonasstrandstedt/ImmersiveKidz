@@ -440,8 +440,8 @@ class Site extends CI_Controller
 				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story);// updates the database for the specific image.
 				$counter ++; // 
 			}
-
-			echo "<script>window.location.href = 'download_info/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the download_info view with the variables $date and $group
+			echo "<script>window.location.href = 'add_coordinates/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the add_coordinates view with the variable $group_id
+			
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
 		
@@ -908,16 +908,34 @@ class Site extends CI_Controller
 	* coord(): function to acess the sub_coord view, will be removed later.
 	*
 	*/
-	function coord($id)
+	function add_coordinates($date = NULL, $group = NULL)
 	{	
+		$this->load->view("site_header");
+		$this->load->view("site_nav");
 
 		$this->load->model("Tables_model");
-		$world = $this->Tables_model->get_world($id);
-		$illustrations = $this->Tables_model->get_all_illustrations_from_group($world[0] -> id);
-		print_r($world);
-		//echo$world[0]-> map_id;
+		if(isset($_POST['submitcoord'])){
+			$group_id = $_POST['group_id'];
+			$illustrations = $this->Tables_model->get_all_illustration_id_from_group($group_id);
+			for($i = 0; $i < sizeof($illustrations); $i++){
+				$x_coord = $_POST['image'.$i.'_x'];
+				$z_coord = $_POST['image'.$i.'_z'];
+				echo $x_coord;
+
+				$this->Tables_model->update_illustration_coordinates($illustrations[$i] -> id, $x_coord,"", $z_coord);
+
+			}
+			echo "<script>window.location.href = 'download_info/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the download_info view with the variables $date and $group
+
+
+
+		}else if($date != NULL & $group != NULL ){
+		$group_id = $this->Tables_model->get_group_id($date, $group);
+		$group = $this->Tables_model->get_group($group_id[0]-> id);
+		$illustrations = $this->Tables_model->get_all_illustrations_from_group($group_id[0]-> id);
+		$world_id = $this->Tables_model->get_group_world($group_id[0]-> id);
+		$world = $this->Tables_model->get_world($world_id[0] -> world_id);
 		$map = $this->Tables_model->get_map($world[0]-> map_id);
-		print_r($map);
 		$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
 		$billboards = array();
 		foreach ($illustrations as $image) {
@@ -928,13 +946,15 @@ class Site extends CI_Controller
 			'world' => $world[0],
 			'map' => $map[0],
 			'plane' => $plane[0],
+			'group' => $group[0],
 			'illustrations' => $illustrations,
 			'billboards' => $billboards
 				);
 
-		$this->load->view("site_header");
-		$this->load->view("site_nav");
+		
 		$this->load->view("sub_coord", $data);
+		}
+
 		$this->load->view("site_footer");
 	}
 }

@@ -211,7 +211,22 @@ class Tables_model extends CI_Model
 	 * @return array 	
 	 */ 
 
+	function update_illustration_coordinates($id, $x_coord,$y_coord, $z_coord){
+		if($y_coord == ''){
+			$y_coord = 0.0;
+		}
+		$data = array( // what to update
+			   'pos_x' => $x_coord,
+			   'pos_y' => $y_coord,
+			   'pos_z' => $z_coord
+			);
+		$where = array( // the id to update
+			'id' => $id
+		);
+		$this->db->where($where);
+		$q = $this->db->update('illustrations', $data);
 
+	}
 	function get_all_worlds()
     {
 		$this->db->select("*");

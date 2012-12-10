@@ -158,7 +158,7 @@ class Install_model extends CI_Model
 			$this->dbforge->create_table('planes');
 			log_message('info', "Created table: planes");
 			$this->load->model("Tables_model");
-			$this->Tables_model->add_plane("200", "200", "plane/grass.png", "0", "0", "0", "-100", "0", "-100");
+			$this->Tables_model->add_plane("512", "512", "plane/grass.png", "0", "0", "0", "-256", "0", "-256");
 		}
 	}
 
