@@ -26,7 +26,7 @@ echo "<div id='sub'>". form_open_multipart('index.php/site/add_object_informatio
 		<label>Antal:</label>
 		<input type='text' name='quantity".$column."' value='".htmlentities($row -> mult_count)."' />
     	<label>Typ:</label>
-		<input type='text' name='type".$column."' value='' />
+		<input type='text' name='type".$column."' value='".htmlentities($row -> type)."' />
 		</div>";
  
  		$column++;

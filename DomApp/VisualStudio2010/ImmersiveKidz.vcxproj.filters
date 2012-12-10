@@ -130,7 +130,7 @@
     </ClInclude>
     <ClInclude Include="..\unit_test\Billboard.test.h">
       <Filter>tests</Filter>
-	  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\src\Animation.h">
       <Filter>h</Filter>
     </ClInclude>
@@ -139,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="..\src\SoundObject.h">
       <Filter>h</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_test\AudioHandler.test.h">
+      <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\unit_test\Illustration.test.h">
+      <Filter>tests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

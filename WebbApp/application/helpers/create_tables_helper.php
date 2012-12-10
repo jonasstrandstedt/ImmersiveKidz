@@ -216,6 +216,11 @@ function get_models_table_fields()
 		'textureurl' => array(
 			'type' => 'VARCHAR',
 			'constraint' => '400'
+			),
+		'animation_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
 			)
 		);
 	return $fields;
@@ -477,6 +482,14 @@ function get_model_world_table_fields()
 		'rot_z' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1 
+			),
+		'mult_count' => array(  
+			'type' => 'INT',
+			'constraint' => 7 
+			),
+		'mult_seed' => array(
+			'type' => 'INT',
+			'constraint' => 7 
 			)
 		);
 	return $fields;
@@ -514,6 +527,19 @@ function get_plane_world_table_fields()
 			'unsigned' => TRUE
 			),
 		'world_id' => array(
+			'type' => 'INT',
+			'constraint' => 5, 
+			'unsigned' => TRUE
+			),
+		'mult_count' => array(  
+			'type' => 'INT',
+			'constraint' => 7 
+			),
+		'mult_seed' => array(
+			'type' => 'INT',
+			'constraint' => 7 
+			),
+		'animation_id' => array(
 			'type' => 'INT',
 			'constraint' => 5, 
 			'unsigned' => TRUE

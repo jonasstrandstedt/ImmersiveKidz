@@ -8,6 +8,8 @@
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @author   Belinda Bernfort, belbe886@student.liu.se
+* @author   Gabriella Ivarsson, gabiv132
+* @author   Emil Lindström, emili250
 * @date     December 6, 2012
 * @version  2.0 
 *    
@@ -36,6 +38,59 @@ class Tables_model extends CI_Model
 		$where = "`group_id` = '$groupID'"; 
 		$this->db->where($where);
 		$query = $this->db->get();
+		return $query->result();
+	}
+
+
+	function get_plane_from_world_id($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("planes");
+		$where = "`id` = (SELECT `plane_id` FROM `plane_world` WHERE `world_id` = $worldID)"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_masks_from_map_id($mapID) 
+    {
+		$this->db->select("*");
+		$this->db->from("masks");
+		$where = "`map_id` = $mapID"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_model_from_world_id($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("models");
+		$where = "`id` = (SELECT `model_id` FROM `model_world` WHERE `world_id` = $worldID)"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		//exit(print_r($this->db->last_query()));
+		return $query->result();
+	}
+
+	function get_model_world($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("model_world");
+		$where = "`world_id` = $worldID"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_map_from_world_id($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("maps");
+		$where = "`id` = (SELECT `map_id` FROM `map_world` WHERE `world_id` = $worldID)"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		//exit(print_r($this->db->last_query()));
 		return $query->result();
 	}
 
@@ -119,8 +174,7 @@ class Tables_model extends CI_Model
 		if($imgurl != ''){
 			$data = array( // what to update
 			   'artist' => $artist,
-			   'imgurl' => $imageurl,
-			   'imgouturl' => $imgouturl,
+			   'imgurl' => $imgurl,
 			   'imgname' => $imgname,
 			   'soundurl' => $soundurl,
 			   'story' => $story
@@ -303,11 +357,35 @@ class Tables_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	function get_billboard($id) 
+    {
+		$this->db->select("*");
+
+		$this->db->from("billboards");
+		$query = $this->db->get();
+		return $query->result();
+	}
+	
+	function get_billboard_from_billboard_world($id) 
+    {
+                $this->db->select("*");
+
+                $this->db->from("billboard_world");
+                $where = array( // the id to update
+                                'world_id' => $id
+                                );
+
+                $this->db->where($where);
+                $query = $this->db->get();
+                return $query->result();
+     }
+
 	function get_billboard_id_from_billboard_world($world_id) 
     {
 		$this->db->select("billboard_id");
 		$this->db->from("billboard_world");
-		$where = array( // the id to update
+		$where = array( 
     				'world_id' => $world_id
 				);
 
@@ -498,7 +576,25 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_animation() 
+    {
+		$this->db->select("*");
 
+		$this->db->from("animations");
+
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_billboard_animation() 
+    {
+		$this->db->select("*");
+
+		$this->db->from("billboard_animation");
+
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 	/* ADD MAP */
 
