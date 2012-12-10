@@ -29,7 +29,7 @@ class Create_xml_model extends CI_Model
 		return new DOMDocument('1.0');
 	}
 
-    function create_xml($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation) 
+    function create_xml($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world) 
     {
     	/***Variables world****/
     	//Camera
@@ -82,18 +82,28 @@ class Create_xml_model extends CI_Model
 		xml_add_attribute($limitz, 'max', $camlim_zpos);
 
 		//plane
-		$plane = xml_add_child($world, "plane");
-		$texture = xml_add_child($plane, "texture", $thePlane);
-		$size = xml_add_child($plane, "size");
+		$theplane = xml_add_child($world, "plane");
+		$size = xml_add_child($theplane, "texture", $plane->textureurl);
+
+		$size = xml_add_child($theplane, "size");
 		xml_add_attribute($size, 'minx', $theMinX_rand);
 		xml_add_attribute($size, 'minz', $theMinZ_rand);
 		xml_add_attribute($size, 'maxx', $theMaxX_rand);
 		xml_add_attribute($size, 'maxz', $theMaxZ_rand);
 
+		$rot = xml_add_child($theplane, "rot");
+		xml_add_attribute($rot, 'x', $plane->rot_x);
+		xml_add_attribute($rot, 'y', $plane->rot_y);
+		xml_add_attribute($rot, 'z', $plane->rot_z);
+
+		$pos = xml_add_child($theplane, "pos");
+		xml_add_attribute($pos, 'x', $plane->pos_x);
+		xml_add_attribute($pos, 'y', $plane->pos_y);
+		xml_add_attribute($pos, 'z', $plane->pos_z);
+
 		//mask
-		$plane = xml_add_child($scene, "plane");
 		foreach ($mask as $m) {
-			$themask = xml_add_child($plane, "mask", $m->textureurl);
+			$themask = xml_add_child($world, "mask", substr($m->textureurl, strrpos($m->textureurl, '/')+1));
 			xml_add_attribute($themask, 'name', $m->name);
 		}
 		$bill_ani = array();
@@ -107,9 +117,24 @@ class Create_xml_model extends CI_Model
 
 		/***Models****/
 		foreach ($model as $m) {
-			$themodel = xml_add_child($scene, "model");
-			$size = xml_add_child($themodel, "filename", $m->obj_fileurl);
-			xml_add_attribute($themodel, 'texture', $m->textureurl);
+			foreach ($model_world as $mw) {
+				if($m->id == $mw->world_id){
+					$themodel = xml_add_child($scene, "model");
+					$size = xml_add_child($themodel, "filename", $m->obj_fileurl);
+					$texture = xml_add_child($themodel, 'texture', substr($m->textureurl, strrpos($m->textureurl, '/')+1));
+
+					$animation = xml_add_child($themodel, "animation");
+					foreach ($animation as $a) {
+						if ($m->animation_id == $a->id){
+							xml_add_attribute($animation, 'name', $a->name);
+						}
+					}
+
+					$mult = xml_add_child($themodel, "mult");
+					xml_add_attribute($mult, 'count', $mw->mult_count);
+					xml_add_attribute($mult, 'seed', $mw->mult_seed);
+				}
+			}
 		}
 
 
@@ -121,7 +146,7 @@ class Create_xml_model extends CI_Model
 				if($bw->billboard_id == $b->id){
 					array_push($world_billboards, $b->id);
 					$thebillboard = xml_add_child($scene, "billboard");
-					$texture = xml_add_child($thebillboard, "texture", $b->imgurl);
+					$texture = xml_add_child($thebillboard, "texture", substr($b->imgurl, strrpos($b->imgurl, '/')+1));
 					$size = xml_add_child($thebillboard, "size");
 					xml_add_attribute($size, 'x', $bw->pos_x);
 					xml_add_attribute($size, 'z', $bw->pos_y);
@@ -178,7 +203,7 @@ class Create_xml_model extends CI_Model
 						xml_add_attribute($pos, 'z', $image->pos_z);
 
 						/***Image (texture)****/
-						$texture = xml_add_child($illustration, "texture", $b->imgurl);
+						$texture = xml_add_child($illustration, "texture", substr($b->imgurl, strrpos($b->imgurl, '/')+1));
 
 						foreach ($bill_ani as $ba) {
 							if (isset($ba['b_id']) && $ba['b_id'] == $b->id){
@@ -205,10 +230,10 @@ class Create_xml_model extends CI_Model
 	}
 
 
-    function get_xml_file($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation) 
+    function get_xml_file($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world) 
     {
     	$url = "uploads/out/result.xml";
-    	file_put_contents($url, $this->create_xml($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation));
+    	file_put_contents($url, $this->create_xml($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world));
 		return $url;
 
 	}

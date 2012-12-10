@@ -72,6 +72,16 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_model_world($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("model_world");
+		$where = "`world_id` = $worldID"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	function get_map_from_world_id($worldID) 
     {
 		$this->db->select("*");
@@ -163,8 +173,7 @@ class Tables_model extends CI_Model
 		if($imgurl != ''){
 			$data = array( // what to update
 			   'artist' => $artist,
-			   'imgurl' => $imageurl,
-			   'imgouturl' => $imgouturl,
+			   'imgurl' => $imgurl,
 			   'imgname' => $imgname,
 			   'soundurl' => $soundurl,
 			   'story' => $story
