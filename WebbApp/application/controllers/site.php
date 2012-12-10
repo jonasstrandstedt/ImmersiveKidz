@@ -10,6 +10,7 @@
 *
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
+* @author   Gabriella Ivarsson gabiv132
 * @date     December 6, 2012
 * @version  3.0 (new database)
 *    
@@ -559,8 +560,19 @@ class Site extends CI_Controller
 			}
 
 			$world = $this->Tables_model->get_world($world_id_array[0] -> world_id);
+			$plane = $this->Tables_model->get_plane_from_world_id($world[0]->id);
+			$model = $this->Tables_model->get_model_from_world_id($world[0]->id);
+			$map = $this->Tables_model->get_map_from_world_id($world[0]->id);
+			$mask = $this->Tables_model->get_masks_from_map_id($map[0]->id);
+			$group = $this->Tables_model->get_group($world[0]->id);
+			$billboard_world = $this->Tables_model->get_billboard_from_billboard_world($world[0]->id);
+			$billboard = $this->Tables_model->get_billboard($world[0]->id);
+			$animation = $this->Tables_model->get_animation();
+			$billboard_animation = $this->Tables_model->get_billboard_animation();
+
 			//Create xml file using the world and images
-			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images);
+			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images, $plane[0], $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation);
+
 
 			$this->zip->read_file($xml_url, TRUE);
 			$this->zip->download($filename); // Makes the user download the zip-file
