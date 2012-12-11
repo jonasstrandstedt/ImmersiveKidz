@@ -634,21 +634,23 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
 
 
 		int c = 3;
-		switch(png_get_color_type(png_ptr, info_ptr)){
-		case PNG_COLOR_TYPE_GRAY:
-			c = 1;
-			break;
-		case PNG_COLOR_TYPE_RGB:
-			c = 3;
-			break;
-		case PNG_COLOR_TYPE_RGBA:
-			c = 4;
-			break;
+		switch(png_get_color_type(png_ptr, info_ptr))
+		{
+			case PNG_COLOR_TYPE_GRAY:
+				c = 1;
+				break;
+			case PNG_COLOR_TYPE_RGB:
+				c = 3;
+				break;
+			case PNG_COLOR_TYPE_RGBA:
+				c = 4;
+				break;
 
 		}
 
 
-		for (y=0; y<height; y++) {
+		for (y=0; y<height; y++) 
+		{
 			png_byte* row = row_pointers[y];
 			_mask[maskName].push_back(std::vector<bool>());
 			for (x=0; x<width; x++) {
