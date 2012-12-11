@@ -905,7 +905,7 @@ class Site extends CI_Controller
 
 	/**
 	*
-	* coord(): function to acess the sub_coord view, will be removed later.
+	* coord(): function to acess the add_coordinates view, will be removed later.
 	*
 	*/
 	function add_coordinates($date = NULL, $group = NULL)
@@ -916,11 +916,11 @@ class Site extends CI_Controller
 		$this->load->model("Tables_model");
 		if(isset($_POST['submitcoord'])){
 			$group_id = $_POST['group_id'];
+			$group = $this->Tables_model->get_group($group_id);
 			$illustrations = $this->Tables_model->get_all_illustration_id_from_group($group_id);
 			for($i = 0; $i < sizeof($illustrations); $i++){
 				$x_coord = $_POST['image'.$i.'_x'];
 				$z_coord = $_POST['image'.$i.'_z'];
-				echo $x_coord;
 
 				$this->Tables_model->update_illustration_coordinates($illustrations[$i] -> id, $x_coord,"", $z_coord);
 
