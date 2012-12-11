@@ -373,7 +373,7 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
-	function get_billboard($id) 
+	function get_billboard() 
     {
 		$this->db->select("*");
 

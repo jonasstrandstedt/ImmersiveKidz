@@ -67,7 +67,7 @@ class Site extends CI_Controller
 			);
 
 		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
-		if ( ! $this->upload->do_multi_upload())
+		if ( !$this->upload->do_multi_upload())
 		{
 			$error = array('error' => $this->upload->display_errors());
 			$this->load->view('upload_form', $data);
@@ -631,7 +631,7 @@ class Site extends CI_Controller
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
 				$billboard_id_vec = $this->Tables_model->add_billboard($fileouturl);
 				$billboard_id = $billboard_id_vec[0] -> id;
-				$this->Tables_model->add_billboard_to_world($world_id, $billboard_id, "", "", "", "", "", "", "") ;
+				$this->Tables_model->add_billboard_to_world($world_id, $billboard_id, "", "", "", "", "1", "", "") ;
 			}
 			echo "<script>window.location.href = 'add_object_information/".urlencode($world_name)."';</script>"; // Javascript, loads the add_object_information view with the variables $world_name
 
@@ -762,7 +762,7 @@ class Site extends CI_Controller
 			}
 			echo "<script>window.location.href = 'add_object_information/".urlencode($world[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 				
-		}else if(!isset($world_name) && !isset($_POST['next']) && !isset($_POST['update']))
+		}else if(!isset($world_name) && !isset($_POST['next']) && !isset($_POST['update'])) //if world name is not set and user didnt click the next or update button
 		{
 			$info = $this->Tables_model->get_all_worlds(); // gets an array of all the groups.
 			$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
@@ -815,11 +815,11 @@ class Site extends CI_Controller
 		$this->load->view("site_nav");
 		$this->load->view("content_addplane");
 		
-		$config['upload_path'] = './uploads/';
+		$config['upload_path'] = './plane/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '10000';
-		$config['max_width']  = '1024';
-		$config['max_height']  = '768';
+		$config['max_width']  = '2000';
+		$config['max_height']  = '2000';
 		
 				
 		// Loads the Images_model model, to access the database functions.
@@ -827,7 +827,7 @@ class Site extends CI_Controller
 		// Loads the upload library with the config-file.
 		$this->load->library('upload', $config);
 		
-		if(!isset($world_name) && !isset($_POST['submitplane']))
+		if(!isset($world_name) && !isset($_POST['submitplane'])) 
 		{
 			$info = $this->Tables_model->get_all_worlds(); // gets an array of all the groups.
 			$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
@@ -846,8 +846,9 @@ class Site extends CI_Controller
 			);
 			$this->load->view("sub_addplane", $data);
 			
-		}else if(isset($_POST['submitplane']) && isset($_POST['plane']) && !$this->upload->do_upload() ) //if user submited and didnt upload file
-		{
+		}else if(isset($_POST['submitplane']) && isset($_POST['plane']) && $_FILES['userfile']['error'] == 4 ) //if user submited and didnt upload file
+		{	
+			
 			$plane_id = $_POST['plane'];
 			$world_id = $_POST['world_id'];
 			$this->Tables_model->add_plane_to_world($plane_id,$world_id);
@@ -861,13 +862,13 @@ class Site extends CI_Controller
 			}
 			else //if upload did work
 			{
-			$data = array('upload_data' => $this->upload->data());
-			$textureurl = "plane/".$data['upload_data']['file_name']; // url to texture
-			$plane_id_vec = $this->Tables_model->add_plane("" ,"", $textureurl, "", "", "", "", "", ""); //returns plane id
-			$plane_id = $plane_id_vec[0] -> id;
-			$world_id = $_POST['world_id'];
-			
-			 $this->Tables_model->add_plane_to_world($plane_id,$world_id);
+				$data = array('upload_data' => $this->upload->data());
+				$textureurl = "plane/".$data['upload_data']['file_name']; // url to texture
+				$plane_id_vec = $this->Tables_model->add_plane("" ,"", $textureurl, "", "", "", "", "", ""); //returns plane id
+				$plane_id = $plane_id_vec[0] -> id;
+				$world_id = $_POST['world_id'];
+				
+				$this->Tables_model->add_plane_to_world($plane_id,$world_id);
 			}
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.

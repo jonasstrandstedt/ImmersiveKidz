@@ -94,9 +94,10 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	background-color: green;
 }
 
-#nav ul li{ /*links in navigation bar in header*/
+#nav ul li{ /*links in navigationbar in header*/
 	margin: 10px 10px 0px 10px;
 	display: inline-block;
+	/* background-color: red; */
 }
 
 #content{ 

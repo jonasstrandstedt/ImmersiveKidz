@@ -53,7 +53,12 @@ class MY_Upload extends CI_Upload {
 		//Multiple file upload
 		if( is_array( $_FILES[$field]['name'] ) )
 		{	
-			//$count = count($_FILES[$field]['name']); //Number of files to process
+			$count = count($_FILES[$field]['name']); //Number of files to process
+			// echo $count;
+			if($count == 0) {
+				$return_value = "";
+			}
+			else{
 			foreach( $_FILES[$field]['name'] as $k => $file )
 			{
 				// Was the file able to be uploaded? If not, determine the reason why.
@@ -234,6 +239,7 @@ class MY_Upload extends CI_Upload {
 				{
 					$return_value = TRUE;
 				}				
+			}
 			}
 			//session_start();
 			$_SESSION['return_value'] = $return_value;
