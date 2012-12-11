@@ -4,6 +4,7 @@
 #include "HUD.test.h"
 #include "Billboard.test.h"
 #include "Illustration.test.h"
+#include "AudioHandler.test.h"
 
 
 int runUnitTests(int argc, char **argv)

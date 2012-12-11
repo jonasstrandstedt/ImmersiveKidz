@@ -8,6 +8,8 @@
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @author   Belinda Bernfort, belbe886@student.liu.se
+* @author   Gabriella Ivarsson, gabiv132
+* @author   Emil Lindström, emili250
 * @date     December 6, 2012
 * @version  2.0 
 *    
@@ -36,6 +38,59 @@ class Tables_model extends CI_Model
 		$where = "`group_id` = '$groupID'"; 
 		$this->db->where($where);
 		$query = $this->db->get();
+		return $query->result();
+	}
+
+
+	function get_plane_from_world_id($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("planes");
+		$where = "`id` = (SELECT `plane_id` FROM `plane_world` WHERE `world_id` = $worldID)"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_masks_from_map_id($mapID) 
+    {
+		$this->db->select("*");
+		$this->db->from("masks");
+		$where = "`map_id` = $mapID"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_model_from_world_id($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("models");
+		$where = "`id` = (SELECT `model_id` FROM `model_world` WHERE `world_id` = $worldID)"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		//exit(print_r($this->db->last_query()));
+		return $query->result();
+	}
+
+	function get_model_world($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("model_world");
+		$where = "`world_id` = $worldID"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_map_from_world_id($worldID) 
+    {
+		$this->db->select("*");
+		$this->db->from("maps");
+		$where = "`id` = (SELECT `map_id` FROM `map_world` WHERE `world_id` = $worldID)"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		//exit(print_r($this->db->last_query()));
 		return $query->result();
 	}
 
@@ -90,16 +145,16 @@ class Tables_model extends CI_Model
 				);
 				$q = $this->db->insert('illustrations', $data);
 				return $q;
-			}
+	}
 
-		function remove_illustration($id) 
-		{
-			$where = array( // the id to update
-			'id' => $id
-			);
-			$this->db->where($where);
-			$q = $this->db->delete('illustrations');
-		}
+	function remove_illustration($id) 
+	{
+		$where = array( // the id to update
+		'id' => $id
+		);
+		$this->db->where($where);
+		$q = $this->db->delete('illustrations');
+	}
 		/**
 	 * Updates an image-post
 	 *
@@ -119,8 +174,7 @@ class Tables_model extends CI_Model
 		if($imgurl != ''){
 			$data = array( // what to update
 			   'artist' => $artist,
-			   'imgurl' => $imageurl,
-			   'imgouturl' => $imgouturl,
+			   'imgurl' => $imgurl,
 			   'imgname' => $imgname,
 			   'soundurl' => $soundurl,
 			   'story' => $story
@@ -157,7 +211,22 @@ class Tables_model extends CI_Model
 	 * @return array 	
 	 */ 
 
+	function update_illustration_coordinates($id, $x_coord,$y_coord, $z_coord){
+		if($y_coord == ''){
+			$y_coord = 0.0;
+		}
+		$data = array( // what to update
+			   'pos_x' => $x_coord,
+			   'pos_y' => $y_coord,
+			   'pos_z' => $z_coord
+			);
+		$where = array( // the id to update
+			'id' => $id
+		);
+		$this->db->where($where);
+		$q = $this->db->update('illustrations', $data);
 
+	}
 	function get_all_worlds()
     {
 		$this->db->select("*");
@@ -223,6 +292,16 @@ class Tables_model extends CI_Model
 		$this->db->from("worlds");
 		$where = array(
 			'id' => $id);
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+	function get_world_by_name($name)
+    {
+		$this->db->select("*");
+		$this->db->from("worlds");
+		$where = array(
+			'name' => $name);
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
@@ -293,19 +372,82 @@ class Tables_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
-	function get_billboard_from_billboard_world($id) 
+
+	function get_billboard($id) 
     {
 		$this->db->select("*");
 
+		$this->db->from("billboards");
+		$query = $this->db->get();
+		return $query->result();
+	}
+	
+	function get_billboard_from_billboard_world($id) 
+    {
+                $this->db->select("*");
+
+                $this->db->from("billboard_world");
+                $where = array( // the id to update
+                                'world_id' => $id
+                                );
+
+                $this->db->where($where);
+                $query = $this->db->get();
+                return $query->result();
+     }
+
+	function get_billboard_id_from_billboard_world($world_id) 
+    {
+		$this->db->select("billboard_id");
 		$this->db->from("billboard_world");
-		$where = array( // the id to update
-    				'world_id' => $id
+		$where = array( 
+    				'world_id' => $world_id
 				);
 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
 	}
+	
+	function get_billboards_from_billboard_world($world_id)
+	{
+		$this->db->select("*");
+		$this->db->from("billboards");
+		$this->db->join('billboard_world', 'billboards.id=billboard_world.billboard_id', 'inner');
+		$where = array( 
+    				'billboard_world.world_id' => $world_id
+				);
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}	
+	
+	function update_billboard_world($world_id, $billboard_id, $mult_count, $type )
+	{	
+		$data = array( // what to update
+		   'mult_count' => $mult_count,
+		   'type' => $type
+		);
+		
+		$where = array( // the id to update
+			'world_id' => $world_id,
+			'billboard_id' => $billboard_id
+		);
+		$this->db->where($where);
+		$q = $this->db->update('billboard_world', $data);
+	}
+		
+	function remove_billboard_from_world($world_id, $billboard_id) 
+	{
+		$where = array( // the id to update
+		'world_id' => $world_id,
+		'billboard_id' => $billboard_id
+		);
+		$this->db->where($where);
+		$q = $this->db->delete('billboard_world');
+	}
+	
+	
 	function update_billboard_image($id, $imgurl) 
     {
 		$data = array( // what to update
@@ -394,8 +536,15 @@ class Tables_model extends CI_Model
 				   'pos_z' => $pos_z
 				);
 				$q = $this->db->insert('planes', $data);
-				return $q;
+				
+				$this->db->select("id");
+				$this->db->from("planes");
+				$this->db->where($data);
+				$query = $this->db->get();
+				return $query->result();
 	}
+	
+
 
 	/* ADD MASK */
 
@@ -442,7 +591,25 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_animation() 
+    {
+		$this->db->select("*");
 
+		$this->db->from("animations");
+
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_billboard_animation() 
+    {
+		$this->db->select("*");
+
+		$this->db->from("billboard_animation");
+
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 	/* ADD MAP */
 
@@ -460,7 +627,7 @@ class Tables_model extends CI_Model
 
 	/* ADD MAP */
 
-	function add_bilboard_to_world($world_id, $billboard_id, $mask_id, $pos_x, $pos_y, $pos_z, $mult_count, $mult_seed, $type) 
+	function add_billboard_to_world($world_id, $billboard_id, $mask_id, $pos_x, $pos_y, $pos_z, $mult_count, $mult_seed, $type) 
 	{
 			
 
@@ -512,7 +679,6 @@ class Tables_model extends CI_Model
 
 	function add_plane_to_world($plane_id, $world_id) 
 	{			
-
 				$data = array(
 				   'plane_id' => $plane_id,
 				   'world_id' => $world_id
@@ -531,7 +697,8 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 	function get_plane($id)
-	{	$this->db->select("*");
+	{	
+		$this->db->select("*");
 		$where = array(
     				'id' => $id
 				);
@@ -540,6 +707,15 @@ class Tables_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+	
+	function get_all_planes()
+	{
+		$this->db->select("*");
+		$this->db->from("planes");
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	// function add_map_to_world($map_id, $world_id) 
 	// {			
 

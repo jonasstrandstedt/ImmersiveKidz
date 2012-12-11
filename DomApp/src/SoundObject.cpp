@@ -70,3 +70,33 @@ SoundObject::~SoundObject()
 #endif
 }
 
+
+/**
+*@brief	    Returns the value of the sound buffer. 
+*
+*@return	ALuint
+*/
+ALuint SoundObject::getSoundObjectBuffer()
+{
+	return _buffer;
+}
+
+/**
+*@brief	    Returns the value of the sound source. 
+*
+*@return	ALuint
+*/
+ALuint SoundObject::getSoundObjectSource()
+{
+	return _source;
+}
+
+/**
+*@brief	    Returns the value of the bool that tells if it's a background sound or not. 
+*
+*@return	bool
+*/
+bool SoundObject::getSoundObjectAmbient()
+{
+	return _ambient;
+}
