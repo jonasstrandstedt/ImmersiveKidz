@@ -14,7 +14,7 @@
 *@param		proportionsIn	The proportions of the billboard size according to the world unit length. 
 *@param		billboard		if true each quad will be rotated at each frame so that it faces the camera. If false all billboards will be rendered as two perpendicular quads  
 */
-BatchBillboard::BatchBillboard(std::string texturename, std::vector< std::vector<bool> > *mask, int seed, int count, glm::vec2 proportionsIn, bool billboard){
+BatchBillboard::BatchBillboard(std::string texturename, std::vector< std::vector<bool> > *mask, int seed, int count, glm::vec2 proportionsIn, bool billboard, glm::vec2 altitude){
 	ImmersiveKidz::getInstance()->loadTexture(texturename);
 	_texture = texturename;
 	_billboard = billboard;
@@ -46,7 +46,7 @@ BatchBillboard::BatchBillboard(std::string texturename, std::vector< std::vector
 			float r1 = (double)(rand())/(RAND_MAX+1.0);
 			float r2 = (double)rand()/(RAND_MAX+1.0);
 			posx = rect.x + r1 * (rect.z - rect.x);
-			posy = 0;
+			posy = glm::compRand1(altitude[0], altitude[1]);
 			posz  = rect.y + r2 * (rect.w - rect.y);
 			int masky = r2 * mask->size();
 			int maskx = r1 * mask[0].size();

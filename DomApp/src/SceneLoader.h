@@ -59,6 +59,12 @@ private:
 
 	bool _createMask(const char* fileName, std::string maskName);
 	std::map<std::string, std::vector <std::vector<bool> > > _mask;
+
+	// private functions
+	void _loadPlanes(tinyxml2::XMLElement* parent);
+	void _loadModels(tinyxml2::XMLElement* parent);
+	void _loadBillboards(tinyxml2::XMLElement* parent);
+	void _loadIllustrations(tinyxml2::XMLElement* parent);
 };
 
 

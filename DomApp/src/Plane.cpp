@@ -3,7 +3,6 @@
 
 
 Plane::Plane(std::string texture, glm::vec2 size, glm::vec3 position, glm::vec3 rotation) {
-	std::cout << "size " << size[0] << ", " << size[1] << std::endl;
 	_size = size;
 	_texture = texture;
 	

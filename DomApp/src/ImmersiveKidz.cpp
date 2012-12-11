@@ -56,7 +56,7 @@ void ImmersiveKidz::init()
 		_hud = new HUD();
 		_hud->init();
 		AudioHandler::getInstance()->init();
-		AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
+		AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("data/audio/boys.wav"));
 
 		AudioHandler::getInstance()->playSound(AudioHandler::getInstance()->getSoundObjectAt(0));
 	}
@@ -114,7 +114,6 @@ void ImmersiveKidz::setSceneLoaded(bool isLoaded)
 */
 void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double animseed)
 {
-	
 	Illustration *ill = dynamic_cast<Illustration*>(o);
 	if(ill) 
 	{
@@ -272,6 +271,12 @@ void ImmersiveKidz::keyboardButton(int key,int state)
 {
 	if(_camera == 0)
 		return;
+
+	if(key == GLFW_KEY_F5 && state == GLFW_PRESS) 
+	{
+		reset();
+	}
+
 	if(_sceneLoaded)
 	{
 		_camera->keyboardButton(key,state);
@@ -322,4 +327,20 @@ void ImmersiveKidz::setWorldRect(glm::vec4 worldRect)
 glm::vec4 ImmersiveKidz::getWorldRect()
 {
 	return _worldRect;
+}
+
+void ImmersiveKidz::reset()
+{
+
+	for (int i = 0; i < _objects.size(); ++i)
+	{
+		delete _objects[i];
+	}
+
+	_objects.erase(_objects.begin(), _objects.end());
+	_illustrations.erase(_illustrations.begin(), _illustrations.end());
+
+	_scenePath = "";		// set in constructor
+	_sceneLoaded = false;
+	_worldRect = glm::vec4();
 }

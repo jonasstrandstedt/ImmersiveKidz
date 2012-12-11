@@ -60,6 +60,7 @@ public:
 	
 	void setWorldRect(glm::vec4 rec);
 	glm::vec4 getWorldRect();
+	void reset();
 private:
 	static ImmersiveKidz* _instance;
 	ImmersiveKidz();
@@ -73,11 +74,7 @@ private:
 	std::set< std::string > _textures;
 
 	// instance variables
-
 	HUD	*_hud;
-	bool isMaster;
-	std::string scene_path;		// set in constructor
-	bool scene_loaded;
 
 	bool _isMaster;
 	std::string _scenePath;		// set in constructor

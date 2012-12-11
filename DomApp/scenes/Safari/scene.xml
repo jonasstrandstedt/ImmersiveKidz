@@ -1,359 +1,359 @@
 <?xml version="1.0" ?>
 <scene>
-  
 	<world>
-  		<camera>
-  			<start x="0.0" y="0.5" z="0.0" />
-  			<limitx min="-256.0" max="256.0" />
-  			<limity min="0.1" max="256.0" />
-  			<limitz min="-256.0" max="256.0" />
-  		</camera>
-      <plane>
-        <texture>textures/map.png</texture>
-        <size width="512" height="512"/>
-        <pos x="-256" y="0" z="-256"/>
-        <rot x="0" y="0" z="0"/>
-      </plane>
-      <mask name="water">textures/map_water256.png</mask>
-      <mask name="water2">textures/map_water128.png</mask>
+		<camera>
+			<start x="0.0" y="0.5" z="0.0" />
+			<limitx min="-256.0" max="256.0" />
+			<limity min="0.1" max="256.0" />
+			<limitz min="-256.0" max="256.0" />
+		</camera>
+		<plane>
+			<texture>textures/map.png</texture>
+			<size width="512" height="512"/>
+			<pos x="-256" y="0" z="-256"/>
+			<rot x="0" y="0" z="0"/>
+		</plane>
+		<mask name="water">textures/map_water256.png</mask>
+		<mask name="water2">textures/map_water128.png</mask>
 	</world>
+	<plane>
+		<texture>textures/berg.png</texture>
+		<size width="512" height="128"/>
+		<pos x="-256" y="128" z="-256"/>
+		<rot x="90" y="0" z="0"/>
+	</plane>
+	<plane>
+		<texture>textures/berg.png</texture>
+		<size width="512" height="128"/>
+		<pos x="256" y="128" z="-256"/>
+		<rot x="90" y="0" z="90"/>
+	</plane>
+	<plane>
+		<texture>textures/berg.png</texture>
+		<size width="512" height="128"/>
+		<pos x="256" y="128" z="256"/>
+		<rot x="90" y="0" z="180"/>
+	</plane>
+	<plane>
+		<texture>textures/berg.png</texture>
+		<size width="512" height="128"/>
+		<pos x="-256" y="128" z="256"/>
+		<rot x="90" y="0" z="270"/>
+	</plane>
+	<plane>
+		<texture>textures/moln.png</texture>
+		<size width="128" height="128"/>
+		<pos x="0" y="100" z="0"/>
+	</plane>
 
-  <plane>
-    <texture>textures/berg.png</texture>
-    <size width="512" height="128"/>
-    <pos x="-256" y="128" z="-256"/>
-    <rot x="90" y="0" z="0"/>
-  </plane>
-  <plane>
-    <texture>textures/berg.png</texture>
-    <size width="512" height="128"/>
-    <pos x="256" y="128" z="-256"/>
-    <rot x="90" y="0" z="90"/>
-  </plane>
-  <plane>
-    <texture>textures/berg.png</texture>
-    <size width="512" height="128"/>
-    <pos x="256" y="128" z="256"/>
-    <rot x="90" y="0" z="180"/>
-  </plane>
-  <plane>
-    <texture>textures/berg.png</texture>
-    <size width="512" height="128"/>
-    <pos x="-256" y="128" z="256"/>
-    <rot x="90" y="0" z="270"/>
-  </plane>
-  <plane>
-    <texture>textures/moln.png</texture>
-    <size width="128" height="128"/>
-    <pos x="0" y="100" z="0"/>
-  </plane>
-
-  
+	
 	<model>
 	</model>
-  
+	
 	<billboard>
-			<texture>textures/tree.png</texture>
-			<size x="2.5" z="2.5"/>
-			<mult count="1000" seed="4124" />
-      <mask name="water2" />
-  </billboard>
-  <billboard>
-			<texture>textures/tree2.png</texture>
-			<size x="2.5" z="2.5"/>
-      <mult count="1000" seed="534534" />
-      <mask name="water" />
-  </billboard>
-  <billboard>
-			<texture>textures/tree3.png</texture>
-			<size x="2.5" y="2.5"/>
-     	<mult count="1000" seed="3132" />
-      <mask name="water" />
-  </billboard>
-  <billboard>
-			<texture>textures/tree4.png</texture>
-			<size x="2.5" z="2.5"/>
-     	<mult count="1000" seed="34" />
-      <mask name="water" />
-  </billboard>
-  <billboard>
-			<texture>textures/flower.png</texture>
-			<size x="0.3" z="0.3"/>
-     	<mult count="1000" seed="345" billboard="yes" />
-      <mask name="water" />
-  </billboard>
-  <billboard>
-			<texture>textures/flower2.png</texture>
-			<size x="0.3" y="0.3"/>
-     	<mult count="1000" seed="756" billboard="yes" />
-      <mask name="water" />
-  </billboard>
-  <billboard>
-			<texture>textures/flower3.png</texture>
-			<size x="0.3" z="0.3"/>
-     	<mult count="1000" seed="868" billboard="yes" />
-      <mask name="water" />
-  </billboard>
-  <billboard>
-			<texture>textures/flower4.png</texture>
-			<size x="0.3" z="0.3"/>
-     	<mult count="1000" seed="6866" billboard="yes" />
-      <mask name="water" />
-  </billboard>
-  <billboard>
-			<texture>textures/flower5.png</texture>
-			<size x="0.3" z="0.3"/>
-     	<mult count="1000" seed="6868" billboard="yes" />
-      <mask name="water" />
-  </billboard>
+		<texture>textures/tree.png</texture>
+		<size x="2.5" z="2.5"/>
+		<mult count="1000" seed="4124" />
+		<animation seed="100"/>
+		<mask name="water2" />
+	</billboard>
+	<billboard>
+		<texture>textures/tree2.png</texture>
+		<size x="2.5" z="2.5"/>
+		<mult count="1000" seed="534534" />
+		<altitude min="0.0" max="10.0" />
+		<mask name="water" />
+	</billboard>
+	<billboard>
+		<texture>textures/tree3.png</texture>
+		<size x="2.5" y="2.5"/>
+		<mult count="1000" seed="3132" />
+		<mask name="water" />
+	</billboard>
+	<billboard>
+		<texture>textures/tree4.png</texture>
+		<size x="2.5" z="2.5"/>
+		<mult count="1000" seed="34" />
+		<mask name="water" />
+	</billboard>
+	<billboard>
+		<texture>textures/flower.png</texture>
+		<size x="0.3" z="0.3"/>
+		<mult count="1000" seed="345" billboard="yes" />
+		<mask name="water" />
+	</billboard>
+	<billboard>
+		<texture>textures/flower2.png</texture>
+		<size x="0.3" y="0.3"/>
+		<mult count="1000" seed="756" billboard="yes" />
+		<mask name="water" />
+	</billboard>
+	<billboard>
+		<texture>textures/flower3.png</texture>
+		<size x="0.3" z="0.3"/>
+		<mult count="1000" seed="868" billboard="yes" />
+		<mask name="water" />
+	</billboard>
+	<billboard>
+		<texture>textures/flower4.png</texture>
+		<size x="0.3" z="0.3"/>
+		<mult count="1000" seed="6866" billboard="yes" />
+		<mask name="water" />
+	</billboard>
+	<billboard>
+		<texture>textures/flower5.png</texture>
+		<size x="0.3" z="0.3"/>
+		<mult count="1000" seed="6868" billboard="yes" />
+		<mask name="water" />
+	</billboard>
 
 	<illustration>
-			<name_artist>Ananaskanin</name_artist>
-			<name_drawing>Ananaskanin</name_drawing>
-      <description>Beskrivning</description>
-			<texture>textures/animal.png</texture>
-			<pos x="0.0" y="0.0" z="-5.0"/>
-			<size x="1.0" z="1.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Smurfhund</name_artist>
-			<name_drawing>Smurfhund</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/animal2.png</texture>
-			<pos x="-20.0" y="0.0" z="-20.0"/>
-			<size x="2.0" z="2.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Flamingo</name_artist>
-			<name_drawing>Flamingo</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/animal3.png</texture>
-			<pos x="34.0" y="0" z="2.0"/>
-			<size x="2.0" z="2.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Megamongo</name_artist>
-			<name_drawing>Megamongo</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/animal4.png</texture>
-			<pos x="10.0" y="0" z="-15.0"/>
-			<size x="1.5" z="1.5"/>
-  </illustration>
-  <illustration>
-			<name_artist>Drakkrokodil</name_artist>
-			<name_drawing>Drakkrokodil</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/animal5.png</texture>
-			<pos x="25.0" y="0" z="15.0"/>
-			<size x="4.0" z="1.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Elefant</name_artist>
-			<name_drawing>Elefant</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/animal6.png</texture>
-			<pos x="35.0" y="0" z="-25.0"/>
-			<size x="6.0" z="3.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Drake</name_artist>
-			<name_drawing>Drake</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal01.png</texture>
-			<pos x="-30.0" y="0" z="30.0"/>
-			<size x="16.0" z="16.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Ödla</name_artist>
-			<name_drawing>Ödla</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal02.png</texture>
-			<pos x="2.0" y="0" z="-10.0"/>
-			<size x="0.4" z="0.4"/>
-  </illustration>
-  <illustration>
-			<name_artist>Häst</name_artist>
-			<name_drawing>Häst</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal03.png</texture>
-			<pos x="-5.0" y="0" z="-25.0"/>
-			<size x="2.8" z="2.8"/>
-  </illustration>
-  <illustration>
-			<name_artist>Dum Dum</name_artist>
-			<name_drawing>Dum Dum</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal04.png</texture>
-			<pos x="10.0" y="0" z="25.0"/>
-			<size x="1.0" z="1.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Häst2</name_artist>
-			<name_drawing>Häst2</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal05.png</texture>
-			<pos x="-7.0" y="0" z="-20.0"/>
-			<size x="1.7" z="1.7"/>
-  </illustration>
-  <illustration>
-			<name_artist>Orm</name_artist>
-			<name_drawing>Orm</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal06.png</texture>
-			<pos x="5.0" y="0" z="-15.0"/>
-			<size x="1.0" z="1.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Troll</name_artist>
-			<name_drawing>Troll</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal07.png</texture>
-			<pos x="-17.0" y="0" z="17.0"/>
-			<size x="1.2" z="1.2"/>
-  </illustration>
-  <illustration>
-			<name_artist>Häst3</name_artist>
-			<name_drawing>Häst3</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal08.png</texture>
-			<pos x="2.0" y="0" z="-15.0"/>
-			<size x="1.6" z="1.6"/>
-  </illustration>
-  <illustration>
-			<name_artist>Mulle</name_artist>
-			<name_drawing>Mulle</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal09.png</texture>
-			<pos x="11.0" y="0" z="17.0"/>
-			<size x="1.0" z="1.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Björn</name_artist>
-			<name_drawing>Björn</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal10.png</texture>
-			<pos x="-30.0" y="0" z="15.0"/>
-			<size x="2.0" z="2.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Häst4</name_artist>
-			<name_drawing>Häst4</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal11.png</texture>
-			<pos x="-24.0" y="0" z="15.0"/>
-			<size x="1.8" z="1.8"/>
-  </illustration>
-  <illustration>
-			<name_artist>Mus</name_artist>
-			<name_drawing>Mus</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal12.png</texture>
-			<pos x="-13.85" y="0" z="24.46"/>
-			<size x="0.4" z="0.4"/>
-  </illustration>
-  <illustration>
-			<name_artist>Elefant2</name_artist>
-			<name_drawing>Elefant2</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal13.png</texture>
-			<pos x="-21.76" y="0" z="-30.72"/>
-			<size x="1.8" z="1.8"/>
-  </illustration>
-  <illustration>
-			<name_artist>Björn2</name_artist>
-			<name_drawing>Björn2</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal14.png</texture>
-			<pos x="-33.25" y="0" z="-19.30"/>
-			<size x="0.6" z="0.6"/>
-  </illustration>
-  <illustration>
-			<name_artist>Sköldpadda</name_artist>
-			<name_drawing>Sköldpadda</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal15.png</texture>
-			<pos x="30.68" y="0" z="-3.15"/>
-			<size x="0.3" z="0.3"/>
-  </illustration>
-  <illustration>
-			<name_artist>Sköldpadda2</name_artist>
-			<name_drawing>Sköldpadda2</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal16.png</texture>
-			<pos x="1.0" y="0" z="-2.0"/>
-			<size x="0.4" z="0.4"/>
-  </illustration>
-  <illustration>
-			<name_artist>Stor Noss</name_artist>
-			<name_drawing>Stor Noss</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal17.png</texture>
-			<pos x="-28.11" y="0" z="-11.21"/>
-			<size x="0.6" z="0.6"/>
-  </illustration>
-  <illustration>
-			<name_artist>Loppan</name_artist>
-			<name_drawing>Loppan</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal18.png</texture>
-			<pos x="6.61" y="0" z="6.90"/>
-			<size x="0.16" z="0.16"/>
-  </illustration>
-  <illustration>
-			<name_artist>Mus2</name_artist>
-			<name_drawing>Mus2</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal19.png</texture>
-			<pos x="-14.38" y="0" z="-16.86"/>
-			<size x="0.3" z="0.3"/>
-  </illustration>
-  <illustration>
-			<name_artist>Grodyngel</name_artist>
-			<name_drawing>Grodyngel</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal20.png</texture>
-			<pos x="40.30" y="0" z="16.49"/>
-			<size x="0.3" z="0.3"/>
-  </illustration>
-  <illustration>
-			<name_artist>Räv</name_artist>
-			<name_drawing>Räv</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal21.png</texture>
-			<pos x="8.50" y="0" z="-21.36"/>
-			<size x="1.6" z="1.6"/>
-  </illustration>
-  <illustration>
-			<name_artist>Vattenman</name_artist>
-			<name_drawing>Vattenman</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal22.png</texture>
-			<pos x="27.35" y="0" z="28.76"/>
-			<size x="1.6" z="1.6"/>
-  </illustration>
-  <illustration>
-			<name_artist>Gramlin</name_artist>
-			<name_drawing>Gramlin</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal23.png</texture>
-			<pos x="-9.15" y="0" z="4.56"/>
-			<size x="3.0" z="3.0"/>
-  </illustration>
-  <illustration>
-			<name_artist>Mus3</name_artist>
-			<name_drawing>Mus3</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal24.png</texture>
-			<pos x="-1.45" y="0" z="-13.98"/>
-			<size x="0.3" z="0.3"/>
-  </illustration>
-  <illustration>
-			<name_artist>Rävunge</name_artist>
-			<name_drawing>Rävunge</name_drawing>
-      	  	<description>Beskrivning</description>
-			<texture>textures/dagsberg/animal25.png</texture>
-			<pos x="-13.38" y="0" z="-8.6"/>
-			<size x="0.5" z="0.5"/>
-  </illustration>
-  
+		<name_artist>Ananaskanin</name_artist>
+		<name_drawing>Ananaskanin</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/animal.png</texture>
+		<pos x="0.0" y="0.0" z="-5.0"/>
+		<size x="1.0" z="1.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Smurfhund</name_artist>
+		<name_drawing>Smurfhund</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/animal2.png</texture>
+		<pos x="-20.0" y="0.0" z="-20.0"/>
+		<size x="2.0" z="2.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Flamingo</name_artist>
+		<name_drawing>Flamingo</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/animal3.png</texture>
+		<pos x="34.0" y="0" z="2.0"/>
+		<size x="2.0" z="2.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Megamongo</name_artist>
+		<name_drawing>Megamongo</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/animal4.png</texture>
+		<pos x="10.0" y="0" z="-15.0"/>
+		<size x="1.5" z="1.5"/>
+	</illustration>
+	<illustration>
+		<name_artist>Drakkrokodil</name_artist>
+		<name_drawing>Drakkrokodil</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/animal5.png</texture>
+		<pos x="25.0" y="0" z="15.0"/>
+		<size x="4.0" z="1.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Elefant</name_artist>
+		<name_drawing>Elefant</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/animal6.png</texture>
+		<pos x="35.0" y="0" z="-25.0"/>
+		<size x="6.0" z="3.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Drake</name_artist>
+		<name_drawing>Drake</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal01.png</texture>
+		<pos x="-30.0" y="0" z="30.0"/>
+		<size x="16.0" z="16.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Ödla</name_artist>
+		<name_drawing>Ödla</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal02.png</texture>
+		<pos x="2.0" y="0" z="-10.0"/>
+		<size x="0.4" z="0.4"/>
+	</illustration>
+	<illustration>
+		<name_artist>Häst</name_artist>
+		<name_drawing>Häst</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal03.png</texture>
+		<pos x="-5.0" y="0" z="-25.0"/>
+		<size x="2.8" z="2.8"/>
+	</illustration>
+	<illustration>
+		<name_artist>Dum Dum</name_artist>
+		<name_drawing>Dum Dum</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal04.png</texture>
+		<pos x="10.0" y="0" z="25.0"/>
+		<size x="1.0" z="1.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Häst2</name_artist>
+		<name_drawing>Häst2</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal05.png</texture>
+		<pos x="-7.0" y="0" z="-20.0"/>
+		<size x="1.7" z="1.7"/>
+	</illustration>
+	<illustration>
+		<name_artist>Orm</name_artist>
+		<name_drawing>Orm</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal06.png</texture>
+		<pos x="5.0" y="0" z="-15.0"/>
+		<size x="1.0" z="1.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Troll</name_artist>
+		<name_drawing>Troll</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal07.png</texture>
+		<pos x="-17.0" y="0" z="17.0"/>
+		<size x="1.2" z="1.2"/>
+	</illustration>
+	<illustration>
+		<name_artist>Häst3</name_artist>
+		<name_drawing>Häst3</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal08.png</texture>
+		<pos x="2.0" y="0" z="-15.0"/>
+		<size x="1.6" z="1.6"/>
+	</illustration>
+	<illustration>
+		<name_artist>Mulle</name_artist>
+		<name_drawing>Mulle</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal09.png</texture>
+		<pos x="11.0" y="0" z="17.0"/>
+		<size x="1.0" z="1.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Björn</name_artist>
+		<name_drawing>Björn</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal10.png</texture>
+		<pos x="-30.0" y="0" z="15.0"/>
+		<size x="2.0" z="2.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Häst4</name_artist>
+		<name_drawing>Häst4</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal11.png</texture>
+		<pos x="-24.0" y="0" z="15.0"/>
+		<size x="1.8" z="1.8"/>
+	</illustration>
+	<illustration>
+		<name_artist>Mus</name_artist>
+		<name_drawing>Mus</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal12.png</texture>
+		<pos x="-13.85" y="0" z="24.46"/>
+		<size x="0.4" z="0.4"/>
+	</illustration>
+	<illustration>
+		<name_artist>Elefant2</name_artist>
+		<name_drawing>Elefant2</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal13.png</texture>
+		<pos x="-21.76" y="0" z="-30.72"/>
+		<size x="1.8" z="1.8"/>
+	</illustration>
+	<illustration>
+		<name_artist>Björn2</name_artist>
+		<name_drawing>Björn2</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal14.png</texture>
+		<pos x="-33.25" y="0" z="-19.30"/>
+		<size x="0.6" z="0.6"/>
+	</illustration>
+	<illustration>
+		<name_artist>Sköldpadda</name_artist>
+		<name_drawing>Sköldpadda</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal15.png</texture>
+		<pos x="30.68" y="0" z="-3.15"/>
+		<size x="0.3" z="0.3"/>
+	</illustration>
+	<illustration>
+		<name_artist>Sköldpadda2</name_artist>
+		<name_drawing>Sköldpadda2</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal16.png</texture>
+		<pos x="1.0" y="0" z="-2.0"/>
+		<size x="0.4" z="0.4"/>
+	</illustration>
+	<illustration>
+		<name_artist>Stor Noss</name_artist>
+		<name_drawing>Stor Noss</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal17.png</texture>
+		<pos x="-28.11" y="0" z="-11.21"/>
+		<size x="0.6" z="0.6"/>
+	</illustration>
+	<illustration>
+		<name_artist>Loppan</name_artist>
+		<name_drawing>Loppan</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal18.png</texture>
+		<pos x="6.61" y="0" z="6.90"/>
+		<size x="0.16" z="0.16"/>
+	</illustration>
+	<illustration>
+		<name_artist>Mus2</name_artist>
+		<name_drawing>Mus2</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal19.png</texture>
+		<pos x="-14.38" y="0" z="-16.86"/>
+		<size x="0.3" z="0.3"/>
+	</illustration>
+	<illustration>
+		<name_artist>Grodyngel</name_artist>
+		<name_drawing>Grodyngel</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal20.png</texture>
+		<pos x="40.30" y="0" z="16.49"/>
+		<size x="0.3" z="0.3"/>
+	</illustration>
+	<illustration>
+		<name_artist>Räv</name_artist>
+		<name_drawing>Räv</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal21.png</texture>
+		<pos x="8.50" y="0" z="-21.36"/>
+		<size x="1.6" z="1.6"/>
+	</illustration>
+	<illustration>
+		<name_artist>Vattenman</name_artist>
+		<name_drawing>Vattenman</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal22.png</texture>
+		<pos x="27.35" y="0" z="28.76"/>
+		<size x="1.6" z="1.6"/>
+	</illustration>
+	<illustration>
+		<name_artist>Gramlin</name_artist>
+		<name_drawing>Gramlin</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal23.png</texture>
+		<pos x="-9.15" y="0" z="4.56"/>
+		<size x="3.0" z="3.0"/>
+	</illustration>
+	<illustration>
+		<name_artist>Mus3</name_artist>
+		<name_drawing>Mus3</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal24.png</texture>
+		<pos x="-1.45" y="0" z="-13.98"/>
+		<size x="0.3" z="0.3"/>
+	</illustration>
+	<illustration>
+		<name_artist>Rävunge</name_artist>
+		<name_drawing>Rävunge</name_drawing>
+		<description>Beskrivning</description>
+		<texture>textures/dagsberg/animal25.png</texture>
+		<pos x="-13.38" y="0" z="-8.6"/>
+		<size x="0.5" z="0.5"/>
+	</illustration>
+	
 </scene>
