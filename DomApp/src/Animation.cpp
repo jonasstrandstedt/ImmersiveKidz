@@ -44,7 +44,8 @@ Animation* Animation::decode(sgct::SharedData *data) {
 	{
 		int duration = data->readInt32();
 		int frame = data->readInt32();
-		return new Jump(duration, frame);
+		float height = data->readFloat();
+		return new Jump(duration, frame, height);
 	} else { //if (type == STRAFE){
 		int duration = data->readInt32();
 		int frame = data->readInt32();
@@ -59,11 +60,13 @@ Animation* Animation::decode(sgct::SharedData *data) {
 *
 * @param	duration		The time for how long the animation will be active
 */
-Jump::Jump(double duration):Animation(duration)
+Jump::Jump(double duration, float height):Animation(duration)
 {
-
+	_height = height;
 }
-Jump::Jump(int duration, int frame):Animation(duration,frame) {
+Jump::Jump(int duration, int frame, float height):Animation(duration,frame) 
+{
+	_height = height;
 }
 
 /**
@@ -74,7 +77,7 @@ Jump::Jump(int duration, int frame):Animation(duration,frame) {
 */
 void Jump::doAnimate()
 {
-	glTranslatef(0.0f,fabsf(sin((_frame*3.14)/_duration))*0.5,0.0f);
+	glTranslatef(0.0f,fabsf(sin((_frame*3.14)/_duration))*_height,0.0f);
 }
 
 /**
@@ -86,6 +89,7 @@ void Jump::encode(sgct::SharedData *data)
 	data->writeInt32(JUMP);
 	data->writeInt32(_duration);
 	data->writeInt32(_frame);
+	data->writeFloat(_height);
 }
 
 /**

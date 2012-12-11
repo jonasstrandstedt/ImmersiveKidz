@@ -218,7 +218,7 @@ void ImmersiveKidz::decode()
 	_loader.decode(sgct::SharedData::Instance());
 	_camera->decode(sgct::SharedData::Instance());
 
-	int counter = sgct::SharedData::Instance()->readInt32();	
+	unsigned int counter = sgct::SharedData::Instance()->readInt32();	
 	for(unsigned int i = 0; i < counter; ++i)
 	{
 		int id = sgct::SharedData::Instance()->readInt32();

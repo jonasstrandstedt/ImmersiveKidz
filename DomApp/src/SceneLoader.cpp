@@ -82,7 +82,7 @@ void SceneLoader::keyboardButton(int key,int state)
 		if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 		
 		if(_selection < 0) _selection = _scenes.size() -1;
-		if(_selection >= _scenes.size()) _selection = 0;
+		if(_selection >=  static_cast<int>(_scenes.size())) _selection = 0;
 		
 
 		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
@@ -113,7 +113,7 @@ void SceneLoader::menu()
 		for(unsigned int i = 0; i < _scenes.size(); i++) 
 		{
 		
-			if(i == _selection) 
+			if(i == (unsigned int) _selection) 
 			{
 				glColor3f(1.0f,0.0f,0.0f);
 			} else 
@@ -452,16 +452,16 @@ int SceneLoader::loadScene()
 						mask = maskElement->Attribute( "name" );
 						if ( _mask.count(mask) == 0 ) mask = "default";
 					}
-					bool billboard = false;
+					bool bool_billboard = false;
 					const char* bb = multElement->Attribute( "billboard" );
 					if(bb) 
 					{
 						std::string bbstring = bb;
-						if(bbstring == "yes") billboard = true;
+						if(bbstring == "yes") bool_billboard = true;
 					}
 
 
-					ImmersiveKidz::getInstance()->addDrawableObject(new BatchBillboard(scenePath + texture, &_mask[mask], seed, count, glm::vec2(sizex , sizey), billboard), animation, animseed);
+					ImmersiveKidz::getInstance()->addDrawableObject(new BatchBillboard(scenePath + texture, &_mask[mask], seed, count, glm::vec2(sizex , sizey), bool_billboard), animation, animseed);
 					
 				}
 				else 
@@ -574,12 +574,12 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
 		int x, y;
 
 		int width, height;
-		png_byte color_type;
-		png_byte bit_depth;
+		//png_byte color_type;
+		//png_byte bit_depth;
 
 		png_structp png_ptr;
 		png_infop info_ptr;
-		int number_of_passes;
+		//int number_of_passes;
 		png_bytep * row_pointers;
         char header[8]; 
 
@@ -587,7 +587,9 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
         FILE *fp = fopen(fileName, "rb");
         if (!fp)
                 return false;
-        fread(header, 1, 8, fp);
+        if(fread(header, 1, 8, fp) == 0)
+           	return false;
+        
         if (png_sig_cmp((png_const_bytep)header, 0, 8))
                 return false;
 
@@ -611,10 +613,10 @@ bool SceneLoader::_createMask(const char* fileName, std::string maskName)
 
         width = png_get_image_width(png_ptr, info_ptr);
         height = png_get_image_height(png_ptr, info_ptr);
-        color_type = png_get_color_type(png_ptr, info_ptr);
-        bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+        //color_type = png_get_color_type(png_ptr, info_ptr);
+        //bit_depth = png_get_bit_depth(png_ptr, info_ptr);
 
-        number_of_passes = png_set_interlace_handling(png_ptr);
+        //number_of_passes = png_set_interlace_handling(png_ptr);
         png_read_update_info(png_ptr, info_ptr);
 
 

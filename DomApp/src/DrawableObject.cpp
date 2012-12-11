@@ -37,7 +37,11 @@ void DrawableObject::draw(double t)
 	{
 		pop = true;
 		glPushMatrix();
-		if ( !(*_animationVector.begin())->animate() ) _animationVector.erase(_animationVector.begin());
+		if ( ! (*_animationVector.begin())->animate() ) 
+		{
+			delete _animationVector[0];
+			_animationVector.erase(_animationVector.begin());
+		}
 	}
 
 	glPushMatrix();
@@ -75,6 +79,12 @@ std::vector<Animation*>* DrawableObject::getAnimations()
 }
 
 void DrawableObject::resetAnimations() {
+
+	for (unsigned int i = 0; i < _animationVector.size(); ++i)
+	{
+		delete _animationVector[i];
+	}
+
 	_animationVector.erase(_animationVector.begin(),_animationVector.end());
 }
 

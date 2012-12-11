@@ -6,10 +6,10 @@ HUD::HUD()
 	_textureMinimap = "minimap";
 	_selection = 0;
 	_offset = 0;
-	_minimapWidth = 150;
-	_minimapHeight = 150;
+	_minimapWidth = 200;
+	_minimapHeight = 200;
 	_zoom = 0.2;
-};
+}
 
 /**
 * @brief 
@@ -46,7 +46,7 @@ void HUD::draw(std::vector<Illustration*> illu)
 void HUD::setTextureMinimap(std::string texture) 
 {
 	_textureMinimap = texture; 
-};
+}
 
 /**
 *@brief	    Draws the names of the painters
@@ -70,7 +70,7 @@ void HUD::_drawIllustrationNames(std::vector<Illustration*> illu)
 	{
 
 		//Set color of menu text
-		if(i == _selection) 
+		if(static_cast<int>(i) == _selection) 
 		{
 			glColor3f(0.0f,0.0f,0.0f);
 		} 
@@ -130,15 +130,15 @@ void HUD::_drawBackgroundToNames()
 
 	//Vertex 1 
 	glTexCoord2d(0.0,0.0);
-	glVertex3f(0 , 150 , 0);
+	glVertex3f(0 , _minimapWidth , 0);
 	
 	//Vertex 2 
 	glTexCoord2d(1.0,0.0);
-	glVertex3f(150 , 150 , 0);
+	glVertex3f(_minimapWidth , _minimapWidth , 0);
 	
 	//Vertex 3 
 	glTexCoord2d(1.0,1.0);
-	glVertex3f(150 , winSizeY , 0);
+	glVertex3f(_minimapWidth , winSizeY , 0);
 	
 	//Vertex 4 
 	glTexCoord2d(0.0,1.0);
@@ -165,8 +165,8 @@ void HUD::_drawMinimapBackground()
 
 	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
 
-	int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
-	int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
+	//int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
+	//int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
 
 	glBegin(GL_QUADS);
 	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
@@ -215,7 +215,7 @@ void HUD::_drawMinimapBackground()
 void HUD::_drawMinimap(std::vector<Illustration*> illu)
 {
 	
-	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
+	//glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	glm::vec3 camPosition = ImmersiveKidz::getInstance()->getCamera()->getPosition();
 	glm::vec2 camRotation = ImmersiveKidz::getInstance()->getCamera()->getRotation();
 
@@ -253,7 +253,7 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	//Draw illustrations on minimap
 	for(unsigned int i = 0; i < illu.size(); i++)
 	{
-		if(i == _selection)
+		if(static_cast<int>(i) == _selection)
 		{
 			glColor3f( 0.0f, 0.0f, 1.0f);	
 		}else if(illu[i]->getSeen())
@@ -325,11 +325,12 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 		if(key == GLFW_KEY_KP_ADD && state == GLFW_PRESS) _zoom = _zoom + 0.1;
 	
 	//Gives the selected illustration a specific animation
-	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1));
-	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Strafe(1));
+	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1.0));
+	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1.0, 1.0));
+	if(key == '3' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Strafe(1));
 
 	if(_selection < 0) _selection = 0;
-	if(_selection >= illu.size()) _selection = illu.size() -1;
+	if(_selection >= static_cast<int>(illu.size())) _selection = illu.size() -1;
 
 	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
 	{

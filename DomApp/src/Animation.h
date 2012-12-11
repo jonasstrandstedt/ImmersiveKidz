@@ -40,10 +40,12 @@ protected:
 class Jump : public Animation
 {
 public:
-	Jump(double duration);
-	Jump(int duration, int frame);
+	Jump(double duration, float height = 0.5);
+	Jump(int duration, int frame, float height = 0.5);
 	virtual void doAnimate();
 	virtual void encode(sgct::SharedData *data);
+private:
+	float _height;
 };
 
 class Strafe : public Animation

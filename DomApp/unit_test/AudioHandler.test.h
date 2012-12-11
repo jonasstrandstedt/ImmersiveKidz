@@ -1,7 +1,7 @@
 #include "../src/AudioHandler.h"
 #include "../src/SoundObject.h"
 
-#include "../src/ImmersiveKidz.h";
+#include "../src/ImmersiveKidz.h"
 
 /**
 * @file CameraTests.h
@@ -18,11 +18,12 @@
 
 TEST (AudioHandler, audiohandler)
 {
-	SoundObject* s = SoundObject::CreateFromFile("boys.wav");
+	SoundObject *s = SoundObject::CreateFromFile("boys.wav");
     SoundObject sound1 = *s;
 	AudioHandler::getInstance()->addSound(SoundObject::CreateFromFile("boys.wav"));
 	s = AudioHandler::getInstance()->getSoundObjectAt(0);
 	SoundObject sound2 = *s;
+
 	EXPECT_EQ(sound1.getSoundObjectBuffer(),sound2.getSoundObjectBuffer());
 	EXPECT_EQ(sound1.getSoundObjectSource(),sound2.getSoundObjectSource());
 	EXPECT_EQ(sound1.getSoundObjectAmbient(),sound2.getSoundObjectAmbient());
