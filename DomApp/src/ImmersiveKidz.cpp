@@ -186,6 +186,25 @@ void ImmersiveKidz::encode()
 
 	_loader.encode(sgct::SharedData::Instance());
 	_camera->encode(sgct::SharedData::Instance());
+	
+	std::vector<Animation*> *animvec;
+	int counter = 0;
+	for(unsigned int i = 0; i < _illustrations.size(); ++i)
+	{
+		animvec = _illustrations.at(i)->getAnimations();
+		if(animvec->size() >0)
+			counter++;
+	}
+
+	sgct::SharedData::Instance()->writeInt32( counter );
+	for(unsigned int i = 0; i < _illustrations.size(); ++i)
+	{
+		animvec = _illustrations.at(i)->getAnimations();
+		if(animvec->size() > 0) {
+			sgct::SharedData::Instance()->writeInt32( i );
+			animvec->at(0)->encode(sgct::SharedData::Instance());
+		}	
+	}
 }
 
 /**
@@ -199,6 +218,13 @@ void ImmersiveKidz::decode()
 	_loader.decode(sgct::SharedData::Instance());
 	_camera->decode(sgct::SharedData::Instance());
 
+	int counter = sgct::SharedData::Instance()->readInt32();	
+	for(unsigned int i = 0; i < counter; ++i)
+	{
+		int id = sgct::SharedData::Instance()->readInt32();
+		_illustrations.at(id)->resetAnimations();
+		_illustrations.at(id)->addAnimation(Animation::decode(sgct::SharedData::Instance()));
+	}
 }
 
 /**
