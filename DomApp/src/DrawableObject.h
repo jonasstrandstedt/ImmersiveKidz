@@ -35,6 +35,10 @@ public:
 
 	// Add temporary animation
 	void addAnimation(Animation *type);
+	
+	std::vector<Animation*> *getAnimations();
+	void resetAnimations();
+	void setAnimations(std::vector<Animation*> animations);
 
 private:
 

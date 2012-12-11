@@ -15,33 +15,44 @@
 * @date   	November 29, 2012
 *    
 */
-
 class Animation
 {
 public:
 	Animation(double duration);
+	Animation(int duration, int frame);
 
 	bool animate();
 	virtual void doAnimate() = 0;
+
+	virtual void encode(sgct::SharedData *data) = 0;
+	static Animation* decode(sgct::SharedData *data);
 private:
 	
 protected:
 	int _duration;
 	int _frame;
+	enum Type{
+		JUMP 		= 0,
+		STRAFE
+	};
 };
 
 class Jump : public Animation
 {
 public:
 	Jump(double duration);
+	Jump(int duration, int frame);
 	virtual void doAnimate();
+	virtual void encode(sgct::SharedData *data);
 };
 
 class Strafe : public Animation
 {
 public:
 	Strafe(double duration);
+	Strafe(int duration, int frame);
 	virtual void doAnimate();
+	virtual void encode(sgct::SharedData *data);
 };
 
 #endif

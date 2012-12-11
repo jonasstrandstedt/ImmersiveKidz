@@ -68,6 +68,20 @@ void DrawableObject::addAnimation(Animation *type)
 {
 	_animationVector.push_back(type);
 }
+	
+std::vector<Animation*>* DrawableObject::getAnimations() 
+{
+	return &_animationVector;
+}
+
+void DrawableObject::resetAnimations() {
+	_animationVector.erase(_animationVector.begin(),_animationVector.end());
+}
+
+void DrawableObject::setAnimations(std::vector<Animation*> animations) 
+{
+	_animationVector = animations;
+}
 
 /**
 *@brief	    Sets the animation function by name
