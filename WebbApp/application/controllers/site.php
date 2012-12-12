@@ -425,21 +425,43 @@ class Site extends CI_Controller
 			$this->load->view('sub_info', $data); // Loads the sub_info view, where the user can add information for all the images.
 		}
 		else{ // isset($_POST['next']) Submit form
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'wav|mp3';
+			$config['max_size']	= '0';
 			$counter = 0; // count the number of images.
 			$group_id = $_POST['group_id'];
 			$group = $this->Tables_model->get_group($group_id);
 
 			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
+			$newSound = array();
 			foreach ($idArray as $id) {
+				if(isset($_FILES['soundurl'.$counter]['name']) && ($_FILES['soundurl'.$counter]['name']) != ''){//Change image
+					$soundurl = "uploads/" . $_FILES['soundurl'.$counter]['name'];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else{
+					$soundurl = "";
+				}
+
 				$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
 				$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
 				// Lägg till för type.
 				$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
-				//$soundurl = $_POST['soundurl'.$counter];
-				$soundurl = $_FILES['soundurl'.$counter]['name'];
-				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story);// updates the database for the specific image.
+				//$soundurl = $_FILES['soundurl'.$counter]['name'];
+				$this->Tables_model->update_illustration($id ->id, $artist, $imgname, "", $soundurl, $story);// updates the database for the specific image.
 				$counter ++; // 
 			}
+			// loads the upload library with the config-file.
+			$this->load->library('upload', $config);
+			//exit(print_r($newSound));
+			$data = array();
+			//upload new data to database
+			foreach ($newSound as $inputName) {
+				$this->upload->do_multi_upload($inputName);
+				$temp = $this->upload->get_multi_upload();
+				array_push($data, $temp[0]);
+			}
+
 			echo "<script>window.location.href = 'add_coordinates/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the add_coordinates view with the variable $group_id
 			
 		}
@@ -455,73 +477,6 @@ class Site extends CI_Controller
 	 * @param  string	$group		The group
 	 *	
 	 */ 
-
-	 /*function add_sound(){
-		// Config-file for the upload library.
-		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '10000';
-		$config['max_width']  = '10000';
-		$config['max_height']  = '10000';
-
-		$counter = 0; // count the number of images.
-		$newImages = array();
-		$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
-		
-		//Get new info from form
-		foreach ($idArray as $id) {
-			if(isset($_FILES['imageurl'.$counter]['name']) && ($_FILES['imageurl'.$counter]['name']) != ''){//Change image
-				$replaceimageurl = "uploads/" . $_FILES['imageurl'.$counter]['name'];
-				array_push($newImages, 'imageurl'.$counter);
-			}
-			else{
-				$replaceimageurl = "";
-			}
-			$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
-			$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
-			// Lägg till för type.
-			$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
-			//$soundurl = $_POST['soundurl'.$counter];
-			$soundurl = $_FILES['soundurl'.$counter]['name'];
-			$this->Images_model->update_image($id ->id, $replaceimageurl, "", $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
-				
-			$counter++;
-		}
-		$group = $_POST['group'];
-		$date = $_POST['date'];
-		// loads the upload library with the config-file.
-		$this->load->library('upload', $config);
-		
-		//upload new data to database
-		foreach ($newImages as $inputName) {
-			$this->upload->do_multi_upload($inputName);
-			$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
-			
-		}
-		$this->load->library('ProcessImage'); // loads  the ProcessImage library.
-		$imagesIn = array(); // Array for all the uploaded images.
-
-		for($i = 0; $i < count($data['upload_data']); $i++)// Loop for all images.
-		{ 
-			array_push($imagesIn, "uploads/".$data['upload_data'][$i]['file_name']); // Add an image to the array.
-		}
-
-		$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
-
-		for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
-		{	
-			$id = $idArray[$i];
-			$fileurl = $imagesIn[$i]; // Save the url of the original image
-			$fileouturl = $imagesOut[$i]; // save the url of the processed image.
-			$this->Images_model->update_image($id ->id, $fileurl, $fileouturl, "", "", "", ""); // updates the database for the specific image.
-		}
-
-		echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, reload the page
-
-
-		$this->load->view("site_footer"); // Finally, add the footer.
-
-	 }*/
 
 	function download_info($date = NULL, $group = NULL){
 		$this->load->view("site_header");
@@ -555,8 +510,16 @@ class Site extends CI_Controller
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($row -> id);
 
 				$imgouturl = $this->Tables_model->get_billboard_image($billboard_id[0] -> billboard_id); 
-				$path = $imgouturl[0] -> imgurl; // save the path to the image on the server.
-				$this->zip->read_file($path, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
+				$soundurl = $this->Tables_model->get_illustration_sound($billboard_id[0] -> billboard_id); 
+				$pathimg = $imgouturl[0] -> imgurl; // save the path to the image on the server.
+				if($soundurl[0] -> soundurl != ''){ //if there is a sound
+					$pathsound = $soundurl[0] -> soundurl; // save the path to the image on the server.
+					$newpath = "uploads/out" . substr($pathsound, strrpos($pathsound, "/"));//find name in out folder
+					copy($pathsound, $newpath);//copy sound to out folder
+					$this->zip->read_file($newpath, TRUE);
+				}
+				$this->zip->read_file($pathimg, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
+				
 			}
 
 			$world = $this->Tables_model->get_world($world_id_array[0] -> world_id);

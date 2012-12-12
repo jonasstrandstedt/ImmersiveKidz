@@ -192,6 +192,9 @@ class Create_xml_model extends CI_Model
 
 						/***Description****/
 						$description = xml_add_child($illustration, "description", $image->story);
+						
+						/***Sound****/
+						$sound = xml_add_child($illustration, "sound", substr($image->soundurl, strrpos($image->soundurl, '/')+1));
 
 						/***Postition****/
 						$pos = xml_add_child($illustration, "pos");

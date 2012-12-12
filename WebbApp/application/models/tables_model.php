@@ -373,6 +373,20 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_illustration_sound($id) 
+    {
+		$this->db->select("soundurl");
+
+		$this->db->from("illustrations");
+		$where = array( // the id to update
+    				'billboard_id' => $id
+				);
+
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	function get_billboard() 
     {
 		$this->db->select("*");
