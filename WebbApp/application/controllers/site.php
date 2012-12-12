@@ -303,6 +303,7 @@ class Site extends CI_Controller
 			$editId = array();
 			$threshId = array();
 			$thresholdValues = array();
+			$newSound = array();
 			//Get new info from form
 			foreach ($idArray as $id) {
 				if(isset($_FILES['imageurl'.$counter]['name']) && ($_FILES['imageurl'.$counter]['name']) != ''){//Change image
@@ -325,12 +326,23 @@ class Site extends CI_Controller
 					$threshvalue = "5";
 				}
 
+				//sound
+				if(isset($_FILES['soundurl'.$counter]['name']) && ($_FILES['soundurl'.$counter]['name']) != ''){// sound, file input
+					$soundurl = "uploads/" . $_FILES['soundurl'.$counter]['name'];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else if(isset($_POST['soundurl'.$counter]) && ($_POST['soundurl'.$counter]) != ''){// sound, text input
+					$soundurl = "uploads/" . $_POST['soundurl'.$counter];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else{
+					$soundurl = "";
+				}
+
 				$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
 				$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
 				// Lägg till för type.
 				$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
-				//$soundurl = $_POST['soundurl'.$counter];
-				$soundurl = $_FILES['soundurl'.$counter]['name'];
 				//exit(print_r($idArray));
 				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story, intval($threshvalue));  // updates the database for the specific image.
 
@@ -339,6 +351,11 @@ class Site extends CI_Controller
 			
 			// loads the upload library with the config-file.
 			$this->load->library('upload', $config);
+			//upload new sound to database
+			foreach ($newSound as $inputName) {
+				$this->upload->do_multi_upload($inputName);
+				$temp = $this->upload->get_multi_upload();
+			}
 
 			$data = array();
 			//upload new data to database
@@ -435,8 +452,12 @@ class Site extends CI_Controller
 			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
 			$newSound = array();
 			foreach ($idArray as $id) {
-				if(isset($_FILES['soundurl'.$counter]['name']) && ($_FILES['soundurl'.$counter]['name']) != ''){//Change image
+				if(isset($_FILES['soundurl'.$counter]['name']) && ($_FILES['soundurl'.$counter]['name']) != ''){// sound, file input
 					$soundurl = "uploads/" . $_FILES['soundurl'.$counter]['name'];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else if(isset($_POST['soundurl'.$counter]) && ($_POST['soundurl'.$counter]) != ''){// sound, text input
+					$soundurl = "uploads/" . $_POST['soundurl'.$counter];
 					array_push($newSound, 'soundurl'.$counter);
 				}
 				else{
@@ -453,13 +474,10 @@ class Site extends CI_Controller
 			}
 			// loads the upload library with the config-file.
 			$this->load->library('upload', $config);
-			//exit(print_r($newSound));
-			$data = array();
 			//upload new data to database
 			foreach ($newSound as $inputName) {
 				$this->upload->do_multi_upload($inputName);
 				$temp = $this->upload->get_multi_upload();
-				array_push($data, $temp[0]);
 			}
 
 			echo "<script>window.location.href = 'add_coordinates/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the add_coordinates view with the variable $group_id
