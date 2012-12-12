@@ -10,6 +10,7 @@
 */
 
 $textureUrl =  base_url() . $plane -> textureurl;
+$axisUrl = base_url(). "styles/images/axis.png";
 $plane_pos_x = $plane -> pos_x;
 $plane_pos_z = $plane -> pos_z;
 $plane_width = $plane -> width;
@@ -127,6 +128,7 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater för alla 
 
 	
 var planeTexture = new Image();
+var axisTexture = new Image();
 
 
 // then to call it, you would use this
@@ -149,6 +151,7 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 		}
 
 	planeTexture.src = "<?php echo $textureUrl; ?>";
+	axisTexture.src = "<?php echo $axisUrl; ?>";
 
 	   onload = function() {
         var bg = new Kinetic.Image({
@@ -156,8 +159,14 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
           y: 0,
           image: planeTexture
         });
+        var axis = new Kinetic.Image({
+          x: 0,
+          y: 0,
+          image: axisTexture
+        });
 
         layer.add(bg);
+        layer.add(axis);
         drawCircles(circlesCoord);
         drawRectangel();
         stage.add(info);
