@@ -15,7 +15,7 @@
 			<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
 			<div id="world">
 				<label for="world">
-					Namnge din  värld
+					Världnamn
 				</label>
 				<input type="text" name="world" size="20"/>
 			</div>

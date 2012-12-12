@@ -631,7 +631,8 @@ class Site extends CI_Controller
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
 				$billboard_id_vec = $this->Tables_model->add_billboard($fileouturl);
 				$billboard_id = $billboard_id_vec[0] -> id;
-				$this->Tables_model->add_billboard_to_world($world_id, $billboard_id, "", "", "", "", "1", "", "") ;
+				$this->Tables_model->add_billboard_to_world($world_id, $billboard_id, "", "", "", "", "1", "", "normal");
+				$this->Tables_model->add_animation_to_billboard("1", $billboard_id);// updates the database for the specific image.
 			}
 			echo "<script>window.location.href = 'add_object_information/".urlencode($world_name)."';</script>"; // Javascript, loads the add_object_information view with the variables $world_name
 
@@ -667,7 +668,11 @@ class Site extends CI_Controller
 				{
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size_x = $_POST['size_x'.$counter]; // gets the specific size_x
+					$size_y = $_POST['size_y'.$counter]; // gets the specific size_Y
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -710,13 +715,21 @@ class Site extends CI_Controller
 					
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size_x = $_POST['size_x'.$counter]; // gets the specific size_x
+					$size_y = $_POST['size_y'.$counter]; // gets the specific size_Y
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
 				else //save the filled data
 				{
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size_x = $_POST['size_x'.$counter]; // gets the specific size_x
+					$size_y = $_POST['size_y'.$counter]; // gets the specific size_Y
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -750,13 +763,23 @@ class Site extends CI_Controller
 					
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size_x = $_POST['size_x'.$counter]; // gets the specific size_x
+					$size_y = $_POST['size_y'.$counter]; // gets the specific size_Y
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
 				else //save the filled data
 				{
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size_x = $_POST['size_x'.$counter]; // gets the specific size_x
+					$size_y = $_POST['size_y'.$counter]; // gets the specific size_Y
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
+					
+					
 				}
 				$counter ++; 
 			}
@@ -775,23 +798,29 @@ class Site extends CI_Controller
 			$world = $this->Tables_model->get_world_by_name(urldecode($world_name));
 			$world_id = $world[0]->id;
 			$billboards = $this->Tables_model->get_billboards_from_billboard_world($world_id); // Get all billboards from a specific world.
+			$animations = $this->Tables_model->get_animation();
 			$outImagesArray = array();
+			$animation_billboardArray = array();
 			foreach($billboards as $billboard)
 			{
 				$billboard_id = $billboard->billboard_id;
+				$animation_billboard = $this->Tables_model->get_animations_from_billboard_animation($billboard_id);
 				$billboard_image = $billboard->imgurl; 
+				array_push($animation_billboardArray, $animation_billboard);
 				array_push($outImagesArray, $billboard_image);
 			}
 
 			$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
 				"billboards" => $billboards,
 				"world_id" => $world_id,
-				"outImages" => $outImagesArray
+				"outImages" => $outImagesArray,
+				"animations" => $animations,
+				"animation_billboard" => $animation_billboardArray
 						);
 			$this->load->view('sub_addobjectinformation', $data); // Loads the sub_addobjectinformation view, where the user can add information for all the images.
 		}else{ // isset($_POST['next']) Submit form
 			$counter = 0; // count the number of images.
-			$world_id = $_POST['world_id'];
+			$world_id = $_POST['world_id'];	
 			$world = $this->Tables_model->get_world($world_id);
 			$world_name = $world[0]->name;
 		
@@ -801,7 +830,11 @@ class Site extends CI_Controller
 			{
 				$quantity = $_POST['quantity'.$counter]; // gets the quantity from form.
 				$type = $_POST['type'.$counter]; // gets the specific type
-				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type);// updates the database for the specific image.
+				$size_x = $_POST['size_x'.$counter]; // gets the specific size_x
+				$size_y = $_POST['size_y'.$counter]; // gets the specific size_Y
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+				$this->Tables_model->update_animation_to_billboard($animation, $id->billboard_id);// updates the database for the specific image.
 				$counter ++; 
 			}
 			echo "<script>window.location.href = 'add_plane/".urlencode($world_name)."';</script>"; // Javascript, loads the add_plane view with the variable $world_name
