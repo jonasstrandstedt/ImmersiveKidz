@@ -169,7 +169,7 @@ class Tables_model extends CI_Model
 	 * @return bool 	
 	 */ 
 
-	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh) 
+	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh = NULL) 
 	{	
 		if($imgurl != ''){
 			$data = array( // what to update

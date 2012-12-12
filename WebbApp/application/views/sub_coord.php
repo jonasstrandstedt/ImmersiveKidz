@@ -4,7 +4,7 @@
 *
 * @details  
 *
-* @author   Viktor FrÃ¶berg, vikfr292@student.liu.se
+* @author   Viktor Fröberg, vikfr292@student.liu.se
 * @date     2012-12-10
 * @version  2.0
 */
@@ -33,11 +33,10 @@ $canvas_height = 500;
 	//transform_y_to_opengl
 	//$y_opengl = $plane_height - $y*($plane_height/$canvas_height) + $plane_pos_z;
 
-
 $images_coord = array();
 
-for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater fÃ¶r alla bilder. 
-	 // lÃ¤gg till en if som kollar om koordinaterna redan Ã¤r bestÃ¤mda i databasen. och om dom ligger utanfÃ¶r width och height.
+for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater för alla bilder. 
+	 // lägg till en if som kollar om koordinaterna redan är bestämda i databasen. och om dom ligger utanför width och height.
 	 if(($illustrations[$i] -> pos_x != NULL & $illustrations[$i] -> pos_z != NULL) ||  ($illustrations[$i] -> pos_x != '' & $illustrations[$i] -> pos_z != '')){
 	 	$x_coord = $illustrations[$i] -> pos_x;
 	 	$z_coord = $illustrations[$i] -> pos_z;
@@ -46,11 +45,10 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater fÃ¶r alla
 	 	$z_coord = mt_rand(0, $plane_height*10)/10 + $plane_pos_z;
 	}
 	//$random_color = 
-	 // Spara gÃ¶r om koordinaterna till samma koordinatsystem som canvasen, sen spara dom i en array.
+	 // Spara gör om koordinaterna till samma koordinatsystem som canvasen, sen spara dom i en array.
 	$coord = array(
 		"x" => ($x_coord - $plane_pos_x)*($canvas_width/$plane_width),
-		"y" => $canvas_height - ($z_coord - $plane_pos_z)*($canvas_height/$plane_height),
-		"imgurl" => $billboards[$i] -> imgurl 
+		"y" => $canvas_height - ($z_coord - $plane_pos_z)*($canvas_height/$plane_height)
 		);
 	$images_coord[$i] = $coord;
 	
@@ -68,6 +66,7 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater fÃ¶r alla
 			echo "<input type='hidden' name='group_id' value='".$group -> id."'>";
 			for($i = 0; $i < sizeof($billboards); $i++){
 				echo "<input type='hidden' name='image".$i."_x' value=''>";
+				echo "<input type='hidden' name='image".$i."_y' value='0.0'>";
 				echo "<input type='hidden' name='image".$i."_z' value=''>";
 			}
 			?>
@@ -77,34 +76,81 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater fÃ¶r alla
 	</form>
 	</div>
 <script >
-	
+
+
+
 	var stage = new Kinetic.Stage({
         container: 'plane',
-        width: <?php echo $canvas_width;?>,
+        width: <?php echo 2*$canvas_width;?>,
         height: <?php echo $canvas_height;?>,
       });
-	var layer = new Kinetic.Layer();
+	var layer = new Kinetic.Layer({
+		width: <?php echo $canvas_width;?>,
+		height: <?php echo $canvas_height;?>,
+	});
+	var info = new Kinetic.Layer({
+		width: <?php echo $canvas_width;?>,
+		height: <?php echo $canvas_height/2;?>,
+		offset: (<?php echo $canvas_width;?>, 0)
+	});
+	var imageInfo = new Kinetic.Layer({
+		width: <?php echo $canvas_width;?>,
+		height: <?php echo $canvas_height/2;?>,
+		offset: (<?php echo $canvas_width;?>, 0)
+	});
 	var circleList = [];
 	
 
 	var circlesCoord = [<?php
 		$counter = 0;
 	 foreach ($images_coord as $xy_coord) {
-		echo "{x: ".$xy_coord["x"].", y: ".$xy_coord["y"].", radius: 6, fill: 'red' , draggable: true, id: '".$counter."'},";
+		echo "{x: ".$xy_coord["x"].", y: ".$xy_coord["y"].", radius: 6, fill: 'red' , draggable: true, id: ".$counter."},";
 			$counter++;
 			} 
 
-			?>]; // SKapa en javascript array Ã¶ver alla coordinater, radius:6 Ã¤r radien pÃ¥ cirkeln, id: Ã¤r cirkelns id.
-	
-	var circleList; // Array fÃ¶r alla cirklar
-	
+			?>]; // SKapa en javascript array över alla coordinater, radius:6 är radien på cirkeln, id: är cirkelns id.
+		
+	var illustrationsJS = [<?php
+		$counter = 0;
+	 foreach ($illustrations as $illustration) {
+		echo"['".$illustration -> artist."','".$illustration -> imgname."']," ;
+			$counter++;
+			} 
+
+			?>];
+
+
+
+	var circleList; // Array för alla cirklar
 	
 
+
 	
-	var planeTexture = new Image();
+var planeTexture = new Image();
+
+
+// then to call it, you would use this
+var imageSrcs = [<?php 
+echo "'".base_url().$billboards[0] -> imgurl. "'";
+for($i = 1; $i < sizeof($billboards); $i++){
+echo ",'".base_url().$billboards[$i] -> imgurl."'";
+}
+?>];
+
+	var images = [];
+
+    for (var i = 0; i < imageSrcs.length; i++) {
+
+	        var tempImg = new Image();
+
+	        tempImg.src = imageSrcs[i];
+	        images.push(tempImg);
+
+		}
+
 	planeTexture.src = "<?php echo $textureUrl; ?>";
 
-	   planeTexture.onload = function() {
+	   onload = function() {
         var bg = new Kinetic.Image({
           x: 0,
           y: 0,
@@ -113,7 +159,11 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater fÃ¶r alla
 
         layer.add(bg);
         drawCircles(circlesCoord);
+        drawRectangel();
+        stage.add(info);
+        stage.add(imageInfo);
         stage.add(layer);
+        
     }
 
 	function drawCircles(circles){
@@ -123,16 +173,161 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater fÃ¶r alla
 
 			circleList[i].on("mouseover", function(){
                document.body.style.cursor = "pointer";
-             //  console.log(circleList[i].getPosition().x);
             });
 
             circleList[i].on("mouseout", function(){
                 document.body.style.cursor = "default";
             });
+            circleList[i].on("mousedown", function(){
+            	/// FUNGERAR INTE!!!!!!!!
+            	//var url = stage.get('#imageFrame')[0];
+            	//url.image = images[i];
+            	<?php echo "circleList[0].getPosition().x *" . $plane_width/$canvas_width." + " .$plane_pos_x.";";?>
+
+            	var img = imageInfo.get("#imageFrame")[0];
+            	var imgName = imageInfo.get("#image_name")[0];
+            	var x_temp = imageInfo.get("#image_x")[0];
+            	var z_temp = imageInfo.get("#image_z")[0];
+
+		 		img.setAttrs({
+		 			x: <?php echo $canvas_width + 30;?>,
+		 				y: 120,
+		 				width: 100,
+		 				height: 100,
+		 				image: images[this.attrs.id],
+		 		});
+		 		imgName.setAttrs({
+		 			text: illustrationsJS[this.attrs.id][0] + 's ' + illustrationsJS[this.attrs.id][1],
+		 		})
+		 		var x = <?php echo "circleList[this.attrs.id].getPosition().x *" . $plane_width/$canvas_width." + " .$plane_pos_x.";";?>
+		 		
+		 		x_temp.setAttrs({
+		 			text: 'x: ' + x.toFixed(1), 
+		 		});
+		 		var z = <?php echo $plane_height." - circleList[this.attrs.id].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";?>
+		 		z_temp.setAttrs({
+		 			text: 'z: ' + z.toFixed(1), 
+		 		});
+		 		console.log(this.attrs.id);
+		 		imageInfo.draw();
+            });
+		
 
 			layer.add(circleList[i]);
 		}
 
+	}
+	function drawRectangel(){
+		var rectWorld = new Kinetic.Rect({
+        x: <?php echo $canvas_width;?>,
+        y: 0,
+        width: <?php echo $canvas_width;?>,
+        height: 100,
+      });
+		var line = new Kinetic.Rect({
+			x: <?php echo $canvas_width;?>,
+			y: 99,
+			width: <?php echo $canvas_width;?>,
+			height: 2,
+			fill: 'gray'
+		})
+		var rectIllustration = new Kinetic.Rect({
+        x: <?php echo $canvas_width;?>,
+        y: 100,
+        width: <?php echo $canvas_width;?>,
+        height: <?php echo $canvas_width - 100;?>
+      });
+		info.add(rectWorld);
+		
+
+		 var world = new Kinetic.Text({
+		 	x: <?php echo $canvas_width;?>,
+		 	y: 10,
+		 	width: <?php echo $canvas_width;?>,
+		 	fontFamily:'Arial',
+		 	align: 'center',
+		 	text: '<?php echo $world -> name;?>',
+		 	textFill: '#fff',
+		 	fontSize: 20
+
+
+		 });
+		 var groupDate = new Kinetic.Text({
+		 	x: <?php echo $canvas_width;?>,
+		 	y: 40,
+		 	width: <?php echo $canvas_width;?>,
+		 	fontFamily:'Arial',
+		 	align: 'center',
+		 	text: '<?php echo $group -> name ." - ". $group -> date;?>',
+		 	textFill: '#fff',
+		 	fontSize: 14
+		 })
+		 var mapSize = new Kinetic.Text({
+		 	x: <?php echo $canvas_width;?>,
+		 	y: 65,
+		 	width: <?php echo $canvas_width;?>,
+		 	fontFamily:'Arial',
+		 	align: 'center',
+		 	text: 'Storlek på världen: <?php echo"(". $plane_width  ." , ". $plane_height . ")";?>',
+		 	textFill: '#fff',
+		 	fontSize: 12
+		 })
+
+	       var image = new Kinetic.Image({
+					x: <?php echo $canvas_width + 30;?>,
+					y: 120,
+					width: 100,
+					height: 100,
+					image: images[0],
+					id: 'imageFrame'
+			});
+	       var imageName = new Kinetic.Text({
+		 	x: <?php echo $canvas_width + 90;?>,
+		 	y: 120,
+		 	width: <?php echo $canvas_width - 160;?>,
+		 	fontFamily:'Arial',
+		 	align: 'center',
+		 	text: illustrationsJS[0][0] + 's ' + illustrationsJS[0][1],
+		 	textFill: '#fff',
+		 	fontSize: 16,
+		 	id: 'image_name'
+		 })
+	       
+	       
+	       var x = <?php echo "circleList[0].getPosition().x *" . $plane_width/$canvas_width." + " .$plane_pos_x.";";?>
+	       var x_text = new Kinetic.Text({
+		 	x: <?php echo $canvas_width + 160;?>,
+		 	y: 150,
+		 	width: <?php echo $canvas_width - 160;?>,
+		 	fontFamily:'Arial',
+		 	align: 'left',
+		 	text: 'x: ' + x.toFixed(1),
+		 	textFill: '#fff',
+		 	fontSize: 14,
+		 	id: 'image_x'
+		 })
+	       var z = <?php echo $plane_height." - circleList[0].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";?>
+	       var z_text = new Kinetic.Text({
+		 	x: <?php echo $canvas_width + 160;?>,
+		 	y: 180,
+		 	width: <?php echo $canvas_width - 160;?>,
+		 	fontFamily:'Arial',
+		 	align: 'left',
+		 	text: 'z: ' + z.toFixed(1),
+		 	textFill: '#fff',
+		 	fontSize: 14,
+		 	id: 'image_z'
+		 })
+
+		 info.add(world);
+		 info.add(groupDate);
+		 info.add(mapSize);
+		 imageInfo.add(rectIllustration);
+		 imageInfo.add(line);
+		 imageInfo.add(image);
+		 imageInfo.add(imageName);
+		 imageInfo.add(x_text);
+		 imageInfo.add(z_text);
 	}
 	function setValues(){
 		<?php for($i = 0; $i < sizeof($billboards); $i++){
