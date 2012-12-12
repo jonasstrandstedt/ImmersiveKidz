@@ -169,7 +169,7 @@ class Tables_model extends CI_Model
 	 * @return bool 	
 	 */ 
 
-	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh) 
+	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh = NULL) 
 	{	
 		if($imgurl != ''){
 			$data = array( // what to update
@@ -366,6 +366,20 @@ class Tables_model extends CI_Model
 		$this->db->from("billboards");
 		$where = array( // the id to update
     				'id' => $id
+				);
+
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_illustration_sound($id) 
+    {
+		$this->db->select("soundurl");
+
+		$this->db->from("illustrations");
+		$where = array( // the id to update
+    				'billboard_id' => $id
 				);
 
 		$this->db->where($where);
