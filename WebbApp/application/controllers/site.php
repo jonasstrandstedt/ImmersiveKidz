@@ -894,7 +894,7 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-
+		$group = urldecode($group);
 		$this->load->model("Tables_model");
 		if(isset($_POST['submitcoord'])){
 			$group_id = $_POST['group_id'];
