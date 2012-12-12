@@ -144,6 +144,17 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	width: 340px;
 }
 
+#content .hr3{ /*black line under llinks*/
+	border-color: black;
+	opacity:0.44;
+	width: 420px;
+}
+
+#content .hr4{ /* white line under llinks*/
+	opacity:0.2;
+	width: 420px;
+}
+
 #sub{
 	background-color: #302b29;
 	width: 100%;
@@ -167,7 +178,7 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	width:150px;
 	padding: 0 5px;
 }
-.uploadform #group, .uploadform #date{
+.uploadform #group, .uploadform #date, .uploadform #plane{
 	padding: 0px 0px 10px 0;
 }
 
@@ -192,7 +203,6 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	margin: 50px 20px 50px 20px;
 	float:left;
 	width: 300px;
-	
 }
 
 .row label{ 
@@ -214,9 +224,16 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	width: auto;
 }
 
-.row input {
+.row input{
 	color: gray; 
 	width:160px;
+	padding: 0 5px;
+	vertical-align: middle;
+}
+
+.row select{
+	color: gray; 
+	width: 75px;
 	padding: 0 5px;
 	vertical-align: middle;
 }
@@ -229,7 +246,26 @@ padding: 40px 0px 80px 0px;
 }
 
 #button {
-	padding: 20px 0px 40px 50px;	 
+	padding: 20px 0px 40px 50px;  /* verkar inte göra något? */
+}
+.button {
+	padding: 0px 0px 20px 0px; 
+	height: 10px;
+		margin-bottom: 10px;
+}
+
+.button .hrbutton1{ /*black line under buttons*/
+	border-color: black;
+	margin: 0 auto;
+	opacity:0.44;
+	width: 90%;
+	margin-top: 10px;
+}
+
+.button .hrbutton2{ /* white line under buttons*/
+	opacity:0.2;
+	width: 90%;
+	margin: 0 auto;
 }
 
 #sub .button{
@@ -255,33 +291,35 @@ height:10px;
 
 }
 #sub .styledRotatePlus {
-	background:#25A6E1;
-	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
-	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#25A6E1',endColorstr='#188BC0',GradientType=0);
-	
-	color:#fff;	
+	-webkit-box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+	-moz-box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+	box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+	background-color:#EEE;
+	border-radius:0;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	border:1px solid #999;
+	color:#666;
+	font-family:'Lucida Grande',Tahoma,Verdana,Arial,Sans-serif;
 	font-size:10px;
-	border:1px solid #1A87B9
+	font-weight:700;
+	padding:2px 6px;
 }
 
 #sub .styledRotateMinus{
-	background:#25A6E1;
-	background:-moz-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#25A6E1),color-stop(100%,#188BC0));
-	background:-webkit-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-o-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:-ms-linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	background:linear-gradient(top,#25A6E1 0%,#188BC0 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#25A6E1',endColorstr='#188BC0',GradientType=0);
-	
-	color:#fff;	
+	-webkit-box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+	-moz-box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+	box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+	background-color:#EEE;
+	border-radius:0;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	border:1px solid #999;
+	color:#666;
+	font-family:'Lucida Grande',Tahoma,Verdana,Arial,Sans-serif;
 	font-size:10px;
-	border:1px solid #1A87B9
+	font-weight:700;
+	padding:2px 6px;
 }
 
 #sub .styledbutton {
@@ -327,6 +365,8 @@ height:10px;
 	display: inline-block;
 	margin-left: 10px;
 }
+
+
 
 #contentAbout{
 	color: white;

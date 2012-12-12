@@ -6,6 +6,6 @@
 		<li><?php echo ">";?></li>
 		<li><?php echo anchor('index.php/site/add_plane', 'Lägg till plan');?></li>
 		</ul>
-		<hr size="1px" class="hr1"> <hr size="1px" class="hr2">
+		<hr size="1px" class="hr3"> <hr size="1px" class="hr4">
 	</div>
 	

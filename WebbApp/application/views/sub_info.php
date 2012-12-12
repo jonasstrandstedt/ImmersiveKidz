@@ -22,8 +22,8 @@
 		<div class='image'><img src='../../../../".$outImages[$column]."' alt='Image' width='90' /> </div>
 		<div class='button'>
 		<button class='styledDeleteButton' type='submit' name='delete' value='".$column."' >X</button>
+		<button class='styledRotateMinus' type='submit' name='rotateminus' value='".$column."' >ROTERA -90&#176;</button>		
 		<button class='styledRotatePlus' type='submit' name='rotateplus' value='".$column."' >ROTERA +90&#176;</button>
-		<button class='styledRotateMinus' type='submit' name='rotateminus' value='".$column."' >ROTERA -90&#176;</button>
 		</div>
 		<label>Konstnär:</label>
 		<input type='text' name='artist".$column."' value='".htmlentities($row -> artist)."' />
