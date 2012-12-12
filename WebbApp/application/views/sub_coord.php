@@ -170,6 +170,16 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 		for(var i = 0; i < circles.length; i++){
 			
 			circleList[i] = new Kinetic.Circle(circles[i]);
+			circleList[i].setAttrs({
+				dragBoundFunc: function(pos) {
+            	 var newY = pos.y > <?php echo $canvas_height - 6;?> ? <?php echo $canvas_height - 6;?> : pos.y;
+            	 var newX = pos.x > <?php echo $canvas_width - 6;?> ? <?php echo $canvas_width - 6;?> : pos.x;
+            	return {
+             	 x: newX,
+             	 y: newY
+            };
+          }
+			})
 
 			circleList[i].on("mouseover", function(){
                document.body.style.cursor = "pointer";
@@ -182,6 +192,8 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
             	/// FUNGERAR INTE!!!!!!!!
             	//var url = stage.get('#imageFrame')[0];
             	//url.image = images[i];
+            	console.log(circleList[0].getPosition().x);
+            	console.log(circleList[0].getPosition().y);
             	<?php echo "circleList[0].getPosition().x *" . $plane_width/$canvas_width." + " .$plane_pos_x.";";?>
 
             	var img = imageInfo.get("#imageFrame")[0];
