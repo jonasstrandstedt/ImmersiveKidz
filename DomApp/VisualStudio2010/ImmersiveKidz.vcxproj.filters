@@ -87,6 +87,9 @@
     <ClCompile Include="..\src\Animation.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SceneLoader+private.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\unit_test\Camera.test.h">

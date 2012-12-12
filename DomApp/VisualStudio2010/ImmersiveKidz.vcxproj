@@ -60,6 +60,7 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Model.cpp" />
     <ClCompile Include="..\src\Plane.cpp" />
+    <ClCompile Include="..\src\SceneLoader+private.cpp" />
     <ClCompile Include="..\src\SceneLoader.cpp" />
     <ClCompile Include="..\src\Skybox.cpp" />
     <ClCompile Include="..\src\SoundObject.cpp" />
