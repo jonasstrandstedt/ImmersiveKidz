@@ -1041,6 +1041,7 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
+		$this->load->view("content_create");
 		$group = urldecode($group);
 		$this->load->model("Tables_model");
 		if(isset($_POST['submitcoord'])){
@@ -1082,6 +1083,12 @@ class Site extends CI_Controller
 
 		
 		$this->load->view("sub_coord", $data);
+		}else{ // Let the user choose group.
+			$info = $this->Tables_model->get_all_groups();	// gets an array of all the groups.
+			
+			$data = array( // Makes an array of the array, so that the content_download view gets an array as variabel.
+				"info" => $info);
+			$this->load->view("content_coord", $data);
 		}
 
 		$this->load->view("site_footer");
