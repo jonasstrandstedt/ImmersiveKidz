@@ -19,18 +19,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\Shaders\BatchBillboard_still.frag">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\data\Shaders\BatchBillboard_still.vert">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\data\Shaders\BatchBillboard_turn.frag">
-      <Filter>glsl</Filter>
-    </None>
-    <None Include="..\data\Shaders\BatchBillboard_turn.vert">
-      <Filter>glsl</Filter>
-    </None>
     <None Include="..\data\Shaders\SingleBillboard.frag">
       <Filter>glsl</Filter>
     </None>
@@ -39,9 +27,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\BatchBillboard.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Billboard.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -90,13 +75,13 @@
     <ClCompile Include="..\src\SceneLoader+private.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\MultObject.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\unit_test\Camera.test.h">
       <Filter>tests</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BatchBillboard.h">
-      <Filter>h</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Billboard.h">
       <Filter>h</Filter>
@@ -148,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="..\unit_test\Illustration.test.h">
       <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MultObject.h">
+      <Filter>h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
