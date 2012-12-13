@@ -138,10 +138,7 @@ class Tables_model extends CI_Model
 				   'soundurl' => $soundurl,
 				   'billboard_id' => $billboard_id,
 				   'group_id' => $group_id,
-				   'story' => $story,
-				   'pos_x' => $pos_x,
-				   'pos_y' => $pos_y,
-				   'pos_z' => $pos_z
+				   'story' => $story
 				);
 				$q = $this->db->insert('illustrations', $data);
 				return $q;

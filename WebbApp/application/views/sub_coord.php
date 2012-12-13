@@ -26,13 +26,13 @@ $canvas_height = 500;
 	//$x_canvas = ($x - $plane_pos_x)*($canvas_width/$plane_width);
 	
 	//transform_y_to_canvas
-	//$y_canvas = $canvas_height - ($y - $plane_pos_z)*($canvas_height/$plane_height);
+	//$y_canvas = ($y - $plane_pos_z)*($canvas_height/$plane_height);
 
 	//transform_x_to_opengl
 	//$x_opengl = $x*($plane_width/$canvas_width) + $plane_pos_x;
 	
 	//transform_y_to_opengl
-	//$y_opengl = $plane_height - $y*($plane_height/$canvas_height) + $plane_pos_z;
+	//$y_opengl = $y*($plane_height/$canvas_height) + $plane_pos_z;
 
 $images_coord = array();
 
@@ -49,7 +49,7 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater för alla 
 	 // Spara gör om koordinaterna till samma koordinatsystem som canvasen, sen spara dom i en array.
 	$coord = array(
 		"x" => ($x_coord - $plane_pos_x)*($canvas_width/$plane_width),
-		"y" => $canvas_height - ($z_coord - $plane_pos_z)*($canvas_height/$plane_height)
+		"y" => ($z_coord - $plane_pos_z)*($canvas_height/$plane_height)
 		);
 	$images_coord[$i] = $coord;
 	
@@ -225,7 +225,7 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 		 		x_temp.setAttrs({
 		 			text: 'x: ' + x.toFixed(1), 
 		 		});
-		 		var z = <?php echo $plane_height." - circleList[this.attrs.id].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";?>
+		 		var z = <?php echo "circleList[this.attrs.id].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";?>
 		 		z_temp.setAttrs({
 		 			text: 'z: ' + z.toFixed(1), 
 		 		});
@@ -327,7 +327,7 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 		 	fontSize: 14,
 		 	id: 'image_x'
 		 })
-	       var z = <?php echo $plane_height." - circleList[0].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";?>
+	       var z = <?php echo "circleList[0].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";?>
 	       var z_text = new Kinetic.Text({
 		 	x: <?php echo $canvas_width + 160;?>,
 		 	y: 180,
@@ -355,7 +355,7 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 
 				echo "document.coordform.image".$i."_x.value = circleList[".$i."].getPosition().x *" . $plane_width/$canvas_width." + " .$plane_pos_x.";";
 				
-				echo "document.coordform.image".$i."_z.value =".$plane_height." - circleList[".$i."].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";
+				echo "document.coordform.image".$i."_z.value = circleList[".$i."].getPosition().y *".$plane_height/$canvas_height." + ".$plane_pos_z.";";
 			
 			}
 			?>
