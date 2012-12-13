@@ -19,17 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\data\Shaders\BatchBillboard_still.frag" />
-    <None Include="..\data\Shaders\BatchBillboard_still.vert" />
-    <None Include="..\data\Shaders\BatchBillboard_turn.frag" />
-    <None Include="..\data\Shaders\BatchBillboard_turn.vert" />
     <None Include="..\data\Shaders\SingleBillboard.frag" />
     <None Include="..\data\Shaders\SingleBillboard.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Animation.h" />
     <ClInclude Include="..\src\AudioHandler.h" />
-    <ClInclude Include="..\src\BatchBillboard.h" />
     <ClInclude Include="..\src\Billboard.h" />
     <ClInclude Include="..\src\Camera.h" />
     <ClInclude Include="..\src\DrawableObject.h" />
@@ -37,6 +32,7 @@
     <ClInclude Include="..\src\Illustration.h" />
     <ClInclude Include="..\src\ImmersiveKidz.h" />
     <ClInclude Include="..\src\Model.h" />
+    <ClInclude Include="..\src\MultObject.h" />
     <ClInclude Include="..\src\Plane.h" />
     <ClInclude Include="..\src\SceneLoader.h" />
     <ClInclude Include="..\src\Skybox.h" />
@@ -50,7 +46,6 @@
   <ItemGroup>
     <ClCompile Include="..\src\Animation.cpp" />
     <ClCompile Include="..\src\AudioHandler.cpp" />
-    <ClCompile Include="..\src\BatchBillboard.cpp" />
     <ClCompile Include="..\src\Billboard.cpp" />
     <ClCompile Include="..\src\Camera.cpp" />
     <ClCompile Include="..\src\DrawableObject.cpp" />
@@ -59,6 +54,7 @@
     <ClCompile Include="..\src\ImmersiveKidz.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Model.cpp" />
+    <ClCompile Include="..\src\MultObject.cpp" />
     <ClCompile Include="..\src\Plane.cpp" />
     <ClCompile Include="..\src\SceneLoader+private.cpp" />
     <ClCompile Include="..\src\SceneLoader.cpp" />
