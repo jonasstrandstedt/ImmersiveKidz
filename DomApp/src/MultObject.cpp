@@ -2,17 +2,18 @@
 #include "ImmersiveKidz.h"
 
 /**
-*@brief	    Constructor to the billboard class
+*@brief	    Constructor to the MultObject class
 *
-*@details	Create a batch of billboards/quads with one texture. The positions for each billboard is randomly generated between pos_min and pos_max.
+*@details	Create a batch of objects with one texture. The positions for 
+*			each object is randomly generated inside the world bounds using the 
+*			specified mask.
 *
-*@param		texturename		Unique name of a texture. Ex: "texture.png".
-*@param		pos_min  		the minimum position on which billboards will be rendered 	   
-*@param		pos_max  	    the maximum position on which billboards will be rendered
+*@param		obj				The object that is multiplied, must have defined vertex and index array
+*@param		mask  			The mask that defines where it is ok to put objects,   
 *@param		seed  			A seed to be used for c++ random function so that it will generate the same random positions each run
-*@param		count  			The number of billboards to create
-*@param		proportionsIn	The proportions of the billboard size according to the world unit length. 
-*@param		billboard		if true each quad will be rotated at each frame so that it faces the camera. If false all billboards will be rendered as two perpendicular quads  
+*@param		count  			The number of objects to create
+*@param		type			The type of multiplications, SINGLE="Instances of one object not rotating to face the camera", BILLBOARD="Single instances facing the camera", DUAL="Two instances with 90 degrees angle between not facing the camera"
+*@param		altitude		Defines the min and max altitude (y-min, y-max) that the objects is randomly distributed.
 */
 MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *mask, int seed, int count, int type, glm::vec2 altitude){
 	_texture = obj->getTexture();
