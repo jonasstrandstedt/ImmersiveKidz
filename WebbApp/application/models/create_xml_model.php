@@ -232,7 +232,7 @@ class Create_xml_model extends CI_Model
 
     function get_xml_file($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world) 
     {
-    	$url = "uploads/out/scene.xml";
+    	$url = "uploads/scene.xml";
     	file_put_contents($url, $this->create_xml($world, $images, $plane, $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world));
 		return $url;
 

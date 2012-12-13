@@ -530,13 +530,15 @@ class Site extends CI_Controller
 				$imgouturl = $this->Tables_model->get_billboard_image($billboard_id[0] -> billboard_id); 
 				$soundurl = $this->Tables_model->get_illustration_sound($billboard_id[0] -> billboard_id); 
 				$pathimg = $imgouturl[0] -> imgurl; // save the path to the image on the server.
+				$newImgpath = "uploads" . substr($pathimg, strrpos($pathimg, "/"));//find name without folder
 				if($soundurl[0] -> soundurl != ''){ //if there is a sound
 					$pathsound = $soundurl[0] -> soundurl; // save the path to the image on the server.
-					$newpath = "uploads/out" . substr($pathsound, strrpos($pathsound, "/"));//find name in out folder
-					copy($pathsound, $newpath);//copy sound to out folder
-					$this->zip->read_file($newpath, TRUE);
+					$newSoundpath = "uploads" . substr($pathsound, strrpos($pathsound, "/"));//find name without folder
+					copy($pathsound, $newSoundpath);//copy sound to  folder
+					$this->zip->read_file($newSoundpath, TRUE);
 				}
-				$this->zip->read_file($pathimg, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
+				copy($pathimg, $newImgpath);//copy sound to folder
+				$this->zip->read_file($newImgpath, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
 				
 			}
 
