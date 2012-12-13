@@ -816,8 +816,17 @@ class Site extends CI_Controller
 				else{
 					$threshvalue = "5";
 				}
+				//save filled values
 				$this->Tables_model->update_billboard_image($id->billboard_id, "", intval($threshvalue));
-				//update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story, intval($threshvalue));  // updates the database for the specific image.
+				$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
+				$type = $_POST['type'.$counter]; // gets the specific type for this billboard
+				$size = $_POST['size'.$counter]; // gets the specific size
+				$scalexy = getimagesize($billboard->imgurl)[0] / getimagesize($billboard->imgurl)[1]; 
+				$size_x = $maxSize*($size/10);
+				$size_y = $size_x*$scalexy;
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+				$this->Tables_model->update_animation_to_billboard($animation, $id->billboard_id);// updates the database for the specific image.
 
 				$counter++;
 			}
