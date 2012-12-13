@@ -31,6 +31,10 @@ echo "<div id='sub'>". form_open_multipart('index.php/site/add_object_informatio
 		<input type='text' name='type".$column."' value='".htmlentities($row -> type)."' />
 		<label>Storlek:</label>
 		<select type='text' name='size".$column."' value='".htmlentities($size)."' >  
+		<label>Tröskelvärde:</label>
+		<input type='range' name='threshold".$column."' min='1' max='10' value='".$row -> thresh."' /><br/>
+		<label>Storlek X:</label>
+		<select type='text' name='size_x".$column."' value='".htmlentities($row -> size_x)."' >  
 		<optgroup label='Vald'></optgroup>
 		<option value='".htmlentities($size)."'> ".htmlentities($size)." </option>
 		<optgroup label='----------'></optgroup>
@@ -50,6 +54,7 @@ echo "<div id='sub'>". form_open_multipart('index.php/site/add_object_informatio
 		<optgroup label='Vald'></optgroup>
 		<option value='".$animation_billboard[$column][0]->animation_id."'>".$animation_billboard[$column][0]->name."</option>
 		<optgroup label='----------'></optgroup>
+
 		";		
 		foreach($animations as $animation)
 		{

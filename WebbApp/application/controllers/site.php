@@ -787,6 +787,97 @@ class Site extends CI_Controller
 			$this->load->view("content_edit_world", $data); // loads the content_edit view, where the user can chose a group to edit.
 		
 		}
+		else if(isset($_POST['update'])){ // else if, update the images.
+			$world_id = $_POST['world_id']; 
+			$world = $this->Tables_model->get_world($world_id);
+			// Config-file for the upload library.
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['max_size']	= '0';
+			$config['max_width']  = '10000';
+			$config['max_height']  = '10000';
+			$counter = 0; // count the number of images.
+			$newImages = array();
+			$idArray = $this->Tables_model->get_billboard_id_from_billboard_world($world_id); // an array with all the id's in the group
+			$editId = array();
+			$threshId = array();
+			$thresholdValues = array();
+			$newSound = array();
+			//Get new info from form
+			foreach ($idArray as $id) {
+
+				//Update threshold
+				if($_POST['threshold'.$counter] != '5' && ($_POST['threshold'.$counter]) != ''){//Change image
+					//exit($_POST['threshold'.$counter]);
+					$threshvalue = $_POST['threshold'.$counter];
+					array_push($thresholdValues, $threshvalue);
+					array_push($threshId, $id->billboard_id);
+				}
+				else{
+					$threshvalue = "5";
+				}
+				$this->Tables_model->update_billboard_image($id->billboard_id, "", intval($threshvalue));
+				//update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story, intval($threshvalue));  // updates the database for the specific image.
+
+				$counter++;
+			}
+			// loads the upload library with the config-file.
+			$this->load->library('upload', $config);
+
+			$data = array();
+			
+			$this->load->library('ProcessImage'); // loads  the ProcessImage library.
+
+			$threshImagesIn = array();
+			foreach ($threshId as $id) {
+				$temp = $this->Tables_model->get_billboard_url_from_id($id);
+				$temp = $temp[0];
+				
+				//recreate url for in image
+				$inimg = $temp->imgurl;
+				$inimg = substr($inimg, strrpos($inimg, "/")+1);
+				$inimg = str_replace("out", "", $inimg);
+				$length = strlen($inimg)-(strlen($inimg)-strrpos($inimg, "."));
+				$inimg = substr($inimg, 0, $length);
+				$inimg = "uploads/" . $inimg; //will give url like "uploads/flower"
+				//find correct file ending
+				if(file_exists($inimg.".jpg")){
+					$inimg = $inimg.".jpg";
+				}
+				else if(file_exists($inimg.".jpeg")){
+					$inimg = $inimg.".jpeg";
+				}
+				else if(file_exists($inimg.".png")){
+					$inimg = $inimg.".png";
+				}
+				else if(file_exists($inimg.".gif")){
+					$inimg = $inimg.".gif";
+				}
+
+				array_push($threshImagesIn, $inimg); // Add an image to the array.
+			}
+			$threshImagesOut = array();
+			$i = 0;
+			foreach ($thresholdValues as $value) {
+				$out = $this->processimage->findDrawing(array($threshImagesIn[$i]), "uploads", $value);
+				$out = $out[0];
+				array_push($threshImagesOut, $out); // Gets an new array with all the processed images. 
+				$i++;
+			}
+			for($i = 0; $i < count($threshImagesIn); $i++) // Loop for all images.
+			{	
+				$billboard_id = $threshId[$i];
+				$fileurl = $threshImagesIn[$i]; // Save the url of the original image
+				//exit($fileurl . $check[$fileurl]);
+				$fileouturl = $threshImagesOut[$i]; // save the url of the processed image.
+				$this->Tables_model->update_billboard_image($billboard_id, $fileouturl);
+			}
+
+			echo "<script>window.location.href = 'add_object_information/".urlencode($world[0] -> name)."';</script>"; // Javascript, reload the page
+
+
+			$this->load->view("site_footer"); // Finally, add the footer.
+		}
 		else if(!isset($_POST['next'])) // if, the user has not submited.
 		{ 		
 			$world = $this->Tables_model->get_world_by_name(urldecode($world_name));

@@ -254,6 +254,16 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_billboard_url_from_id($id) 
+    {
+		$this->db->select("imgurl");
+		$this->db->from("billboards");
+		$where = "`id` = '$id'"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	/* ADD WORLD */
 
 	function add_world($name, $camlim_xpos, $camlim_xmin, $camlim_ypos, $camlim_ymin, $camlim_zpos, $camlim_zmin, $camstart_x, $camstart_y, $camstart_z, $camdir_x, $camdir_y, $camdir_z, $randmin_x, $randmin_y, $randmin_z, $randmax_x, $randmax_y, $randmax_z, $map_id) 
@@ -476,11 +486,24 @@ class Tables_model extends CI_Model
 	}
 	
 	
-	function update_billboard_image($id, $imgurl) 
+	function update_billboard_image($id, $imgurl, $thresh) 
     {
-		$data = array( // what to update
-				   'imgurl' => $imgurl
-				);
+    	if($imgurl != '' && $thresh == ''){
+			$data = array( // what to update
+					   'imgurl' => $imgurl
+					);
+		}
+		else if($imgurl == '' && $thresh != ''){
+			$data = array( // what to update
+						   'thresh' => $thresh
+						);
+		}
+		else{
+			$data = array( // what to update
+						   'imgurl' => $imgurl,
+						   'thresh' => $thresh
+						);
+		}
 
 		$where = array( // the id to update
 			'id' => $id
