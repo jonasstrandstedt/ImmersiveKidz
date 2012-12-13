@@ -338,6 +338,9 @@ class Tables_model extends CI_Model
 				
 				$this->db->select("id");
 				$this->db->from("billboards");
+				$data = array(
+				   'imgurl' => $imgurl
+				);
 				$this->db->where($data);
 				$query = $this->db->get();
 				return $query->result();
@@ -666,6 +669,7 @@ class Tables_model extends CI_Model
 
 	function add_billboard_to_world($world_id, $billboard_id, $mask_id, $pos_x, $pos_y, $pos_z, $mult_count, $mult_seed, $type) 
 	{		
+			$mult_seed = rand(1 , 9999999);
 				$data = array(
 				   'world_id' => $world_id,
 				   'billboard_id' => $billboard_id,
