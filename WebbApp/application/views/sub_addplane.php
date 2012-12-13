@@ -13,8 +13,14 @@
 	<div class='uploadform'>
 		<?php echo form_open_multipart('index.php/site/add_plane');
 			echo "<input type='hidden' name='world_id' value='".$world_id."' />";
-		?>
-			<input class="upload" type="file" name="userfile" size="20" />
+		?>	<label for="uploadPlane">
+		Välj ett plan
+			</label>
+			<input class="upload" type="file" name="uploadPlane" size="20" />
+			<label for="uploadPlane">
+		Välj en mask
+			</label>
+			<input class="upload" type="file" name="uploadMask" size="20" />
 			<div id="plane">
 				<label for="plane">
 					Eller välj ett plan som redan finns

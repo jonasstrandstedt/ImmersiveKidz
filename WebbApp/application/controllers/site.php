@@ -974,16 +974,17 @@ class Site extends CI_Controller
 			);
 			$this->load->view("sub_addplane", $data);
 			
-		}else if(isset($_POST['submitplane']) && isset($_POST['plane']) && $_FILES['userfile']['error'] == 4 ) //if user submited and didnt upload file
+		}else if(isset($_POST['submitplane']) && isset($_POST['plane']) && $_FILES['uploadPlane']['error'] == 4 && $_FILES['uploadMask']['error'] == 4 ) //if user submited and didnt upload file
 		{	
 			$plane_id = $_POST['plane'];
 			$world_id = $_POST['world_id'];
 			$map_id = $this->Tables_model->get_map_id_from_plane($plane_id);
 			$this->Tables_model->update_map_id_world($map_id[0]->id,$world_id);
+			echo "<script>window.location.href = '".base_url()."';</script>";
 		}
 		else if(isset($_POST['submitplane'])) //if user submited and uploaded file
 		{
-			if ( ! $this->upload->do_upload()) //if upload didnt work
+			if ( ! $this->upload->do_upload("uploadPlane")) //if upload didnt work
 			{
 				$error = array('error' => $this->upload->display_errors());
 				print_r($error);
@@ -992,14 +993,28 @@ class Site extends CI_Controller
 			{
 				$data = array('upload_data' => $this->upload->data());
 				$textureurl = "plane/".$data['upload_data']['file_name']; // url to texture
-				$plane_id_vec = $this->Tables_model->add_plane("" ,"", $textureurl, "", "", "", "", "", ""); //returns plane id
+				$width = getimagesize($textureurl)[0];
+				$height = getimagesize($textureurl)[1];
+				$plane_id_vec = $this->Tables_model->add_plane($width ,$height, $textureurl, "", "", "", "", "", ""); //returns plane id
 				$plane_id = $plane_id_vec[0] -> id;
 				$world_id = $_POST['world_id'];
 				
 				$this->Tables_model->add_plane_to_world($plane_id,$world_id);
 				$map_id = $this->Tables_model->add_map("",$plane_id);
 				$this->Tables_model->update_map_id_world($map_id[0]->id,$world_id);
+
+				if ( ! $this->upload->do_upload("uploadMask")) //if upload didnt work
+				{
+					$error = array('error' => $this->upload->display_errors());
+					print_r($error);
+				}else //if upload did work
+				{
+					$dataMask = array('upload_data' => $this->upload->data());
+					$maskurl = "plane/".$dataMask['upload_data']['file_name']; // url to texture
+					$this->Tables_model->add_mask($maskurl, "", $map_id[0]->id);
+				}
 			}
+			echo "<script>window.location.href = '".base_url()."';</script>";
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
 	}
