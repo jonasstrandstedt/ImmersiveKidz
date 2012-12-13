@@ -21,7 +21,6 @@ public:
 	Plane(std::string texture, glm::vec2 size, glm::vec3 position = glm::vec3(0.0,0.0,0.0), glm::vec3 rotation = glm::vec3(0.0,0.0,0.0));
 	void onDraw();
 private:
-	std::string _texture;
 	glm::vec2 _size;
 };
 

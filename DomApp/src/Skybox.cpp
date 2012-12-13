@@ -7,8 +7,131 @@
 *@details Default constructor for skybox, does not do any logic. LoadTextures should be used to add textures to the skybox
 */
 
-Skybox::Skybox(){
+Skybox::Skybox()
+{	
+	_vsize = 4*6;
+	_isize = 6*6;
+	_varray = (Vertex*)malloc(_vsize*sizeof(Vertex));
+	_iarray = (int*)malloc(_isize*sizeof(int));
 
+	int v = 0;
+	int i = 0;
+	//Back Face
+	_varray[0+v].location[0] = 1000;
+	_varray[0+v].location[1] = 1000;
+	_varray[0+v].location[2] = 1000;
+	_varray[1+v].location[0] = -1000;
+	_varray[1+v].location[1] = 1000;
+	_varray[1+v].location[2] = 1000;
+	_varray[2+v].location[0] = -1000;
+	_varray[2+v].location[1] = -1000;
+	_varray[2+v].location[2] = 1000;
+	_varray[3+v].location[0] = 1000;
+	_varray[3+v].location[1] = -1000;
+	_varray[3+v].location[2] = 1000;
+	
+		
+	v+=4;
+	i+=6;
+	//Left face
+	_varray[0+v].location[0] = -1000;
+	_varray[0+v].location[1] = 1000;
+	_varray[0+v].location[2] = 1000;
+	_varray[1+v].location[0] = -1000;
+	_varray[1+v].location[1] = 1000;
+	_varray[1+v].location[2] = -1000;
+	_varray[2+v].location[0] = -1000;
+	_varray[2+v].location[1] = -1000;
+	_varray[2+v].location[2] = -1000;
+	_varray[3+v].location[0] = -1000;
+	_varray[3+v].location[1] = -1000;
+	_varray[3+v].location[2] = 1000;
+	
+	v+=4;
+	i+=6;
+	//Front face
+	_varray[0+v].location[0] = 1000;
+	_varray[0+v].location[1] = 1000;
+	_varray[0+v].location[2] = -1000;
+	_varray[1+v].location[0] = -1000;
+	_varray[1+v].location[1] = 1000;
+	_varray[1+v].location[2] = -1000;
+	_varray[2+v].location[0] = -1000;
+	_varray[2+v].location[1] = -1000;
+	_varray[2+v].location[2] = -1000;
+	_varray[3+v].location[0] = 1000;
+	_varray[3+v].location[1] = -1000;
+	_varray[3+v].location[2] = -1000;
+
+	v+=4;
+	i+=6;
+	//Right face
+	_varray[0+v].location[0] = 1000;
+	_varray[0+v].location[1] = 1000;
+	_varray[0+v].location[2] = -1000;
+	_varray[1+v].location[0] = 1000;
+	_varray[1+v].location[1] = 1000;
+	_varray[1+v].location[2] = 1000;
+	_varray[2+v].location[0] = 1000;
+	_varray[2+v].location[1] = -1000;
+	_varray[2+v].location[2] = 1000;
+	_varray[3+v].location[0] = 1000;
+	_varray[3+v].location[1] = -1000;
+	_varray[3+v].location[2] = -1000;
+	
+	v+=4;
+	i+=6;
+	//Top face
+	_varray[0+v].location[0] = 1000;
+	_varray[0+v].location[1] = 1000;
+	_varray[0+v].location[2] = 1000;
+	_varray[1+v].location[0] = -1000;
+	_varray[1+v].location[1] = 1000;
+	_varray[1+v].location[2] = 1000;
+	_varray[2+v].location[0] = -1000;
+	_varray[2+v].location[1] = 1000;
+	_varray[2+v].location[2] = -1000;
+	_varray[3+v].location[0] = 1000;
+	_varray[3+v].location[1] = 1000;
+	_varray[3+v].location[2] = -1000;
+	
+	v+=4;
+	i+=6;
+	//Bottom face
+	_varray[0+v].location[0] = 1000;
+	_varray[0+v].location[1] = -1000;
+	_varray[0+v].location[2] = 1000;
+	_varray[1+v].location[0] = -1000;
+	_varray[1+v].location[1] = -1000;
+	_varray[1+v].location[2] = 1000;
+	_varray[2+v].location[0] = -1000;
+	_varray[2+v].location[1] = -1000;
+	_varray[2+v].location[2] = -1000;
+	_varray[3+v].location[0] = 1000;
+	_varray[3+v].location[1] = -1000;
+	_varray[3+v].location[2] = -1000;
+	
+	v	= 0;
+	i = 0;
+	for( int k = 0; k < 6; k++) {
+		_varray[0+v].tex[0] = 0;
+		_varray[0+v].tex[1] = 1;
+		_varray[1+v].tex[0] = 1;
+		_varray[1+v].tex[1] = 1;
+		_varray[2+v].tex[0] = 1;
+		_varray[2+v].tex[1] = 0;
+		_varray[3+v].tex[0] = 0;
+		_varray[3+v].tex[1] = 0;
+		_iarray[0+i] = 0+v;
+		_iarray[1+i] = 1+v;
+		_iarray[2+i] = 2+v;
+		_iarray[3+i] = 0+v;
+		_iarray[4+i] = 2+v;
+		_iarray[5+i] = 3+v;
+		
+		v+=4;
+		i+=6;
+	}
 }
 
 /**

@@ -4,6 +4,19 @@
 #include "sgct.h"
 #include "Animation.h"
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+typedef struct
+{
+	GLfloat location[3];
+	GLfloat tex[2];
+	GLfloat normal[3];
+	GLfloat colour[4];
+	GLfloat attribute[3];
+	GLfloat float_attribute;
+	//GLubyte padding[4]; // Pads the struct out to 64 bytes for performance increase
+} Vertex;
+
 // Animation functions
 void bounce(double t, double seed);
 void pendulum(double t, double seed);
@@ -25,28 +38,47 @@ class DrawableObject
 public:
 	//initializers
 	DrawableObject();
-	
-	void setAnimationFunc(void (*f)(double,double), double seed) { _animationFunc = f; _seed = seed;};
-	void setAnimationFuncByName(std::string name, double seed);
+	~DrawableObject();
 
 	// draw functionality
 	void draw(double t);
 	virtual void onDraw() = 0;
+	void drawTriangles();
+	void initVBO();
+	void getArrays(int *isize, int *vsize, Vertex **varray, int **iarray);
+	void resetArrays();
+
+	// permanent animations
+	void setAnimationFunc(void (*f)(double,double), double seed) { _animationFunc = f; _seed = seed;};
+	void setAnimationFuncByName(std::string name, double seed);
 
 	// Add temporary animation
 	void addAnimation(Animation *type);
-	
 	std::vector<Animation*> *getAnimations();
 	void resetAnimations();
-	void setAnimations(std::vector<Animation*> animations);
+
+	std::string getTexture();
 
 private:
 
+	GLuint _vBufferID;
+	GLuint _iBufferID;
+	
 protected:
 	double _seed;
 	void (*_animationFunc)(double, double);
+	void _drawVBO();
 
 	glm::mat4x4 _transform;
+	std::string _texture;
+
+	// arrays with all triangles and indices
+	unsigned int _isize;
+	unsigned int _vsize;
+	Vertex *_varray;
+	int *_iarray;
+    int _attrib_loc;
+    int _float_attrib_loc;
 
 	// Animation vector for temporary animations, e.g. illustrations
 	std::vector<Animation*> _animationVector;

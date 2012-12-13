@@ -287,6 +287,7 @@ int SceneLoader::loadScene()
 		_loadBillboards(scene);
 		_loadIllustrations(scene);
 		
+		ImmersiveKidz::getInstance()->initObjects();
 	}
 	return _selection;
 }
