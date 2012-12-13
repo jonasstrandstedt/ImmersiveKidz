@@ -44,66 +44,72 @@
 		<texture>textures/moln.png</texture>
 		<size width="128" height="128"/>
 		<pos x="0" y="100" z="0"/>
+		<altitude min="102.0" max="100.0" />
+		<mult count="40" type="single" />
 	</plane>
 
 	
-	<model>
-	</model>
+	<models>
+		<filename>box.obj</filename>
+		<texture>EXTRA_LIFE.png</texture>
+		<scale val="0.002"/>
+		<mask name="water" />
+		<mult count="10000" seed="4524" type="single" />
+	</models>
 	
 	<billboard>
 		<texture>textures/tree.png</texture>
-		<size x="2.5" z="2.5"/>
-		<mult count="1000" seed="4124" />
+		<size x="4.5" z="4.5"/>
+		<mult count="1000" seed="4124" type="dual" />
 		<animation seed="100"/>
 		<mask name="water2" />
 	</billboard>
 	<billboard>
 		<texture>textures/tree2.png</texture>
-		<size x="2.5" z="2.5"/>
-		<mult count="1000" seed="534534" />
-		<altitude min="0.0" max="10.0" />
+		<size x="4.5" z="4.5"/>
+		<mult count="1000" seed="534534" type="dual" />
 		<mask name="water" />
 	</billboard>
 	<billboard>
 		<texture>textures/tree3.png</texture>
-		<size x="2.5" y="2.5"/>
-		<mult count="1000" seed="3132" />
+		<size x="4.5" y="4.5"/>
+		<mult count="1000" seed="3132" type="dual" />
 		<mask name="water" />
 	</billboard>
 	<billboard>
 		<texture>textures/tree4.png</texture>
-		<size x="2.5" z="2.5"/>
-		<mult count="1000" seed="34" />
+		<size x="4.5" z="4.5"/>
+		<mult count="1000" seed="34"  type="dual" />
 		<mask name="water" />
 	</billboard>
 	<billboard>
 		<texture>textures/flower.png</texture>
-		<size x="0.3" z="0.3"/>
-		<mult count="1000" seed="345" billboard="yes" />
+		<size x="0.5" z="0.5"/>
+		<mult count="5000" seed="345" type="billboard" />
 		<mask name="water" />
 	</billboard>
 	<billboard>
 		<texture>textures/flower2.png</texture>
-		<size x="0.3" y="0.3"/>
-		<mult count="1000" seed="756" billboard="yes" />
+		<size x="0.5" y="0.5"/>
+		<mult count="5000" seed="756" type="billboard" />
 		<mask name="water" />
 	</billboard>
 	<billboard>
 		<texture>textures/flower3.png</texture>
-		<size x="0.3" z="0.3"/>
-		<mult count="1000" seed="868" billboard="yes" />
+		<size x="0.5" z="0.5"/>
+		<mult count="5000" seed="868" type="billboard" />
 		<mask name="water" />
 	</billboard>
 	<billboard>
 		<texture>textures/flower4.png</texture>
-		<size x="0.3" z="0.3"/>
-		<mult count="1000" seed="6866" billboard="yes" />
+		<size x="0.5" z="0.5"/>
+		<mult count="5000" seed="6866" type="billboard" />
 		<mask name="water" />
 	</billboard>
 	<billboard>
 		<texture>textures/flower5.png</texture>
-		<size x="0.3" z="0.3"/>
-		<mult count="1000" seed="6868" billboard="yes" />
+		<size x="0.5" z="0.5"/>
+		<mult count="5000" seed="6868" type="billboard" />
 		<mask name="water" />
 	</billboard>
 

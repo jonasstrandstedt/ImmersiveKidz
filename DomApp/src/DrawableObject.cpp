@@ -1,4 +1,5 @@
 #include "DrawableObject.h"
+#include "ImmersiveKidz.h"
 
 /**
 *@brief	    DrawableObject default constructor
@@ -11,8 +12,145 @@ DrawableObject::DrawableObject()
 	_seed = 0;
 	
 	_transform = glm::mat4x4();
+
+	_isize = 0;
+	_vsize = 0;
+	_iarray = NULL;
+	_varray = NULL;
+	_attrib_loc = -1;
+	_float_attrib_loc = -1;
 }
 
+DrawableObject::~DrawableObject()
+{
+	resetArrays();
+}
+
+void DrawableObject::drawTriangles() 
+{
+	if(_varray != NULL && _iarray != NULL)
+	{
+		for (int i = 0; i < _isize; ++i)
+		{
+			Vertex v = _varray[_iarray[i]];
+			glTexCoord2f(v.tex[0],v.tex[1]);     
+			//glNormal3f(v.normal[0],v.normal[1],v.normal[2]);
+			glVertex3f(v.location[0],v.location[1],v.location[2]);
+		}
+	}
+}
+
+/**
+*@brief	    Initialize the model vertex buffer object
+*
+*@return     void
+*/
+void DrawableObject::initVBO()
+{
+	ImmersiveKidz::getInstance()->loadTexture(_texture);
+	_vBufferID = 0;
+	_iBufferID = 0;
+
+	if(_vsize > 0 && _isize > 0 && _varray != NULL && _iarray != NULL) {
+		glGenBuffers(1, &_vBufferID);
+		glBindBuffer(GL_ARRAY_BUFFER, _vBufferID);
+		glBufferData(GL_ARRAY_BUFFER, _vsize*sizeof(Vertex), _varray, GL_STATIC_DRAW);
+
+		glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(12));
+		glNormalPointer(GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(20));
+		glColorPointer(4, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(32));
+		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
+    	
+    	if (_attrib_loc != -1)
+    	{
+    		glVertexAttribPointer(_attrib_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(48));
+    	}
+    	if (_float_attrib_loc != -1)
+    	{
+    		glVertexAttribPointer(_float_attrib_loc, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(60));
+    	}
+
+		glGenBuffers(1, &_iBufferID);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iBufferID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, _isize*sizeof(int), _iarray, GL_STATIC_DRAW);
+
+		if(_vBufferID == 0)
+		{
+			sgct::MessageHandler::Instance()->print("Vertex buffer not initialized\n");
+		}
+		if(_iBufferID == 0) 
+		{
+			sgct::MessageHandler::Instance()->print("Index buffer not initialized\n");
+		}
+
+	// in case of error, print it
+		GLuint errorID = glGetError();
+		if(errorID != GL_NO_ERROR)
+		{
+			sgct::MessageHandler::Instance()->print(" OpenGL error: ");
+			sgct::MessageHandler::Instance()->print((const char*)gluErrorString(errorID));
+			sgct::MessageHandler::Instance()->print("\nAttempting to proceed anyway. Expect rendering errors or a crash.\n");
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	}
+
+	resetArrays();
+}
+
+void DrawableObject::_drawVBO() {
+	glBindBuffer(GL_ARRAY_BUFFER, _vBufferID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iBufferID);
+
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	if (_attrib_loc != -1)
+	{
+		glEnableVertexAttribArray(_attrib_loc);
+	}
+	if (_float_attrib_loc != -1)
+	{
+		glEnableVertexAttribArray(_float_attrib_loc);
+	}
+
+	    // Resetup our pointers.  This doesn't reinitialise any data, only how we walk through it
+	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(12));
+	glNormalPointer(GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(20));
+	glColorPointer(4, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(32));
+	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
+	if (_attrib_loc != -1)
+	{
+		glVertexAttribPointer(_attrib_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(48));
+	}
+	if (_float_attrib_loc != -1)
+	{
+		glVertexAttribPointer(_float_attrib_loc, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(60));
+	}
+
+	glDrawElements(GL_TRIANGLES, _isize, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+
+void DrawableObject::resetArrays() {
+	if(_varray != NULL && _iarray != NULL)
+	{
+		free(_varray);
+		free(_iarray);
+		_iarray = NULL;
+		_varray = NULL;
+	}
+}
 
 /**
 *@brief	    Animates an object
@@ -47,10 +185,12 @@ void DrawableObject::draw(double t)
 	glPushMatrix();
 	//Appllying the transform matrix
 	glMultMatrixf(glm::value_ptr(_transform));
-	
+
 	// calls the virtual onDraw function.
 	onDraw();
+
 	glPopMatrix();
+
 	// post-animate
 	if ( pop )
 	{
@@ -88,10 +228,6 @@ void DrawableObject::resetAnimations() {
 	_animationVector.erase(_animationVector.begin(),_animationVector.end());
 }
 
-void DrawableObject::setAnimations(std::vector<Animation*> animations) 
-{
-	_animationVector = animations;
-}
 
 /**
 *@brief	    Sets the animation function by name
@@ -107,6 +243,19 @@ void DrawableObject::setAnimationFuncByName(std::string name, double seed)
 	if ( name == "bounce" ) setAnimationFunc(bounce, seed);
 	if ( name == "pendulum" ) setAnimationFunc(pendulum, seed);
 	if ( name == "fly" ) setAnimationFunc(fly, seed);
+}
+
+
+std::string DrawableObject::getTexture() {
+	return _texture;
+}
+
+void DrawableObject::getArrays(int *vsize, int *isize, Vertex **varray, int **iarray) 
+{
+	*isize = _isize;
+	*vsize = _vsize;
+	*varray = _varray;
+	*iarray = _iarray;
 }
 
 /**

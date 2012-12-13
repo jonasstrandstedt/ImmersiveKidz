@@ -13,7 +13,7 @@
 #include "sgct.h"
 #include "tinyxml2.h"
 #include "DrawableObject.h"
-#include "BatchBillboard.h"
+#include "MultObject.h"
 #include "Billboard.h"
 #include "Illustration.h"
 #include "Model.h"
@@ -65,6 +65,7 @@ private:
 	void _loadModels(tinyxml2::XMLElement* parent);
 	void _loadBillboards(tinyxml2::XMLElement* parent);
 	void _loadIllustrations(tinyxml2::XMLElement* parent);
+	void _loadMult(DrawableObject *obj, tinyxml2::XMLElement* multElement);
 };
 
 

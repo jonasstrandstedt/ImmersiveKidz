@@ -10,7 +10,7 @@ OBJECTS ?= src/main.o
 OBJECTS += src/ImmersiveKidz.o
 OBJECTS += src/Model.o
 OBJECTS += src/DrawableObject.o
-OBJECTS += src/Billboard.o src/BatchBillboard.o 
+OBJECTS += src/Billboard.o
 OBJECTS += src/Illustration.o 
 OBJECTS += src/Camera.o 
 OBJECTS += src/SceneLoader.o 
@@ -21,6 +21,7 @@ OBJECTS += src/Plane.o
 OBJECTS += src/AudioHandler.o 
 OBJECTS += src/SoundObject.o 
 OBJECTS += src/Animation.o
+OBJECTS += src/MultObject.o
 
 OUTPUT ?= Program
 FLAGS ?=

@@ -35,10 +35,9 @@ ImmersiveKidz::ImmersiveKidz()
 void ImmersiveKidz::init()
 {
 	// init shaders
-	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_still", "data/Shaders/BatchBillboard_still.vert", "data/Shaders/BatchBillboard_still.frag" );
-	sgct::ShaderManager::Instance()->addShader( "BatchBillboard_turn", "data/Shaders/BatchBillboard_turn.vert", "data/Shaders/BatchBillboard_turn.frag" );
 	sgct::ShaderManager::Instance()->addShader( "SingleBillboard", "data/Shaders/SingleBillboard.vert", "data/Shaders/SingleBillboard.frag" );
 	sgct::ShaderManager::Instance()->addShader( "Simple", "data/Shaders/Simple.vert", "data/Shaders/Simple.frag" );
+	sgct::ShaderManager::Instance()->addShader( "MultObject", "data/Shaders/MultObject.vert", "data/Shaders/MultObject.frag" );
 
 	//Add font information
 	if( !sgct::FontManager::Instance()->AddFont( "Verdana", "verdana.ttf" ) )
@@ -79,6 +78,7 @@ void ImmersiveKidz::setMaster(bool m)
 ImmersiveKidz::~ImmersiveKidz() 
 {
 	sgct::MessageHandler::Instance()->print("Destroying ImmersiveKidz engine\n");
+	reset();
 	delete _camera;
 }
 
@@ -132,6 +132,16 @@ bool ImmersiveKidz::loadTexture(std::string texture)
 		return sgct::TextureManager::Instance()->loadTexure(texture, texture, true, 4);
 	}
 	return true;
+}
+
+
+void ImmersiveKidz::initObjects() 
+{
+	sgct::MessageHandler::Instance()->print("Initializing all objects\n");
+	for (unsigned int i = 0; i < _objects.size(); ++i)
+	{
+		_objects.at(i)->initVBO();
+	}
 }
 
 /**

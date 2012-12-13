@@ -31,16 +31,15 @@ public:
 	glm::vec3 getPosition();
 
 	void onDraw();
+	void init();
 
 	//For testing
 	//getPosition is above, used in regular program
-	std::string getTexture()	{return _texture;		};
 	glm::vec2 getProportions()	{return _proportions;	};
 
 protected:
 	GLuint _listid;
 	glm::vec3 _position;
-	std::string _texture;
 	glm::vec2 _proportions;
 };
 

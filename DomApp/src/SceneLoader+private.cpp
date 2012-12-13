@@ -60,7 +60,12 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 				}
 
 				ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
-				ImmersiveKidz::getInstance()->addDrawableObject(new Plane(scenePath + texture, glm::vec2(width, height), glm::vec3(x,y,z), glm::vec3(rotx,roty,rotz)), animation, animseed);
+				Plane *obj = new Plane(scenePath + texture, glm::vec2(width, height), glm::vec3(x,y,z), glm::vec3(rotx,roty,rotz));
+				tinyxml2::XMLElement* multElement = plane->FirstChildElement( "mult" );
+				if(multElement)
+					_loadMult(obj,multElement);
+				else 
+					ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
 			}
 		}
 	}
@@ -131,7 +136,13 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 				rotz = rotElement->DoubleAttribute( "z" );
 			}
 
-			ImmersiveKidz::getInstance()->addDrawableObject(new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz)), animation, animseed);
+			ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
+			Model *obj = new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz));
+			tinyxml2::XMLElement* multElement = model->FirstChildElement( "mult" );
+			if(multElement)
+				_loadMult(obj,multElement);
+			else 
+				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
 		}
 	}
 }
@@ -184,43 +195,14 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent)
 				sizey = rotElement->DoubleAttribute( "z" );
 			}
 
+
+			ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
+			Billboard *obj = new Billboard(scenePath+texture, glm::vec3(posx , posy , posz),glm::vec2(sizex , sizey));
 			tinyxml2::XMLElement* multElement = billboard->FirstChildElement( "mult" );
 			if(multElement)
-			{
-				int count = multElement->IntAttribute( "count" );
-				int seed = multElement->IntAttribute( "seed" );
-
-				tinyxml2::XMLElement* maskElement = billboard->FirstChildElement( "mask" );
-				std::string mask = "default";
-				if(maskElement) 
-				{
-					mask = maskElement->Attribute( "name" );
-					if ( _mask.count(mask) == 0 ) mask = "default";
-				}
-				bool bool_billboard = false;
-				const char* bb = multElement->Attribute( "billboard" );
-				if(bb) 
-				{
-					std::string bbstring = bb;
-					if(bbstring == "yes") bool_billboard = true;
-				}
-
-				glm::vec2 altitude = glm::vec2();
-				tinyxml2::XMLElement* altitudeElement = billboard->FirstChildElement( "altitude" );
-				if (altitudeElement)
-				{
-					altitude[0] = altitudeElement->FloatAttribute( "min" );
-					altitude[1] = altitudeElement->FloatAttribute( "max" );
-				}
-
-				ImmersiveKidz::getInstance()->addDrawableObject(
-					new BatchBillboard(scenePath + texture, &_mask[mask], seed, count, glm::vec2(sizex , sizey), bool_billboard,altitude), animation, animseed);
-				
-			}
+				_loadMult(obj,multElement);
 			else 
-			{
-				ImmersiveKidz::getInstance()->addDrawableObject(new Billboard(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey)), animation, animseed);
-			}
+				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
 		}
 	}
 }
@@ -298,4 +280,41 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent)
 			ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation, animseed);
 		}
 	}
+}
+
+void SceneLoader::_loadMult(DrawableObject *obj, tinyxml2::XMLElement* multElement) {
+
+	int count = multElement->IntAttribute( "count" );
+	int seed = multElement->IntAttribute( "seed" );
+
+	tinyxml2::XMLElement* maskElement =  multElement->Parent()->FirstChildElement( "mask" );
+	std::string mask = "default";
+	if(maskElement) 
+	{
+		mask = maskElement->Attribute( "name" );
+		if ( _mask.count(mask) == 0 ) mask = "default";
+	}
+	bool bool_billboard = false;
+	int type = SINGLE;
+	const char* bb = multElement->Attribute( "type" );
+	if(bb) 
+	{
+		std::string bbstring = bb;
+		if(bbstring == "dual") type = DUAL;
+		if(bbstring == "billboard") type = BILLBOARD;
+	}
+
+	glm::vec2 altitude = glm::vec2();
+	tinyxml2::XMLElement* altitudeElement = multElement->Parent()->FirstChildElement( "altitude" );
+	if (altitudeElement)
+	{
+		altitude[0] = altitudeElement->FloatAttribute( "min" );
+		altitude[1] = altitudeElement->FloatAttribute( "max" );
+	}
+
+	ImmersiveKidz::getInstance()->addDrawableObject(
+		new MultObject(
+			obj,&_mask[mask], seed, count, type, altitude
+		)
+	);
 }

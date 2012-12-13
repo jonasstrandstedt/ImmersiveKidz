@@ -12,112 +12,29 @@
 *@param		rotation If the object needs to be rotated before loaded. Defaults to 0.0,0.0,0.0
 *@param		base_color Sets the default color of the object if no texture is used. Defaults to white
 */
-Model::Model(std::string filename, std::string texturename, glm::vec3 position, float scale, glm::vec3 rotation, glm::vec3 base_color)
+Model::Model(std::string filename, std::string texturename, glm::vec3 position, float scale, glm::vec3 rotation)
 {
 
 	ImmersiveKidz::getInstance()->loadTexture(texturename);
 	_texture = texturename;
+	_scale = scale;
 	
 	std::ifstream ifile(filename.c_str());
 	if(ifile)
 	{
-		loadObj(filename.c_str(), base_color);
+		sgct::MessageHandler::Instance()->print("Model not found\n");
+		loadObj(filename.c_str());
 		ifile.close();
 	} else 
 	{
 		sgct::MessageHandler::Instance()->print("Model not found\n");
-		// Maybe init with a triangle
-		/*
-		_vsize = 3;
-		_isize = 3;
-		Vertex *varray = (Vertex*)malloc(_vsize*sizeof(Vertex));
-		int *iarray = (int*)malloc(_isize*sizeof(int));
-
-		iarray[0] = 0;
-		iarray[1] = 1;
-		iarray[2] = 2;
-
-		varray[0].location[0] = 0.0;
-		varray[0].location[1] = 0.0;
-		varray[0].location[2] = 0.0;
-		varray[1].location[0] = 1.0;
-		varray[1].location[1] = 1.0;
-		varray[1].location[2] = 1.0;
-		varray[2].location[0] = 1.0;
-		varray[2].location[1] = 1.0;
-		varray[2].location[2] = -1.0;
-		
-		glm::vec3 v1(1.0,1.0,1.0);
-		glm::vec3 v2(0.0,0.0,-2.0);
-
-		v1 = glm::normalize(v1);
-		v2 = glm::normalize(v2);
-
-		glm::vec3 theNormal = glm::normalize(glm::cross(v1,v2));
-
-		varray[0].normal[0] = theNormal[0];
-		varray[0].normal[1] = theNormal[1];
-		varray[0].normal[2] = theNormal[2];
-		varray[1].normal[0] = theNormal[0];
-		varray[1].normal[1] = theNormal[1];
-		varray[1].normal[2] = theNormal[2];
-		varray[2].normal[0] = theNormal[0];
-		varray[2].normal[1] = theNormal[1];
-		varray[2].normal[2] = theNormal[2];
-
-		varray[0].location[0] = 0.0;
-		varray[0].location[1] = 0.0;
-		varray[0].location[2] = 0.0;
-		varray[0].normal[0] = 0.0;
-		varray[0].normal[1] = 0.0;
-		varray[0].normal[2] = 1.0;
-		//VERTEX 1
-		varray[1].location[0] = 1.0;
-		varray[1].location[1] = 0.0;
-		varray[1].location[2] = 0.0;
-		varray[1].normal[0] = 0.0;
-		varray[1].normal[1] = 0.0;
-		varray[1].normal[2] = 1.0;
-		//VERTEX 2
-		varray[2].location[0] = 0.0;
-		varray[2].location[1] = 1.0;
-		varray[2].location[2] = 0.0;
-		varray[2].normal[0] = 0.0;
-		varray[2].normal[1] = 0.0;
-		varray[2].normal[2] = 1.0;
-		
-
-
-		varray[0].colour[0] = 1.0;
-		varray[0].colour[1] = 0.0;
-		varray[0].colour[2] = 0.0;
-		varray[0].colour[3] = 1.0;
-		varray[1].colour[0] = 0.0;
-		varray[1].colour[1] = 1.0;
-		varray[1].colour[2] = 0.0;
-		varray[1].colour[3] = 1.0;
-		varray[2].colour[0] = 0.0;
-		varray[2].colour[1] = 0.0;
-		varray[2].colour[2] = 1.0;
-		varray[2].colour[3] = 1.0;
-
-		varray[0].tex[0] = 0.0;
-		varray[0].tex[1] = 0.0;
-		varray[1].tex[0] = 1.0;
-		varray[1].tex[1] = 1.0;
-		varray[2].tex[0] = 0.0;
-		varray[2].tex[1] = 1.0;
-
-		initVBO(&varray, &iarray, _vsize, _isize);
-		*/
 	}
 
-	
 	_transform = glm::rotate(_transform, rotation[0], glm::vec3(1,0,0));
 	_transform = glm::rotate(_transform, rotation[1], glm::vec3(0,1,0));
 	_transform = glm::rotate(_transform, rotation[2], glm::vec3(0,0,1));
 	_transform = glm::translate(_transform, position);
-	_transform = glm::scale(_transform, glm::vec3(scale));
+	//_transform = glm::scale(_transform, glm::vec3(scale));
 }
 
 /**
@@ -129,88 +46,10 @@ Model::Model(std::string filename, std::string texturename, glm::vec3 position, 
 */
 void Model::onDraw() 
 {
-	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture) );
-	
-	glBindBuffer(GL_ARRAY_BUFFER, _vBufferID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iBufferID);
 
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	// Resetup our pointers.  This doesn't reinitialise any data, only how we walk through it
-	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(12));
-	glNormalPointer(GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(20));
-	glColorPointer(4, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(32));
-	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
-
-	glDrawElements(GL_TRIANGLES, _isize, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	
-	glBindTexture(GL_TEXTURE_2D, 0); 
 }
 
-/**
-*@brief	    Initialize the model vertex buffer object
-*
-*@details   Given Vertex array and index array generates the buffers.
-*
-*@param		varray Pointer to vertex array
-*@param		iarray Pointer to index array
-*@param		vertexsize Integer for the vertex array size
-*@param		indexsize Integer for the index array size
-*
-*@return     void
-*/
-void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize)
-{
-	_vBufferID = 0;
-	_iBufferID = 0;
-	_vsize = vertexsize;
-	_isize = indexsize;
 
-	glGenBuffers(1, &_vBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, _vBufferID);
-    glBufferData(GL_ARRAY_BUFFER, _vsize*sizeof(Vertex), (*varray), GL_STATIC_DRAW);
-
-	glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(12));
-	glNormalPointer(GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(20));
-	glColorPointer(4, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(32));
-	glVertexPointer(3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
-
-    glGenBuffers(1, &_iBufferID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iBufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _isize*sizeof(int), (*iarray), GL_STATIC_DRAW);
-
-	if(_vBufferID == 0)
-	{
-		sgct::MessageHandler::Instance()->print("Vertex buffer not initialized\n");
-	}
-	if(_iBufferID == 0) 
-	{
-		sgct::MessageHandler::Instance()->print("Index buffer not initialized\n");
-	}
-
-	// in case of error, print it
-    GLuint errorID = glGetError();
-    if(errorID != GL_NO_ERROR)
-	{
-		sgct::MessageHandler::Instance()->print(" OpenGL error: ");
-		sgct::MessageHandler::Instance()->print((const char*)gluErrorString(errorID));
-		sgct::MessageHandler::Instance()->print("\nAttempting to proceed anyway. Expect rendering errors or a crash.\n");
-    }
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-}
 
 /**
 *@brief	    Loads an object file model
@@ -224,10 +63,8 @@ void Model::initVBO(Vertex **varray, int **iarray, int vertexsize, int indexsize
 *
 *@return     void
 */
-void Model::loadObj(const char *filename, glm::vec3 base_color)
+void Model::loadObj(const char *filename)
 {
-	Vertex *varray;
-	int *iarray;
 	// temporary 
 	int vertexSize = 0;
 	int vertexNormalSize = 0;
@@ -276,10 +113,10 @@ void Model::loadObj(const char *filename, glm::vec3 base_color)
 	float *tempVertexArray = (float*)malloc(vertexSize*sizeof(float));
 	float *tempVertexNormalArray = (float*)malloc(vertexNormalSize*sizeof(float));
 	float *tempVertexTextureArray = (float*)malloc(vertexTextureSize*sizeof(float));
-	varray = (Vertex*)malloc(_vsize*sizeof(Vertex));
+	_varray = (Vertex*)malloc(_vsize*sizeof(Vertex));
 	
 	// int arrays
-	iarray = (int*)malloc(_isize*sizeof(int));
+	_iarray = (int*)malloc(_isize*sizeof(int));
 	int *tempNormalIndicesArray = (int*)malloc(_isize*sizeof(int));
 	int *tempTextureIndicesArray = (int*)malloc(_isize*sizeof(int));
 	
@@ -330,15 +167,15 @@ void Model::loadObj(const char *filename, glm::vec3 base_color)
 		{
 			if (sscanf( line, "f %i/%i/%i %i/%i/%i %i/%i/%i", &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8, &i9)) 
 			{
-				(iarray)[m] = i1-1;
+				(_iarray)[m] = i1-1;
 				(tempTextureIndicesArray)[m] = i2-1;
 				(tempNormalIndicesArray)[m] = i3-1;
 				m++;
-				(iarray)[m] = i4-1;
+				(_iarray)[m] = i4-1;
 				(tempTextureIndicesArray)[m] = i5-1;
 				(tempNormalIndicesArray)[m] = i6-1;
 				m++;
-				(iarray)[m] = i7-1;
+				(_iarray)[m] = i7-1;
 				(tempTextureIndicesArray)[m] = i8-1;
 				(tempNormalIndicesArray)[m] = i9-1;
 				m++;
@@ -347,13 +184,13 @@ void Model::loadObj(const char *filename, glm::vec3 base_color)
 		{
 			if (sscanf( line, "f %i//%i %i//%i %i//%i", &i1, &i2, &i3, &i4, &i5, &i6)) 
 			{
-				(iarray)[m] = i1-1;
+				(_iarray)[m] = i1-1;
 				(tempNormalIndicesArray)[m] = i2-1;
 				m++;
-				(iarray)[m] = i3-1;
+				(_iarray)[m] = i3-1;
 				(tempNormalIndicesArray)[m] = i4-1;
 				m++;
-				(iarray)[m] = i5-1;
+				(_iarray)[m] = i5-1;
 				(tempNormalIndicesArray)[m] = i6-1;
 				m++;
 			}	
@@ -371,29 +208,29 @@ void Model::loadObj(const char *filename, glm::vec3 base_color)
 	{
 		normalIndex = tempNormalIndicesArray[m]*3;
 		textureIndex = tempTextureIndicesArray[m]*3;
-		vertexIndex = (iarray)[m]*3;
-		(iarray)[m] = m;
+		vertexIndex = (_iarray)[m]*3;
+		(_iarray)[m] = m;
 		
 		int q = 0;
 		while (q < 3) 
 		{
-			varray[m].location[q] = tempVertexArray[vertexIndex+q];
-			(varray)[m].normal[q] = tempVertexNormalArray[normalIndex+q];
+			_varray[m].location[q] = tempVertexArray[vertexIndex+q]*_scale;
+			(_varray)[m].normal[q] = tempVertexNormalArray[normalIndex+q];
 			q++;
 		}	
-		(varray)[m].colour[0] = base_color[0];
-		(varray)[m].colour[1] = base_color[1];
-		(varray)[m].colour[2] = base_color[2];
-		(varray)[m].colour[3] = 1.0;
+		(_varray)[m].colour[0] = 1;
+		(_varray)[m].colour[1] = 1;
+		(_varray)[m].colour[2] = 1;
+		(_varray)[m].colour[3] = 1.0;
 
 		if (vertexTextureSize > 0)
 		{
-			(varray)[m].tex[0] = tempVertexTextureArray[textureIndex];
-			(varray)[m].tex[1] = tempVertexTextureArray[textureIndex+1];
+			(_varray)[m].tex[0] = tempVertexTextureArray[textureIndex];
+			(_varray)[m].tex[1] = tempVertexTextureArray[textureIndex+1];
 		} 
 		{
-			(varray)[m].tex[0] = 1.0;
-			(varray)[m].tex[1] = 1.0;
+			(_varray)[m].tex[0] = 1.0;
+			(_varray)[m].tex[1] = 1.0;
 		}
 		m++;
 	}
@@ -405,5 +242,5 @@ void Model::loadObj(const char *filename, glm::vec3 base_color)
 	free(tempVertexTextureArray);
 	free(tempTextureIndicesArray);
 	
-	initVBO(&varray, &iarray, _vsize, _isize);
+	//initVBO(&_varray, &_iarray, _vsize, _isize);
 }

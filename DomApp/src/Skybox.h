@@ -32,7 +32,6 @@ public:
 	void onDraw();
 	
 private:
-	std::string _texturename;
 	void _drawCube();
 };
 
