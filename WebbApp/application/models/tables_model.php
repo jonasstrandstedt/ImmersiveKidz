@@ -293,6 +293,17 @@ class Tables_model extends CI_Model
 				$q = $this->db->insert('worlds', $data);
 				return $q;
 	}
+	function update_map_id_world($map_id, $world_id)
+	{
+		$data = array(
+			   'map_id' => $map_id
+			   );
+		$where = array( // the id to update
+			'id' => $world_id
+		);
+		$this->db->where($where);
+		$q = $this->db->update('worlds', $data);
+	}
 	function get_world($id)
     {
 		$this->db->select("*");
@@ -676,16 +687,19 @@ class Tables_model extends CI_Model
 
 	/* ADD MAP */
 
-	function add_map($name, $plane_id) 
+	function add_map($name = NULL, $plane_id) 
 	{
-			
-
-				$data = array(
-				   'name' => $name,
-				   'plane_id' => $plane_id		
-				);
-				$q = $this->db->insert('maps', $data);
-				return $q;
+		$data = array(
+				'name' => $name,
+			   'plane_id' => $plane_id		
+			);
+		$q = $this->db->insert('maps', $data);
+		
+		$this->db->select("id");
+		$this->db->from("maps");
+		$this->db->where($data);
+		$query = $this->db->get();
+		return $query->result();	
 	}
 
 	/* ADD MAP */
@@ -769,6 +783,36 @@ class Tables_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+	
+	function get_map_id_from_plane($plane_id)
+	{	
+		$this->db->select("id");
+		$this->db->from("maps");
+		$where = array(
+			'plane_id' => $plane_id);
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+	
+	function get_all_maps()
+	{	
+		$this->db->select("*");
+		$this->db->from("maps");
+		$query = $this->db->get();
+		return $query->result();
+	}
+	function get_all_planes_from_maps()
+	{
+		$this->db->select("*");
+		$this->db->from("planes");
+		$this->db->join('maps', 'planes.id=maps.plane_id', 'inner');
+		$query = $this->db->get();
+		return $query->result();
+	}	
+	
+	
+	
 	function get_plane($id)
 	{	
 		$this->db->select("*");

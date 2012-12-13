@@ -955,7 +955,7 @@ class Site extends CI_Controller
 		// Loads the upload library with the config-file.
 		$this->load->library('upload', $config);
 		
-		if(!isset($world_name) && !isset($_POST['submitplane'])) 
+		if(!isset($world_name) && !isset($_POST['submitplane'])) //list worlds
 		{
 			$info = $this->Tables_model->get_all_worlds(); // gets an array of all the groups.
 			$data = array(	// Makes an array of the array, so that the content_edit view gets an array as variabel.
@@ -966,7 +966,7 @@ class Site extends CI_Controller
 		{	
 			$world = $this->Tables_model->get_world_by_name($world_name);
 			// get an array of all the planes
-			$info = $this->Tables_model->get_all_planes();
+			$info = $this->Tables_model->get_all_planes_from_maps();
 			// Makes an array of the array, so that the sub_addplane view gets an array as variabel.
 			$data = array(
 			"planes" => $info,
@@ -976,10 +976,10 @@ class Site extends CI_Controller
 			
 		}else if(isset($_POST['submitplane']) && isset($_POST['plane']) && $_FILES['userfile']['error'] == 4 ) //if user submited and didnt upload file
 		{	
-			
 			$plane_id = $_POST['plane'];
 			$world_id = $_POST['world_id'];
-			$this->Tables_model->add_plane_to_world($plane_id,$world_id);
+			$map_id = $this->Tables_model->get_map_id_from_plane($plane_id);
+			$this->Tables_model->update_map_id_world($map_id[0]->id,$world_id);
 		}
 		else if(isset($_POST['submitplane'])) //if user submited and uploaded file
 		{
@@ -997,6 +997,8 @@ class Site extends CI_Controller
 				$world_id = $_POST['world_id'];
 				
 				$this->Tables_model->add_plane_to_world($plane_id,$world_id);
+				$map_id = $this->Tables_model->add_map("",$plane_id);
+				$this->Tables_model->update_map_id_world($map_id[0]->id,$world_id);
 			}
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
