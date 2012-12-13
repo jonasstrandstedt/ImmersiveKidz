@@ -138,10 +138,7 @@ class Tables_model extends CI_Model
 				   'soundurl' => $soundurl,
 				   'billboard_id' => $billboard_id,
 				   'group_id' => $group_id,
-				   'story' => $story,
-				   'pos_x' => $pos_x,
-				   'pos_y' => $pos_y,
-				   'pos_z' => $pos_z
+				   'story' => $story
 				);
 				$q = $this->db->insert('illustrations', $data);
 				return $q;
@@ -169,7 +166,7 @@ class Tables_model extends CI_Model
 	 * @return bool 	
 	 */ 
 
-	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh) 
+	function update_illustration($id, $artist, $imgname,$imgurl ,$soundurl, $story, $thresh = NULL) 
 	{	
 		if($imgurl != ''){
 			$data = array( // what to update
@@ -251,6 +248,16 @@ class Tables_model extends CI_Model
     {
 		$this->db->select("imgurl");
 		$this->db->from("illustrations");
+		$where = "`id` = '$id'"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_billboard_url_from_id($id) 
+    {
+		$this->db->select("imgurl");
+		$this->db->from("billboards");
 		$where = "`id` = '$id'"; 
 		$this->db->where($where);
 		$query = $this->db->get();
@@ -341,6 +348,9 @@ class Tables_model extends CI_Model
 				
 				$this->db->select("id");
 				$this->db->from("billboards");
+				$data = array(
+				   'imgurl' => $imgurl
+				);
 				$this->db->where($data);
 				$query = $this->db->get();
 				return $query->result();
@@ -366,6 +376,20 @@ class Tables_model extends CI_Model
 		$this->db->from("billboards");
 		$where = array( // the id to update
     				'id' => $id
+				);
+
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_illustration_sound($id) 
+    {
+		$this->db->select("soundurl");
+
+		$this->db->from("illustrations");
+		$where = array( // the id to update
+    				'billboard_id' => $id
 				);
 
 		$this->db->where($where);
@@ -422,7 +446,7 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}	
 	
-	function update_billboard_world($world_id, $billboard_id, $mult_count, $type )
+	function update_billboard_world($world_id, $billboard_id, $mult_count, $type, $size_x, $size_y)
 	{	
 		$data = array( // what to update
 		   'mult_count' => $mult_count,
@@ -435,6 +459,20 @@ class Tables_model extends CI_Model
 		);
 		$this->db->where($where);
 		$q = $this->db->update('billboard_world', $data);
+		
+		//------------update size in table Billboards------------
+		
+		$data = array( // what to update
+		   'size_x' => $size_x,
+		   'size_y' => $size_y
+		);
+		
+		$where = array( // the id to update
+			'id' => $billboard_id
+		);
+		$this->db->where($where);
+		$q = $this->db->update('billboards', $data);
+		
 	}
 		
 	function remove_billboard_from_world($world_id, $billboard_id) 
@@ -448,11 +486,24 @@ class Tables_model extends CI_Model
 	}
 	
 	
-	function update_billboard_image($id, $imgurl) 
+	function update_billboard_image($id, $imgurl, $thresh) 
     {
-		$data = array( // what to update
-				   'imgurl' => $imgurl
-				);
+    	if($imgurl != '' && $thresh == ''){
+			$data = array( // what to update
+					   'imgurl' => $imgurl
+					);
+		}
+		else if($imgurl == '' && $thresh != ''){
+			$data = array( // what to update
+						   'thresh' => $thresh
+						);
+		}
+		else{
+			$data = array( // what to update
+						   'imgurl' => $imgurl,
+						   'thresh' => $thresh
+						);
+		}
 
 		$where = array( // the id to update
 			'id' => $id
@@ -582,7 +633,6 @@ class Tables_model extends CI_Model
 
 		$this->db->from("animations");
 		$where = array( // the id to update
-    				'date' => $date,
     				'name' => $name
 				);
 
@@ -600,6 +650,19 @@ class Tables_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+	
+	function get_animations_from_billboard_animation($billboard_id)
+	{
+		$this->db->select("*");
+		$this->db->from("animations");
+		$this->db->join('billboard_animation', 'animations.id=billboard_animation.animation_id', 'inner');
+		$where = array( 
+    				'billboard_animation.billboard_id' => $billboard_id
+				);
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}	
 
 	function get_billboard_animation() 
     {
@@ -628,9 +691,8 @@ class Tables_model extends CI_Model
 	/* ADD MAP */
 
 	function add_billboard_to_world($world_id, $billboard_id, $mask_id, $pos_x, $pos_y, $pos_z, $mult_count, $mult_seed, $type) 
-	{
-			
-
+	{		
+			$mult_seed = rand(1 , 9999999);
 				$data = array(
 				   'world_id' => $world_id,
 				   'billboard_id' => $billboard_id,
@@ -663,19 +725,30 @@ class Tables_model extends CI_Model
 				return $q;
 	}
 	function add_animation_to_billboard($animation_id, $billboard_id) 
-	{			
-
-				$seed = rand (1 , $PHP_INT_MAX);
-			
-
-				$data = array(
-				   'animation_id' => $animation_id,
-				   'billboard_id' => $billboard_id,
-				   'seed' => $seed,
-				);
-				$q = $this->db->insert('billboard_animation', $data);
+	{
+		$seed = rand(1 , 9999999);
+		$data = array(
+	   'animation_id' => $animation_id,
+	   'billboard_id' => $billboard_id,
+		   'seed' => $seed);
+		   
+		$q = $this->db->insert('billboard_animation', $data);
+				
 				return $q;
 	}
+	
+	function update_animation_to_billboard($animation_id, $billboard_id) 
+	{
+		$data = array(
+			   'animation_id' => $animation_id,
+			   'billboard_id' => $billboard_id);
+		 $where = array( // the id to update
+			'billboard_id' => $billboard_id
+		);
+		$this->db->where($where);
+		$q = $this->db->update('billboard_animation', $data);
+	}
+	
 
 	function add_plane_to_world($plane_id, $world_id) 
 	{			

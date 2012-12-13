@@ -4,6 +4,8 @@
 		<li><?php echo ">";?></li>
 		<li><?php echo anchor('index.php/site/add_information', 'Fyll i info');?></li>
 		<li><?php echo ">";?></li>
+		<li><?php echo anchor('index.php/site/add_coordinates', 'Placera ut bilder');?></li>
+		<li><?php echo ">";?></li>
 		<li><?php echo anchor('index.php/site/download_info', 'Ladda ner');?></li>
 		
 		</ul>

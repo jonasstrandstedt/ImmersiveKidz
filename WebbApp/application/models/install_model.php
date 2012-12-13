@@ -190,6 +190,8 @@ class Install_model extends CI_Model
 			$this->dbforge->add_key('id',true);						// set the primary key
 			$this->dbforge->create_table('masks');
 			log_message('info', "Created table: masks");
+			$this->load->model("Tables_model");
+			$this->Tables_model->add_mask("plane/grass_map.png","Grass", 1);
 		}
 	}
 
@@ -204,6 +206,10 @@ class Install_model extends CI_Model
 			$this->dbforge->add_key('id',true);						// set the primary key
 			$this->dbforge->create_table('animations');
 			log_message('info', "Created table: animations");
+			$this->load->model("Tables_model");
+			$this->Tables_model->add_animation("Ingen"); 
+			$this->Tables_model->add_animation("Dansa"); 
+			$this->Tables_model->add_animation("Hoppa"); 
 		}
 	}
 

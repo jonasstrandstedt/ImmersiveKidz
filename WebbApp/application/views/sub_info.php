@@ -14,16 +14,27 @@
 	$column = 0;
 	echo "<div class='form'><div class='row'>
 		<input type='hidden' name='group_id' value='".$group_id[0] -> id."' />";
+
 	foreach ($images as $row)
 	{ 
-
+		
+		if(htmlentities($row -> soundurl) == ''){
+			$typeSound = "file";
+			$editFileInput = "";
+		}
+		else{
+			$typeSound = "text";
+			$editFileInput = "<input type='file' name='soundurl".$column."'/><br/>";
+		}
+		$temp = htmlentities($row -> soundurl);
+		$soundvalue = substr($temp, strrpos($temp, "/")+1);
 	//<img src='".base_url()."styles/images/rotateplus.png' alt=''/>
 		echo "<div id='imgform".$column."' class='imgform'>
 		<div class='image'><img src='../../../../".$outImages[$column]."' alt='Image' width='90' /> </div>
 		<div class='button'>
 		<button class='styledDeleteButton' type='submit' name='delete' value='".$column."' >X</button>
+		<button class='styledRotateMinus' type='submit' name='rotateminus' value='".$column."' >ROTERA -90&#176;</button>		
 		<button class='styledRotatePlus' type='submit' name='rotateplus' value='".$column."' >ROTERA +90&#176;</button>
-		<button class='styledRotateMinus' type='submit' name='rotateminus' value='".$column."' >ROTERA -90&#176;</button>
 		</div>
 		<label>Konstnär:</label>
 		<input type='text' name='artist".$column."' value='".htmlentities($row -> artist)."' />
@@ -36,7 +47,7 @@
     	<label>Historia:</label>
 	 	<input type='text' name='story".$column."' value='".htmlentities($row -> story)."' />
     	<label>Ljud:</label>
-		<input type='file' name='soundurl".$column."' />
+		<input type='".$typeSound."' name='soundurl".$column."' value='".$soundvalue."' />".$editFileInput."
 		<label>Byt ut bild:</label>
 		<input type='file' name='imageurl".$column."'/>
 		</div>";

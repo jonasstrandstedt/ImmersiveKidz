@@ -245,6 +245,11 @@ function get_billboards_table_fields()  //size unsigned?
 			'type' => 'FLOAT',
 			'constraint' => 4,1,
 			'unsigned' => TRUE
+			),
+		'thresh' => array(
+			'type' => 'INT',
+			'constraint' => 15,
+			'default' => 5
 			)
 		);
 	return $fields;

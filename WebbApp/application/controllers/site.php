@@ -303,6 +303,7 @@ class Site extends CI_Controller
 			$editId = array();
 			$threshId = array();
 			$thresholdValues = array();
+			$newSound = array();
 			//Get new info from form
 			foreach ($idArray as $id) {
 				if(isset($_FILES['imageurl'.$counter]['name']) && ($_FILES['imageurl'.$counter]['name']) != ''){//Change image
@@ -325,12 +326,23 @@ class Site extends CI_Controller
 					$threshvalue = "5";
 				}
 
+				//sound
+				if(isset($_FILES['soundurl'.$counter]['name']) && ($_FILES['soundurl'.$counter]['name']) != ''){// sound, file input
+					$soundurl = "uploads/" . $_FILES['soundurl'.$counter]['name'];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else if(isset($_POST['soundurl'.$counter]) && ($_POST['soundurl'.$counter]) != ''){// sound, text input
+					$soundurl = "uploads/" . $_POST['soundurl'.$counter];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else{
+					$soundurl = "";
+				}
+
 				$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
 				$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
 				// Lägg till för type.
 				$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
-				//$soundurl = $_POST['soundurl'.$counter];
-				$soundurl = $_FILES['soundurl'.$counter]['name'];
 				//exit(print_r($idArray));
 				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story, intval($threshvalue));  // updates the database for the specific image.
 
@@ -339,6 +351,11 @@ class Site extends CI_Controller
 			
 			// loads the upload library with the config-file.
 			$this->load->library('upload', $config);
+			//upload new sound to database
+			foreach ($newSound as $inputName) {
+				$this->upload->do_multi_upload($inputName);
+				$temp = $this->upload->get_multi_upload();
+			}
 
 			$data = array();
 			//upload new data to database
@@ -425,21 +442,44 @@ class Site extends CI_Controller
 			$this->load->view('sub_info', $data); // Loads the sub_info view, where the user can add information for all the images.
 		}
 		else{ // isset($_POST['next']) Submit form
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'wav|mp3';
+			$config['max_size']	= '0';
 			$counter = 0; // count the number of images.
 			$group_id = $_POST['group_id'];
 			$group = $this->Tables_model->get_group($group_id);
 
 			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
+			$newSound = array();
 			foreach ($idArray as $id) {
+				if(isset($_FILES['soundurl'.$counter]['name']) && ($_FILES['soundurl'.$counter]['name']) != ''){// sound, file input
+					$soundurl = "uploads/" . $_FILES['soundurl'.$counter]['name'];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else if(isset($_POST['soundurl'.$counter]) && ($_POST['soundurl'.$counter]) != ''){// sound, text input
+					$soundurl = "uploads/" . $_POST['soundurl'.$counter];
+					array_push($newSound, 'soundurl'.$counter);
+				}
+				else{
+					$soundurl = "";
+				}
+
 				$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
 				$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
 				// Lägg till för type.
 				$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
-				//$soundurl = $_POST['soundurl'.$counter];
-				$soundurl = $_FILES['soundurl'.$counter]['name'];
-				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story);// updates the database for the specific image.
+				//$soundurl = $_FILES['soundurl'.$counter]['name'];
+				$this->Tables_model->update_illustration($id ->id, $artist, $imgname, "", $soundurl, $story);// updates the database for the specific image.
 				$counter ++; // 
 			}
+			// loads the upload library with the config-file.
+			$this->load->library('upload', $config);
+			//upload new data to database
+			foreach ($newSound as $inputName) {
+				$this->upload->do_multi_upload($inputName);
+				$temp = $this->upload->get_multi_upload();
+			}
+
 			echo "<script>window.location.href = 'add_coordinates/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the add_coordinates view with the variable $group_id
 			
 		}
@@ -455,73 +495,6 @@ class Site extends CI_Controller
 	 * @param  string	$group		The group
 	 *	
 	 */ 
-
-	 /*function add_sound(){
-		// Config-file for the upload library.
-		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '10000';
-		$config['max_width']  = '10000';
-		$config['max_height']  = '10000';
-
-		$counter = 0; // count the number of images.
-		$newImages = array();
-		$idArray = $this->Images_model->get_all_id_from_group($_POST['group'], $_POST['date']); // an array with all the id's in the group
-		
-		//Get new info from form
-		foreach ($idArray as $id) {
-			if(isset($_FILES['imageurl'.$counter]['name']) && ($_FILES['imageurl'.$counter]['name']) != ''){//Change image
-				$replaceimageurl = "uploads/" . $_FILES['imageurl'.$counter]['name'];
-				array_push($newImages, 'imageurl'.$counter);
-			}
-			else{
-				$replaceimageurl = "";
-			}
-			$artist = $_POST['artist'.$counter]; // gets the specific form for this image. ex: artist0, artist1.
-			$imgname = $_POST['imgname'.$counter]; // gets the speficic imgname for this image. ex: imgname0, imgname1
-			// Lägg till för type.
-			$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
-			//$soundurl = $_POST['soundurl'.$counter];
-			$soundurl = $_FILES['soundurl'.$counter]['name'];
-			$this->Images_model->update_image($id ->id, $replaceimageurl, "", $artist, $imgname, $soundurl, $story); // updates the database for the specific image.
-				
-			$counter++;
-		}
-		$group = $_POST['group'];
-		$date = $_POST['date'];
-		// loads the upload library with the config-file.
-		$this->load->library('upload', $config);
-		
-		//upload new data to database
-		foreach ($newImages as $inputName) {
-			$this->upload->do_multi_upload($inputName);
-			$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
-			
-		}
-		$this->load->library('ProcessImage'); // loads  the ProcessImage library.
-		$imagesIn = array(); // Array for all the uploaded images.
-
-		for($i = 0; $i < count($data['upload_data']); $i++)// Loop for all images.
-		{ 
-			array_push($imagesIn, "uploads/".$data['upload_data'][$i]['file_name']); // Add an image to the array.
-		}
-
-		$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
-
-		for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
-		{	
-			$id = $idArray[$i];
-			$fileurl = $imagesIn[$i]; // Save the url of the original image
-			$fileouturl = $imagesOut[$i]; // save the url of the processed image.
-			$this->Images_model->update_image($id ->id, $fileurl, $fileouturl, "", "", "", ""); // updates the database for the specific image.
-		}
-
-		echo "<script>window.location.href = 'add_information/".$date."/".$group."';</script>"; // Javascript, reload the page
-
-
-		$this->load->view("site_footer"); // Finally, add the footer.
-
-	 }*/
 
 	function download_info($date = NULL, $group = NULL){
 		$this->load->view("site_header");
@@ -555,8 +528,18 @@ class Site extends CI_Controller
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($row -> id);
 
 				$imgouturl = $this->Tables_model->get_billboard_image($billboard_id[0] -> billboard_id); 
-				$path = $imgouturl[0] -> imgurl; // save the path to the image on the server.
-				$this->zip->read_file($path, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
+				$soundurl = $this->Tables_model->get_illustration_sound($billboard_id[0] -> billboard_id); 
+				$pathimg = $imgouturl[0] -> imgurl; // save the path to the image on the server.
+				$newImgpath = "uploads" . substr($pathimg, strrpos($pathimg, "/"));//find name without folder
+				if($soundurl[0] -> soundurl != ''){ //if there is a sound
+					$pathsound = $soundurl[0] -> soundurl; // save the path to the image on the server.
+					$newSoundpath = "uploads" . substr($pathsound, strrpos($pathsound, "/"));//find name without folder
+					copy($pathsound, $newSoundpath);//copy sound to  folder
+					$this->zip->read_file($newSoundpath, TRUE);
+				}
+				copy($pathimg, $newImgpath);//copy sound to folder
+				$this->zip->read_file($newImgpath, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
+				
 			}
 
 			$world = $this->Tables_model->get_world($world_id_array[0] -> world_id);
@@ -624,14 +607,18 @@ class Site extends CI_Controller
 			}
 
 			$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
-
+			$maxSize = 500;
 			for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
 			{	
 				$fileurl = $imagesIn[$i]; // Save the url of the original image
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
-				$billboard_id_vec = $this->Tables_model->add_billboard($fileouturl);
+				$scalexy = getimagesize($fileouturl)[0] / getimagesize($fileouturl)[1]; 
+				$size_x = $maxSize*(5/10);
+				$size_y = round($size_x*$scalexy,2);
+				$billboard_id_vec = $this->Tables_model->add_billboard($fileouturl, $size_x,$size_y);
 				$billboard_id = $billboard_id_vec[0] -> id;
-				$this->Tables_model->add_billboard_to_world($world_id, $billboard_id, "", "", "", "", "1", "", "") ;
+				$this->Tables_model->add_billboard_to_world($world_id, $billboard_id, "", "", "", "", "1", "", "normal");
+				$this->Tables_model->add_animation_to_billboard("1", $billboard_id);// updates the database for the specific image.
 			}
 			echo "<script>window.location.href = 'add_object_information/".urlencode($world_name)."';</script>"; // Javascript, loads the add_object_information view with the variables $world_name
 
@@ -649,7 +636,7 @@ class Site extends CI_Controller
 		
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");		
-		
+		$maxSize = 500;
 		if(isset($_POST['delete'])){ //if the user pressed a deletebutton
 			
 			$world_id = $_POST['world_id']; // Använd istället för name och date.
@@ -667,7 +654,13 @@ class Site extends CI_Controller
 				{
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -710,13 +703,25 @@ class Site extends CI_Controller
 					
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($billboard->imgurl)[0] / getimagesize($billboard->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
 				else //save the filled data
 				{
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($billboard->imgurl)[0] / getimagesize($billboard->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -750,13 +755,25 @@ class Site extends CI_Controller
 					
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($billboard->imgurl)[0] / getimagesize($billboard->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
 				else //save the filled data
 				{
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
-					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type);// updates the database for the specific billboard and world
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($billboard->imgurl)[0] / getimagesize($billboard->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -770,38 +787,149 @@ class Site extends CI_Controller
 			$this->load->view("content_edit_world", $data); // loads the content_edit view, where the user can chose a group to edit.
 		
 		}
+		else if(isset($_POST['update'])){ // else if, update the images.
+			$world_id = $_POST['world_id']; 
+			$world = $this->Tables_model->get_world($world_id);
+			// Config-file for the upload library.
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['max_size']	= '0';
+			$config['max_width']  = '10000';
+			$config['max_height']  = '10000';
+			$counter = 0; // count the number of images.
+			$newImages = array();
+			$idArray = $this->Tables_model->get_billboard_id_from_billboard_world($world_id); // an array with all the id's in the group
+			$editId = array();
+			$threshId = array();
+			$thresholdValues = array();
+			$newSound = array();
+			//Get new info from form
+			foreach ($idArray as $id) {
+
+				//Update threshold
+				if($_POST['threshold'.$counter] != '5' && ($_POST['threshold'.$counter]) != ''){//Change image
+					//exit($_POST['threshold'.$counter]);
+					$threshvalue = $_POST['threshold'.$counter];
+					array_push($thresholdValues, $threshvalue);
+					array_push($threshId, $id->billboard_id);
+				}
+				else{
+					$threshvalue = "5";
+				}
+				//save filled values
+				$this->Tables_model->update_billboard_image($id->billboard_id, "", intval($threshvalue));
+				$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
+				$type = $_POST['type'.$counter]; // gets the specific type for this billboard
+				$size = $_POST['size'.$counter]; // gets the specific size
+				$scalexy = getimagesize($billboard->imgurl)[0] / getimagesize($billboard->imgurl)[1]; 
+				$size_x = $maxSize*($size/10);
+				$size_y = $size_x*$scalexy;
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+				$this->Tables_model->update_animation_to_billboard($animation, $id->billboard_id);// updates the database for the specific image.
+
+				$counter++;
+			}
+			// loads the upload library with the config-file.
+			$this->load->library('upload', $config);
+
+			$data = array();
+			
+			$this->load->library('ProcessImage'); // loads  the ProcessImage library.
+
+			$threshImagesIn = array();
+			foreach ($threshId as $id) {
+				$temp = $this->Tables_model->get_billboard_url_from_id($id);
+				$temp = $temp[0];
+				
+				//recreate url for in image
+				$inimg = $temp->imgurl;
+				$inimg = substr($inimg, strrpos($inimg, "/")+1);
+				$inimg = str_replace("out", "", $inimg);
+				$length = strlen($inimg)-(strlen($inimg)-strrpos($inimg, "."));
+				$inimg = substr($inimg, 0, $length);
+				$inimg = "uploads/" . $inimg; //will give url like "uploads/flower"
+				//find correct file ending
+				if(file_exists($inimg.".jpg")){
+					$inimg = $inimg.".jpg";
+				}
+				else if(file_exists($inimg.".jpeg")){
+					$inimg = $inimg.".jpeg";
+				}
+				else if(file_exists($inimg.".png")){
+					$inimg = $inimg.".png";
+				}
+				else if(file_exists($inimg.".gif")){
+					$inimg = $inimg.".gif";
+				}
+
+				array_push($threshImagesIn, $inimg); // Add an image to the array.
+			}
+			$threshImagesOut = array();
+			$i = 0;
+			foreach ($thresholdValues as $value) {
+				$out = $this->processimage->findDrawing(array($threshImagesIn[$i]), "uploads", $value);
+				$out = $out[0];
+				array_push($threshImagesOut, $out); // Gets an new array with all the processed images. 
+				$i++;
+			}
+			for($i = 0; $i < count($threshImagesIn); $i++) // Loop for all images.
+			{	
+				$billboard_id = $threshId[$i];
+				$fileurl = $threshImagesIn[$i]; // Save the url of the original image
+				//exit($fileurl . $check[$fileurl]);
+				$fileouturl = $threshImagesOut[$i]; // save the url of the processed image.
+				$this->Tables_model->update_billboard_image($billboard_id, $fileouturl);
+			}
+
+			echo "<script>window.location.href = 'add_object_information/".urlencode($world[0] -> name)."';</script>"; // Javascript, reload the page
+
+
+			$this->load->view("site_footer"); // Finally, add the footer.
+		}
 		else if(!isset($_POST['next'])) // if, the user has not submited.
 		{ 		
 			$world = $this->Tables_model->get_world_by_name(urldecode($world_name));
 			$world_id = $world[0]->id;
 			$billboards = $this->Tables_model->get_billboards_from_billboard_world($world_id); // Get all billboards from a specific world.
+			$animations = $this->Tables_model->get_animation();
 			$outImagesArray = array();
+			$animation_billboardArray = array();
 			foreach($billboards as $billboard)
 			{
 				$billboard_id = $billboard->billboard_id;
+				$animation_billboard = $this->Tables_model->get_animations_from_billboard_animation($billboard_id);
 				$billboard_image = $billboard->imgurl; 
+				array_push($animation_billboardArray, $animation_billboard);
 				array_push($outImagesArray, $billboard_image);
 			}
 
 			$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
 				"billboards" => $billboards,
 				"world_id" => $world_id,
-				"outImages" => $outImagesArray
+				"outImages" => $outImagesArray,
+				"animations" => $animations,
+				"animation_billboard" => $animation_billboardArray
 						);
 			$this->load->view('sub_addobjectinformation', $data); // Loads the sub_addobjectinformation view, where the user can add information for all the images.
 		}else{ // isset($_POST['next']) Submit form
 			$counter = 0; // count the number of images.
-			$world_id = $_POST['world_id'];
+			$world_id = $_POST['world_id'];	
 			$world = $this->Tables_model->get_world($world_id);
 			$world_name = $world[0]->name;
 		
-
-			$idArray = $this->Tables_model->get_billboard_id_from_billboard_world($world_id); // an array with all the id's in the group
+			$idArray = $this->Tables_model->get_billboards_from_billboard_world($world_id); // an array with all the id's in the group
 			foreach ($idArray as $id) 
 			{
 				$quantity = $_POST['quantity'.$counter]; // gets the quantity from form.
 				$type = $_POST['type'.$counter]; // gets the specific type
-				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type);// updates the database for the specific image.
+				$size = $_POST['size'.$counter]; // gets the specific size_x
+				$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+				$size_x = $maxSize*($size/10);
+				$size_y = $size_x*$scalexy;
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+				$this->Tables_model->update_animation_to_billboard($animation, $id->billboard_id);// updates the database for the specific image.
 				$counter ++; 
 			}
 			echo "<script>window.location.href = 'add_plane/".urlencode($world_name)."';</script>"; // Javascript, loads the add_plane view with the variable $world_name
@@ -913,7 +1041,8 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-
+		$this->load->view("content_create");
+		$group = urldecode($group);
 		$this->load->model("Tables_model");
 		if(isset($_POST['submitcoord'])){
 			$group_id = $_POST['group_id'];
@@ -954,6 +1083,12 @@ class Site extends CI_Controller
 
 		
 		$this->load->view("sub_coord", $data);
+		}else{ // Let the user choose group.
+			$info = $this->Tables_model->get_all_groups();	// gets an array of all the groups.
+			
+			$data = array( // Makes an array of the array, so that the content_download view gets an array as variabel.
+				"info" => $info);
+			$this->load->view("content_coord", $data);
 		}
 
 		$this->load->view("site_footer");
