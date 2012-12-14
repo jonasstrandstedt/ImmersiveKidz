@@ -16,8 +16,15 @@ Camera::Camera(glm::vec3 startPosition)
 	_movingLeft = false;
 	_movingUp = false;
 	_movingDown = false;
+	
 	_speed = 6.0;
+	_acceleration = 7.5;
+	_deacceleration = 3.5;
+
 	_rotationSpeed = 45.033;
+	_rotationAcceleration = 7.5;
+	_rotationDeacceleration = 6.5;
+
 	_mouseState = false;
 	_position = startPosition;
 	
@@ -94,13 +101,13 @@ void Camera::update(float dt)
 		force -= glm::vec3(0,1,0);
 	}
 
-	_velocity += force*(dt*7.5f); 
+	_velocity += force*(dt*_acceleration); 
 	_position += _velocity*dt;
 
 	float m = glm::length(_velocity);
 	if(m!=0){
 		glm::vec3 velDir = glm::normalize(_velocity);
-		_velocity -= velDir*dt*3.5f;
+		_velocity -= velDir*dt*_deacceleration;
 	}
 
 	if(m<0.001)
@@ -113,9 +120,9 @@ void Camera::update(float dt)
 	int sign;
 
 
-	_rotVelocityV += _rotForceV*(dt*7.5f); 
+	_rotVelocityV += _rotForceV*(dt*_rotationAcceleration); 
 	sign = _rotVelocityV == 0 ? 0 : _rotVelocityV > 0 ? 1 : -1;
-	_rotVelocityV -= sign*dt*_rotationSpeed*0.8;
+	_rotVelocityV -= sign*dt*_rotationDeacceleration;
 	if(abs(_rotVelocityV)>_rotationSpeed)
 		_rotVelocityV = sign*_rotationSpeed;
 	if(abs(_rotVelocityV)<0.1){
@@ -125,9 +132,9 @@ void Camera::update(float dt)
 	_rotForceV = 0;
 
 
-	_rotVelocityH += _rotForceH*(dt*7.5f); 
+	_rotVelocityH += _rotForceH*(dt*_rotationAcceleration); 
 	sign = _rotVelocityH == 0 ? 0 : _rotVelocityH > 0 ? 1 : -1;
-	_rotVelocityH -= sign*dt*_rotationSpeed*0.8;
+	_rotVelocityH -= sign*dt*_rotationDeacceleration;
 	if(abs(_rotVelocityH)>_rotationSpeed)
 		_rotVelocityH = sign*_rotationSpeed;
 	if(abs(_rotVelocityH)<0.1){
@@ -220,18 +227,6 @@ void Camera::mouseMotion(int dx,int dy)
 	{
 		_rotForceH += dx;
 		_rotForceV += dy;
-
-		/*_rotation[0] += dx*_rotationSpeed;
-		_rotation[1] += dy*_rotationSpeed;
-
-		if(_rotation[1]<-89)
-		{
-		_rotation[1] = -89;
-		}
-		if(_rotation[1]>89)
-		{
-		_rotation[1] = 89;
-		}*/
 	}
 }
 
@@ -281,8 +276,6 @@ float Camera::getSpeed() const
 * @brief	Sets the camera speed 
 *
 * @param	speed 	The camera speed, must be larger than 0
-*
-* @return	void 
 */
 void Camera::setSpeed(float speed)
 {
@@ -290,6 +283,70 @@ void Camera::setSpeed(float speed)
 	if(this->_speed < 0)
 		this->_speed = 0;
 }
+
+
+/**
+* @brief	Sets the camera acceleration that is applyed when a button is held down 
+*
+* @param	speed 	the camera acceleration
+*/
+void Camera::setAcceleration(float acceleration)
+{
+	this->_acceleration = acceleration;
+	if(this->_acceleration < 0)
+		this->_acceleration = 0;
+}
+
+/**
+* @brief	Sets the camera deacceleration that is applyed when the camera is moving
+*
+* @param	speed 	the camera deacceleration
+*/
+void Camera::setDeacceleration(float deacceleration)
+{
+	this->_deacceleration = deacceleration;
+	if(this->_deacceleration < 0)
+		this->_deacceleration = 0;
+}
+
+
+/**
+* @brief	Sets the cameras rotational speed 
+*
+* @param	speed 	The camera rotational speed, must be larger than 0
+*/
+void Camera::setRotatioSpeed(float speed)
+{
+	this->_rotationSpeed = speed;
+	if(this->_rotationSpeed < 0)
+		this->_rotationSpeed = 0;
+}
+
+
+/**
+* @brief	Sets the camera Rotation acceleration that is applyed when the mouse is moved
+*
+* @param	speed 	the camera acceleration
+*/
+void Camera::setRotatioAcceleration(float acceleration)
+{
+	this->_rotationAcceleration = acceleration;
+	if(this->_rotationAcceleration < 0)
+		this->_rotationAcceleration = 0;
+}
+
+/**
+* @brief	Sets the cameras rotation deacceleration that is applyed when the camera is rotating
+*
+* @param	speed 	the camera rotation deacceleration
+*/
+void Camera::setRotatioDeacceleration(float deacceleration)
+{
+	this->_rotationDeacceleration = deacceleration;
+	if(this->_rotationDeacceleration < 0)
+		this->_rotationDeacceleration = 0;
+}
+
 
 /**
 * @brief	Sends the data to the master.

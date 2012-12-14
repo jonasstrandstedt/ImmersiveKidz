@@ -208,6 +208,24 @@ int SceneLoader::loadScene()
 				{
 					cam->setLimitsZ(glm::vec2(limitz->DoubleAttribute("min"),limitz->DoubleAttribute("max")));
 				}
+				
+				
+				tinyxml2::XMLElement* rotationSpeed = camera->FirstChildElement( "rotation" );
+				if(rotationSpeed)
+				{
+					cam->setRotatioSpeed(rotationSpeed->DoubleAttribute("maxSpeed"));
+					cam->setRotatioAcceleration(rotationSpeed->DoubleAttribute("acceleration"));
+					cam->setRotatioDeacceleration(rotationSpeed->DoubleAttribute("deacceleration"));
+				}
+
+				tinyxml2::XMLElement* movementSpeed = camera->FirstChildElement( "movement" );
+				if(movementSpeed)
+				{
+					cam->setSpeed(movementSpeed->DoubleAttribute("maxSpeed"));
+					cam->setAcceleration(movementSpeed->DoubleAttribute("acceleration"));
+					cam->setDeacceleration(movementSpeed->DoubleAttribute("deacceleration"));
+				}
+
 			}
 
 			tinyxml2::XMLElement* plane = world->FirstChildElement( "plane" );
