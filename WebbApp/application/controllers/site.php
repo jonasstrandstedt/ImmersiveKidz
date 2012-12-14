@@ -519,11 +519,42 @@ class Site extends CI_Controller
 
 		$this->load->view("sub_download", $data); // loads the sub_download view, where the user can download a zip.
 		}else{// isset($_POST['download'])
-			$group_id = $this->Tables_model->get_group_id($date,$group);
+			$group_id = $this->Tables_model->get_group_id($date, urldecode($group));
 			$world_id_array = $this->Tables_model->get_group_world($group_id[0] -> id);
 			$filename = $group."_".$date.".zip"; // Name of the zip-file to create.
 			$images = $this->Tables_model->get_all_illustrations_from_group($group_id[0] -> id); // Get all images from a specific group and date.
+			$billboardimages = $this->Tables_model->get_billboards_from_billboard_world($world_id_array[0] -> world_id); 
 			$this->zip->clear_data(); // clear all data in the zip, just in case ;)
+			
+			foreach ($billboardimages as $bimage) {
+				$pathimg = $bimage->imgurl; // save the path to the image on the server.
+				$newImgpath = "uploads" . substr($pathimg, strrpos($pathimg, "/"));//find name without folder
+				copy($pathimg, $newImgpath);//copy sound to folder
+				$this->zip->read_file($newImgpath);
+			}
+
+			//add all mask textures to zip
+			$maskurl = $this->Tables_model->get_mask_from_group_id($group_id[0] -> id); 
+			foreach ($maskurl as $mask) {
+				$this->zip->read_file($mask->textureurl, TRUE);
+			}
+
+			//add model textures to zip
+			$modelurl = $this->Tables_model->get_model_from_group_id($group_id[0] -> id);
+			foreach ($modelurl as $model) { 
+				$this->zip->read_file($model->textureurl, TRUE);
+				$this->zip->read_file($model->obj_fileurl, TRUE);
+			}
+
+			//add plane texture to zip
+			$planeurl = $this->Tables_model->get_plane_from_group_id($group_id[0] -> id); 
+			foreach ($planeurl as $plane) { 
+				$this->zip->read_file($plane->textureurl, TRUE);
+			}
+
+			
+
+			//add illustrations, billboards and sound to zip
 			foreach ($images as $row){ // For all images
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($row -> id);
 
@@ -535,10 +566,10 @@ class Site extends CI_Controller
 					$pathsound = $soundurl[0] -> soundurl; // save the path to the image on the server.
 					$newSoundpath = "uploads" . substr($pathsound, strrpos($pathsound, "/"));//find name without folder
 					copy($pathsound, $newSoundpath);//copy sound to  folder
-					$this->zip->read_file($newSoundpath, TRUE);
+					$this->zip->read_file($newSoundpath);
 				}
 				copy($pathimg, $newImgpath);//copy sound to folder
-				$this->zip->read_file($newImgpath, TRUE); // add the image to the zipfile. TRUE makes sure that the map structure remains.
+				$this->zip->read_file($newImgpath); // add the image to the zipfile. TRUE makes sure that the map structure remains.
 				
 			}
 
@@ -547,7 +578,7 @@ class Site extends CI_Controller
 			$model = $this->Tables_model->get_model_from_world_id($world[0]->id);
 			$map = $this->Tables_model->get_map_from_world_id($world[0]->id);
 			$mask = $this->Tables_model->get_masks_from_map_id($map[0]->id);
-			$group = $this->Tables_model->get_group($world[0]->id);
+			$group = $this->Tables_model->get_group_from_world_id($world[0]->id);
 			$billboard_world = $this->Tables_model->get_billboard_from_billboard_world($world[0]->id);
 			$billboard = $this->Tables_model->get_billboard($world[0]->id);
 			$animation = $this->Tables_model->get_animation();
@@ -558,7 +589,7 @@ class Site extends CI_Controller
 			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images, $plane[0], $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world);
 
 
-			$this->zip->read_file($xml_url, TRUE);
+			$this->zip->read_file($xml_url);
 			$this->zip->download($filename); // Makes the user download the zip-file
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
@@ -964,6 +995,7 @@ class Site extends CI_Controller
 		
 		}else if(!isset($_POST['submitplane'])) //if user didnt submited plane
 		{	
+			$world_name = urldecode($world_name);
 			$world = $this->Tables_model->get_world_by_name($world_name);
 			// get an array of all the planes
 			$info = $this->Tables_model->get_all_planes_from_maps();
