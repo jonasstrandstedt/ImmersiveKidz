@@ -16,15 +16,16 @@
 
 
 /**
-    * @brief      A class for handling of all 3D audio in the program
-    *
-    * @details    Is a singleton. This class has got methods that handles sound objects and stores all sound objects in a vector. 
-	*
-    * @author     Karl Gyllensten, kargy291@student.liu.se
-	* @author     Rickard Englund, ricen256@student.liu.se
-    * @date       November 29, 2012
-    *
-	*/
+* @brief	A class for handling of all 3D audio in the program
+*
+* @details	Is a singleton. This class has got methods that handles sound 
+*			objects and stores all sound objects in a vector. 
+*
+* @author	Karl Gyllensten, kargy291@student.liu.se
+* @author	Rickard Englund, ricen256@student.liu.se
+* @date		November 29, 2012
+*
+*/
 class AudioHandler{
 private:
 	

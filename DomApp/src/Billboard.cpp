@@ -6,8 +6,8 @@
 *
 *@details	Creates a billboard at a position, sets the proportions and assignes a texture to it.
 *
-*@param		texturename		Unique name of a texture. Ex: "filename.png".
-*@param		position	Contains the positions in world coordinates.
+*@param		texturename 	Unique name of a texture. Ex: "filename.png".
+*@param		position		Contains the positions in world coordinates.
 *@param		proportionsIn	The proportions of the billboardsize according to the world unit length. 
 */
 Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn)
@@ -87,7 +87,6 @@ glm::vec3 Billboard::getPosition()
 *
 *@details	Draws a texture on a Billboard(Quad perpendicual to the camera position).
 *
-*@return    void
 */
 void Billboard::onDraw() 
 {

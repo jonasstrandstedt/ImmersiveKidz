@@ -42,8 +42,8 @@ void DrawableObject::drawTriangles()
 		{
 			Vertex v = _varray[_iarray[i]];
 			glTexCoord2f(v.tex[0],v.tex[1]);     
-			glNormal3f(v.normal[0],v.normal[1],v.normal[2]);
-			glColor4f(v.colour[0],v.colour[1],v.colour[2],v.colour[3]);
+			//glNormal3f(v.normal[0],v.normal[1],v.normal[2]);
+			//glColor4f(v.colour[0],v.colour[1],v.colour[2],v.colour[3]);
 			glVertex3f(v.location[0],v.location[1],v.location[2]);
 		}
 	}
@@ -70,6 +70,7 @@ void DrawableObject::initVBO()
 		glColorPointer(4, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(32));
 		glVertexPointer(3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
     	
+    	// checks if the shader attributes is set and in that case fetches the location
     	if (_attrib_loc != -1)
     	{
     		glVertexAttribPointer(_attrib_loc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(48));
@@ -92,7 +93,7 @@ void DrawableObject::initVBO()
 			sgct::MessageHandler::Instance()->print("Index buffer not initialized\n");
 		}
 
-	// in case of error, print it
+		// in case of error, print it
 		GLuint errorID = glGetError();
 		if(errorID != GL_NO_ERROR)
 		{
@@ -105,7 +106,7 @@ void DrawableObject::initVBO()
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
 
-	resetArrays();
+	//resetArrays();
 }
 
 /**
@@ -119,6 +120,8 @@ void DrawableObject::_drawVBO() {
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);
+
+	// checks if the shader attributes is set and in that case fetches the location
 	if (_attrib_loc != -1)
 	{
 		glEnableVertexAttribArray(_attrib_loc);
@@ -153,7 +156,10 @@ void DrawableObject::_drawVBO() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-
+/**
+*@brief	    Resets the vertex and index arrays and sets them to NULL
+*
+*/
 void DrawableObject::resetArrays() {
 	if(_varray != NULL && _iarray != NULL)
 	{
@@ -195,6 +201,7 @@ void DrawableObject::draw(double t)
 	}
 
 	glPushMatrix();
+	
 	//Appllying the transform matrix
 	glMultMatrixf(glm::value_ptr(_transform));
 

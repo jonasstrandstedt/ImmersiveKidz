@@ -40,6 +40,7 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 	// check that vertex data is available before creating the vertex array
 	if(isize > 0 && vsize > 0 && varray != NULL && iarray != NULL)
 	{
+		sgct::MessageHandler::Instance()->print("Loading %i MultObject %s\n", count, getTypeName(_type));
 		_isize = isize * count;
 		_vsize = vsize *count;
 		if (_type == DUAL)
@@ -169,6 +170,18 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 		}
 	}
 	delete obj;
+}
+
+const char* MultObject::getTypeName(int type)
+{
+	if(type == SINGLE) 
+		return "SINGLE";
+	if(type == BILLBOARD) 
+		return "BILLBOARD";
+	if(type == DUAL) 
+		return "DUAL";
+
+	return "UNKNOWN";
 }
 
 /**

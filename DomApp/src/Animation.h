@@ -11,6 +11,7 @@
 			several animations to store them on the animation stack.
 *
 * @author	Viktor Nilsson, vikni067@student.liu.se
+* @author 	Jonas Strandstedt, jonst184@student.liu.se
 *
 * @date   	November 29, 2012
 *    

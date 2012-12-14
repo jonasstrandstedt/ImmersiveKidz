@@ -1031,7 +1031,7 @@ class Site extends CI_Controller
 				$plane_id = $plane_id_vec[0] -> id;
 				$world_id = $_POST['world_id'];
 				
-				$this->Tables_model->add_plane_to_world($plane_id,$world_id);
+				//$this->Tables_model->add_plane_to_world($plane_id,$world_id);
 				$map_id = $this->Tables_model->add_map("",$plane_id);
 				$this->Tables_model->update_map_id_world($map_id[0]->id,$world_id);
 
@@ -1118,7 +1118,7 @@ class Site extends CI_Controller
 		$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
 		$billboards = array();
 		foreach ($illustrations as $image) {
-			$billboard = $this->Tables_model->get_billboard_image($image -> id);
+			$billboard = $this->Tables_model->get_billboard_image($image -> billboard_id);
 			array_push($billboards,$billboard[0]);
 		}
 		$data  = array(
