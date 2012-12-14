@@ -1031,7 +1031,7 @@ class Site extends CI_Controller
 				$plane_id = $plane_id_vec[0] -> id;
 				$world_id = $_POST['world_id'];
 				
-				$this->Tables_model->add_plane_to_world($plane_id,$world_id);
+				//$this->Tables_model->add_plane_to_world($plane_id,$world_id);
 				$map_id = $this->Tables_model->add_map("",$plane_id);
 				$this->Tables_model->update_map_id_world($map_id[0]->id,$world_id);
 

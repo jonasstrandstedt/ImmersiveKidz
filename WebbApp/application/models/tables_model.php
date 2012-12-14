@@ -46,7 +46,7 @@ class Tables_model extends CI_Model
     {
 		$this->db->select("*");
 		$this->db->from("planes");
-		$where = "`id` = (SELECT `plane_id` FROM `plane_world` WHERE `world_id` = $worldID)"; 
+		$where = "`id` = (SELECT `plane_id` FROM `maps` WHERE `id` = (SELECT `map_id` FROM `worlds` WHERE `id` = $worldID))"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
@@ -88,7 +88,7 @@ class Tables_model extends CI_Model
 	{
 		$this->db->select("textureurl");
 		$this->db->from("planes");
-		$where = "`id` = (SELECT `plane_id` FROM `plane_world` WHERE `world_id` = (SELECT `world_id` FROM `groups` WHERE `id` = $groupId))"; 
+		$where = "`id` = (SELECT `plane_id` FROM `maps` WHERE `id` = (SELECT `map_id` FROM `worlds` WHERE `id` = (SELECT `world_id` FROM `groups` WHERE `id` = $groupId)))"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		//exit(print_r($this->db->last_query()));
