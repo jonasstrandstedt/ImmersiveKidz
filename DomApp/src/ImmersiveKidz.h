@@ -63,9 +63,6 @@ private:
 	static ImmersiveKidz* _instance;
 	ImmersiveKidz();
 	
-	// TODO: REMOVE
-	sgct::Engine *engine;
-	
 	// all objects in the scene that can be drawn
 	std::vector< DrawableObject* > _objects;
 	std::vector< Illustration* > _illustrations;

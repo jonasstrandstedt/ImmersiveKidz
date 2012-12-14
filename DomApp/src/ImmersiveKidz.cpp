@@ -63,7 +63,8 @@ void ImmersiveKidz::init()
 
 /**
 *@brief		setMaster method
-*@param		m boolean. Sets the master to true or false
+*
+*@param		m	Sets the master to true or false
 */
 void ImmersiveKidz::setMaster(bool m) 
 {
@@ -137,6 +138,9 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double a
 */
 bool ImmersiveKidz::loadTexture(std::string texture)
 {
+	if(texture == "")
+		return false;
+
 	if ( _textures.find(texture) == _textures.end())
 	{
 		_textures.insert(texture);
@@ -174,6 +178,7 @@ void ImmersiveKidz::preSyncFunc()
 
 /**
 *@brief	    Function called from sgct draw
+*
 */
 void ImmersiveKidz::draw() 
 {
@@ -231,6 +236,7 @@ void ImmersiveKidz::encode()
 
 /**
 *@brief	    Function called from sgct decode
+*
 */
 void ImmersiveKidz::decode()
 {
@@ -273,8 +279,8 @@ void ImmersiveKidz::mouseMotion(int x,int y,int dx,int dy)
 *
 * @param	button		The button which is interacted with
 * @param	state		The state, if the button is pressed or not 
+*
 */
-
 void ImmersiveKidz::mouseButton(int button,int state)
 {
 	if(_camera == 0)
@@ -289,6 +295,7 @@ void ImmersiveKidz::mouseButton(int button,int state)
 *
 * @param	key			The key which is interacted with
 * @param	state		The state, if the key is pressed or not 
+*
 */
 void ImmersiveKidz::keyboardButton(int key,int state)
 {
@@ -312,6 +319,7 @@ void ImmersiveKidz::keyboardButton(int key,int state)
 
 /**
 *@brief	    Function called from sgct setPostSyncPreDrawFunction, updates the Camera
+*
 */
 void ImmersiveKidz::postSyncPreDrawFunction()
 {
@@ -326,6 +334,7 @@ void ImmersiveKidz::postSyncPreDrawFunction()
 *@brief	    Returns the Camera
 *
 *@return     Camera* Pointer to the ImmersiveKidz enginge Camera object
+*
 */
 Camera* ImmersiveKidz::getCamera()
 {
@@ -333,9 +342,10 @@ Camera* ImmersiveKidz::getCamera()
 }
 
 /**
-*@brief	    Set the size of the world on the form [minX,minY,maxX,maxX]
+*@brief	    Set the size of the world on the form [minX,minZ,maxX,maxZ]
 *
-*@param    worldRect	a vec4 on the form [minX,minY,maxX,maxX]
+*@param    worldRect	a vec4 on the form [minX,minZ,maxX,maxZ]
+*
 */
 void ImmersiveKidz::setWorldRect(glm::vec4 worldRect)
 {
@@ -345,7 +355,8 @@ void ImmersiveKidz::setWorldRect(glm::vec4 worldRect)
 /**
 *@brief	    Returns the size of the world. 
 *
-*@return    rect	rect of [minX,minY,maxX,maxX] eg, the 2d corner points of the world	
+*@return    glm::vec4	rect of [minX,minZ,maxX,maxZ] eg, the 2d corner points of the world	
+*
 */
 glm::vec4 ImmersiveKidz::getWorldRect()
 {
@@ -354,6 +365,7 @@ glm::vec4 ImmersiveKidz::getWorldRect()
 
 /**
 *@brief	    Resets the vectors and variables concerning the scene
+*
 */
 void ImmersiveKidz::reset()
 {

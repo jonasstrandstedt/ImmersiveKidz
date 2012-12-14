@@ -22,12 +22,12 @@ Model::Model(std::string filename, std::string texturename, glm::vec3 position, 
 	std::ifstream ifile(filename.c_str());
 	if(ifile)
 	{
-		sgct::MessageHandler::Instance()->print("Model not found\n");
+		sgct::MessageHandler::Instance()->print("Model %s found, loading!\n", filename.c_str());
 		loadObj(filename.c_str());
 		ifile.close();
 	} else 
 	{
-		sgct::MessageHandler::Instance()->print("Model not found\n");
+		sgct::MessageHandler::Instance()->print("Model %s not found\n", filename.c_str());
 	}
 
 	_transform = glm::rotate(_transform, rotation[0], glm::vec3(1,0,0));
@@ -46,7 +46,18 @@ Model::Model(std::string filename, std::string texturename, glm::vec3 position, 
 */
 void Model::onDraw() 
 {
+	glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName(_texture));
 
+	sgct::ShaderManager::Instance()->bindShader( "Simple" );
+	
+	glBegin(GL_TRIANGLES);
+	drawTriangles();
+//	_drawVBO();
+	glEnd();
+
+
+//	sgct::ShaderManager::Instance()->unBindShader();
+	glBindTexture(GL_TEXTURE_2D,0);
 }
 
 
@@ -128,7 +139,6 @@ void Model::loadObj(const char *filename)
 	
 	// Go back to beginning of file
 	fseek(fi, 0, SEEK_SET);
-	
 	while (fgets(line,150,fi)!=NULL)
 	{
 		if (sscanf( line, "v %f%f%f", &f1, &f2, &f3)) 
@@ -208,29 +218,34 @@ void Model::loadObj(const char *filename)
 	{
 		normalIndex = tempNormalIndicesArray[m]*3;
 		textureIndex = tempTextureIndicesArray[m]*3;
-		vertexIndex = (_iarray)[m]*3;
-		(_iarray)[m] = m;
+		vertexIndex = _iarray[m]*3;
+		_iarray[m] = m;
 		
 		int q = 0;
 		while (q < 3) 
 		{
 			_varray[m].location[q] = tempVertexArray[vertexIndex+q]*_scale;
-			(_varray)[m].normal[q] = tempVertexNormalArray[normalIndex+q];
+			_varray[m].normal[q] = tempVertexNormalArray[normalIndex+q];
 			q++;
 		}	
-		(_varray)[m].colour[0] = 1;
-		(_varray)[m].colour[1] = 1;
-		(_varray)[m].colour[2] = 1;
-		(_varray)[m].colour[3] = 1.0;
+		_varray[m].colour[0] = 1;
+		_varray[m].colour[1] = 1;
+		_varray[m].colour[2] = 1;
+		_varray[m].colour[3] = 1.0;
+
+		_varray[m].attribute[0] = 0;
+		_varray[m].attribute[1] = 0;
+		_varray[m].attribute[2] = 0;
+		_varray[m].float_attribute = 0;
 
 		if (vertexTextureSize > 0)
 		{
-			(_varray)[m].tex[0] = tempVertexTextureArray[textureIndex];
-			(_varray)[m].tex[1] = tempVertexTextureArray[textureIndex+1];
-		} 
+			_varray[m].tex[0] = tempVertexTextureArray[textureIndex];
+			_varray[m].tex[1] = tempVertexTextureArray[textureIndex+1];
+		} else
 		{
-			(_varray)[m].tex[0] = 1.0;
-			(_varray)[m].tex[1] = 1.0;
+			_varray[m].tex[0] = 1.0;
+			_varray[m].tex[1] = 1.0;
 		}
 		m++;
 	}
@@ -241,6 +256,4 @@ void Model::loadObj(const char *filename)
 	free(tempNormalIndicesArray);
 	free(tempVertexTextureArray);
 	free(tempTextureIndicesArray);
-	
-	//initVBO(&_varray, &_iarray, _vsize, _isize);
 }

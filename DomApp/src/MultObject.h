@@ -30,6 +30,7 @@ class MultObject: public DrawableObject {
 public:
 	MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *mask, int seed, int count, int type, glm::vec2 altitude);
 	void onDraw();
+	const char* getTypeName(int type);
 private:
 	GLuint _listid;
 	bool _billboard;
