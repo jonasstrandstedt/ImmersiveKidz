@@ -4,7 +4,7 @@
 /**
 *@brief	    DrawableObject default constructor
 *
-*@details   Defines the animation function to be 0.
+*@details   Defines the animation function to be 0 and sets the default values for all other variables.
 */
 DrawableObject::DrawableObject() 
 {
@@ -21,11 +21,19 @@ DrawableObject::DrawableObject()
 	_float_attrib_loc = -1;
 }
 
+/**
+*@brief	    Destructor, calls the resetArrays function to clean up memory
+*/
 DrawableObject::~DrawableObject()
 {
 	resetArrays();
 }
 
+/**
+*@brief	    Draws triangles from the vertex array
+*
+*@details	Can be used from a glBegin(GL_TRIANGLES) context or inside a display list.
+*/
 void DrawableObject::drawTriangles() 
 {
 	if(_varray != NULL && _iarray != NULL)
@@ -34,7 +42,8 @@ void DrawableObject::drawTriangles()
 		{
 			Vertex v = _varray[_iarray[i]];
 			glTexCoord2f(v.tex[0],v.tex[1]);     
-			//glNormal3f(v.normal[0],v.normal[1],v.normal[2]);
+			glNormal3f(v.normal[0],v.normal[1],v.normal[2]);
+			glColor4f(v.colour[0],v.colour[1],v.colour[2],v.colour[3]);
 			glVertex3f(v.location[0],v.location[1],v.location[2]);
 		}
 	}
@@ -99,6 +108,9 @@ void DrawableObject::initVBO()
 	resetArrays();
 }
 
+/**
+*@brief	    Draws the VBO, called from the subclasses onDraw function where the proper shader is defined.
+*/
 void DrawableObject::_drawVBO() {
 	glBindBuffer(GL_ARRAY_BUFFER, _vBufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _iBufferID);
@@ -218,6 +230,9 @@ std::vector<Animation*>* DrawableObject::getAnimations()
 	return &_animationVector;
 }
 
+/**
+*@brief	    Removes all the temporary animations
+*/
 void DrawableObject::resetAnimations() {
 
 	for (unsigned int i = 0; i < _animationVector.size(); ++i)
@@ -245,11 +260,24 @@ void DrawableObject::setAnimationFuncByName(std::string name, double seed)
 	if ( name == "fly" ) setAnimationFunc(fly, seed);
 }
 
-
+/**
+*@brief	    Gets the texture
+*
+*@return	The name of the texture in the SGCT texture manager
+*/
 std::string DrawableObject::getTexture() {
 	return _texture;
 }
 
+/**
+*@brief	    Returns (as pointers) all vertex and index array data
+*
+*@param		vsize 	Pointer to an integer
+*@param		isize 	Pointer to an integer
+*@param		varray 	Pointer to a vertex array
+*@param		iarray	Pointer to an integer array
+*
+*/
 void DrawableObject::getArrays(int *vsize, int *isize, Vertex **varray, int **iarray) 
 {
 	*isize = _isize;
@@ -290,3 +318,4 @@ void fly(double t, double seed)
 	t += seed;
 	glTranslatef(sin(t),fabs(sin(t*0.8))*0.5,cos(t*0.5)*1.5);
 }
+

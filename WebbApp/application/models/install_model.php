@@ -191,7 +191,7 @@ class Install_model extends CI_Model
 			$this->dbforge->create_table('masks');
 			log_message('info', "Created table: masks");
 			$this->load->model("Tables_model");
-			$this->Tables_model->add_mask("plane/grass_map.png","Grass", 1);
+			$this->Tables_model->add_mask("plane/grass_mask.png","Grass", 1);
 		}
 	}
 

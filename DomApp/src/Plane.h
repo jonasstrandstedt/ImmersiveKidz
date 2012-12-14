@@ -7,9 +7,10 @@
 #include "DrawableObject.h"
 
 /**
-* @brief  	A container class for a object
+* @brief  	A container class for a plane (not an airplane)
 *
-* @details	A object defined by a wavefront obj model and a png texture.
+* @details	The plain created will has its local coordinate 
+*			system in the bottom left corner and will be in the xz-plane.
 *
 * @author 	Jonas Strandstedt, jonast184@student.liu.se
 * @date   	November 1, 2012

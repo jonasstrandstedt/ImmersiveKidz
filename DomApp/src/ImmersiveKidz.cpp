@@ -98,7 +98,11 @@ void ImmersiveKidz::setScenePath(std::string folder)
 #endif
 }
 
-
+/**
+*@brief	    Sets the scene as loaded or not loaded
+*
+*@param		isLoaded	True if loaded and false if not loaded.
+*/
 void ImmersiveKidz::setSceneLoaded(bool isLoaded)
 {
 	_sceneLoaded = isLoaded;
@@ -124,6 +128,13 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double a
 	_objects.back()->setAnimationFuncByName(f, animseed);
 }
 
+/**
+* @brief	    Loads a texture from the specieif path
+*
+* @param		texture		The relativepath to the texture
+*
+* @return		Returns true if succes in loading (or previously loaded) the texture, and false if it fails.
+*/
 bool ImmersiveKidz::loadTexture(std::string texture)
 {
 	if ( _textures.find(texture) == _textures.end())
@@ -134,7 +145,9 @@ bool ImmersiveKidz::loadTexture(std::string texture)
 	return true;
 }
 
-
+/**
+* @brief	    Initializes all DrawableObjects VBO
+*/
 void ImmersiveKidz::initObjects() 
 {
 	sgct::MessageHandler::Instance()->print("Initializing all objects\n");
@@ -239,8 +252,8 @@ void ImmersiveKidz::decode()
 /**
 * @brief	a method that uses the mouseMotion method in the Camera class
 *
-* @param	x
-* @param	y
+* @param	x			the x position of the mouse
+* @param	y			the y position of the mouse
 * @param	dx			delta x, amount of movement in x-axis
 * @param	dy			delta y, amount of movement in y-axis 
 */
@@ -339,6 +352,9 @@ glm::vec4 ImmersiveKidz::getWorldRect()
 	return _worldRect;
 }
 
+/**
+*@brief	    Resets the vectors and variables concerning the scene
+*/
 void ImmersiveKidz::reset()
 {
 

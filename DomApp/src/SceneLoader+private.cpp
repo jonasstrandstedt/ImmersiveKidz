@@ -1,6 +1,13 @@
 #include "SceneLoader.h"
 #include "ImmersiveKidz.h"
 
+/**
+*@brief	    Used by loadScene to load the planes
+*
+*@param		parent	The parent node, should be "scene"
+*
+*@return     void
+*/
 void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent) 
 {
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
@@ -71,6 +78,13 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 	}
 }
 
+/**
+*@brief	    Used by loadScene to load the models
+*
+*@param		parent	The parent node, should be "scene"
+*
+*@return     void
+*/
 void SceneLoader::_loadModels(tinyxml2::XMLElement* parent) 
 {
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
@@ -147,6 +161,13 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 	}
 }
 
+/**
+*@brief	    Used by loadScene to load the billboards
+*
+*@param		parent	The parent node, should be "scene"
+*
+*@return     void
+*/
 void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent) 
 {
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
@@ -207,6 +228,13 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent)
 	}
 }
 
+/**
+*@brief	    Used by loadScene to load the illustrations
+*
+*@param		parent	The parent node, should be "scene"
+*
+*@return     void
+*/
 void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent) 
 {
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
@@ -282,6 +310,14 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent)
 	}
 }
 
+/**
+*@brief	    Used by the _load* functions to multiply the object
+*
+*@param		obj		The DrawableObject that is going to be multiplied
+*@param		parent	The parent node, should be objects mult element
+*
+*@return     void
+*/
 void SceneLoader::_loadMult(DrawableObject *obj, tinyxml2::XMLElement* multElement) {
 
 	int count = multElement->IntAttribute( "count" );
@@ -312,6 +348,7 @@ void SceneLoader::_loadMult(DrawableObject *obj, tinyxml2::XMLElement* multEleme
 		altitude[1] = altitudeElement->FloatAttribute( "max" );
 	}
 
+	// creates the multobject and adds it to the ImmersiveKidz engine, the DrawableObject is freed from multObjects constructor
 	ImmersiveKidz::getInstance()->addDrawableObject(
 		new MultObject(
 			obj,&_mask[mask], seed, count, type, altitude

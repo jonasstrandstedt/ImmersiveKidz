@@ -1,6 +1,5 @@
 #include "Animation.h"
 
-
 /**
 *@brief	    Animation default constructor
 *
@@ -14,6 +13,15 @@ Animation::Animation(double duration)
 	_frame = 0;
 	
 }
+
+/**
+*@brief	    Animation reconstruct constructor
+*
+*@details   Used by the decode function to reconstruct the Animation object on the slaves
+*
+*@param 	duration	the duration in frames
+*@param 	frame	Number of frames animated
+*/
 Animation::Animation(int duration, int frame) {
 	_duration = duration;
 	_frame = frame;
@@ -38,6 +46,15 @@ bool Animation::animate()
 	return true;
 }
 
+/**
+*@brief	    Decodes the Animation object on the slaves
+*
+*@details   Decodes the data and recreates a shiny new Animation object
+*
+*@param		data	The SGCT sharedData object.
+*
+*@return	An subclass of Animation
+*/
 Animation* Animation::decode(sgct::SharedData *data) {
 	unsigned int type = data->readInt32();
 	if (type == JUMP)
@@ -71,9 +88,6 @@ Jump::Jump(int duration, int frame, float height):Animation(duration,frame)
 
 /**
 *@brief	    Jump animation function
-*
-*@details   The animation function for jump
-*
 */
 void Jump::doAnimate()
 {
@@ -81,8 +95,9 @@ void Jump::doAnimate()
 }
 
 /**
-*@brief	    Get the type
+*@brief	    Encodes the object, reconstructs in the Animation::decode function
 *
+*@param		data	The SGCT shareddata object
 */
 void Jump::encode(sgct::SharedData *data)
 {
@@ -119,8 +134,9 @@ void Strafe::doAnimate()
 }
 
 /**
-*@brief	    Get the type
+*@brief	    Encodes the object, reconstructs in the Animation::decode function
 *
+*@param		data	The SGCT shareddata object
 */
 void Strafe::encode(sgct::SharedData *data)
 {

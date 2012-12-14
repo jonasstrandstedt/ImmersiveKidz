@@ -62,6 +62,39 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
+	function get_mask_from_group_id($groupId) 
+    {
+		$this->db->select("textureurl");
+		$this->db->from("masks");
+		$where = "`map_id` = (SELECT `map_id` FROM `worlds` WHERE `id` = (SELECT `world_id` FROM `groups` WHERE `id` = $groupId))"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		//exit(print_r($this->db->last_query()));
+		return $query->result();
+	}
+
+	function get_model_from_group_id($groupId) 
+    {
+		$this->db->select("*");
+		$this->db->from("models");
+		$where = "`id` = (SELECT `model_id` FROM `model_world` WHERE `world_id` = (SELECT `world_id` FROM `groups` WHERE `id` = $groupId))"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		//exit(print_r($this->db->last_query()));
+		return $query->result();
+	}
+
+	function get_plane_from_group_id($groupId) 
+	{
+		$this->db->select("textureurl");
+		$this->db->from("planes");
+		$where = "`id` = (SELECT `plane_id` FROM `plane_world` WHERE `world_id` = (SELECT `world_id` FROM `groups` WHERE `id` = $groupId))"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		//exit(print_r($this->db->last_query()));
+		return $query->result();
+	}
+
 	function get_model_from_world_id($worldID) 
     {
 		$this->db->select("*");
@@ -87,10 +120,9 @@ class Tables_model extends CI_Model
     {
 		$this->db->select("*");
 		$this->db->from("maps");
-		$where = "`id` = (SELECT `map_id` FROM `map_world` WHERE `world_id` = $worldID)"; 
+		$where = "`id` = (SELECT `map_id` FROM `worlds` WHERE `id` = $worldID)"; 
 		$this->db->where($where);
 		$query = $this->db->get();
-		//exit(print_r($this->db->last_query()));
 		return $query->result();
 	}
 
@@ -316,6 +348,7 @@ class Tables_model extends CI_Model
 	}
 	function get_world_by_name($name)
     {
+    	
 		$this->db->select("*");
 		$this->db->from("worlds");
 		$where = array(
@@ -582,6 +615,19 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
+		function get_group_from_world_id($id) 
+    {
+		$this->db->select("*");
+
+		$this->db->from("groups");
+		$where = array( 
+				'world_id' => $id
+				);
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	/* ADD PLANE */
 
 	function add_plane($width, $height, $textureurl, $rot_x, $rot_y, $rot_z, $pos_x, $pos_y, $pos_z) 
@@ -832,16 +878,4 @@ class Tables_model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
-
-	// function add_map_to_world($map_id, $world_id) 
-	// {			
-
-	// 			$data = array(
-	// 			   'map_id' => $map_id,
-	// 			   'world_id' => $world_id
-	// 			);
-	// 			$q = $this->db->insert('map_world', $data);
-	// 			return $q;
-	// }
-
 }
