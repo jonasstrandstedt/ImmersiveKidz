@@ -1118,7 +1118,7 @@ class Site extends CI_Controller
 		$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
 		$billboards = array();
 		foreach ($illustrations as $image) {
-			$billboard = $this->Tables_model->get_billboard_image($image -> id);
+			$billboard = $this->Tables_model->get_billboard_image($image -> billboard_id);
 			array_push($billboards,$billboard[0]);
 		}
 		$data  = array(
