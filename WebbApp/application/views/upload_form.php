@@ -40,7 +40,7 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 					<?php
 					foreach ($worlds as $world)
 					{ 
-						echo "<option value='".$world-> id."'>".$world-> name."</option>";
+						echo "<option value='".$world-> id."'>".htmlentities($world-> name)."</option>";
 					}
 					?>
 				</select>

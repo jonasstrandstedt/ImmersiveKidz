@@ -35,6 +35,7 @@
 		<button class='styledDeleteButton' type='submit' name='delete' value='".$column."' >X</button>
 		<button class='styledRotateMinus' type='submit' name='rotateminus' value='".$column."' >ROTERA -90&#176;</button>		
 		<button class='styledRotatePlus' type='submit' name='rotateplus' value='".$column."' >ROTERA +90&#176;</button>
+		<hr size='1px' class='hrbutton1'> <hr size='1px' class='hrbutton2'>
 		</div>
 		<label>Konstnär:</label>
 		<input type='text' name='artist".$column."' value='".htmlentities($row -> artist)."' />

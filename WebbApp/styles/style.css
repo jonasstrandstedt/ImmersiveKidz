@@ -195,9 +195,9 @@ h1,h2,h3,h4,p,a,li,ul, html{
 .row{ /*each row with uploaded images*/
 	clear: both;
 	overflow: hidden;
-	width: 55%;
+	width: 1050px;
 	margin: 0 auto;
-}
+	}
 
 .row .imgform{ /*each image and forms */
 	margin: 50px 20px 50px 20px;
