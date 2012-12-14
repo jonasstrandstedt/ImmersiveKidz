@@ -59,6 +59,7 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater för alla 
 
 ?>
 <script src="<?php echo base_url(); ?>js/kinetic.js" ></script>
+<script src="<?php echo base_url(); ?>js/jquery.js" ></script>
 <div id='sub'>
 	<div id='plane'>
 	</div>
@@ -114,11 +115,14 @@ for ($i=0; $i < sizeof($billboards); $i++){ // Slumpa fram koordinater för alla 
 	var illustrationsJS = [<?php
 		$counter = 0;
 	 foreach ($illustrations as $illustration) {
-		echo"['".$illustration -> artist."','".$illustration -> imgname."']," ;
+		echo"['".htmlentities($illustration -> artist)."','".htmlentities($illustration -> imgname)."']," ;
 			$counter++;
 			} 
 
 			?>];
+		//console.log(illustrationsJS);
+		//var output = $("<div />").html(illustrationsJS[0][0]).text();
+		//console.log(output);
 
 
 
@@ -217,8 +221,14 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 		 				height: 100,
 		 				image: images[this.attrs.id],
 		 		});
+		 		var s;
+		 		if($("<div />").html(illustrationsJS[this.attrs.id][0]).text()[$("<div />").html(illustrationsJS[this.attrs.id][0]).text().length-1] == 's' || $("<div />").html(illustrationsJS[this.attrs.id][0]).text()[$("<div />").html(illustrationsJS[this.attrs.id][0]).text().length-1] == 'x'){
+		 			s = '';
+		 		}else{
+		 			s = 's';
+		 		}
 		 		imgName.setAttrs({
-		 			text: illustrationsJS[this.attrs.id][0] + 's ' + illustrationsJS[this.attrs.id][1],
+		 			text: $("<div />").html(illustrationsJS[this.attrs.id][0]).text() + s + ' ' + $("<div />").html(illustrationsJS[this.attrs.id][1]).text(),
 		 		})
 		 		var x = <?php echo "circleList[this.attrs.id].getPosition().x *" . $plane_width/$canvas_width." + " .$plane_pos_x.";";?>
 		 		
@@ -267,7 +277,7 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 		 	width: <?php echo $canvas_width;?>,
 		 	fontFamily:'Arial',
 		 	align: 'center',
-		 	text: '<?php echo $world -> name;?>',
+		 	text: $("<div />").html('<?php echo $world -> name;?>').text(),
 		 	textFill: '#fff',
 		 	fontSize: 20
 
@@ -279,7 +289,7 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 		 	width: <?php echo $canvas_width;?>,
 		 	fontFamily:'Arial',
 		 	align: 'center',
-		 	text: '<?php echo $group -> name ." - ". $group -> date;?>',
+		 	text: $("<div />").html('<?php echo htmlentities($group -> name) ." - ". $group -> date;?>').text(),
 		 	textFill: '#fff',
 		 	fontSize: 14
 		 })
@@ -302,13 +312,20 @@ echo ",'".base_url().$billboards[$i] -> imgurl."'";
 					image: images[0],
 					id: 'imageFrame'
 			});
+	       var s;
+		 		if($("<div />").html(illustrationsJS[0][0]).text()[$("<div />").html(illustrationsJS[0][0]).text().length-1] == 's' || $("<div />").html(illustrationsJS[0][0]).text()[$("<div />").html(illustrationsJS[0][0]).text().length-1] == 'x'){
+		 			s = '';
+		 		}else{
+		 			s = 's';
+		 		}
+
 	       var imageName = new Kinetic.Text({
 		 	x: <?php echo $canvas_width + 90;?>,
 		 	y: 120,
 		 	width: <?php echo $canvas_width - 160;?>,
 		 	fontFamily:'Arial',
 		 	align: 'center',
-		 	text: illustrationsJS[0][0] + 's ' + illustrationsJS[0][1],
+		 	text: $("<div />").html(illustrationsJS[0][0]).text() + s + ' ' + $("<div />").html(illustrationsJS[0][1]).text(),
 		 	textFill: '#fff',
 		 	fontSize: 16,
 		 	id: 'image_name'
