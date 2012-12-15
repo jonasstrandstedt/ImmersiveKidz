@@ -10,6 +10,8 @@ uniform int billboard;
 
 varying vec2 st;
 varying vec3 stp;
+varying vec4 fragment_position;
+varying vec3 cam_position;
 
 
 void main()
@@ -32,12 +34,14 @@ void main()
 					             	-sin( angle_x ), 0.0, cos( angle_x ), 0.0,
 						     	   	0.0,           0.0, 0.0, 1.0 );
 	
-
+	vec4 new_position;
 	if(billboard == 0) {
-		gl_Position =  gl_ModelViewProjectionMatrix  * TranslateMatrix *  RotationMatrix* gl_Vertex;
+		new_position =  gl_ModelViewProjectionMatrix  *TranslateMatrix *  RotationMatrix* gl_Vertex;
 	} else {
-		gl_Position =  gl_ModelViewProjectionMatrix  * TranslateMatrix * CameraMatrix * gl_Vertex;
+		new_position =  gl_ModelViewProjectionMatrix  *TranslateMatrix * CameraMatrix * gl_Vertex;
 	}
 
-	
+	gl_Position =new_position;
+	fragment_position = new_position;
+	cam_position = camera_position;
 }

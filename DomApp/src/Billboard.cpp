@@ -26,16 +26,16 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
     _varray = (Vertex*)malloc(_vsize*sizeof(Vertex));
     _iarray = (int*)malloc(_isize*sizeof(int));
 	
-	_varray[0].location[0] = -0.5 * _proportions[0];
+	_varray[0].location[0] = static_cast<float>(-0.5 * _proportions[0]);
 	_varray[0].location[1] = 0;
 	_varray[0].location[2] = 0;
-	_varray[1].location[0] = 0.5 * _proportions[0];
+	_varray[1].location[0] = static_cast<float>(0.5 * _proportions[0]);
 	_varray[1].location[1] = 0;
 	_varray[1].location[2] = 0;
-	_varray[2].location[0] = 0.5 * _proportions[0];
+	_varray[2].location[0] = static_cast<float>(0.5 * _proportions[0]);
 	_varray[2].location[1] = _proportions[1];
 	_varray[2].location[2] = 0;
-	_varray[3].location[0] = -0.5 * _proportions[0];
+	_varray[3].location[0] = static_cast<float>(-0.5 * _proportions[0]);
 	_varray[3].location[1] = _proportions[1];
 	_varray[3].location[2] = 0;
 	
@@ -96,7 +96,7 @@ void Billboard::onDraw()
 	// Bind shader and set the angle
 	sgct::ShaderManager::Instance()->bindShader( "SingleBillboard" );
 	int angle_loc = sgct::ShaderManager::Instance()->getShader( "SingleBillboard").getUniformLocation( "angle_x" );
-	glUniform1f( angle_loc, angle * 3.14/180);
+	glUniform1f( angle_loc, static_cast<float>(angle * 3.14/180.0));
 	
     // Draw one obejct from a display list
 	_drawVBO();

@@ -38,7 +38,7 @@ void DrawableObject::drawTriangles()
 {
 	if(_varray != NULL && _iarray != NULL)
 	{
-		for (int i = 0; i < _isize; ++i)
+		for (unsigned int i = 0; i < _isize; ++i)
 		{
 			Vertex v = _varray[_iarray[i]];
 			glTexCoord2f(v.tex[0],v.tex[1]);     
@@ -301,7 +301,9 @@ void DrawableObject::getArrays(int *vsize, int *isize, Vertex **varray, int **ia
 void bounce(double t, double seed) 
 {
 	t += seed;
-	glTranslatef(0.0f,fabsf(sin(t*2))*0.5,0.0f);
+	glTranslatef(	static_cast<float>(0.0),
+					static_cast<float>(fabs(sin(t*2.0))*0.5),
+					static_cast<float>(0.0));
 }
 
 /**
@@ -312,7 +314,9 @@ void bounce(double t, double seed)
 void pendulum(double t, double seed) 
 {
 	t += seed;
-	glTranslatef(sin(t),0.0f,0.0f);
+	glTranslatef(	static_cast<float>(sin(t)),
+					static_cast<float>(0.0),
+					static_cast<float>(0.0));
 }
 
 /**
@@ -323,6 +327,8 @@ void pendulum(double t, double seed)
 void fly(double t, double seed) 
 {
 	t += seed;
-	glTranslatef(sin(t),fabs(sin(t*0.8))*0.5,cos(t*0.5)*1.5);
+	glTranslatef(	static_cast<float>(sin(t)),
+					static_cast<float>(fabs(sin(t*0.8))*0.5),
+					static_cast<float>(cos(t*0.5)*1.5));
 }
 

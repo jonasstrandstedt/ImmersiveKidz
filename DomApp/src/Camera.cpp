@@ -17,13 +17,13 @@ Camera::Camera(glm::vec3 startPosition)
 	_movingUp = false;
 	_movingDown = false;
 	_speed = 6.0;
-	_rotationSpeed = 45.033;
+	_rotationSpeed = static_cast<float>(45.033);
 	_mouseState = false;
 	_position = startPosition;
 	
 	_limitsX.x = -10;
 	_limitsX.y = 10;
-	_limitsY.x = 0.04;
+	_limitsY.x = static_cast<float>(0.04);
 	_limitsY.y = 10;
 	_limitsZ.x = -10;
 	_limitsZ.y = 10;
@@ -115,10 +115,10 @@ void Camera::update(float dt)
 
 	_rotVelocityV += _rotForceV*(dt*7.5f); 
 	sign = _rotVelocityV == 0 ? 0 : _rotVelocityV > 0 ? 1 : -1;
-	_rotVelocityV -= sign*dt*_rotationSpeed*0.8;
-	if(abs(_rotVelocityV)>_rotationSpeed)
-		_rotVelocityV = sign*_rotationSpeed;
-	if(abs(_rotVelocityV)<0.1){
+	_rotVelocityV -= static_cast<float>(static_cast<float>(sign)*dt*_rotationSpeed*0.8);
+	if(fabs(_rotVelocityV)>_rotationSpeed)
+		_rotVelocityV = static_cast<float>(sign)*_rotationSpeed;
+	if(fabs(_rotVelocityV)<0.1){
 		_rotVelocityV = 0;
 	}
 	_rotation.y += _rotVelocityV*dt;
@@ -127,10 +127,10 @@ void Camera::update(float dt)
 
 	_rotVelocityH += _rotForceH*(dt*7.5f); 
 	sign = _rotVelocityH == 0 ? 0 : _rotVelocityH > 0 ? 1 : -1;
-	_rotVelocityH -= sign*dt*_rotationSpeed*0.8;
-	if(abs(_rotVelocityH)>_rotationSpeed)
-		_rotVelocityH = sign*_rotationSpeed;
-	if(abs(_rotVelocityH)<0.1){
+	_rotVelocityH -= static_cast<float>(static_cast<float>(sign)*dt*_rotationSpeed*0.8);
+	if(fabs(_rotVelocityH)>_rotationSpeed)
+		_rotVelocityH = static_cast<float>(sign)*_rotationSpeed;
+	if(fabs(_rotVelocityH)<0.1){
 		_rotVelocityH = 0;
 	}
 	_rotation.x += _rotVelocityH*dt;
@@ -218,20 +218,8 @@ void Camera::mouseMotion(int dx,int dy)
 {
 	if(_mouseState)
 	{
-		_rotForceH += dx;
-		_rotForceV += dy;
-
-		/*_rotation[0] += dx*_rotationSpeed;
-		_rotation[1] += dy*_rotationSpeed;
-
-		if(_rotation[1]<-89)
-		{
-		_rotation[1] = -89;
-		}
-		if(_rotation[1]>89)
-		{
-		_rotation[1] = 89;
-		}*/
+		_rotForceH += static_cast<float>(dx);
+		_rotForceV += static_cast<float>(dy);
 	}
 }
 

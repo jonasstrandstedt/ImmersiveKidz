@@ -34,7 +34,6 @@ Model::Model(std::string filename, std::string texturename, glm::vec3 position, 
 	_transform = glm::rotate(_transform, rotation[1], glm::vec3(0,1,0));
 	_transform = glm::rotate(_transform, rotation[2], glm::vec3(0,0,1));
 	_transform = glm::translate(_transform, position);
-	//_transform = glm::scale(_transform, glm::vec3(scale));
 }
 
 /**
@@ -50,10 +49,10 @@ void Model::onDraw()
 
 	sgct::ShaderManager::Instance()->bindShader( "Simple" );
 	
-	glBegin(GL_TRIANGLES);
-	drawTriangles();
-//	_drawVBO();
-	glEnd();
+//	glBegin(GL_TRIANGLES);
+//	drawTriangles();
+	_drawVBO();
+//	glEnd();
 
 
 //	sgct::ShaderManager::Instance()->unBindShader();
@@ -132,10 +131,10 @@ void Model::loadObj(const char *filename)
 	int *tempTextureIndicesArray = (int*)malloc(_isize*sizeof(int));
 	
 	// keeping track of the array indexes
-	int i = 0;
-	int n = 0;
-	int m = 0;
-	int w = 0;
+	unsigned int i = 0;
+	unsigned int n = 0;
+	unsigned int m = 0;
+	unsigned int w = 0;
 	
 	// Go back to beginning of file
 	fseek(fi, 0, SEEK_SET);

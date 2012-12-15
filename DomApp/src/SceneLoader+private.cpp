@@ -120,34 +120,34 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 				animseed = aniElement->DoubleAttribute( "seed" );
 			}
 
-			srand(time(NULL));
-			double posx = 20*((double)rand()/RAND_MAX-0.5);
-			double posy = 0;
-			double posz  = 20*((double)rand()/RAND_MAX-0.5);
+			srand(static_cast<unsigned int>(time(NULL)));
+			float posx = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
+			float posy = 0;
+			float posz  = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
 			tinyxml2::XMLElement* posElement = model->FirstChildElement( "pos" );
 			if(posElement)
 			{
-				posx = posElement->DoubleAttribute( "x" );
-				posy = posElement->DoubleAttribute( "y" );
-				posz = posElement->DoubleAttribute( "z" );
+				posx = posElement->FloatAttribute( "x" );
+				posy = posElement->FloatAttribute( "y" );
+				posz = posElement->FloatAttribute( "z" );
 			}
 
-			double scale = 1;
+			float scale = 1;
 			tinyxml2::XMLElement* scaleElement = model->FirstChildElement( "scale" );
 			if(scaleElement)
 			{
-				scale = scaleElement->DoubleAttribute( "val" );
+				scale = scaleElement->FloatAttribute( "val" );
 			}
 
-			double rotx = 0;
-			double roty = 0;
-			double rotz = 0;
+			float rotx = 0;
+			float roty = 0;
+			float rotz = 0;
 			tinyxml2::XMLElement* rotElement = model->FirstChildElement( "rot" );
 			if(rotElement)
 			{
-				rotx = rotElement->DoubleAttribute( "x" );
-				roty = rotElement->DoubleAttribute( "y" );
-				rotz = rotElement->DoubleAttribute( "z" );
+				rotx = rotElement->FloatAttribute( "x" );
+				roty = rotElement->FloatAttribute( "y" );
+				rotz = rotElement->FloatAttribute( "z" );
 			}
 
 			ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
@@ -195,25 +195,25 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent)
 				animseed = aniElement->DoubleAttribute( "seed" );
 			}
 
-			srand(time(NULL));
-			double posx = 20*((double)rand()/RAND_MAX-0.5);
-			double posy = 0;
-			double posz  = 20*((double)rand()/RAND_MAX-0.5);
+			srand(static_cast<unsigned int>(time(NULL)));
+			float posx = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			float posy = 0;
+			float posz  = static_cast<float>(20*(rand()/RAND_MAX-0.5));
 			tinyxml2::XMLElement* posElement = billboard->FirstChildElement( "pos" );
 			if(posElement)
 			{
-				posx = posElement->DoubleAttribute( "x" );
-				posy = posElement->DoubleAttribute( "y" );
-				posz = posElement->DoubleAttribute( "z" );
+				posx = posElement->FloatAttribute( "x" );
+				posy = posElement->FloatAttribute( "y" );
+				posz = posElement->FloatAttribute( "z" );
 			}
 
-			double sizex = 1;
-			double sizey = 1;
+			float sizex = 1;
+			float sizey = 1;
 			tinyxml2::XMLElement* rotElement = billboard->FirstChildElement( "size" );
 			if(rotElement)
 			{
-				sizex = rotElement->DoubleAttribute( "x" );
-				sizey = rotElement->DoubleAttribute( "z" );
+				sizex = rotElement->FloatAttribute( "x" );
+				sizey = rotElement->FloatAttribute( "z" );
 			}
 
 
@@ -284,25 +284,25 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent)
 			}
 
 			
-			srand(time(NULL));
-			double posx = 20*((double)rand()/RAND_MAX-0.5);
-			double posy = 0;
-			double posz  = 20*((double)rand()/RAND_MAX-0.5);
+			srand(static_cast<unsigned int>(time(NULL)));
+			float posx = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			float posy = 0;
+			float posz  = static_cast<float>(20*(rand()/RAND_MAX-0.5));
 			tinyxml2::XMLElement* posElement = illustration->FirstChildElement( "pos" );
 			if(posElement)
 			{
-				posx = posElement->DoubleAttribute( "x" );
-				posy = posElement->DoubleAttribute( "y" );
-				posz = posElement->DoubleAttribute( "z" );
+				posx = posElement->FloatAttribute( "x" );
+				posy = posElement->FloatAttribute( "y" );
+				posz = posElement->FloatAttribute( "z" );
 			}
 
-			double sizex = 1;
-			double sizey = 1;
+			float sizex = 1;
+			float sizey = 1;
 			tinyxml2::XMLElement* rotElement = illustration->FirstChildElement( "size" );
 			if(rotElement)
 			{
-				sizex = rotElement->DoubleAttribute( "x" );
-				sizey = rotElement->DoubleAttribute( "z" );
+				sizex = rotElement->FloatAttribute( "x" );
+				sizey = rotElement->FloatAttribute( "z" );
 			}
 		
 			ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation, animseed);
@@ -330,7 +330,7 @@ void SceneLoader::_loadMult(DrawableObject *obj, tinyxml2::XMLElement* multEleme
 		mask = maskElement->Attribute( "name" );
 		if ( _mask.count(mask) == 0 ) mask = "default";
 	}
-	bool bool_billboard = false;
+	
 	int type = SINGLE;
 	const char* bb = multElement->Attribute( "type" );
 	if(bb) 

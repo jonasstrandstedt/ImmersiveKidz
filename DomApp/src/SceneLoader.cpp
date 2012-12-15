@@ -81,7 +81,7 @@ void SceneLoader::keyboardButton(int key,int state)
 		if(key == GLFW_KEY_UP && state == GLFW_PRESS) _selection--;
 		if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 		
-		if(_selection < 0) _selection = _scenes.size() -1;
+		if(_selection < 0) _selection = static_cast<int>(_scenes.size()) -1;
 		if(_selection >=  static_cast<int>(_scenes.size())) _selection = 0;
 		
 
@@ -115,15 +115,18 @@ void SceneLoader::menu()
 		
 			if(i == (unsigned int) _selection) 
 			{
-				glColor3f(1.0f,0.0f,0.0f);
+				glColor3f(1.0,0.0,0.0);
 			} else 
 			{
-				glColor3f(1.0f,1.0f,1.0f);
+				glColor3f(1.0,1.0,1.0);
 			}
 		
-			Freetype::print(sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ), 50.0f, h-30-20*i, _scenes.at(i).c_str());
+			Freetype::print(	sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ),
+								50.0, 
+								static_cast<float>(static_cast<float>(h)-30.0-20.0*static_cast<float>(i)),
+								_scenes.at(i).c_str());
 
-			glColor3f(1.0f,1.0f,1.0f);
+			glColor3f(1.0,1.0,1.0);
 		
 		}
 	} else 
