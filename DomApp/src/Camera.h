@@ -38,7 +38,14 @@ public:
 	glm::vec3 getPosition()const;
 	glm::vec2 getRotation()const;
 	float getSpeed()const;
+
 	void setSpeed(float speed);
+	void setAcceleration(float acceleration);
+	void setDeacceleration(float deacceleration);
+
+	void setRotatioSpeed(float speed);
+	void setRotatioAcceleration(float acceleration);
+	void setRotatioDeacceleration(float deacceleration);
 
 	void encode(sgct::SharedData *data);
 	void decode(sgct::SharedData *data);
@@ -63,8 +70,14 @@ private:
 
 	bool _movingForward,_movingBackward,_movingRight,_movingLeft,_movingUp,_movingDown;
 	bool _mouseState;
+	
 	float _speed;
+	float _acceleration;
+	float _deacceleration;
+	
 	float _rotationSpeed;
+	float _rotationAcceleration;
+	float _rotationDeacceleration;
 
 	glm::vec3 _position;
 	glm::vec2 _rotation;

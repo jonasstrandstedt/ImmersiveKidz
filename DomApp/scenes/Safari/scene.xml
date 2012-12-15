@@ -6,6 +6,8 @@
 			<limitx min="-256.0" max="256.0" />
 			<limity min="0.1" max="256.0" />
 			<limitz min="-256.0" max="256.0" />
+			<rotation deacceleration="15" acceleration="7.5" maxSpeed="25" />
+			<movement deacceleration="3.5" acceleration="7.5" maxSpeed="6" />
 		</camera>
 		<plane>
 			<texture>textures/map.png</texture>

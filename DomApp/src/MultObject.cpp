@@ -70,8 +70,7 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 				unsigned int masky = static_cast<unsigned int>(r2 * static_cast<float>(mask->size()));
 				unsigned int maskx = static_cast<unsigned int>(r1 * static_cast<float>(mask[0].size()));
 
-				unsigned int masky_size = mask->size()-1;
-				unsigned int maskx_size = mask[0].size()-1;
+				unsigned int masky_size = static_cast<unsigned int>(mask->size())-1;
 
 				if ( (*mask)[masky_size-masky][maskx] == true ) 
 				{
