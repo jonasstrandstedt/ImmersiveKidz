@@ -31,14 +31,12 @@ public:
 	glm::vec3 getPosition();
 
 	void onDraw();
-	void init();
 
 	//For testing
 	//getPosition is above, used in regular program
 	glm::vec2 getProportions()	{return _proportions;	};
 
 protected:
-	GLuint _listid;
 	glm::vec3 _position;
 	glm::vec2 _proportions;
 };

@@ -18,8 +18,6 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 	ImmersiveKidz::getInstance()->loadTexture(_texture);
 	_proportions = proportionsIn;
 	_transform = glm::translate(_transform, position);
-	
-	_listid = 0;
     
 	_vsize = 4;
 	_isize = 6;

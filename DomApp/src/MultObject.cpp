@@ -12,7 +12,7 @@
 *@param		mask  			The mask that defines where it is ok to put objects,   
 *@param		seed  			A seed to be used for c++ random function so that it will generate the same random positions each run
 *@param		count  			The number of objects to create
-*@param		type			The type of multiplications, SINGLE="Instances of one object not rotating to face the camera", BILLBOARD="Single instances facing the camera", DUAL="Two instances with 90 degrees angle between not facing the camera"
+*@param		type			The type of multiplications, [SINGLE|BILLBOARD|DUAL], default is SINGLE, SINGLE="Instances of one object not rotating to face the camera", BILLBOARD="Single instances facing the camera", DUAL="Two instances with 90 degrees angle between not facing the camera"
 *@param		altitude		Defines the min and max altitude (y-min, y-max) that the objects is randomly distributed.
 */
 MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *mask, int seed, int count, int type, glm::vec2 altitude){
