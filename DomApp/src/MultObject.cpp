@@ -67,8 +67,8 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 				posx = rect.x + r1 * (rect.z - rect.x);
 				posy = glm::compRand1(altitude[0], altitude[1]);
 				posz  = rect.y + r2 * (rect.w - rect.y);
-				unsigned int masky = unsigned int(r2 * static_cast<float>(mask->size()));
-				unsigned int maskx = unsigned int(r1 * static_cast<float>(mask[0].size()));
+				unsigned int masky = static_cast<unsigned int>(r2 * static_cast<float>(mask->size()));
+				unsigned int maskx = static_cast<unsigned int>(r1 * static_cast<float>(mask[0].size()));
 
 				unsigned int masky_size = static_cast<unsigned int>(mask->size()-1);
 				
