@@ -8,6 +8,8 @@
 #include <stdarg.h>
 #include "png.h"
 
+
+
 /**
 *@brief	    Scenloader constructor
 *
