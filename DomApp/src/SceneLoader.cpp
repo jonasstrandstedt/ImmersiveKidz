@@ -85,7 +85,7 @@ void SceneLoader::keyboardButton(int key,int state)
 		if(_selection >=  static_cast<int>(_scenes.size())) _selection = 0;
 		
 
-		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
+		if((key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) && state == GLFW_PRESS) 
 		{
 			_loaded = loadScene();
 			if(_loaded != -1) 
@@ -184,6 +184,10 @@ int SceneLoader::loadScene()
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
 	if(scene)
 	{
+		_mask["default"].clear();
+		_mask["default"].push_back(std::vector<bool>());
+		_mask["default"][0].push_back(true);
+
 		tinyxml2::XMLElement* world = scene->FirstChildElement( "world" );
 		if(world)
 		{
@@ -194,39 +198,60 @@ int SceneLoader::loadScene()
 				tinyxml2::XMLElement* start = camera->FirstChildElement( "start" );
 				if(start)
 				{
-					cam->setPosition(glm::vec3(start->DoubleAttribute("x"),start->DoubleAttribute("y"),start->DoubleAttribute("z")));
+					if(!start->Attribute("x") || !start->Attribute("y") || !start->Attribute("z"))
+					{
+						cam->setPosition(glm::vec3(0.0,0.0,0.0));
+						std::cerr << "Warning: Couldn't find <start> attributes in XML-file!" << std::endl;
+					}
+					else cam->setPosition(glm::vec3(start->FloatAttribute("x"),start->FloatAttribute("y"),start->FloatAttribute("z")));
 				}
 				tinyxml2::XMLElement* limitx = camera->FirstChildElement( "limitx" );
 				if(limitx)
 				{
-					cam->setLimitsX(glm::vec2(limitx->DoubleAttribute("min"),limitx->DoubleAttribute("max")));
+					if(!limitx->Attribute("min") || !limitx->Attribute("max"))
+					{
+						cam->setLimitsX(glm::vec2(0.0,0.0));
+						std::cerr << "Warning: Couldn't find <limitx> attributes in XML-file!" << std::endl;
+					}
+					else cam->setLimitsX(glm::vec2(limitx->FloatAttribute("min"),limitx->FloatAttribute("max")));
 				}
 				tinyxml2::XMLElement* limity = camera->FirstChildElement( "limity" );
 				if(limity)
 				{
-					cam->setLimitsY(glm::vec2(limity->DoubleAttribute("min"),limity->DoubleAttribute("max")));
+					if(!limity->Attribute("min") || !limity->Attribute("max"))
+					{
+						cam->setLimitsY(glm::vec2(0.0,0.0));
+						std::cerr << "Warning: Couldn't find <limity> attributes in XML-file!" << std::endl;
+					}
+					else cam->setLimitsY(glm::vec2(limity->FloatAttribute("min"),limity->FloatAttribute("max")));
 				}
 				tinyxml2::XMLElement* limitz = camera->FirstChildElement( "limitz" );
 				if(limitz)
 				{
-					cam->setLimitsZ(glm::vec2(limitz->DoubleAttribute("min"),limitz->DoubleAttribute("max")));
+					if(!limitz->Attribute("min") || !limitz->Attribute("max"))
+					{
+						cam->setLimitsZ(glm::vec2(0.0,0.0));
+						std::cerr << "Warning: Couldn't find <limitz> attributes in XML-file!" << std::endl;
+					}
+					else cam->setLimitsZ(glm::vec2(limitz->FloatAttribute("min"),limitz->FloatAttribute("max")));
 				}
 				
 				
 				tinyxml2::XMLElement* rotationSpeed = camera->FirstChildElement( "rotation" );
 				if(rotationSpeed)
 				{
-					cam->setRotationSpeed(rotationSpeed->FloatAttribute("maxSpeed"));
-					cam->setRotatioAcceleration(rotationSpeed->FloatAttribute("acceleration"));
-					cam->setRotatioDeacceleration(rotationSpeed->FloatAttribute("deacceleration"));
+					if(rotationSpeed->Attribute("maxSpeed")) cam->setRotationSpeed(rotationSpeed->FloatAttribute("maxSpeed"));
+					if(rotationSpeed->Attribute("acceleration")) cam->setRotatioAcceleration(rotationSpeed->FloatAttribute("acceleration"));
+					if(rotationSpeed->Attribute("deacceleration")) cam->setRotatioDeacceleration(rotationSpeed->FloatAttribute("deacceleration"));
+
 				}
 
 				tinyxml2::XMLElement* movementSpeed = camera->FirstChildElement( "movement" );
 				if(movementSpeed)
 				{
-					cam->setSpeed(movementSpeed->FloatAttribute("maxSpeed"));
-					cam->setAcceleration(movementSpeed->FloatAttribute("acceleration"));
-					cam->setDeacceleration(movementSpeed->FloatAttribute("deacceleration"));
+					if(movementSpeed->Attribute("maxSpeed")) cam->setSpeed(movementSpeed->FloatAttribute("maxSpeed"));
+					if(movementSpeed->Attribute("acceleration")) cam->setAcceleration(movementSpeed->FloatAttribute("acceleration"));
+					if(movementSpeed->Attribute("deacceleration")) cam->setDeacceleration(movementSpeed->FloatAttribute("deacceleration"));
 				}
 
 			}
@@ -240,38 +265,38 @@ int SceneLoader::loadScene()
 					{
 						texture = textureElement->GetText();
 					
-						double width = 1;
-						double height = 1;
+						float width = 1.0;
+						float height = 1.0;
 
 						tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
 						if(sizeElement)
 						{
-							width = (sizeElement->DoubleAttribute( "width" ) > 0.0000001) ? sizeElement->DoubleAttribute( "width" ) : 1.0;
-							height = (sizeElement->DoubleAttribute( "height" ) > 0.0000001) ? sizeElement->DoubleAttribute( "height" ) : 1.0;
+							width = (sizeElement->FloatAttribute( "width" ) > 0.0000001) ? sizeElement->FloatAttribute( "width" ) : 512.0;
+							height = (sizeElement->FloatAttribute( "height" ) > 0.0000001) ? sizeElement->FloatAttribute( "height" ) : 512.0;
 
 						}
 
-						double x = 0;
-						double y = 0;
-						double z = 0;
+						float x = 0.0;
+						float y = 0.0;
+						float z = 0.0;
 						tinyxml2::XMLElement* positionElement = plane->FirstChildElement( "pos" );
 						if(positionElement)
 						{
-							x = positionElement->DoubleAttribute( "x" );
-							y = positionElement->DoubleAttribute( "y" );
-							z = positionElement->DoubleAttribute( "z" );
+							x = (positionElement->FloatAttribute( "x" ) != NULL) ? positionElement->FloatAttribute( "x" ) : 0.0;
+							y = (positionElement->FloatAttribute( "y" ) != NULL) ? positionElement->FloatAttribute( "y" ) : 0.0;
+							z = (positionElement->FloatAttribute( "z" ) != NULL) ? positionElement->FloatAttribute( "z" ) : 0.0;
 
 						}
 
-						double rotx = 0;
-						double roty = 0;
-						double rotz = 0;
+						float rotx = 0.0;
+						float roty = 0.0;
+						float rotz = 0.0;
 						tinyxml2::XMLElement* rotElement = plane->FirstChildElement( "rot" );
 						if(rotElement)
 						{
-							rotx = rotElement->DoubleAttribute( "x" );
-							roty = rotElement->DoubleAttribute( "y" );
-							rotz = rotElement->DoubleAttribute( "z" );
+							rotx = (rotElement->FloatAttribute( "x" ) != NULL) ? rotElement->FloatAttribute( "x" ) : 0.0;
+							roty = (rotElement->FloatAttribute( "y" ) != NULL) ? rotElement->FloatAttribute( "y" ) : 0.0;
+							rotz = (rotElement->FloatAttribute( "z" ) != NULL) ? rotElement->FloatAttribute( "z" ) : 0.0;
 						}
 
 						ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(x,z,x+width,z+height));
@@ -279,10 +304,6 @@ int SceneLoader::loadScene()
 						ImmersiveKidz::getInstance()->addDrawableObject(new Plane(scenePath + texture, glm::vec2(width, height), glm::vec3(x,y,z), glm::vec3(rotx,roty,rotz)));
 					}
 			}
-
-			_mask["default"].clear();
-			_mask["default"].push_back(std::vector<bool>());
-			_mask["default"][0].push_back(true);
 
 			tinyxml2::XMLElement* maskElement = world->FirstChildElement( "mask" );
 			if(maskElement)
@@ -302,7 +323,8 @@ int SceneLoader::loadScene()
 			}
 
 		}
-		
+		else ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(-256,-256,256,256));
+
 		_loadPlanes(scene);
 		_loadModels(scene);
 		_loadBillboards(scene);

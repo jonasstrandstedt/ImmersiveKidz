@@ -183,27 +183,27 @@ void HUD::_drawMinimapBackground()
 						camPosition.x +  static_cast<float>(_minimapWidth) * _zoom,
 						camPosition.z + 4  + static_cast<float>(_minimapHeight) * _zoom);
 
-	float minx = (zoomMap.x - worldRect.x) / (worldRect.z - worldRect.x);
-	float maxy = 1-(zoomMap.y - worldRect.y) / (worldRect.w - worldRect.y);
+	float maxx = (zoomMap.x - worldRect.x) / (worldRect.z - worldRect.x);
+	float miny = (zoomMap.y - worldRect.y) / (worldRect.w - worldRect.y);
 
-	float maxx = (zoomMap.z - worldRect.x) / (worldRect.z - worldRect.x);
-	float miny = 1-(zoomMap.w - worldRect.y) / (worldRect.w - worldRect.y);
+	float minx = (zoomMap.z - worldRect.x) / (worldRect.z - worldRect.x);
+	float maxy = (zoomMap.w - worldRect.y) / (worldRect.w - worldRect.y);
 
 
 	//Vertex 1 
-	glTexCoord2d(maxx,maxy);
+	glTexCoord2d(minx,miny);
 	glVertex3f(0 , 0 , 0);
 	
 	//Vertex 2 
-	glTexCoord2d(minx,maxy);
+	glTexCoord2d(maxx,miny);
 	glVertex3f(static_cast<float>(_minimapWidth) , 0 , 0);
 	
 	//Vertex 3 
-	glTexCoord2d(minx,miny);
+	glTexCoord2d(maxx,maxy);
 	glVertex3f(static_cast<float>(_minimapWidth) , static_cast<float>(_minimapHeight) , 0);
 	
 	//Vertex 4 
-	glTexCoord2d(maxx,miny);
+	glTexCoord2d(minx,maxy);
 	glVertex3f(0 , static_cast<float>(_minimapHeight) , 0);
 
 	glEnd();
@@ -340,10 +340,10 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1.0));
 	if(key == '2' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1.0, 1.0));
 	if(key == '3' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Strafe(1));
-
-	if(_selection < 0) _selection = 0;
-	if(_selection >= static_cast<int>(illu.size())) _selection = static_cast<int>(illu.size()) -1;
-
+	
+	if(_selection < 0) _selection += static_cast<int>(illu.size());
+	_selection %= static_cast<int>(illu.size());
+	
 	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
 	{
 		illu[_selection]->setSeen(true);
@@ -353,13 +353,13 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 	int list_height = winSizeY - _minimapHeight;
 
 	// check if need to increase offset for animal list
-	if(list_height - ( 15 + _selection *14 + _offset) < 0) 
+	while(list_height - ( 15 + _selection *14 + _offset) < 0) 
 	{
 		_offset -= 14*4;
 	}
 
 	// check if need to decrease offset for animal list
-	if((-15-_selection *14 - _offset) > -15)
+	while((-15-_selection *14 - _offset) > -15)
 	{
 		_offset += 14*4;
 
