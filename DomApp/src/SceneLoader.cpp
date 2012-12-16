@@ -194,7 +194,7 @@ int SceneLoader::loadScene()
 				tinyxml2::XMLElement* start = camera->FirstChildElement( "start" );
 				if(start)
 				{
-					if(start->Attribute("x") || start->Attribute("y") || start->Attribute("z"))
+					if(!start->Attribute("x") || !start->Attribute("y") || !start->Attribute("z"))
 					{
 						cam->setPosition(glm::vec3(0.0,0.0,0.0));
 						std::cerr << "Warning: Couldn't find <start> attributes in XML-file!" << std::endl;
@@ -204,7 +204,7 @@ int SceneLoader::loadScene()
 				tinyxml2::XMLElement* limitx = camera->FirstChildElement( "limitx" );
 				if(limitx)
 				{
-					if(limitx->Attribute("min") || limitx->Attribute("max"))
+					if(!limitx->Attribute("min") || !limitx->Attribute("max"))
 					{
 						cam->setLimitsX(glm::vec2(0.0,0.0));
 						std::cerr << "Warning: Couldn't find <limitx> attributes in XML-file!" << std::endl;
@@ -214,7 +214,7 @@ int SceneLoader::loadScene()
 				tinyxml2::XMLElement* limity = camera->FirstChildElement( "limity" );
 				if(limity)
 				{
-					if(limity->Attribute("min") || limity->Attribute("max"))
+					if(!limity->Attribute("min") || !limity->Attribute("max"))
 					{
 						cam->setLimitsY(glm::vec2(0.0,0.0));
 						std::cerr << "Warning: Couldn't find <limity> attributes in XML-file!" << std::endl;
@@ -224,7 +224,7 @@ int SceneLoader::loadScene()
 				tinyxml2::XMLElement* limitz = camera->FirstChildElement( "limitz" );
 				if(limitz)
 				{
-					if(limitz->Attribute("min") || limitz->Attribute("max"))
+					if(!limitz->Attribute("min") || !limitz->Attribute("max"))
 					{
 						cam->setLimitsZ(glm::vec2(0.0,0.0));
 						std::cerr << "Warning: Couldn't find <limitz> attributes in XML-file!" << std::endl;
