@@ -321,7 +321,7 @@ void Camera::setDeacceleration(float deacceleration)
 *
 * @param	speed 	The camera rotational speed, must be larger than 0
 */
-void Camera::setRotatioSpeed(float speed)
+void Camera::setRotationSpeed(float speed)
 {
 	this->_rotationSpeed = speed;
 	if(this->_rotationSpeed < 0)

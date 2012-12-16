@@ -331,10 +331,15 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 	if(key == GLFW_KEY_DOWN && state == GLFW_PRESS) _selection++;
 
 	//Zoomes in & out on the minimap
-	if(_zoom > 0.11)
-		if(key == GLFW_KEY_KP_SUBTRACT && state == GLFW_PRESS) _zoom = _zoom - static_cast<float>(0.1);
+	
 	if(_zoom <= 1)
-		if(key == GLFW_KEY_KP_ADD && state == GLFW_PRESS) _zoom = _zoom + static_cast<float>(0.1);
+		if(key == GLFW_KEY_KP_SUBTRACT && state == GLFW_PRESS) _zoom = _zoom + static_cast<float>(0.1);
+	if(_zoom > 0.11)
+		if(key == GLFW_KEY_KP_ADD && state == GLFW_PRESS) _zoom = _zoom - static_cast<float>(0.1);
+	if(_zoom > 1)
+		_zoom = 1;
+	if(_zoom < 0.11)
+		_zoom = 0.11;
 	
 	//Gives the selected illustration a specific animation
 	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1.0));
