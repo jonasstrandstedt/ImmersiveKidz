@@ -273,6 +273,7 @@ int SceneLoader::loadScene()
 					if(textureElement) 
 					{
 						texture = textureElement->GetText();
+						ImmersiveKidz::getInstance()->getHUD()->setTextureMinimap(scenePath+texture);
 					
 						float width = 512;
 						float height = 512;

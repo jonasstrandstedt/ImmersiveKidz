@@ -26,7 +26,6 @@ ImmersiveKidz::ImmersiveKidz()
 	_isMaster = false;
 	_sceneLoaded = false;
 	_currTime = 0.0;
-
 }
 
 /**
@@ -341,6 +340,17 @@ void ImmersiveKidz::postSyncPreDrawFunction()
 Camera* ImmersiveKidz::getCamera()
 {
 	return _camera;
+}
+
+/**
+*@brief	    Returns the HUD
+*
+*@return     HUD* Pointer to the ImmersiveKidz enginge HUD object
+*
+*/
+HUD* ImmersiveKidz::getHUD()
+{
+	return _hud;
 }
 
 /**

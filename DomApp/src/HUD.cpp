@@ -3,7 +3,7 @@
 
 HUD::HUD()
 {
-	_textureMinimap = "minimap";
+	_textureMinimap = "";
 	_selection = 0;
 	_offset = 0;
 	_minimapWidth = 200;
@@ -19,7 +19,6 @@ HUD::HUD()
 void HUD::init()
 {
 	sgct::TextureManager::Instance()->loadTexure("menu", "data/HUD/menu.png", true, 0); //Load HUD(menu) into OpenGL
-	sgct::TextureManager::Instance()->loadTexure("minimap", "scenes/Safari/textures/map.png", true, 0); //Load HUD(minimap) into OpenGL
 }
 
 
@@ -45,6 +44,8 @@ void HUD::draw(std::vector<Illustration*> illu)
 
 void HUD::setTextureMinimap(std::string texture) 
 {
+	std::cout << "SET TEXTUREMINIMAP" << std::endl;
+	sgct::TextureManager::Instance()->loadTexure(texture, texture, true, 0); //Load HUD(minimap) into OpenGL
 	_textureMinimap = texture; 
 }
 
@@ -169,10 +170,8 @@ void HUD::_drawBackgroundToNames()
 void HUD::_drawMinimapBackground()
 {
 
-	glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
-
-	//int winSizeY = sgct::Engine::getWindowPtr()->getVResolution(); //Gives us the hight of the window
-	//int winSizeX = sgct::Engine::getWindowPtr()->getHResolution(); //Gives us the width of the window
+	if( ! _textureMinimap.empty())
+		glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_textureMinimap));
 
 	glBegin(GL_QUADS);
 	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
@@ -189,6 +188,10 @@ void HUD::_drawMinimapBackground()
 	float minx = (zoomMap.z - worldRect.x) / (worldRect.z - worldRect.x);
 	float maxy = (zoomMap.w - worldRect.y) / (worldRect.w - worldRect.y);
 
+
+	// black background if no minimap texture
+	if(_textureMinimap.empty())
+		glColor3f(0,0,0);
 
 	//Vertex 1 
 	glTexCoord2d(minx,miny);

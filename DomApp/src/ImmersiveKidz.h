@@ -52,6 +52,7 @@ public:
 	void keyboardButton(int key,int state);
 
 	Camera* getCamera();
+	HUD* getHUD();
 	static ImmersiveKidz* getInstance();
 	
 	std::string getScenePath() { return _scenePath; };
