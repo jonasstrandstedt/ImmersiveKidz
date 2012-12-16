@@ -85,7 +85,7 @@ void SceneLoader::keyboardButton(int key,int state)
 		if(_selection >=  static_cast<int>(_scenes.size())) _selection = 0;
 		
 
-		if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
+		if((key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) && state == GLFW_PRESS) 
 		{
 			_loaded = loadScene();
 			if(_loaded != -1) 

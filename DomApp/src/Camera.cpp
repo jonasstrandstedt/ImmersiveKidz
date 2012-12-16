@@ -29,7 +29,7 @@ Camera::Camera(glm::vec3 startPosition)
 
 	_rotationSpeed = static_cast<float>(45.033);
 	_rotationAcceleration = 7.5;
-	_rotationDeacceleration = 6.5;
+	_rotationDeacceleration = 15.0;
 
 	_mouseState = false;
 	_position = startPosition;
