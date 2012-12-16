@@ -1,73 +1,70 @@
 <?xml version="1.0" ?>
 <scene>
-	<world>
-		<camera>
-			<start x="0.0" y="0.5" z="0.0" />
-			<limitx min="-256.0" max="256.0" />
-			<limity min="0.1" max="256.0" />
-			<limitz min="-256.0" max="256.0" />
-		</camera>
-		<plane>
-			<texture>grass.png</texture>
-			<size width="512" height="512"/>
-			<pos x="-256" y="0" z="-256"/>
-			<rot x="0" y="0" z="0"/>
-		</plane>
-	</world>
-
-	<model>
-		<filename>box.obj</filename>
-		<texture>EXTRA_LIFE.png</texture>
-		<pos x="0" y="0.1" z="0"/>
-		<animation name="bounce"/>
-		<scale val="0.002" />
-	</model>
-
-	<billboard>
-		<texture>tree.png</texture>
-		<size x="1.0" z="1.8"/>
-		<mult count="1000" seed="4124"/>
-	</billboard>
-	<billboard>
-		<texture>tree.png</texture>
-		<size x="1.0" z="1.8"/>
-	</billboard>
-	<billboard>
-		<texture>blomma.png</texture>
-		<size x="0.5" z="1.0"/>
-		<mult count="200" seed="1337"/>
-	</billboard>
-
-
-	<illustration>
-		<name_artist>J dawgs</name_artist>
-		<name_drawing>jolle kanin</name_drawing>
-		<description>Den här haren är galet stor</description>
-		<animation name="bounce" seed="0"/>
-		<texture>bunny.png</texture>
-		<pos x="1.0" y="0.0" z="0.5"/>
-		<size x="2.0" z="2.6"/>
-	</illustration>
-	<illustration>
-		<name_artist>R dawgs</name_artist>
-		<name_drawing>rulle kanin</name_drawing>
-		<description>Den här haren är galet stor</description>
-		<animation name="bounce" seed="100"/>
-		<texture>bunny.png</texture>
-		<pos x="7.0" y="0.0" z="0.5"/>
-		<size x="4.0" z="4.2"/>
-	</illustration>
-	<illustration>
-		<name_artist>A dawgs</name_artist>
-		<name_drawing>andy kanin</name_drawing>
-		<description>Den här haren är galet stor</description>
-		<animation name="bounce" seed="200"/>
-		<texture>bunny.png</texture>
-		<pos x="7.0" y="0.0" z="7.5"/>
-		<size x="4.0" z="7.2"/>
-	</illustration>
-	<illustration>
-		<animation name="bounce" seed="300"/>
-		<texture>bunny.png</texture>
-	</illustration>
+  <world>
+    <plane>
+      <texture>grass.png</texture>
+      <size minx="-100"  miny="-100" maxx="100" maxy="100"/>
+    </plane>
+    <rand minx="-100" miny="-100" maxx="100"  maxy="100"/>
+  </world>
+	<models>
+		<item>
+			<filename>box.obj</filename>
+			<texture>EXTRA_LIFE.png</texture>
+			<animation name="bounce"/>
+			<mult count="1000" seed="4524" map="water.png"/>
+			<scale val="0.002"/>
+		</item>
+	</models>
+	<billboards>
+		<item>
+			<texture>tree.png</texture>
+			<size x="1.0" y="1.8"/>
+			<mult count="1000" seed="4124" map="water.png"/>
+		</item>
+		<item>
+			<texture>tree.png</texture>
+			<pos x="0.0" y="0.0" z="0.5"/>
+			<size x="1.0" y="1.8"/>
+		</item>
+		<item>
+			<texture>blomma.png</texture>
+			<pos x="2.0" y="0.0" z="2.5"/>
+			<size x="0.5" y="1.0"/>
+			<mult count="200" seed="1337" map="water.png"/>
+		</item>
+	</billboards>
+	<illustrations>
+		<item>
+			<name_artist>J dawgs</name_artist>
+			<name_drawing>jolle kanin</name_drawing>
+      <description>Den här haren är galet stor</description>
+      <animation name="bounce" seed="0"/>
+			<texture>bunny.png</texture>
+			<pos x="1.0" y="0.0" z="0.5"/>
+			<size x="2.0" y="2.6"/>
+		</item>
+		<item>
+			<name_artist>R dawgs</name_artist>
+			<name_drawing>rulle kanin</name_drawing>
+      <description>Den här haren är galet stor</description>
+      <animation name="bounce" seed="100"/>
+			<texture>bunny.png</texture>
+			<pos x="7.0" y="0.0" z="0.5"/>
+			<size x="4.0" y="4.2"/>
+		</item>
+			<item>
+			<name_artist>A dawgs</name_artist>
+			<name_drawing>andy kanin</name_drawing>
+      <description>Den här haren är galet stor</description>
+      <animation name="bounce" seed="200"/>
+			<texture>bunny.png</texture>
+			<pos x="7.0" y="0.0" z="7.5"/>
+			<size x="4.0" y="7.2"/>
+		</item>
+			<item>
+      <animation name="bounce" seed="300"/>
+			<texture>bunny.png</texture>
+		</item>
+	</illustrations>
 </scene>

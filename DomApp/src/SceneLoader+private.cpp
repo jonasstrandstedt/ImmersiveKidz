@@ -22,15 +22,16 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* textureElement = plane->FirstChildElement( "texture");
 			if(textureElement) 
 			{
-				texture = textureElement->GetText();
+				if(textureElement->GetText() != NULL) texture = textureElement->GetText();
+				else	continue;
 
 				std::string animation = "none";
 				float animseed = 0.0;
 				tinyxml2::XMLElement* aniElement = plane->FirstChildElement( "animation" );
 				if(aniElement) 
 				{
-					animation = (aniElement->Attribute( "name" ) != NULL) ? aniElement->Attribute( "name" ) : "none";
-					animseed = aniElement->FloatAttribute( "seed" );
+					if(aniElement->Attribute( "name" ) != NULL ) animation = aniElement->Attribute( "name" );
+					if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
 				}			
 				
 				float width = 1.0;
@@ -38,8 +39,8 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 				tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
 				if(sizeElement)
 				{
-					width = (sizeElement->FloatAttribute( "width" ) > 0.0000001) ? sizeElement->FloatAttribute( "width" ) : 1.0;
-					height = (sizeElement->FloatAttribute( "height" ) > 0.0000001) ? sizeElement->FloatAttribute( "height" ) : 1.0;
+					if(sizeElement->FloatAttribute( "width" ) > 0.0000001) width = sizeElement->FloatAttribute( "width" );
+					if(sizeElement->FloatAttribute( "height" ) > 0.0000001) height = sizeElement->FloatAttribute( "height" );
 
 				}
 
@@ -49,9 +50,9 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 				tinyxml2::XMLElement* positionElement = plane->FirstChildElement( "pos" );
 				if(positionElement)
 				{
-					x = positionElement->FloatAttribute( "x" );
-					y = positionElement->FloatAttribute( "y" );
-					z = positionElement->FloatAttribute( "z" );
+					if(positionElement->Attribute( "x" ) != NULL) x = positionElement->FloatAttribute( "x" );
+					if(positionElement->Attribute( "y" ) != NULL) y = positionElement->FloatAttribute( "y" );
+					if(positionElement->Attribute( "z" ) != NULL) z = positionElement->FloatAttribute( "z" );
 
 				}
 
@@ -61,9 +62,9 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 				tinyxml2::XMLElement* rotElement = plane->FirstChildElement( "rot" );
 				if(rotElement)
 				{
-					rotx = rotElement->FloatAttribute( "x" );
-					roty = rotElement->FloatAttribute( "y" );
-					rotz = rotElement->FloatAttribute( "z" );
+					if(rotElement->Attribute( "x" ) != NULL) rotx = rotElement->FloatAttribute( "x" );
+					if(rotElement->Attribute( "y" ) != NULL) roty = rotElement->FloatAttribute( "y" );
+					if(rotElement->Attribute( "z" ) != NULL) rotz = rotElement->FloatAttribute( "z" );
 				}
 
 				ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
@@ -99,7 +100,8 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* fileElement = model->FirstChildElement( "filename" );
 			if(fileElement) 
 			{
-				filename = fileElement->GetText();
+				if(fileElement->GetText() != NULL) filename = fileElement->GetText();
+				else	continue;
 			}
 			else	continue;
 
@@ -107,7 +109,8 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* textureElement = model->FirstChildElement( "texture");
 			if(textureElement) 
 			{
-				texture = textureElement->GetText();
+				if(textureElement->GetText() != NULL) texture = textureElement->GetText();
+				else	continue;
 			}
 			else	continue;
 	
@@ -116,27 +119,27 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* aniElement = model->FirstChildElement( "animation" );
 			if(aniElement) 
 			{
-				animation = (aniElement->Attribute( "name" ) != NULL) ? aniElement->Attribute( "name" ) : "none";
-				animseed = aniElement->FloatAttribute( "seed" );
+				if(aniElement->Attribute( "name" ) != NULL) animation = aniElement->Attribute( "name" );
+				if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
 			}
 
 			srand(static_cast<unsigned int>(time(NULL)));
-			float posx = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
-			float posy = 0;
-			float posz  = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
-			tinyxml2::XMLElement* posElement = model->FirstChildElement( "pos" );
-			if(posElement)
+			float x = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
+			float y = 0;
+			float z  = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
+			tinyxml2::XMLElement* positionElement = model->FirstChildElement( "pos" );
+			if(positionElement)
 			{
-				posx = posElement->FloatAttribute( "x" );
-				posy = posElement->FloatAttribute( "y" );
-				posz = posElement->FloatAttribute( "z" );
+				if(positionElement->Attribute( "x" ) != NULL) x = positionElement->FloatAttribute( "x" );
+				if(positionElement->Attribute( "y" ) != NULL) y = positionElement->FloatAttribute( "y" );
+				if(positionElement->Attribute( "z" ) != NULL) z = positionElement->FloatAttribute( "z" );
 			}
 
 			float scale = 1.0;
 			tinyxml2::XMLElement* scaleElement = model->FirstChildElement( "scale" );
 			if(scaleElement)
 			{
-				scale = scaleElement->FloatAttribute( "val" );
+				if(scaleElement->FloatAttribute( "val" ) > 0.0) scale = scaleElement->FloatAttribute( "val" );
 			}
 
 			float rotx = 0.0;
@@ -145,13 +148,13 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* rotElement = model->FirstChildElement( "rot" );
 			if(rotElement)
 			{
-				rotx = rotElement->FloatAttribute( "x" );
-				roty = rotElement->FloatAttribute( "y" );
-				rotz = rotElement->FloatAttribute( "z" );
+				if(rotElement->Attribute( "x" ) != NULL) rotx = rotElement->FloatAttribute( "x" );
+				if(rotElement->Attribute( "y" ) != NULL) roty = rotElement->FloatAttribute( "y" );
+				if(rotElement->Attribute( "z" ) != NULL) rotz = rotElement->FloatAttribute( "z" );
 			}
 
 			ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
-			Model *obj = new Model(scenePath + filename, scenePath + texture, glm::vec3(posx, posy, posz), scale, glm::vec3(rotx, roty, rotz));
+			Model *obj = new Model(scenePath + filename, scenePath + texture, glm::vec3(x, y, z), scale, glm::vec3(rotx, roty, rotz));
 			tinyxml2::XMLElement* multElement = model->FirstChildElement( "mult" );
 			if(multElement)
 				_loadMult(obj,multElement);
@@ -182,7 +185,8 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* textureElement = billboard->FirstChildElement( "texture");
 			if(textureElement)
 			{
-				texture = textureElement->GetText();
+				if(textureElement->GetText() != NULL) texture = textureElement->GetText();
+				else	continue;
 			}
 			else	continue;
 	
@@ -191,34 +195,34 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* aniElement = billboard->FirstChildElement( "animation" );
 			if(aniElement) 
 			{
-				animation = (aniElement->Attribute( "name" ) != NULL) ? aniElement->Attribute( "name" ) : "none";
-				animseed = aniElement->FloatAttribute( "seed" );
+				if(aniElement->Attribute( "name" ) != NULL) animation = aniElement->Attribute( "name" );
+				if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
 			}
 
 			srand(static_cast<unsigned int>(time(NULL)));
-			float posx = static_cast<float>(20*(rand()/RAND_MAX-0.5));
-			float posy = 0.0;
-			float posz  = static_cast<float>(20*(rand()/RAND_MAX-0.5));
-			tinyxml2::XMLElement* posElement = billboard->FirstChildElement( "pos" );
-			if(posElement)
+			float x = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			float y = 0.0;
+			float z  = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			tinyxml2::XMLElement* positionElement = billboard->FirstChildElement( "pos" );
+			if(positionElement)
 			{
-				posx = posElement->FloatAttribute( "x" );
-				posy = posElement->FloatAttribute( "y" );
-				posz = posElement->FloatAttribute( "z" );
+				if(positionElement->Attribute( "x" ) != NULL) x = positionElement->FloatAttribute( "x" );
+				if(positionElement->Attribute( "y" ) != NULL) y = positionElement->FloatAttribute( "y" );
+				if(positionElement->Attribute( "z" ) != NULL) z = positionElement->FloatAttribute( "z" );
 			}
 
 			float sizex = 1.0;
 			float sizey = 1.0;
-			tinyxml2::XMLElement* rotElement = billboard->FirstChildElement( "size" );
-			if(rotElement)
+			tinyxml2::XMLElement* sizeElement = billboard->FirstChildElement( "size" );
+			if(sizeElement)
 			{
-				sizex = rotElement->FloatAttribute( "width" );
-				sizey = rotElement->FloatAttribute( "height" );
+				if(sizeElement->FloatAttribute( "width" ) > 0.0) sizex = sizeElement->FloatAttribute( "width" );
+				if(sizeElement->FloatAttribute( "height" ) > 0.0) sizey = sizeElement->FloatAttribute( "height" );
 			}
 
 
 			ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
-			Billboard *obj = new Billboard(scenePath+texture, glm::vec3(posx , posy , posz),glm::vec2(sizex , sizey));
+			Billboard *obj = new Billboard(scenePath+texture, glm::vec3(x , y , z),glm::vec2(sizex , sizey));
 			tinyxml2::XMLElement* multElement = billboard->FirstChildElement( "mult" );
 			if(multElement)
 				_loadMult(obj,multElement);
@@ -249,7 +253,8 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* textureElement = illustration->FirstChildElement( "texture");
 			if(textureElement) 
 			{
-				texture = textureElement->GetText();
+				if(textureElement->GetText() != NULL) texture = textureElement->GetText();
+				else	continue;
 			}
 			else	continue;
 
@@ -279,33 +284,33 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent)
 			tinyxml2::XMLElement* aniElement = illustration->FirstChildElement( "animation" );
 			if(aniElement) 
 			{
-				animation = (aniElement->Attribute( "name" ) != NULL) ? aniElement->Attribute( "name" ) : "none";
-				animseed = aniElement->FloatAttribute( "seed" );
+				if(aniElement->Attribute( "name" ) != NULL) animation = aniElement->Attribute( "name" );
+				if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
 			}
 
 			
 			srand(static_cast<unsigned int>(time(NULL)));
-			float posx = static_cast<float>(20*(rand()/RAND_MAX-0.5));
-			float posy = 0.0;
-			float posz  = static_cast<float>(20*(rand()/RAND_MAX-0.5));
-			tinyxml2::XMLElement* posElement = illustration->FirstChildElement( "pos" );
-			if(posElement)
+			float x = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			float y = 0.0;
+			float z  = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			tinyxml2::XMLElement* positionElement = illustration->FirstChildElement( "pos" );
+			if(positionElement)
 			{
-				posx = posElement->FloatAttribute( "x" );
-				posy = posElement->FloatAttribute( "y" );
-				posz = posElement->FloatAttribute( "z" );
+				if(positionElement->Attribute( "x" ) != NULL) x = positionElement->FloatAttribute( "x" );
+				if(positionElement->Attribute( "y" ) != NULL) y = positionElement->FloatAttribute( "y" );
+				if(positionElement->Attribute( "z" ) != NULL) z = positionElement->FloatAttribute( "z" );
 			}
 
 			float sizex = 1.0;
 			float sizey = 1.0;
-			tinyxml2::XMLElement* rotElement = illustration->FirstChildElement( "size" );
-			if(rotElement)
+			tinyxml2::XMLElement* sizeElement = illustration->FirstChildElement( "size" );
+			if(sizeElement)
 			{
-				sizex = rotElement->FloatAttribute( "width" );
-				sizey = rotElement->FloatAttribute( "height" );
+				if(sizeElement->FloatAttribute( "width" ) > 0.0) sizex = sizeElement->FloatAttribute( "width" );
+				if(sizeElement->FloatAttribute( "height" ) > 0.0) sizey = sizeElement->FloatAttribute( "height" );
 			}
 		
-			ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation, animseed);
+			ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(x , y , z), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation, animseed);
 		}
 	}
 }
