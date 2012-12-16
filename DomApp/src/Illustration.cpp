@@ -5,7 +5,8 @@
 *
 *@return     void
 */
-Illustration::Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, std::string artist, std::string drawing, std::string desc): Billboard(texturename, position, proportionsIn) 
+Illustration::Illustration(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn, std::string artist, std::string drawing, std::string desc,DrawableObject *parentObject): 
+Billboard(texturename, position, proportionsIn,parentObject) 
 {
 	_nameArtist = artist;
 	_nameDrawing = drawing;

@@ -10,15 +10,20 @@
 *@param		position		Contains the positions in world coordinates.
 *@param		proportionsIn	The proportions of the billboardsize according to the world unit length. 
 */
-Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn)
+Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn,DrawableObject *parentObject) : DrawableObject(parentObject)
 {
 	this->_proportions = proportionsIn;
 	this->_position = position;
+	
 	_texture = texturename;
 	ImmersiveKidz::getInstance()->loadTexture(_texture);
 	_proportions = proportionsIn;
-	_transform = glm::translate(_transform, position);
-    
+	_transform = glm::translate(_transform, _position);
+    if(_isChild){
+		Billboard *b = dynamic_cast<Billboard*>(parentObject);
+		if(b)
+			this->_position += b->_position;
+	}
 	_vsize = 4;
 	_isize = 6;
     _varray = (Vertex*)malloc(_vsize*sizeof(Vertex));

@@ -168,7 +168,7 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 *
 *@return     void
 */
-void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent) 
+void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent,DrawableObject *parentObject) 
 {
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
 	scenePath = "scenes/" + scenePath;
@@ -218,12 +218,16 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent)
 
 
 			ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
-			Billboard *obj = new Billboard(scenePath+texture, glm::vec3(posx , posy , posz),glm::vec2(sizex , sizey));
+			Billboard *obj = new Billboard(scenePath+texture, glm::vec3(posx , posy , posz),glm::vec2(sizex , sizey),parentObject);
 			tinyxml2::XMLElement* multElement = billboard->FirstChildElement( "mult" );
 			if(multElement)
 				_loadMult(obj,multElement);
 			else 
 				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
+
+			
+			_loadBillboards(billboard,obj);
+			_loadIllustrations(billboard,obj);
 		}
 	}
 }
@@ -235,7 +239,7 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent)
 *
 *@return     void
 */
-void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent) 
+void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent,DrawableObject *parentObject) 
 {
 	std::string scenePath = ImmersiveKidz::getInstance()->getScenePath();
 	scenePath = "scenes/" + scenePath;
@@ -304,8 +308,12 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent)
 				sizex = rotElement->FloatAttribute( "x" );
 				sizey = rotElement->FloatAttribute( "z" );
 			}
-		
-			ImmersiveKidz::getInstance()->addDrawableObject(new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description), animation, animseed);
+			
+			Illustration *obj = new Illustration(scenePath + texture, glm::vec3(posx , posy , posz), glm::vec2(sizex , sizey), name_artist, name_drawing, description,parentObject);
+			ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
+			
+			_loadBillboards(illustration,obj);
+			_loadIllustrations(illustration,obj);
 		}
 	}
 }

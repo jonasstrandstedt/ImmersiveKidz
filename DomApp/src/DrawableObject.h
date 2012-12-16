@@ -37,7 +37,7 @@ class DrawableObject
 {
 public:
 	//initializers
-	DrawableObject();
+	DrawableObject(DrawableObject *parent = 0);
 	~DrawableObject();
 
 	// draw functionality
@@ -58,6 +58,7 @@ public:
 	void resetAnimations();
 
 	std::string getTexture();
+	bool isChild()const;
 
 private:
 
@@ -79,9 +80,12 @@ protected:
 	int *_iarray;
     int _attrib_loc;
     int _float_attrib_loc;
+	bool _isChild;
 
 	// Animation vector for temporary animations, e.g. illustrations
 	std::vector<Animation*> _animationVector;
+
+	std::vector<DrawableObject*> _children;
 };
 
 #endif

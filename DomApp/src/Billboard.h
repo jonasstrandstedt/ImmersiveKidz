@@ -26,7 +26,7 @@ class Billboard: public DrawableObject
 {
 
 public:
-	Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn);
+	Billboard(std::string texturename , glm::vec3 position, glm::vec2 proportionsIn,DrawableObject *parentObject = 0);
 
 	glm::vec3 getPosition();
 

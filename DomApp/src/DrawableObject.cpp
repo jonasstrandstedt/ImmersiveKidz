@@ -6,7 +6,7 @@
 *
 *@details   Defines the animation function to be 0 and sets the default values for all other variables.
 */
-DrawableObject::DrawableObject() 
+DrawableObject::DrawableObject(DrawableObject *parent) 
 {
 	_animationFunc = 0;
 	_seed = 0;
@@ -19,6 +19,11 @@ DrawableObject::DrawableObject()
 	_varray = NULL;
 	_attrib_loc = -1;
 	_float_attrib_loc = -1;
+
+	_isChild = parent != 0;
+	if(_isChild){
+		parent->_children.push_back(this);
+	}
 }
 
 /**
@@ -104,6 +109,11 @@ void DrawableObject::initVBO()
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	}
+
+	for (unsigned int i = 0; i < _children.size(); ++i)
+	{
+		_children.at(i)->initVBO();
 	}
 
 	//resetArrays();
@@ -207,6 +217,9 @@ void DrawableObject::draw(double t)
 
 	// calls the virtual onDraw function.
 	onDraw();
+	for(int i = 0;i<_children.size();i++){
+		_children[i]->draw(t);
+	}
 
 	glPopMatrix();
 
@@ -332,3 +345,12 @@ void fly(double t, double seed)
 					static_cast<float>(cos(t*0.5)*1.5));
 }
 
+
+
+/**
+*@brief returns true if the object is a child to another object
+*
+*/
+bool DrawableObject::isChild()const{
+	return _isChild;
+}

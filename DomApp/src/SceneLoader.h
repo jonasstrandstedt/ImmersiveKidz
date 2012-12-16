@@ -63,8 +63,8 @@ private:
 	// private functions
 	void _loadPlanes(tinyxml2::XMLElement* parent);
 	void _loadModels(tinyxml2::XMLElement* parent);
-	void _loadBillboards(tinyxml2::XMLElement* parent);
-	void _loadIllustrations(tinyxml2::XMLElement* parent);
+	void _loadBillboards(tinyxml2::XMLElement* parent,DrawableObject *parentObject = 0);
+	void _loadIllustrations(tinyxml2::XMLElement* parent,DrawableObject *parentObject = 0);
 	void _loadMult(DrawableObject *obj, tinyxml2::XMLElement* multElement);
 };
 

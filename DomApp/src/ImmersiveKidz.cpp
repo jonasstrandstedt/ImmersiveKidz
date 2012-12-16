@@ -124,9 +124,9 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double a
 	{
 		_illustrations.push_back(ill);
 	}
-	
-	_objects.push_back(o);
-	_objects.back()->setAnimationFuncByName(f, animseed);
+	if(!o->isChild())
+		_objects.push_back(o);
+	o->setAnimationFuncByName(f, animseed);
 }
 
 /**
