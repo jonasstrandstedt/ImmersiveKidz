@@ -184,6 +184,10 @@ int SceneLoader::loadScene()
 	tinyxml2::XMLElement* scene = doc.FirstChildElement( "scene" );
 	if(scene)
 	{
+		_mask["default"].clear();
+		_mask["default"].push_back(std::vector<bool>());
+		_mask["default"][0].push_back(true);
+
 		tinyxml2::XMLElement* world = scene->FirstChildElement( "world" );
 		if(world)
 		{
@@ -300,10 +304,6 @@ int SceneLoader::loadScene()
 					}
 			}
 
-			_mask["default"].clear();
-			_mask["default"].push_back(std::vector<bool>());
-			_mask["default"][0].push_back(true);
-
 			tinyxml2::XMLElement* maskElement = world->FirstChildElement( "mask" );
 			if(maskElement)
 			{
@@ -322,7 +322,8 @@ int SceneLoader::loadScene()
 			}
 
 		}
-		
+		else ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(-256,-256,256,256));
+
 		_loadPlanes(scene);
 		_loadModels(scene);
 		_loadBillboards(scene);
