@@ -323,7 +323,7 @@ void ImmersiveKidz::keyboardButton(int key,int state)
 */
 void ImmersiveKidz::postSyncPreDrawFunction()
 {
-	_camera->update(_dt);
+	_camera->update(static_cast<float>(_dt));
 	if(_isMaster)
 	{
 		AudioHandler::getInstance()->update();
@@ -370,7 +370,7 @@ glm::vec4 ImmersiveKidz::getWorldRect()
 void ImmersiveKidz::reset()
 {
 
-	for (int i = 0; i < _objects.size(); ++i)
+	for (unsigned int i = 0; i < _objects.size(); ++i)
 	{
 		delete _objects[i];
 	}

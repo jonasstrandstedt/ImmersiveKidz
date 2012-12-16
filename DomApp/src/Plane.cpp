@@ -33,6 +33,15 @@ Plane::Plane(std::string texture, glm::vec2 size, glm::vec3 position, glm::vec3 
 	_varray[3].location[2] = _size[1];
 
 	_varray[0].tex[0] = 0;
+	_varray[0].tex[1] = 0;
+	_varray[1].tex[0] = 1;
+	_varray[1].tex[1] = 0;
+	_varray[2].tex[0] = 1;
+	_varray[2].tex[1] = 1;
+	_varray[3].tex[0] = 0;
+	_varray[3].tex[1] = 1;
+/*
+	_varray[0].tex[0] = 0;
 	_varray[0].tex[1] = 1;
 	_varray[1].tex[0] = 1;
 	_varray[1].tex[1] = 1;
@@ -40,6 +49,7 @@ Plane::Plane(std::string texture, glm::vec2 size, glm::vec3 position, glm::vec3 
 	_varray[2].tex[1] = 0;
 	_varray[3].tex[0] = 0;
 	_varray[3].tex[1] = 0;
+	*/
 
 	_iarray[0] = 0;
 	_iarray[1] = 1;

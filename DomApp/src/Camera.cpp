@@ -1,6 +1,12 @@
 #include "Camera.h"
 #include "ImmersiveKidz.h"
 
+inline float fast_sign(float f) {
+    if (f > 0) return 1;
+    return (f == 0) ? 0 : -1;
+    // or some permutation of the order of the 3 cases
+}
+
 /**
 * @brief				Default constructor for the Camera
 *
@@ -21,7 +27,7 @@ Camera::Camera(glm::vec3 startPosition)
 	_acceleration = 7.5;
 	_deacceleration = 3.5;
 
-	_rotationSpeed = 45.033;
+	_rotationSpeed = static_cast<float>(45.033);
 	_rotationAcceleration = 7.5;
 	_rotationDeacceleration = 6.5;
 
@@ -30,7 +36,7 @@ Camera::Camera(glm::vec3 startPosition)
 	
 	_limitsX.x = -10;
 	_limitsX.y = 10;
-	_limitsY.x = 0.04;
+	_limitsY.x = static_cast<float>(0.04);
 	_limitsY.y = 10;
 	_limitsZ.x = -10;
 	_limitsZ.y = 10;
@@ -117,15 +123,14 @@ void Camera::update(float dt)
 
 
 
-	int sign;
-
-
+	float sign;
 	_rotVelocityV += _rotForceV*(dt*_rotationAcceleration); 
-	sign = _rotVelocityV == 0 ? 0 : _rotVelocityV > 0 ? 1 : -1;
+	sign = fast_sign(_rotVelocityV);
+
 	_rotVelocityV -= sign*dt*_rotationDeacceleration;
-	if(abs(_rotVelocityV)>_rotationSpeed)
+	if(fabs(_rotVelocityV)>_rotationSpeed)
 		_rotVelocityV = sign*_rotationSpeed;
-	if(abs(_rotVelocityV)<0.1){
+	if(fabs(_rotVelocityV)<0.1){
 		_rotVelocityV = 0;
 	}
 	_rotation.y += _rotVelocityV*dt;
@@ -133,11 +138,12 @@ void Camera::update(float dt)
 
 
 	_rotVelocityH += _rotForceH*(dt*_rotationAcceleration); 
-	sign = _rotVelocityH == 0 ? 0 : _rotVelocityH > 0 ? 1 : -1;
+	sign = fast_sign(_rotVelocityH);
+
 	_rotVelocityH -= sign*dt*_rotationDeacceleration;
-	if(abs(_rotVelocityH)>_rotationSpeed)
+	if(fabs(_rotVelocityH)>_rotationSpeed)
 		_rotVelocityH = sign*_rotationSpeed;
-	if(abs(_rotVelocityH)<0.1){
+	if(fabs(_rotVelocityH)<0.1){
 		_rotVelocityH = 0;
 	}
 	_rotation.x += _rotVelocityH*dt;
@@ -225,8 +231,8 @@ void Camera::mouseMotion(int dx,int dy)
 {
 	if(_mouseState)
 	{
-		_rotForceH += dx;
-		_rotForceV += dy;
+		_rotForceH += static_cast<float>(dx);
+		_rotForceV += static_cast<float>(dy);
 	}
 }
 

@@ -9,7 +9,7 @@
 */
 Animation::Animation(double duration)
 {
-	_duration = duration * 60;
+	_duration = static_cast<int>(duration) * 60;
 	_frame = 0;
 	
 }
@@ -91,7 +91,9 @@ Jump::Jump(int duration, int frame, float height):Animation(duration,frame)
 */
 void Jump::doAnimate()
 {
-	glTranslatef(0.0f,fabsf(sin((_frame*3.14)/_duration))*_height,0.0f);
+	glTranslatef(	0.0,
+					fabsf(static_cast<float>(sin((static_cast<float>(_frame)*static_cast<float>(3.14))/static_cast<float>(_duration))))*_height,
+					0.0);
 }
 
 /**
@@ -130,7 +132,7 @@ Strafe::Strafe(int duration, int frame):Animation(duration,frame) {
 */
 void Strafe::doAnimate()
 {
-	glTranslatef(sin((_frame*3.14)/_duration),0.0f,0.0f);
+	glTranslatef(static_cast<float>(sin((static_cast<float>(_frame)*3.14)/static_cast<float>(_duration))),0.0,0.0);
 }
 
 /**

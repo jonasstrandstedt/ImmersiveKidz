@@ -51,7 +51,7 @@ ifdef TEST
 	MESSAGE += OpenGL,
 	OBJECTS += unit_test/UnitTests.o
 	INCPATH += -isystem"unit_test" -D"_RUN_TESTS_AT_STARTUP_" -D"_RUN_TESTS_"
-	CXXFLAGS += -pedantic -Wall -Wshadow -Wextra -O2
+	CXXFLAGS += -pedantic -Wall -Wshadow -Wextra -O2 -Wconversion
 	ifeq ($(OS),Linux)
 		FLAGS += -lgtest -L"unit_test/lib/linux_lib"
 	else ifeq ($(OS),Darwin)

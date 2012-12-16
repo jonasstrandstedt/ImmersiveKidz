@@ -12,7 +12,7 @@
 *@param		mask  			The mask that defines where it is ok to put objects,   
 *@param		seed  			A seed to be used for c++ random function so that it will generate the same random positions each run
 *@param		count  			The number of objects to create
-*@param		type			The type of multiplications, SINGLE="Instances of one object not rotating to face the camera", BILLBOARD="Single instances facing the camera", DUAL="Two instances with 90 degrees angle between not facing the camera"
+*@param		type			The type of multiplications, [SINGLE|BILLBOARD|DUAL], default is SINGLE, SINGLE="Instances of one object not rotating to face the camera", BILLBOARD="Single instances facing the camera", DUAL="Two instances with 90 degrees angle between not facing the camera"
 *@param		altitude		Defines the min and max altitude (y-min, y-max) that the objects is randomly distributed.
 */
 MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *mask, int seed, int count, int type, glm::vec2 altitude){
@@ -62,15 +62,17 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 			int maskCount = 0;
 			while ( maskCount < 20 )
 			{
-				float r1 = (double)(rand())/(RAND_MAX+1.0);
-				float r2 = (double)rand()/(RAND_MAX+1.0);
+				float r1 = static_cast<float> (rand() / (RAND_MAX + 1.0));
+				float r2 = static_cast<float> (rand() / (RAND_MAX + 1.0));
 				posx = rect.x + r1 * (rect.z - rect.x);
 				posy = glm::compRand1(altitude[0], altitude[1]);
 				posz  = rect.y + r2 * (rect.w - rect.y);
-				int masky = r2 * mask->size();
-				int maskx = r1 * mask[0].size();
-			
-				if ( (*mask)[masky][maskx] == true ) 
+				unsigned int masky = static_cast<unsigned int>(r2 * static_cast<float>(mask->size()));
+				unsigned int maskx = static_cast<unsigned int>(r1 * static_cast<float>(mask[0].size()));
+
+				unsigned int masky_size = static_cast<unsigned int>(mask->size()-1);
+				
+				if ( (*mask)[masky_size-masky][maskx] == true ) 
 				{
 					break;
 				}
@@ -150,7 +152,7 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 					_varray[v].attribute[0] = posx;
 					_varray[v].attribute[1] = posy;
 					_varray[v].attribute[2] = posz;
-					_varray[v].float_attribute = 90*3.14/180;
+					_varray[v].float_attribute = static_cast<float>(90*3.14/180);
 				}
 			}
 			for (int i = 0; i < isize; ++i)
@@ -196,7 +198,7 @@ void MultObject::onDraw() {
 	float angle = ImmersiveKidz::getInstance()->getCamera()->getRotation().x;
 	sgct::ShaderManager::Instance()->bindShader( "MultObject" );
 	
-	glUniform1f( _angle_loc, angle *3.14/180);
+	glUniform1f( _angle_loc, static_cast<float>(angle *3.14/180.0));
 	glUniform3f( _campos_loc, campos[0], campos[1], campos[2]);
 	
 	// tells the shader to billboard (face the camera) the vertices or not

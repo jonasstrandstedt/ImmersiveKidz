@@ -8,7 +8,7 @@ HUD::HUD()
 	_offset = 0;
 	_minimapWidth = 200;
 	_minimapHeight = 200;
-	_zoom = 0.2;
+	_zoom = static_cast<float>(0.2);
 }
 
 /**
@@ -79,7 +79,10 @@ void HUD::_drawIllustrationNames(std::vector<Illustration*> illu)
 			glColor3f(0.7f,0.7f,0.7f);
 		}
 
-		Freetype::print( sgct::FontManager::Instance()->GetFont( "SGCTFont", 12 ), textX, winSizeY - textY, illu[i]->getName().c_str());
+		Freetype::print( 	sgct::FontManager::Instance()->GetFont( "SGCTFont", 12 ), 
+							static_cast<float>(textX), 
+							static_cast<float>(winSizeY - textY), 
+							illu[i]->getName().c_str());
 
 		glColor3f(1.0f,1.0f,1.0f);
 
@@ -94,7 +97,10 @@ void HUD::_drawIllustrationNames(std::vector<Illustration*> illu)
 			glColor3f(0.7f,0.7f,0.7f);
 		}
 		
-		Freetype::print( sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ), textX - 15, winSizeY - textY, "#");
+		Freetype::print( 	sgct::FontManager::Instance()->GetFont( "SGCTFont", 14 ), 
+							static_cast<float>(textX - 15), 
+							static_cast<float>(winSizeY - textY), 
+							"#");
 
 		glColor3f(1.0f,1.0f,1.0f);
 
@@ -130,19 +136,19 @@ void HUD::_drawBackgroundToNames()
 
 	//Vertex 1 
 	glTexCoord2d(0.0,0.0);
-	glVertex3f(0 , _minimapWidth , 0);
+	glVertex3f(0 , static_cast<float>(_minimapWidth) , 0);
 	
 	//Vertex 2 
 	glTexCoord2d(1.0,0.0);
-	glVertex3f(_minimapWidth , _minimapWidth , 0);
+	glVertex3f(static_cast<float>(_minimapWidth) , static_cast<float>(_minimapWidth) , 0);
 	
 	//Vertex 3 
 	glTexCoord2d(1.0,1.0);
-	glVertex3f(_minimapWidth , winSizeY , 0);
+	glVertex3f(static_cast<float>(_minimapWidth ), static_cast<float>(winSizeY ), 0);
 	
 	//Vertex 4 
 	glTexCoord2d(0.0,1.0);
-	glVertex3f(0 , winSizeY , 0);
+	glVertex3f(0 , static_cast<float>(winSizeY) , 0);
 
 	glEnd();
 
@@ -172,10 +178,10 @@ void HUD::_drawMinimapBackground()
 	glm::vec4 worldRect = ImmersiveKidz::getInstance()->getWorldRect();
 	glm::vec3 camPosition = ImmersiveKidz::getInstance()->getCamera()->getPosition();
 	
-	glm::vec4 zoomMap(camPosition.x - _minimapWidth * _zoom,
-					camPosition.z + 4 - _minimapHeight * _zoom, 
-					camPosition.x +  _minimapWidth * _zoom,
-					camPosition.z + 4  + _minimapHeight * _zoom);
+	glm::vec4 zoomMap(	camPosition.x - static_cast<float>(_minimapWidth) * _zoom,
+						camPosition.z + 4 - static_cast<float>(_minimapHeight) * _zoom, 
+						camPosition.x +  static_cast<float>(_minimapWidth) * _zoom,
+						camPosition.z + 4  + static_cast<float>(_minimapHeight) * _zoom);
 
 	float minx = (zoomMap.x - worldRect.x) / (worldRect.z - worldRect.x);
 	float maxy = 1-(zoomMap.y - worldRect.y) / (worldRect.w - worldRect.y);
@@ -190,15 +196,15 @@ void HUD::_drawMinimapBackground()
 	
 	//Vertex 2 
 	glTexCoord2d(minx,maxy);
-	glVertex3f(_minimapWidth , 0 , 0);
+	glVertex3f(static_cast<float>(_minimapWidth) , 0 , 0);
 	
 	//Vertex 3 
 	glTexCoord2d(minx,miny);
-	glVertex3f(_minimapWidth , _minimapHeight , 0);
+	glVertex3f(static_cast<float>(_minimapWidth) , static_cast<float>(_minimapHeight) , 0);
 	
 	//Vertex 4 
 	glTexCoord2d(maxx,miny);
-	glVertex3f(0 , _minimapHeight , 0);
+	glVertex3f(0 , static_cast<float>(_minimapHeight) , 0);
 
 	glEnd();
 	glBindTexture( GL_TEXTURE_2D, 0);
@@ -228,10 +234,16 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	float fov = 20;
 
 	//Create a wordrect but in zoomed format, contains (xmin,ymin,xmax,ymax) * zoomfactor relative to the minimap
-	glm::vec4 zoomRect(camPosition.x - _minimapWidth * _zoom,
-		camPosition.z + 4 - _minimapHeight * _zoom, 
-		camPosition.x +  _minimapWidth * _zoom,
-		camPosition.z +4  + _minimapHeight * _zoom);
+	/*
+	glm::vec4 zoomRect(		camPosition.x - _minimapWidth * _zoom,
+							camPosition.z + 4 - _minimapHeight * _zoom, 
+							camPosition.x +  _minimapWidth * _zoom,
+							camPosition.z +4  + _minimapHeight * _zoom);
+							*/
+	glm::vec4 zoomRect(	camPosition.x - static_cast<float>(_minimapWidth) * _zoom,
+						camPosition.z + 4 - static_cast<float>(_minimapHeight) * _zoom, 
+						camPosition.x +  static_cast<float>(_minimapWidth) * _zoom,
+						camPosition.z + 4  + static_cast<float>(_minimapHeight) * _zoom);
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -269,14 +281,14 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 		float illuy = (illuPosition.z - zoomRect.y) / (zoomRect.w - zoomRect.y);
 
 		if(illux >= 0 && illux <= 1 && illuy >= 0 && illuy <= 1)
-			glVertex2f(illux * _minimapWidth, illuy * _minimapHeight);
+			glVertex2f(illux * static_cast<float>(_minimapWidth), illuy * static_cast<float>(_minimapHeight));
 
 		glColor3f( 1.0f, 1.0f, 1.0f);
 	}
 	//Set camera to black
 	glColor3f(1,1,1);
 	//Cameradot in middle of the map
-	glVertex2f(_minimapWidth /2,_minimapHeight /2);
+	glVertex2f(static_cast<float>(_minimapWidth /2),static_cast<float>(_minimapHeight /2));
 	glEnd();
 	glBegin(GL_LINE_LOOP);
 
@@ -285,13 +297,13 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 	glm::vec4 dir2 = glm::rotate(glm::mat4(),camRotation.x-fov,glm::vec3(0.0f,1.0f,0.0f)) * glm::vec4(0,0,-30,0);
 	
 	//Paints the cameralines.
-	glVertex2f(_minimapWidth /2,_minimapHeight /2);
-	glVertex2f(_minimapWidth/2 + dir1.x , _minimapHeight/2 + dir1.z );
+	glVertex2f(static_cast<float>(_minimapWidth /2),static_cast<float>(_minimapHeight /2));
+	glVertex2f(static_cast<float>(_minimapWidth/2) + dir1.x , static_cast<float>(_minimapHeight/2) + dir1.z );
 	glEnd();
 	glBegin(GL_LINE_LOOP);
 
-	glVertex2f(_minimapWidth /2,_minimapHeight /2);
-	glVertex2f(_minimapWidth/2 + dir2.x , _minimapHeight/2 + dir2.z );
+	glVertex2f(static_cast<float>(_minimapWidth /2),static_cast<float>(_minimapHeight /2));
+	glVertex2f(static_cast<float>(_minimapWidth/2) + dir2.x , static_cast<float>(_minimapHeight/2) + dir2.z );
 
 	glEnd();
 	glColor3f(1,1,1);
@@ -320,9 +332,9 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 
 	//Zoomes in & out on the minimap
 	if(_zoom > 0.11)
-		if(key == GLFW_KEY_KP_SUBTRACT && state == GLFW_PRESS) _zoom = _zoom - 0.1;
+		if(key == GLFW_KEY_KP_SUBTRACT && state == GLFW_PRESS) _zoom = _zoom - static_cast<float>(0.1);
 	if(_zoom <= 1)
-		if(key == GLFW_KEY_KP_ADD && state == GLFW_PRESS) _zoom = _zoom + 0.1;
+		if(key == GLFW_KEY_KP_ADD && state == GLFW_PRESS) _zoom = _zoom + static_cast<float>(0.1);
 	
 	//Gives the selected illustration a specific animation
 	if(key == '1' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Jump(1.0));
@@ -330,7 +342,7 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 	if(key == '3' && state == GLFW_PRESS) illu[_selection]->addAnimation(new Strafe(1));
 
 	if(_selection < 0) _selection = 0;
-	if(_selection >= static_cast<int>(illu.size())) _selection = illu.size() -1;
+	if(_selection >= static_cast<int>(illu.size())) _selection = static_cast<int>(illu.size()) -1;
 
 	if(key == GLFW_KEY_ENTER && state == GLFW_PRESS) 
 	{

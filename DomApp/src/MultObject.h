@@ -32,8 +32,6 @@ public:
 	void onDraw();
 	const char* getTypeName(int type);
 private:
-	GLuint _listid;
-	bool _billboard;
 	GLint _angle_loc;
 	GLint _campos_loc;
 	int _billboard_loc;

@@ -21,26 +21,26 @@
 	<plane>
 		<texture>textures/berg.png</texture>
 		<size width="512" height="128"/>
-		<pos x="-256" y="128" z="-256"/>
-		<rot x="90" y="0" z="0"/>
+		<pos x="-256" y="0" z="-256"/>
+		<rot x="-90" y="0" z="0"/>
 	</plane>
 	<plane>
 		<texture>textures/berg.png</texture>
 		<size width="512" height="128"/>
-		<pos x="256" y="128" z="-256"/>
-		<rot x="90" y="0" z="90"/>
+		<pos x="256" y="0" z="-256"/>
+		<rot x="-90" y="0" z="-90"/>
 	</plane>
 	<plane>
 		<texture>textures/berg.png</texture>
 		<size width="512" height="128"/>
-		<pos x="256" y="128" z="256"/>
-		<rot x="90" y="0" z="180"/>
+		<pos x="256" y="0" z="256"/>
+		<rot x="-90" y="0" z="-180"/>
 	</plane>
 	<plane>
 		<texture>textures/berg.png</texture>
 		<size width="512" height="128"/>
-		<pos x="-256" y="128" z="256"/>
-		<rot x="90" y="0" z="270"/>
+		<pos x="-256" y="0" z="256"/>
+		<rot x="-90" y="0" z="-270"/>
 	</plane>
 	<plane>
 		<texture>textures/moln.png</texture>
@@ -50,13 +50,6 @@
 		<mult count="40" type="single" />
 	</plane>
 
-	
-	<models>
-		<filename>box.obj</filename>
-		<texture>EXTRA_LIFE.png</texture>
-		<scale val="0.002"/>
-		<mult count="10000" seed="4524" type="single" />
-	</models>
 	<model>
 		<filename>box.obj</filename>
 		<texture>EXTRA_LIFE.png</texture>
