@@ -353,13 +353,13 @@ void HUD::keyboardButton(int key,int state, std::vector<Illustration*> illu)
 	int list_height = winSizeY - _minimapHeight;
 
 	// check if need to increase offset for animal list
-	if(list_height - ( 15 + _selection *14 + _offset) < 0) 
+	while(list_height - ( 15 + _selection *14 + _offset) < 0) 
 	{
 		_offset -= 14*4;
 	}
 
 	// check if need to decrease offset for animal list
-	if((-15-_selection *14 - _offset) > -15)
+	while((-15-_selection *14 - _offset) > -15)
 	{
 		_offset += 14*4;
 
