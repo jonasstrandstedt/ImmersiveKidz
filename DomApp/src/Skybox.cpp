@@ -160,7 +160,7 @@ void Skybox::_drawCube(){
 
 		//Back Face
 		glBindTexture(GL_TEXTURE_2D,sgct::TextureManager::Instance()->getTextureByName("skybox_zneg"));
-		glBegin(GL_QUADS);		
+		glBegin(GL_QUADS);
 		glTexCoord2f(0,1);     
 		glVertex3f(1000,1000,1000);
 		glTexCoord2f(1,1);

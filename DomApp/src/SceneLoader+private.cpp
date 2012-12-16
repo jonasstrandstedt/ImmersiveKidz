@@ -26,12 +26,14 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 				else	continue;
 
 				std::string animation = "none";
-				float animseed = 0.0;
+				float animoffset = 0.0;
+				float animparam = 0.0;
 				tinyxml2::XMLElement* aniElement = plane->FirstChildElement( "animation" );
 				if(aniElement) 
 				{
 					if(aniElement->Attribute( "name" ) != NULL ) animation = aniElement->Attribute( "name" );
-					if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
+					if(aniElement->FloatAttribute( "offset" ) > 0.0) animoffset = aniElement->FloatAttribute( "offset" );
+					if(aniElement->FloatAttribute( "param" ) > 0.0) animparam = aniElement->FloatAttribute( "param" );
 				}			
 				
 				float width = 1.0;
@@ -73,7 +75,7 @@ void SceneLoader::_loadPlanes(tinyxml2::XMLElement* parent)
 				if(multElement)
 					_loadMult(obj,multElement);
 				else 
-					ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
+					ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animoffset, animparam);
 			}
 		}
 	}
@@ -115,12 +117,14 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 			else	continue;
 	
 			std::string animation = "none";
-			float animseed = 0.0;
+			float animoffset = 0.0;
+			float animparam = 0.0;
 			tinyxml2::XMLElement* aniElement = model->FirstChildElement( "animation" );
 			if(aniElement) 
 			{
 				if(aniElement->Attribute( "name" ) != NULL) animation = aniElement->Attribute( "name" );
-				if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
+				if(aniElement->FloatAttribute( "offset" ) > 0.0) animoffset = aniElement->FloatAttribute( "offset" );
+				if(aniElement->FloatAttribute( "param" ) > 0.0) animparam = aniElement->FloatAttribute( "param" );
 			}
 
 			srand(static_cast<unsigned int>(time(NULL)));
@@ -159,7 +163,7 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 			if(multElement)
 				_loadMult(obj,multElement);
 			else 
-				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
+				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animoffset, animparam);
 		}
 	}
 }
@@ -191,12 +195,14 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent,DrawableObject *p
 			else	continue;
 	
 			std::string animation = "none";
-			float animseed = 0.0;
+			float animoffset = 0.0;
+			float animparam = 0.0;
 			tinyxml2::XMLElement* aniElement = billboard->FirstChildElement( "animation" );
 			if(aniElement) 
 			{
 				if(aniElement->Attribute( "name" ) != NULL) animation = aniElement->Attribute( "name" );
-				if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
+				if(aniElement->FloatAttribute( "offset" ) > 0.0) animoffset = aniElement->FloatAttribute( "offset" );
+				if(aniElement->FloatAttribute( "param" ) > 0.0) animparam = aniElement->FloatAttribute( "param" );
 			}
 
 			srand(static_cast<unsigned int>(time(NULL)));
@@ -227,7 +233,7 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent,DrawableObject *p
 			if(multElement)
 				_loadMult(obj,multElement);
 			else 
-				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
+				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animoffset, animparam);
 
 			
 			_loadBillboards(billboard,obj);
@@ -284,12 +290,14 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent,DrawableObject
 			}					
 	
 			std::string animation = "none";
-			float animseed = 0.0;
+			float animoffset = 0.0;
+			float animparam = 0.0;
 			tinyxml2::XMLElement* aniElement = illustration->FirstChildElement( "animation" );
 			if(aniElement) 
 			{
 				if(aniElement->Attribute( "name" ) != NULL) animation = aniElement->Attribute( "name" );
-				if(aniElement->FloatAttribute( "seed" ) > 0.0) animseed = aniElement->FloatAttribute( "seed" );
+				if(aniElement->FloatAttribute( "offset" ) > 0.0) animoffset = aniElement->FloatAttribute( "offset" );
+				if(aniElement->FloatAttribute( "param" ) > 0.0) animparam = aniElement->FloatAttribute( "param" );
 			}
 
 			
@@ -314,7 +322,7 @@ void SceneLoader::_loadIllustrations(tinyxml2::XMLElement* parent,DrawableObject
 				if(sizeElement->FloatAttribute( "height" ) > 0.0) sizey = sizeElement->FloatAttribute( "height" );
 			}
 			Illustration *obj = new Illustration(scenePath + texture, glm::vec3(x , y , z), glm::vec2(sizex , sizey), name_artist, name_drawing, description,parentObject);
-			ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animseed);
+			ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animoffset, animparam);
 			
 			_loadBillboards(illustration,obj);
 			_loadIllustrations(illustration,obj);

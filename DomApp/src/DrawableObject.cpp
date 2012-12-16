@@ -9,8 +9,9 @@
 DrawableObject::DrawableObject(DrawableObject *parent) 
 {
 	_animationFunc = 0;
-	_seed = 0;
-	
+	_offset = 0;
+	_param = 0;
+
 	_transform = glm::mat4x4();
 
 	_isize = 0;
@@ -197,7 +198,7 @@ void DrawableObject::draw(double t)
 	{
 		pop = true;
 		glPushMatrix();
-		_animationFunc(t, _seed);
+		_animationFunc(t, _offset, _param);
 	}
 	else if ( !_animationVector.empty() )
 	{
@@ -263,6 +264,15 @@ void DrawableObject::resetAnimations() {
 	_animationVector.erase(_animationVector.begin(),_animationVector.end());
 }
 
+/**
+*@brief	    Sets the animation function s
+*/
+void DrawableObject::setAnimationFunc(void (*f)(double,double,double), double offset, double param) 
+{ 
+	_animationFunc = f; 
+	_offset = offset; 
+	_param = param;
+}
 
 /**
 *@brief	    Sets the animation function by name
@@ -273,11 +283,12 @@ void DrawableObject::resetAnimations() {
 *
 *@return     void
 */
-void DrawableObject::setAnimationFuncByName(std::string name, double seed) 
+void DrawableObject::setAnimationFuncByName(std::string name, double offset, double param) 
 { 
-	if ( name == "bounce" ) setAnimationFunc(bounce, seed);
-	if ( name == "pendulum" ) setAnimationFunc(pendulum, seed);
-	if ( name == "fly" ) setAnimationFunc(fly, seed);
+	if ( name == "bounce" ) setAnimationFunc(bounce, offset,param);
+	if ( name == "pendulum" ) setAnimationFunc(pendulum, offset,param);
+	if ( name == "fly" ) setAnimationFunc(fly, offset, param);
+	if ( name == "orbit" ) setAnimationFunc(orbit, offset,param);
 }
 
 /**
@@ -311,9 +322,9 @@ void DrawableObject::getArrays(int *vsize, int *isize, Vertex **varray, int **ia
 *
 *@return     void
 */
-void bounce(double t, double seed) 
+void bounce(double t, double offset, double param) 
 {
-	t += seed;
+	t += offset;
 	glTranslatef(	static_cast<float>(0.0),
 					static_cast<float>(fabs(sin(t*2.0))*0.5),
 					static_cast<float>(0.0));
@@ -324,9 +335,9 @@ void bounce(double t, double seed)
 *
 *@return     void
 */
-void pendulum(double t, double seed) 
+void pendulum(double t, double offset, double param) 
 {
-	t += seed;
+	t += offset;
 	glTranslatef(	static_cast<float>(sin(t)),
 					static_cast<float>(0.0),
 					static_cast<float>(0.0));
@@ -337,12 +348,28 @@ void pendulum(double t, double seed)
 *
 *@return     void
 */
-void fly(double t, double seed) 
+void fly(double t, double offset, double param) 
 {
-	t += seed;
+	t += offset;
 	glTranslatef(	static_cast<float>(sin(t)),
 					static_cast<float>(fabs(sin(t*0.8))*0.5),
 					static_cast<float>(cos(t*0.5)*1.5));
+}
+
+/**
+*@brief	    ḿakes the object go in orbit
+*
+*/
+void orbit(double t, double offset, double param) 
+{
+	t += offset;
+
+	double orbit_length = 2.0*param*M_PI;
+	double speed = 500.0;
+
+	glRotatef(t*speed / orbit_length, 0,1,0);
+	glTranslatef(0,0,param);
+	glRotatef(-t*speed / orbit_length, 0,1,0);
 }
 
 

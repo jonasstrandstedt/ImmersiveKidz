@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <scene>
 	<world>
+		<skybox name="skybox" />
 		<camera>
 			<start x="0.0" y="0.5" z="0.0" />
 			<limitx min="-256.0" max="256.0" />

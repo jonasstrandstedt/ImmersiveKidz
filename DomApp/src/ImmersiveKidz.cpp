@@ -117,7 +117,7 @@ void ImmersiveKidz::setSceneLoaded(bool isLoaded)
 *@param		o is a subclass of DrawableObject (because DrawableObject is abstract)
 *
 */
-void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double animseed)
+void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double animoffset, double animparam)
 {
 	Illustration *ill = dynamic_cast<Illustration*>(o);
 	if(ill) 
@@ -126,7 +126,7 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double a
 	}
 	
 	_objects.push_back(o);
-	o->setAnimationFuncByName(f, animseed);
+	o->setAnimationFuncByName(f, animoffset, animparam);
 }
 
 /**
@@ -159,6 +159,7 @@ void ImmersiveKidz::initObjects()
 	{
 		_objects.at(i)->initVBO();
 	}
+	
 }
 
 /**

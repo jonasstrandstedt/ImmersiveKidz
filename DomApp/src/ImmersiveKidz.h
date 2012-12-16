@@ -37,7 +37,7 @@ public:
 	void setMaster(bool m);
 	void setScenePath(std::string folder);
 	void setSceneLoaded(bool isLoaded);
-	void addDrawableObject(DrawableObject *o, std::string f = "none", double animseed = 0.0);
+	void addDrawableObject(DrawableObject *o, std::string f = "none", double animoffset = 0.0, double animparam = 0.0);
 	bool loadTexture(std::string texture);
 	void initObjects();
 

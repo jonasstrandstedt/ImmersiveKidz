@@ -18,9 +18,10 @@ typedef struct
 } Vertex;
 
 // Animation functions
-void bounce(double t, double seed);
-void pendulum(double t, double seed);
-void fly(double t, double seed);
+void bounce(double t, double offset, double param);
+void pendulum(double t, double offset, double param);
+void fly(double t, double offset, double param);
+void orbit(double t, double offset, double param);
 
 /**
 * @brief  	An abstract class for objects that can be rendered
@@ -49,8 +50,8 @@ public:
 	void resetArrays();
 
 	// permanent animations
-	void setAnimationFunc(void (*f)(double,double), double seed) { _animationFunc = f; _seed = seed;};
-	void setAnimationFuncByName(std::string name, double seed);
+	void setAnimationFunc(void (*f)(double,double,double), double offset, double param);
+	void setAnimationFuncByName(std::string name, double seed, double param);
 
 	// Add temporary animation
 	void addAnimation(Animation *type);
@@ -66,8 +67,9 @@ private:
 	GLuint _iBufferID;
 	
 protected:
-	double _seed;
-	void (*_animationFunc)(double, double);
+	double _offset;
+	double _param;
+	void (*_animationFunc)(double, double, double);
 	void _drawVBO();
 
 	glm::mat4x4 _transform;

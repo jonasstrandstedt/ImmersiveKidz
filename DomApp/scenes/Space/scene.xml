@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<scene>
+	<world>
+		<camera>
+			<start x="0.0" y="0.5" z="0.0" />
+			<limitx min="-256.0" max="256.0" />
+			<limity min="0.1" max="256.0" />
+			<limitz min="-256.0" max="256.0" />
+			<rotation deacceleration="15" acceleration="7.5" maxSpeed="25" />
+			<movement deacceleration="3.5" acceleration="7.5" maxSpeed="6" />
+		</camera>
+	</world>
+
+	
+	<billboard>
+		<texture>textures/sun.png</texture>
+		<size width="4.0" height="4.0"/>
+
+
+		<illustration>
+			<name_artist>Merkurius</name_artist>
+			<texture>textures/planet.png</texture>
+			<pos x="0.0" y="0.0" z="0.0"/>
+			<size width="2.0" height="2.0"/>
+			<animation name="orbit" param="5" />
+		</illustration>
+		<illustration>
+			<name_artist>Saturnus</name_artist>
+			<texture>textures/planet1.png</texture>
+			<pos x="0.0" y="0.0" z="0.0"/>
+			<size width="2.0" height="2.0"/>
+			<animation name="orbit" param="10" />
+		</illustration>
+		<illustration>
+			<name_artist>Neptunus</name_artist>
+			<texture>textures/planet2.png</texture>
+			<pos x="0.0" y="0.0" z="0.0"/>
+			<size width="2.0" height="2.0"/>
+			<animation name="orbit" param="15" />
+
+
+			<illustration>
+				<name_artist>Moon</name_artist>
+				<texture>textures/rymdvarelse.png</texture>
+				<pos x="0.0" y="0.0" z="0.0"/>
+				<size width="1.0" height="1.0"/>
+				<animation name="orbit" param="3" />
+			</illustration>
+
+		</illustration>
+
+	</billboard>
+
+	<billboard>
+		<texture>textures/star0.png</texture>
+		<size width="1" height="1"/>
+		<mult count="5000" seed="4124" type="billboard" />
+		<altitude min="-50.0" max="50.0" />
+	</billboard>
+	<billboard>
+		<texture>textures/star1.png</texture>
+		<size width="1" height="1"/>
+		<mult count="5000" seed="534534" type="billboard" />
+		<altitude min="-50.0" max="50.0" />
+	</billboard>
+
+	
+</scene>

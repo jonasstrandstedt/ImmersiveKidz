@@ -164,18 +164,6 @@ int SceneLoader::loadScene()
 	
 	std::string scene_xml = scenePath + "scene.xml";
 	
-	Skybox* skybox = new Skybox();
-	std::string skyboxTextures[6];
-	skyboxTextures[CUBEMAP_TEX_X_POSITIVE] = scenePath + "skybox_xpos.png";
-	skyboxTextures[CUBEMAP_TEX_X_NEGATIVE] = scenePath + "skybox_xneg.png";
-	skyboxTextures[CUBEMAP_TEX_Y_POSITIVE] = scenePath + "skybox_ypos.png";
-	skyboxTextures[CUBEMAP_TEX_Y_NEGATIVE] = scenePath + "skybox_yneg.png";
-	skyboxTextures[CUBEMAP_TEX_Z_POSITIVE] = scenePath + "skybox_zpos.png";
-	skyboxTextures[CUBEMAP_TEX_Z_NEGATIVE] = scenePath + "skybox_zneg.png";
-	skybox->loadTextures(skyboxTextures);
-	ImmersiveKidz::getInstance()->addDrawableObject(skybox);
-
-	
 	tinyxml2::XMLDocument doc;
 	doc.LoadFile(scene_xml.c_str());
 
@@ -188,9 +176,31 @@ int SceneLoader::loadScene()
 		_mask["default"].push_back(std::vector<bool>());
 		_mask["default"][0].push_back(true);
 
+
 		tinyxml2::XMLElement* world = scene->FirstChildElement( "world" );
 		if(world)
 		{
+
+			tinyxml2::XMLElement* skyboxElement = world->FirstChildElement( "skybox" );
+			if(skyboxElement) {
+
+				std::string skybox_name = "skybox";
+
+				if(skyboxElement->Attribute( "name" ) != NULL ) skybox_name = skyboxElement->Attribute( "name" );
+				
+
+				Skybox* skybox = new Skybox();
+				std::string skyboxTextures[6];
+				skyboxTextures[CUBEMAP_TEX_X_POSITIVE] = scenePath + skybox_name + "_xpos.png";
+				skyboxTextures[CUBEMAP_TEX_X_NEGATIVE] = scenePath + skybox_name + "_xneg.png";
+				skyboxTextures[CUBEMAP_TEX_Y_POSITIVE] = scenePath + skybox_name + "_ypos.png";
+				skyboxTextures[CUBEMAP_TEX_Y_NEGATIVE] = scenePath + skybox_name + "_yneg.png";
+				skyboxTextures[CUBEMAP_TEX_Z_POSITIVE] = scenePath + skybox_name + "_zpos.png";
+				skyboxTextures[CUBEMAP_TEX_Z_NEGATIVE] = scenePath + skybox_name + "_zneg.png";
+				skybox->loadTextures(skyboxTextures);
+				ImmersiveKidz::getInstance()->addDrawableObject(skybox);
+			}
+
 			tinyxml2::XMLElement* camera = world->FirstChildElement( "camera" );
 			if(camera)
 			{
@@ -301,6 +311,8 @@ int SceneLoader::loadScene()
 						ImmersiveKidz::getInstance()->loadTexture(scenePath + texture);
 						ImmersiveKidz::getInstance()->addDrawableObject(new Plane(scenePath + texture, glm::vec2(width, height), glm::vec3(x,y,z), glm::vec3(rotx,roty,rotz)));
 					}
+			} else {
+				ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(-256,-256,256,256));
 			}
 
 			tinyxml2::XMLElement* maskElement = world->FirstChildElement( "mask" );
