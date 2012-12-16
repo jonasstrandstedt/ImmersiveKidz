@@ -65,7 +65,6 @@ TEST (CameraTests, Movements)
 	movingDir = glm::normalize(movingDir);
 
 	EXPECT_EQ(-1,movingDir.z);
-	std::cout << c->getPosition().z;
 	/*
 	c->keyboardButton('S',1);
 	c->update(1);

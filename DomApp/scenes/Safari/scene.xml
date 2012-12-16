@@ -138,8 +138,8 @@
 		<size x="2.0" z="2.0"/>
 	</illustration>
 	<illustration>
-		<name_artist>Megamongo</name_artist>
-		<name_drawing>Megamongo</name_drawing>
+		<name_artist>Megamoo</name_artist>
+		<name_drawing>Megamoo</name_drawing>
 		<description>Beskrivning</description>
 		<texture>textures/animal4.png</texture>
 		<pos x="10.0" y="0" z="-15.0"/>
@@ -186,8 +186,8 @@
 		<size x="2.8" z="2.8"/>
 	</illustration>
 	<illustration>
-		<name_artist>Dum Dum</name_artist>
-		<name_drawing>Dum Dum</name_drawing>
+		<name_artist>Drum Drum</name_artist>
+		<name_drawing>Drum Drum</name_drawing>
 		<description>Beskrivning</description>
 		<texture>textures/dagsberg/animal04.png</texture>
 		<pos x="10.0" y="0" z="25.0"/>
