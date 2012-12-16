@@ -240,17 +240,17 @@ int SceneLoader::loadScene()
 				tinyxml2::XMLElement* rotationSpeed = camera->FirstChildElement( "rotation" );
 				if(rotationSpeed)
 				{
-					if(rotationSpeed->Attribute("maxSpeed")) cam->setRotatioSpeed(rotationSpeed->FloatAttribute("maxSpeed"));
-					if(rotationSpeed->Attribute("acceleration")) cam->setRotatioAcceleration(rotationSpeed->FloatAttribute("acceleration"));
-					if(rotationSpeed->Attribute("deacceleration")) cam->setRotatioDeacceleration(rotationSpeed->FloatAttribute("deacceleration"));
+					if(rotationSpeed->FloatAttribute("maxSpeed") > 0.0) cam->setRotationSpeed(rotationSpeed->FloatAttribute("maxSpeed"));
+					if(rotationSpeed->FloatAttribute("acceleration") > 0.0) cam->setRotatioAcceleration(rotationSpeed->FloatAttribute("acceleration"));
+					if(rotationSpeed->FloatAttribute("deacceleration") > 0.0) cam->setRotatioDeacceleration(rotationSpeed->FloatAttribute("deacceleration"));
 				}
 
 				tinyxml2::XMLElement* movementSpeed = camera->FirstChildElement( "movement" );
 				if(movementSpeed)
 				{
-					if(movementSpeed->Attribute("maxSpeed")) cam->setSpeed(movementSpeed->FloatAttribute("maxSpeed"));
-					if(movementSpeed->Attribute("acceleration")) cam->setAcceleration(movementSpeed->FloatAttribute("acceleration"));
-					if(movementSpeed->Attribute("deacceleration")) cam->setDeacceleration(movementSpeed->FloatAttribute("deacceleration"));
+					if(movementSpeed->FloatAttribute("maxSpeed") > 0.0) cam->setSpeed(movementSpeed->FloatAttribute("maxSpeed"));
+					if(movementSpeed->FloatAttribute("acceleration") > 0.0) cam->setAcceleration(movementSpeed->FloatAttribute("acceleration"));
+					if(movementSpeed->FloatAttribute("deacceleration") > 0.0) cam->setDeacceleration(movementSpeed->FloatAttribute("deacceleration"));
 				}
 
 			}
@@ -264,14 +264,13 @@ int SceneLoader::loadScene()
 					{
 						texture = textureElement->GetText();
 					
-						float width = 1.0;
-						float height = 1.0;
-
+						float width = 512;
+						float height = 512;
 						tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
 						if(sizeElement)
 						{
-							width = (sizeElement->FloatAttribute( "width" ) > 0.0000001) ? sizeElement->FloatAttribute( "width" ) : 512.0;
-							height = (sizeElement->FloatAttribute( "height" ) > 0.0000001) ? sizeElement->FloatAttribute( "height" ) : 512.0;
+							if(sizeElement->FloatAttribute( "width" ) > 0.0000001) width = sizeElement->FloatAttribute( "width" );
+							if(sizeElement->FloatAttribute( "height" ) > 0.0000001) height = sizeElement->FloatAttribute( "height" );
 
 						}
 
@@ -281,9 +280,9 @@ int SceneLoader::loadScene()
 						tinyxml2::XMLElement* positionElement = plane->FirstChildElement( "pos" );
 						if(positionElement)
 						{
-							x = (positionElement->FloatAttribute( "x" ) != NULL) ? positionElement->FloatAttribute( "x" ) : 0.0;
-							y = (positionElement->FloatAttribute( "y" ) != NULL) ? positionElement->FloatAttribute( "y" ) : 0.0;
-							z = (positionElement->FloatAttribute( "z" ) != NULL) ? positionElement->FloatAttribute( "z" ) : 0.0;
+							if(positionElement->Attribute( "x" ) != NULL) x = positionElement->FloatAttribute( "x" );
+							if(positionElement->Attribute( "y" ) != NULL) y = positionElement->FloatAttribute( "y" );
+							if(positionElement->Attribute( "z" ) != NULL) z = positionElement->FloatAttribute( "z" );
 
 						}
 
@@ -293,9 +292,9 @@ int SceneLoader::loadScene()
 						tinyxml2::XMLElement* rotElement = plane->FirstChildElement( "rot" );
 						if(rotElement)
 						{
-							rotx = (rotElement->FloatAttribute( "x" ) != NULL) ? rotElement->FloatAttribute( "x" ) : 0.0;
-							roty = (rotElement->FloatAttribute( "y" ) != NULL) ? rotElement->FloatAttribute( "y" ) : 0.0;
-							rotz = (rotElement->FloatAttribute( "z" ) != NULL) ? rotElement->FloatAttribute( "z" ) : 0.0;
+							if(rotElement->Attribute( "x" ) != NULL) rotx = rotElement->FloatAttribute( "x" );
+							if(rotElement->Attribute( "y" ) != NULL) roty = rotElement->FloatAttribute( "y" );
+							if(rotElement->Attribute( "z" ) != NULL) rotz = rotElement->FloatAttribute( "z" );
 						}
 
 						ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(x,z,x+width,z+height));

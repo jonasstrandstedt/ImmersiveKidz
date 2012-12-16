@@ -43,7 +43,7 @@ public:
 	void setAcceleration(float acceleration);
 	void setDeacceleration(float deacceleration);
 
-	void setRotatioSpeed(float speed);
+	void setRotationSpeed(float speed);
 	void setRotatioAcceleration(float acceleration);
 	void setRotatioDeacceleration(float deacceleration);
 
