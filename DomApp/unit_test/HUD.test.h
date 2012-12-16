@@ -20,11 +20,15 @@ TEST (HUDtest, minimap)
 	
 	HUD *h = new HUD();
 
-	EXPECT_EQ(150,h->getMinimapWidth());
+	EXPECT_EQ(200,h->getMinimapWidth());
 
-	EXPECT_EQ(150,h->getMinimapWidth());
+	EXPECT_EQ(200,h->getMinimapWidth());
 
 	EXPECT_EQ(0,h->getSelection());
+
+	//EXPECT_EQ(0.2,h->_zoom); Create a getZoom func
+
+
 	
 	h->setTextureMinimap("testtesttest");
 	
