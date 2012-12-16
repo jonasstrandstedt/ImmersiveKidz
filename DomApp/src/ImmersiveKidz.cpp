@@ -124,8 +124,8 @@ void ImmersiveKidz::addDrawableObject(DrawableObject *o, std::string f, double a
 	{
 		_illustrations.push_back(ill);
 	}
-	if(!o->isChild())
-		_objects.push_back(o);
+	
+	_objects.push_back(o);
 	o->setAnimationFuncByName(f, animseed);
 }
 
@@ -188,7 +188,8 @@ void ImmersiveKidz::draw()
 		_camera->setCamera();
 		for (unsigned int i = 0; i < _objects.size(); ++i)
 		{
-			_objects.at(i)->draw(_currTime);
+			if(!_objects.at(i)->isChild())
+				_objects.at(i)->draw(_currTime);
 		}
 
 		if( _isMaster ) 
