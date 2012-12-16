@@ -15,7 +15,8 @@
 *@param		type			The type of multiplications, [SINGLE|BILLBOARD|DUAL], default is SINGLE, SINGLE="Instances of one object not rotating to face the camera", BILLBOARD="Single instances facing the camera", DUAL="Two instances with 90 degrees angle between not facing the camera"
 *@param		altitude		Defines the min and max altitude (y-min, y-max) that the objects is randomly distributed.
 */
-MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *mask, int seed, int count, int type, glm::vec2 altitude){
+MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *mask, int seed, int count, int type, glm::vec2 altitude)
+{
 	_texture = obj->getTexture();
 	_type = type;
 
@@ -53,7 +54,8 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 
 		srand(seed);
 		glm::vec4 rect = ImmersiveKidz::getInstance()->getWorldRect();
-		for(int c = 0; c < count ; c++){
+		for(int c = 0; c < count ; c++)
+		{
 
 			float posx = 0;
 			float posy = 0;
@@ -111,7 +113,8 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 			// if the type is DUAL:
 			// dublicating the model and adds a rotation angle around the y axis 
 			// so the shader can rotate one of the models
-			} else if (_type == DUAL) {
+			} else if (_type == DUAL) 
+			{
 				for (int i = 0; i < vsize; ++i)
 				{
 					int v = c * vsize +i;
@@ -189,7 +192,8 @@ const char* MultObject::getTypeName(int type)
 /**
 *@brief		Using the MultObject shader and the generated VBO to draw the objects
 */
-void MultObject::onDraw() {
+void MultObject::onDraw() 
+{
 	
 	glBindTexture( GL_TEXTURE_2D, sgct::TextureManager::Instance()->getTextureByName(_texture));
 	
