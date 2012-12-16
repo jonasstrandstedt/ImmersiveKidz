@@ -266,8 +266,8 @@ int SceneLoader::loadScene()
 						tinyxml2::XMLElement* sizeElement = plane->FirstChildElement( "size" );
 						if(sizeElement)
 						{
-							width = (sizeElement->FloatAttribute( "width" ) > 0.0000001) ? sizeElement->FloatAttribute( "width" ) : 1.0;
-							height = (sizeElement->FloatAttribute( "height" ) > 0.0000001) ? sizeElement->FloatAttribute( "height" ) : 1.0;
+							width = (sizeElement->FloatAttribute( "width" ) > 0.0000001) ? sizeElement->FloatAttribute( "width" ) : 512.0;
+							height = (sizeElement->FloatAttribute( "height" ) > 0.0000001) ? sizeElement->FloatAttribute( "height" ) : 512.0;
 
 						}
 
@@ -277,9 +277,9 @@ int SceneLoader::loadScene()
 						tinyxml2::XMLElement* positionElement = plane->FirstChildElement( "pos" );
 						if(positionElement)
 						{
-							x = positionElement->FloatAttribute( "x" );
-							y = positionElement->FloatAttribute( "y" );
-							z = positionElement->FloatAttribute( "z" );
+							x = (positionElement->FloatAttribute( "x" ) != NULL) ? positionElement->FloatAttribute( "x" ) : 0.0;
+							y = (positionElement->FloatAttribute( "y" ) != NULL) ? positionElement->FloatAttribute( "y" ) : 0.0;
+							z = (positionElement->FloatAttribute( "z" ) != NULL) ? positionElement->FloatAttribute( "z" ) : 0.0;
 
 						}
 
@@ -289,9 +289,9 @@ int SceneLoader::loadScene()
 						tinyxml2::XMLElement* rotElement = plane->FirstChildElement( "rot" );
 						if(rotElement)
 						{
-							rotx = rotElement->FloatAttribute( "x" );
-							roty = rotElement->FloatAttribute( "y" );
-							rotz = rotElement->FloatAttribute( "z" );
+							rotx = (rotElement->FloatAttribute( "x" ) != NULL) ? rotElement->FloatAttribute( "x" ) : 0.0;
+							roty = (rotElement->FloatAttribute( "y" ) != NULL) ? rotElement->FloatAttribute( "y" ) : 0.0;
+							rotz = (rotElement->FloatAttribute( "z" ) != NULL) ? rotElement->FloatAttribute( "z" ) : 0.0;
 						}
 
 						ImmersiveKidz::getInstance()->setWorldRect(glm::vec4(x,z,x+width,z+height));
