@@ -240,7 +240,7 @@ int SceneLoader::loadScene()
 				tinyxml2::XMLElement* rotationSpeed = camera->FirstChildElement( "rotation" );
 				if(rotationSpeed)
 				{
-					if(rotationSpeed->FloatAttribute("maxSpeed") > 0.0) cam->setRotatioSpeed(rotationSpeed->FloatAttribute("maxSpeed"));
+					if(rotationSpeed->FloatAttribute("maxSpeed") > 0.0) cam->setRotationSpeed(rotationSpeed->FloatAttribute("maxSpeed"));
 					if(rotationSpeed->FloatAttribute("acceleration") > 0.0) cam->setRotatioAcceleration(rotationSpeed->FloatAttribute("acceleration"));
 					if(rotationSpeed->FloatAttribute("deacceleration") > 0.0) cam->setRotatioDeacceleration(rotationSpeed->FloatAttribute("deacceleration"));
 				}
