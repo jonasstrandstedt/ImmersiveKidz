@@ -586,7 +586,7 @@ class Site extends CI_Controller
 			$model_world = $this->Tables_model->get_model_world($world[0]->id);
 
 			//Create xml file using the world and images
-			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images, $plane[0], $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world);
+			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images, $plane, $model, $map[0], $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world);
 
 
 			$this->zip->read_file($xml_url);
