@@ -425,6 +425,8 @@ class Site extends CI_Controller
 				$size_x = $maxSize*($size/10);
 				$size_y = $size_x*$scalexy;
 				$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				$counter++;
 			}
 			
@@ -558,6 +560,8 @@ class Site extends CI_Controller
 				$size_x = $maxSize*($size/10);
 				$size_y = $size_x*$scalexy;
 				$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				
 				$counter ++; // 
 			}
