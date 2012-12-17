@@ -15,7 +15,11 @@
 date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 ?>
 <div id="sub">
+	
 	<div class='uploadform'>
+		<?php if($error != ""){
+		echo "<h3 id='error'> ".htmlentities($error)." </h3></br>";
+	}?>
 		<?php echo form_open_multipart('index.php/site/upload');?>
 			<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
 			

@@ -10,6 +10,9 @@
 */
 ?>
 <div id="sub">
+	<?php if($error != ""){
+		echo "<h3 id='error'> ".htmlentities($error)." </h3></br>";
+	}?>
 	<div class='uploadform'>
 		<?php echo form_open_multipart('index.php/site/add_world_and_objects');?>
 			<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
