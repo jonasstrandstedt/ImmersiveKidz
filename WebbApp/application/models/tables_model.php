@@ -589,7 +589,6 @@ class Tables_model extends CI_Model
 		$where = array( // the id to update
 			'id' => $id
 		);
-
 		$this->db->where($where);
 		$q = $this->db->update('billboards', $data);
 	}

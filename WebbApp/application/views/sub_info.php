@@ -9,7 +9,7 @@
 * @date     November 14, 2012 
 * @version  1.0
 *    
-*/	//echo print_r($images);
+*/	
 	echo "<div id='sub'>". form_open_multipart('index.php/site/add_information/');
 	$column = 0;
 	echo "<div class='form'><div class='row'>

@@ -155,6 +155,7 @@ class Site extends CI_Controller
 					$soundurl = "";
 					$threshold = $_POST['threshold'.$counter];
 					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
 					$size = $_POST['size'.$counter]; // gets the specific size
 					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
 					$size_x = $maxSize*($size/10);
@@ -223,6 +224,7 @@ class Site extends CI_Controller
 					$soundurl = "";
 					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
 					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
 					$size = $_POST['size'.$counter]; // gets the specific size
 					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
 					$size_x = $maxSize*($size/10);
@@ -242,6 +244,8 @@ class Site extends CI_Controller
 					$soundurl = "";
 					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, $threshold); // updates the database for the specific image.
 					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					// echo $billboard_id[0]->billboard_id;
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
 					$size = $_POST['size'.$counter]; // gets the specific size
 					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
 					$size_x = $maxSize*($size/10);
@@ -295,6 +299,7 @@ class Site extends CI_Controller
 					$soundurl = "";
 					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
 					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
 					$size = $_POST['size'.$counter]; // gets the specific size
 					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
 					$size_x = $maxSize*($size/10);
@@ -314,6 +319,7 @@ class Site extends CI_Controller
 					$soundurl = "";
 					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
 					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
 					$size = $_POST['size'.$counter]; // gets the specific size
 					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
 					$size_x = $maxSize*($size/10);
@@ -324,7 +330,7 @@ class Site extends CI_Controller
 				}
 				$counter ++; 
 			}
-			//echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			
 		
 		}else if(!(isset($date) || isset($group)) && !isset($_POST['next']) && !isset($_POST['update'])){ // if the date or group is NULL, and the user has not submited
@@ -394,6 +400,7 @@ class Site extends CI_Controller
 				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story, intval($threshvalue));  // updates the database for the specific image.
 				
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+				$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshvalue);
 				$size = $_POST['size'.$counter]; // gets the specific size
 				$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
 				$size_x = $maxSize*($size/10);
@@ -474,7 +481,6 @@ class Site extends CI_Controller
 
 			$images = $this->Tables_model->get_all_illustrations_from_group($group_id[0] -> id); // Get all images from a specific group and date.
 			$imageID = $this->Tables_model->get_all_illustration_id_from_group($group_id[0] -> id); // Get all images from a specific group and date.
-			// print_r($imageID[0]->id);
 			$animations = $this->Tables_model->get_animation();
 			$outImagesArray = array();
 			$animation_billboardArray = array();
@@ -1169,8 +1175,6 @@ class Site extends CI_Controller
 
 			}
 			echo "<script>window.location.href = 'download_info/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the download_info view with the variables $date and $group
-
-
 
 		}
 		else if($date != NULL & $group != NULL ){
