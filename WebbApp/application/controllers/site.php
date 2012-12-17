@@ -806,6 +806,11 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
@@ -855,6 +860,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
@@ -867,6 +876,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
@@ -907,6 +920,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
@@ -919,6 +936,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
