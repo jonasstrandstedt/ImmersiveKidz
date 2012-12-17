@@ -63,10 +63,28 @@ class Site extends CI_Controller
 		$info = $this->Tables_model->get_all_worlds();
 		// Makes an array of the array, so that the upload_form view gets an array as variabel.
 		$data = array(
-			"worlds" => $info
+			"worlds" => $info,
+			"error" => ""
 			);
 
+		$group = "";
+		$date = "";
+
+		if(isset($_POST['submit'])){
+			$group = $_POST['group'];
+			$date = $_POST['date'];
+		}
+		$ans = $this->Tables_model->get_group_id($date, $group);
+		
 		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
+		if(!empty($ans)){
+			$data = array(
+			"worlds" => $info,
+			"error" => "Fel: Gruppen \"$group\" finns redan på datumet : $date, välj ett annat namn."
+			);
+			$this->load->view('upload_form', $data);
+		}else{
+
 		if ( !$this->upload->do_multi_upload())
 		{
 			$error = array('error' => $this->upload->display_errors());
@@ -105,6 +123,7 @@ class Site extends CI_Controller
 			echo "<script>window.location.href = 'add_information/".$date."/".urlencode($group)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group
 
 		}
+	}
 		$this->load->view("site_footer"); // Finally, add the footer.
 
 	}
