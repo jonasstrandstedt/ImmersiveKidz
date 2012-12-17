@@ -48,11 +48,12 @@ class Tables_model extends CI_Model
     {
 		$this->db->select("*");
 		$this->db->from("planes");
-		$where = "`id` = (SELECT `plane_id` FROM `maps` WHERE `id` = (SELECT `map_id` FROM `worlds` WHERE `id` = $worldID))"; 
+		$where = "`id` = (SELECT `plane_id` FROM `plane_world` WHERE `world_id` = $worldID)"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
 	}
+
 
 	function get_masks_from_map_id($mapID) 
     {
@@ -121,8 +122,8 @@ class Tables_model extends CI_Model
 	function get_map_from_world_id($worldID) 
     {
 		$this->db->select("*");
-		$this->db->from("maps");
-		$where = "`id` = (SELECT `map_id` FROM `worlds` WHERE `id` = $worldID)"; 
+		$this->db->from("planes");
+		$where = "`id` = (SELECT `plane_id` FROM maps WHERE `id` = (SELECT `map_id` FROM `worlds` WHERE `id` = $worldID))"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
