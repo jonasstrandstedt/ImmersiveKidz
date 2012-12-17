@@ -1112,31 +1112,33 @@ class Site extends CI_Controller
 
 
 
-		}else if($date != NULL & $group != NULL ){
-		$group_id = $this->Tables_model->get_group_id($date, $group);
-		$group = $this->Tables_model->get_group($group_id[0]-> id);
-		$illustrations = $this->Tables_model->get_all_illustrations_from_group($group_id[0]-> id);
-		$world_id = $this->Tables_model->get_group_world($group_id[0]-> id);
-		$world = $this->Tables_model->get_world($world_id[0] -> world_id);
-		$map = $this->Tables_model->get_map($world[0]-> map_id);
-		$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
-		$billboards = array();
-		foreach ($illustrations as $image) {
-			$billboard = $this->Tables_model->get_billboard_image($image -> billboard_id);
-			array_push($billboards,$billboard[0]);
 		}
-		$data  = array(
-			'world' => $world[0],
-			'map' => $map[0],
-			'plane' => $plane[0],
-			'group' => $group[0],
-			'illustrations' => $illustrations,
-			'billboards' => $billboards
-				);
+		else if($date != NULL & $group != NULL ){
+			$group_id = $this->Tables_model->get_group_id($date, $group);
+			$group = $this->Tables_model->get_group($group_id[0]-> id);
+			$illustrations = $this->Tables_model->get_all_illustrations_from_group($group_id[0]-> id);
+			$world_id = $this->Tables_model->get_group_world($group_id[0]-> id);
+			$world = $this->Tables_model->get_world($world_id[0] -> world_id);
+			$map = $this->Tables_model->get_map($world[0]-> map_id);
+			$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
+			$billboards = array();
+			foreach ($illustrations as $image) {
+				$billboard = $this->Tables_model->get_billboard_image($image -> billboard_id);
+				array_push($billboards,$billboard[0]);
+			}
+			$data  = array(
+				'world' => $world[0],
+				'map' => $map[0],
+				'plane' => $plane[0],
+				'group' => $group[0],
+				'illustrations' => $illustrations,
+				'billboards' => $billboards
+					);
 
-		
-		$this->load->view("sub_coord", $data);
-		}else{ // Let the user choose group.
+			
+			$this->load->view("sub_coord", $data);
+		}
+		else{ // Let the user choose group.
 			$info = $this->Tables_model->get_all_groups();	// gets an array of all the groups.
 			
 			$data = array( // Makes an array of the array, so that the content_download view gets an array as variabel.
