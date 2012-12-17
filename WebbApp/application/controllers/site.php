@@ -343,7 +343,7 @@ class Site extends CI_Controller
 				}
 				$counter ++; 
 			}
-			//echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			
 		
 		}else if(!(isset($date) || isset($group)) && !isset($_POST['next']) && !isset($_POST['update'])){ // if the date or group is NULL, and the user has not submited
@@ -684,7 +684,11 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_addworldandobjects");
+		
+		$data = array(
+			"error" => "");
+
+		$this->load->view("content_addworldandobjects", $data);
 		
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
@@ -699,6 +703,24 @@ class Site extends CI_Controller
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");
 		
+
+		$world_name = "";
+		if(isset($_POST['submitworld'])){
+			$world_name = $_POST['world'];
+		}
+		$ans = $this->Tables_model->get_world_by_name($world_name);
+		
+		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
+		if(!empty($ans)){
+			$data = array(
+			"error" => "Fel: $world_name finns redan, välj ett annat namn."
+			);
+			$this->load->view('sub_addworldandobjects', $data);
+		}else{
+
+
+
+
 		if ( ! $this->upload->do_multi_upload()) //if upload didnt work
 		{
 			$error = array('error' => $this->upload->display_errors());
@@ -736,6 +758,7 @@ class Site extends CI_Controller
 			}
 			echo "<script>window.location.href = 'add_object_information/".urlencode($world_name)."';</script>"; // Javascript, loads the add_object_information view with the variables $world_name
 		}
+	}
 		$this->load->view("site_footer"); // Finally, add the footer.		
 	}
 	
