@@ -25,6 +25,15 @@ class MY_Upload extends CI_Upload {
 		}
 		
 		//If not every file filled was used, clear the empties
+		if(!is_array($_FILES[$field]['name'])){
+			if( empty($_FILES[$field]['name']) ){
+				foreach( $_FILES[$field] as $kk => $f){
+					unset( $_FILES[$field][$kk]);
+				}
+			}
+		}else{
+			
+
 		
 		foreach( $_FILES[$field]['name'] as $k => $n )
 		{
@@ -42,6 +51,7 @@ class MY_Upload extends CI_Upload {
 			}
 			
 		}
+	}
 		
 		// Is the upload path valid?
 		if ( ! $this->validate_upload_path($field) )

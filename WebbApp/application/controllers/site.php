@@ -148,7 +148,8 @@ class Site extends CI_Controller
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -206,9 +207,10 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, ""); // updates the database for the specific image.
-					
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, $threshold); // updates the database for the specific image.
+				
 				}	
 				else //save the filled data
 				{
@@ -217,8 +219,9 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, $threshold); // updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -261,9 +264,9 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
-					
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
 				}	
 				else //save the filled data
 				{
@@ -272,12 +275,13 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
 				}
 				$counter ++; 
 			}
-			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
+			//echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			
 		
 		}else if(!(isset($date) || isset($group)) && !isset($_POST['next']) && !isset($_POST['update'])){ // if the date or group is NULL, and the user has not submited
@@ -399,7 +403,7 @@ class Site extends CI_Controller
 				//exit($fileurl . $check[$fileurl]);
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id);
-				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl);
+				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl, '');
 			}
 
 			for($i = 0; $i < count($threshImagesIn); $i++) // Loop for all images.
@@ -410,7 +414,7 @@ class Site extends CI_Controller
 				//exit($fileurl . $check[$fileurl]);
 				$fileouturl = $threshImagesOut[$i]; // save the url of the processed image.
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id);
-				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl);
+				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl, '');
 			}
 
 			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, reload the page
