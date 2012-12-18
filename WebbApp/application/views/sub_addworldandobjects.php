@@ -25,7 +25,7 @@
 			</div>
 
 			<div id="button">
-				<p>Max filstorlek 2MB.</p>
+				<p class='max'>Max filstorlek 2MB.</p>
 				<input class="styledbutton" type="submit" name="submitworld" value="Ladda upp bilderna" />
 			</div>
 		</form>

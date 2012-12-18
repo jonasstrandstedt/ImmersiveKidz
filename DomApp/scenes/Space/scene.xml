@@ -9,6 +9,8 @@
 			<rotation deacceleration="15" acceleration="7.5" maxSpeed="25" />
 			<movement deacceleration="3.5" acceleration="7.5" maxSpeed="6" />
 		</camera>
+    <mask name="star">textures/starmask.png</mask>
+    <mask name="alien">textures/alienmask.png</mask>
 	</world>
 
 
@@ -55,14 +57,78 @@
 		<texture>textures/star0.png</texture>
 		<size width="1" height="1"/>
 		<mult count="5000" seed="4124" type="billboard" />
-		<altitude min="-50.0" max="50.0" />
+		<altitude min="-150.0" max="150.0" />
+    <mask name="star" />
 	</billboard>
 	<billboard>
 		<texture>textures/star1.png</texture>
 		<size width="1" height="1"/>
 		<mult count="5000" seed="534534" type="billboard" />
-		<altitude min="-50.0" max="50.0" />
+		<altitude min="-150.0" max="150.0" />
+    <mask name="star" />
 	</billboard>
+  <billboard>
+    <texture>textures/star3.png</texture>
+    <size width="1" height="1"/>
+    <mult count="2000" seed="61337" type="billboard" />
+    <altitude min="-150.0" max="150.0" />
+    <mask name="star" />
+  </billboard>
+  <billboard>
+    <texture>textures/star4.png</texture>
+    <size width="1" height="1"/>
+    <mult count="2000" seed="14277" type="billboard" />
+    <altitude min="-150.0" max="150.0" />
+    <mask name="star" />
+  </billboard>
+
+  <billboard>
+    <texture>textures/star0.png</texture>
+    <size width="1" height="1"/>
+    <mult count="1000" seed="7282" type="billboard" />
+    <altitude min="30.0" max="150.0" />
+  </billboard>
+  <billboard>
+    <texture>textures/star0.png</texture>
+    <size width="1" height="1"/>
+    <mult count="1000" seed="9201" type="billboard" />
+    <altitude min="-150.0" max="-30.0" />
+  </billboard>
+  <billboard>
+    <texture>textures/star6.png</texture>
+    <size width="1" height="1"/>
+    <mult count="1000" seed="5623" type="billboard" />
+    <altitude min="30.0" max="150.0" />
+  </billboard>
+  <billboard>
+    <texture>textures/star6.png</texture>
+    <size width="1" height="1"/>
+    <mult count="1000" seed="7932" type="billboard" />
+    <altitude min="-150.0" max="-30.0" />
+  </billboard>
+
+
+  <billboard>
+    <texture>textures/rymdvarelse.png</texture>
+    <size width="1" height="1"/>
+    <mult count="50" seed="561" type="billboard" />
+    <altitude min="-16.0" max="6.0" />
+    <mask name="alien" />
+  </billboard>
+  <billboard>
+    <texture>textures/rymdvarelse1.png</texture>
+    <size width="1" height="1"/>
+    <mult count="50" seed="8932" type="billboard" />
+    <altitude min="-10.0" max="10.0" />
+    <mask name="alien" />
+  </billboard>
+  <billboard>
+    <texture>textures/rymdvarelse2.png</texture>
+    <size width="1" height="1"/>
+    <mult count="50" seed="20993" type="billboard" />
+    <altitude min="-13.0" max="15.0" />
+    <mask name="alien" />
+  </billboard>
 
 	
 </scene>
