@@ -33,21 +33,25 @@ class Create_xml_model extends CI_Model
     {
     	/***Variables world****/
     	//Camera
+
 		$camlim_xpos =  $world->camlim_xpos;
 		$camlim_ypos =  $world->camlim_ypos;
 		$camlim_zpos =  $world->camlim_zpos;
+
 		$camlim_xmin =  $world->camlim_xmin;
 		$camlim_ymin =  $world->camlim_ymin;
 		$camlim_zmin =  $world->camlim_zmin;
+
 		$camstart_x =  $world->camstart_x;
 		$camstart_y =  $world->camstart_y;
 		$camstart_z =  $world->camstart_z;
+
 		$camdir_x =  $world->camdir_x;
 		$camdir_y =  $world->camdir_y;
 		$camdir_z =  $world->camdir_z;
 
 		//Plane
-		$thePlane =  $plane->textureurl;
+		//$thePlane =  $plane->textureurl;
 		$theMinX_rand =  $world->randmin_x;
 		$theMinY_rand =  $world->randmin_y;
 		$theMinZ_rand =  $world->randmin_z;
@@ -63,47 +67,97 @@ class Create_xml_model extends CI_Model
 		$scene = xml_add_child($dom, "scene");
 		$world = xml_add_child($scene, "world");
 		//camera
+		//if(($camlim_xpos != NULL || $camlim_xpos != '') && ($camlim_ypos != NULL || $camlim_ypos != '') && ($camlim_xpos != NULL || $camlim_xpos != '')&& ($camlim_zpos != NULL || $camlim_zpos != '') && ($camlim_xmin != NULL || $camlim_xmin != '')&& ($camlim_ymin != NULL || $camlim_ymin != '')&& ($camlim_zmin != NULL || $camlim_zmin != '') && ($camstart_x != NULL || $camstart_x != '') && ($camstart_y != NULL || $camstart_y != '') && ($camstart_z != NULL || $camstart_z != '') && ($camdir_x != NULL || $camdir_x != '') && ($camdir_y != NULL || $camdir_y != '') && ($camdir_z != NULL || $camdir_z != '') && ($camdir_x != NULL || $camdir_x != '')){
+		//if(($camlim_xpos != NULL) || ($camlim_ypos != NULL) || ($camlim_xpos != NULL)|| ($camlim_zpos != NULL) || ($camlim_xmin != NULL)|| ($camlim_ymin != NULL)|| ($camlim_zmin != NULL) || ($camstart_x != NULL) || ($camstart_y != NULL) || ($camstart_z != NULL) || ($camdir_x != NULL) || ($camdir_y != NULL) || ($camdir_z != NULL) || ($camdir_x != NULL)){
+		if(($camstart_x != NULL && $camstart_y != NULL && $camstart_z != NULL) || ($camlim_xmin != NULL && $camlim_xpos != NULL) || ($camlim_ymin != NULL && $camlim_ypos != NULL) || ($camlim_ymin != NULL && $camlim_ypos != NULL)){
 		$camera = xml_add_child($world, "camera");
-		$start = xml_add_child($camera, "start");
-		xml_add_attribute($start, 'x', $camstart_x);
-		xml_add_attribute($start, 'y', $camstart_y);
-		xml_add_attribute($start, 'z', $camstart_z);
 
-		$limitx = xml_add_child($camera, "limitx");
-		xml_add_attribute($limitx, 'min', $camlim_xmin);
-		xml_add_attribute($limitx, 'max', $camlim_xpos);
+		if($camstart_x != NULL && $camstart_y != NULL && $camstart_z != NULL){
+			$start = xml_add_child($camera, "start");
 
-		$limity = xml_add_child($camera, "limity");
-		xml_add_attribute($limity, 'min', $camlim_ymin);
-		xml_add_attribute($limity, 'max', $camlim_ypos);
+			xml_add_attribute($start, 'x', $camstart_x);	
+			xml_add_attribute($start, 'y', $camstart_y);
+			xml_add_attribute($start, 'z', $camstart_z);
+			
+		}
 
-		$limitz = xml_add_child($camera, "limitz");
-		xml_add_attribute($limitz, 'min', $camlim_zmin);
-		xml_add_attribute($limitz, 'max', $camlim_zpos);
+		if($camlim_xmin != NULL && $camlim_xpos != NULL){
+			$limitx = xml_add_child($camera, "limitx");
+			xml_add_attribute($limitx, 'min', $camlim_xmin);
+			xml_add_attribute($limitx, 'max', $camlim_xpos);
+		}
+		if($camlim_ymin != NULL && $camlim_ypos != NULL){
+			$limity = xml_add_child($camera, "limity");
+			xml_add_attribute($limity, 'min', $camlim_ymin);
+			xml_add_attribute($limity, 'max', $camlim_ypos);
+		}
 
-		//plane
+		if($camlim_ymin != NULL && $camlim_ypos != NULL){
+			$limitz = xml_add_child($camera, "limitz");
+			xml_add_attribute($limitz, 'min', $camlim_zmin);
+			xml_add_attribute($limitz, 'max', $camlim_zpos);
+		}
+
+		if($camdir_x != NULL && $camdir_y != NULL && $camdir_z != NULL){
+			$direction = xml_add_child($camera, "direction");
+
+			xml_add_attribute($direction, 'x', $camdir_x);	
+			xml_add_attribute($direction, 'y', $camdir_y);
+			xml_add_attribute($direction, 'z', $camdir_z);
+			
+		}
+
+		}
+		//map
 		$theplane = xml_add_child($world, "plane");
-		$size = xml_add_child($theplane, "texture", $plane->textureurl);
+		$size = xml_add_child($theplane, "texture", $map->textureurl);
 
 		$size = xml_add_child($theplane, "size");
-		xml_add_attribute($size, 'width', $plane->width);
-		xml_add_attribute($size, 'height', $plane->height);
+		xml_add_attribute($size, 'width', $map->width);
+		xml_add_attribute($size, 'height', $map->height);
 
 		$rot = xml_add_child($theplane, "rot");
-		xml_add_attribute($rot, 'x', $plane->rot_x);
-		xml_add_attribute($rot, 'y', $plane->rot_y);
-		xml_add_attribute($rot, 'z', $plane->rot_z);
+		xml_add_attribute($rot, 'x', $map->rot_x);
+		xml_add_attribute($rot, 'y', $map->rot_y);
+		xml_add_attribute($rot, 'z', $map->rot_z);
 
 		$pos = xml_add_child($theplane, "pos");
-		xml_add_attribute($pos, 'x', $plane->pos_x);
-		xml_add_attribute($pos, 'y', $plane->pos_y);
-		xml_add_attribute($pos, 'z', $plane->pos_z);
+		xml_add_attribute($pos, 'x', $map->pos_x);
+		xml_add_attribute($pos, 'y', $map->pos_y);
+		xml_add_attribute($pos, 'z', $map->pos_z);
 
 		//mask
 		foreach ($mask as $m) {
-			$themask = xml_add_child($world, "mask", substr($m->textureurl, strrpos($m->textureurl, '/')+1));
+			//$themask = xml_add_child($world, "mask", substr($m->textureurl, strrpos($m->textureurl, '/')+1));
+			$themask = xml_add_child($world, "mask", $m->textureurl);
 			xml_add_attribute($themask, 'name', $m->name);
 		}
+
+		//Planes
+		if(!empty($plane)){
+		foreach ($plane as $p) {
+				
+				$theplane = xml_add_child($scene, "plane");
+				$size = xml_add_child($theplane, "texture", $p->textureurl);
+
+				$size = xml_add_child($theplane, "size");
+				xml_add_attribute($size, 'width', $p->width);
+				xml_add_attribute($size, 'height', $p->height);
+
+				$rot = xml_add_child($theplane, "rot");
+				xml_add_attribute($rot, 'x', $p->rot_x);
+				xml_add_attribute($rot, 'y', $p->rot_y);
+				xml_add_attribute($rot, 'z', $p->rot_z);
+
+				$pos = xml_add_child($theplane, "pos");
+				xml_add_attribute($pos, 'x', $p->pos_x);
+				xml_add_attribute($pos, 'y', $p->pos_y);
+				xml_add_attribute($pos, 'z', $p->pos_z);
+			}
+
+		}
+
+
 		$bill_ani = array();
 		$count = 0;
 		foreach ($billboard_animation as $ba) {
@@ -146,8 +200,8 @@ class Create_xml_model extends CI_Model
 					$thebillboard = xml_add_child($scene, "billboard");
 					$texture = xml_add_child($thebillboard, "texture", substr($b->imgurl, strrpos($b->imgurl, '/')+1));
 					$size = xml_add_child($thebillboard, "size");
-					xml_add_attribute($size, 'x', $bw->pos_x);
-					xml_add_attribute($size, 'z', $bw->pos_y);
+					xml_add_attribute($size, 'width', $bw->pos_x);
+					xml_add_attribute($size, 'height', $bw->pos_y);
 
 					$mult = xml_add_child($thebillboard, "mult");
 					xml_add_attribute($mult, 'count', $bw->mult_count);
@@ -219,8 +273,8 @@ class Create_xml_model extends CI_Model
 						}
 
 						$size = xml_add_child($illustration, "size");
-						xml_add_attribute($size, 'x', $b->size_x);
-						xml_add_attribute($size, 'y', $b->size_x);
+						xml_add_attribute($size, 'width', $b->size_x);
+						xml_add_attribute($size, 'height', $b->size_x);
 					}
 				}
 			}

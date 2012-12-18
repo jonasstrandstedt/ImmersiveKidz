@@ -184,6 +184,7 @@ int SceneLoader::loadScene()
 			tinyxml2::XMLElement* skyboxElement = world->FirstChildElement( "skybox" );
 			if(skyboxElement) {
 
+				
 				std::string skybox_name = "skybox";
 
 				if(skyboxElement->Attribute( "name" ) != NULL ) skybox_name = skyboxElement->Attribute( "name" );
@@ -273,7 +274,10 @@ int SceneLoader::loadScene()
 					if(textureElement) 
 					{
 						texture = textureElement->GetText();
-						ImmersiveKidz::getInstance()->getHUD()->setTextureMinimap(scenePath+texture);
+						if(_isMaster) 
+						{
+							ImmersiveKidz::getInstance()->getHUD()->setTextureMinimap(scenePath+texture);
+						}
 					
 						float width = 512;
 						float height = 512;
