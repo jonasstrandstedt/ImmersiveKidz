@@ -51,7 +51,7 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 			</div>
 
 			<div id="button">
-				<p>Max filstorlek 2MB.</p>
+				<p class='max'>Max filstorlek 2MB.</p>
 				<input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" />
 			</div>
 		</form>
