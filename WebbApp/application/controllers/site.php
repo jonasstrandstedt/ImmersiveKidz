@@ -698,7 +698,7 @@ class Site extends CI_Controller
 		$data = array(
 			"error" => "");
 
-		$this->load->view("content_addworldandobjects", $data);
+		$this->load->view("content_create_world");
 		
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
@@ -734,7 +734,7 @@ class Site extends CI_Controller
 		if ( ! $this->upload->do_multi_upload()) //if upload didnt work
 		{
 			$error = array('error' => $this->upload->display_errors());
-			$this->load->view('sub_addworldandobjects');
+			$this->load->view('sub_addworldandobjects', $data);
 		}
 		else if(isset($_POST['submitworld'])) // if the user has submited the world
 		{	
@@ -778,7 +778,7 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_addobjectinformation");
+		$this->load->view("content_create_world");
 		
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");		
@@ -1109,7 +1109,7 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_addplane");
+		$this->load->view("content_create_world");
 		
 		$config['upload_path'] = './plane/';
 		$config['allowed_types'] = 'gif|jpg|png';
