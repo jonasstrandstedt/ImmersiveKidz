@@ -428,3 +428,7 @@ margin-top: 10px;
 	padding-top: 30px;
 	margin: 0 auto;
 }
+#error{
+	color:#e8e8e8;
+	text-align: center;
+}

@@ -63,10 +63,28 @@ class Site extends CI_Controller
 		$info = $this->Tables_model->get_all_worlds();
 		// Makes an array of the array, so that the upload_form view gets an array as variabel.
 		$data = array(
-			"worlds" => $info
+			"worlds" => $info,
+			"error" => ""
 			);
 
+		$group = "";
+		$date = "";
+
+		if(isset($_POST['submit'])){
+			$group = $_POST['group'];
+			$date = $_POST['date'];
+		}
+		$ans = $this->Tables_model->get_group_id($date, $group);
+		
 		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
+		if(!empty($ans)){
+			$data = array(
+			"worlds" => $info,
+			"error" => "Fel: Gruppen \"$group\" finns redan på datumet : $date, välj ett annat namn."
+			);
+			$this->load->view('upload_form', $data);
+		}else{
+
 		if ( !$this->upload->do_multi_upload())
 		{
 			$error = array('error' => $this->upload->display_errors());
@@ -87,24 +105,28 @@ class Site extends CI_Controller
 			$imagesIn = array(); // Array for all the uploaded images.
 			for($i = 0; $i < count($data['upload_data']); $i++)// Loop for all images.
 			{ 
-				
 				array_push($imagesIn, "uploads/".$data['upload_data'][$i]['file_name']); // Add an image to the array.
 			}
 
 			$imagesOut = $this->processimage->findDrawing($imagesIn, "uploads"); // Gets an new array with all the processed images. 
-
+			$maxSize = 500;
 			for($i = 0; $i < count($imagesIn); $i++) // Loop for all images.
 			{	
 				$fileurl = $imagesIn[$i]; // Save the url of the original image
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
-				$bilboard_id_vec = $this->Tables_model->add_billboard($fileouturl);
-				$bilboard_id = $bilboard_id_vec[0] -> id;
+				$scalexy = getimagesize($fileouturl)[0] / getimagesize($fileouturl)[1]; 
+				$size_x = $maxSize*(5/10);
+				$size_y = round($size_x*$scalexy,2);
+				$billboard_id_vec = $this->Tables_model->add_billboard($fileouturl, $size_x,$size_y);
+				$billboard_id = $billboard_id_vec[0] -> id;
 				$group_id = $this->Tables_model->get_group_id($date, $group);
-				$this->Tables_model->add_illustration("","", $fileurl,"", $bilboard_id, $group_id[0]-> id, ""); // adds the information to the database.
+				$this->Tables_model->add_illustration("","", $fileurl,"", $billboard_id, $group_id[0]-> id, ""); // adds the information to the database.
+				$this->Tables_model->add_animation_to_billboard("1", $billboard_id);// updates the database for the specific image.
 			}
 			echo "<script>window.location.href = 'add_information/".$date."/".urlencode($group)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group
 
 		}
+	}
 		$this->load->view("site_footer"); // Finally, add the footer.
 
 	}
@@ -124,7 +146,7 @@ class Site extends CI_Controller
 		$this->load->view("content_create");
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");
-		
+		$maxSize = 500;
 		if(isset($_POST['delete'])){ //if the user pressed a deletebutton
 			
 			$group_id = $_POST['group_id']; // Använd istället för name och date.
@@ -133,12 +155,14 @@ class Site extends CI_Controller
 
 			//$group_id_vec = $this->Tables_model->get_group_id($group, $date);
 			//$group_id = $grup_id_vec[0] -> id;
-			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
+			$idArray = $this->Tables_model->get_all_illustration_id_and_imgurl_from_group($group_id); // an array with all the id's in the group
 			foreach ($idArray as $id) 
-			{
+			{	
+				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
 				if($counter == $_POST['delete']) //if the image should be deleted	
 				{
 					$this->Tables_model->remove_illustration($id->id);
+					$this->Tables_model->remove_billboard($billboard_id[0]->billboard_id);
 				}
 				else //save the filled data
 				{
@@ -148,7 +172,16 @@ class Site extends CI_Controller
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -178,7 +211,7 @@ class Site extends CI_Controller
 			//print_r($group_id);
 			$group = $this->Tables_model->get_group($group_id);
 			$counter = 0; // count the number of images.
-			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
+			$idArray = $this->Tables_model->get_all_illustration_id_and_imgurl_from_group($group_id); // an array with all the id's in the group
 			foreach ($idArray as $id) 
 			{
 				if($counter == $_POST['rotateplus'])
@@ -206,9 +239,18 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, ""); // updates the database for the specific image.
-					
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
+					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				}	
 				else //save the filled data
 				{
@@ -217,8 +259,19 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, $threshold); // updates the database for the specific image.
+					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					// echo $billboard_id[0]->billboard_id;
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -233,7 +286,7 @@ class Site extends CI_Controller
 			
 			$group = $this->Tables_model->get_group($group_id);
 			$counter = 0; // count the number of images.
-			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
+			$idArray = $this->Tables_model->get_all_illustration_id_and_imgurl_from_group($group_id); // an array with all the id's in the group
 			foreach ($idArray as $id) 
 			{
 				if($counter == $_POST['rotateminus'])
@@ -261,9 +314,18 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
-					
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
+					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				}	
 				else //save the filled data
 				{
@@ -272,8 +334,18 @@ class Site extends CI_Controller
 					// Lägg till för type.
 					$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 					//$soundurl = $_POST['soundurl'.$counter];
+					$threshold = $_POST['threshold'.$counter];
 					$soundurl = "";
-					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,""); // updates the database for the specific image.
+					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story,$threshold); // updates the database for the specific image.
+					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
+					$size = $_POST['size'.$counter]; // gets the specific size
+					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+					$size_x = $maxSize*($size/10);
+					$size_y = $size_x*$scalexy;
+					$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+					$animation = $_POST['animation'.$counter]; // gets the specific animation
+					$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				}
 				$counter ++; 
 			}
@@ -298,7 +370,7 @@ class Site extends CI_Controller
 			$counter = 0; // count the number of images.
 			$newImages = array();
 			$group_id = $_POST['group_id'];
-			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
+			$idArray = $this->Tables_model->get_all_illustration_id_and_imgurl_from_group($group_id); // an array with all the id's in the group
 			$group = $this->Tables_model->get_group($group_id);
 			$editId = array();
 			$threshId = array();
@@ -345,7 +417,16 @@ class Site extends CI_Controller
 				$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 				//exit(print_r($idArray));
 				$this->Tables_model->update_illustration($id ->id, $artist, $imgname,$replaceimageurl, $soundurl, $story, intval($threshvalue));  // updates the database for the specific image.
-
+				
+				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+				$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshvalue);
+				$size = $_POST['size'.$counter]; // gets the specific size
+				$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+				$size_x = $maxSize*($size/10);
+				$size_y = $size_x*$scalexy;
+				$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				$counter++;
 			}
 			
@@ -399,7 +480,7 @@ class Site extends CI_Controller
 				//exit($fileurl . $check[$fileurl]);
 				$fileouturl = $imagesOut[$i]; // save the url of the processed image.
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id);
-				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl);
+				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl, '');
 			}
 
 			for($i = 0; $i < count($threshImagesIn); $i++) // Loop for all images.
@@ -410,33 +491,36 @@ class Site extends CI_Controller
 				//exit($fileurl . $check[$fileurl]);
 				$fileouturl = $threshImagesOut[$i]; // save the url of the processed image.
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id);
-				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl);
+				$this->Tables_model->update_billboard_image($billboard_id[0]-> billboard_id, $fileouturl, '');
 			}
-
 			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, reload the page
-
 
 			$this->load->view("site_footer"); // Finally, add the footer.
 		}
 		else if(!isset($_POST['next'])){ // else if, the user has not submited.
-			// echo htmlentities($group,ENT_QUOTES, "ISO-8859-1");
-			 // echo urldecode($group);
-			 //echo $group;
 			$group_id = $this->Tables_model->get_group_id($date, urldecode($group));
 
 			$images = $this->Tables_model->get_all_illustrations_from_group($group_id[0] -> id); // Get all images from a specific group and date.
-			
+			$imageID = $this->Tables_model->get_all_illustration_id_from_group($group_id[0] -> id); // Get all images from a specific group and date.
+			$animations = $this->Tables_model->get_animation();
 			$outImagesArray = array();
+			$animation_billboardArray = array();
 			foreach($images as $image){
-				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($image -> id);
-				$billboard_image = $this->Tables_model->get_billboard_image($billboard_id[0] -> billboard_id);
+				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($imageID[0]->id);
+				// echo $image->id . "<br>";
+				// print_r($billboard_id[0]->billboard_id);
+				$animation_billboard = $this->Tables_model->get_animations_from_billboard_animation($billboard_id[0]->billboard_id);
+				$billboard_image = $this->Tables_model->get_billboard_image($image -> id);
+				array_push($animation_billboardArray, $animation_billboard);
 				array_push($outImagesArray, $billboard_image[0] -> imgurl);
 			}
 
 			$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
 				"images" => $images,
 				"group_id" => $group_id,
-				"outImages" => $outImagesArray
+				"outImages" => $outImagesArray,
+				"animations" => $animations,
+				"animation_billboard" => $animation_billboardArray
 						);
 
 			$this->load->view('sub_info', $data); // Loads the sub_info view, where the user can add information for all the images.
@@ -470,6 +554,15 @@ class Site extends CI_Controller
 				$story = $_POST['story'.$counter];	// gets the specific story for this image. ex: story0, story1
 				//$soundurl = $_FILES['soundurl'.$counter]['name'];
 				$this->Tables_model->update_illustration($id ->id, $artist, $imgname, "", $soundurl, $story);// updates the database for the specific image.
+				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
+				$size = $_POST['size'.$counter]; // gets the specific size
+				$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+				$size_x = $maxSize*($size/10);
+				$size_y = $size_x*$scalexy;
+				$this->Tables_model->update_billboard_size($billboard_id[0]->billboard_id, $size_x, $size_y);
+				$animation = $_POST['animation'.$counter]; // gets the specific animation
+				$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
+				
 				$counter ++; // 
 			}
 			// loads the upload library with the config-file.
@@ -586,7 +679,7 @@ class Site extends CI_Controller
 			$model_world = $this->Tables_model->get_model_world($world[0]->id);
 
 			//Create xml file using the world and images
-			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images, $plane[0], $model, $map, $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world);
+			$xml_url = $this->Create_xml_model->get_xml_file($world[0], $images, $plane, $model, $map[0], $mask, $group, $billboard_world, $billboard, $animation, $billboard_animation, $model_world);
 
 
 			$this->zip->read_file($xml_url);
@@ -601,7 +694,11 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_addworldandobjects");
+		
+		$data = array(
+			"error" => "");
+
+		$this->load->view("content_addworldandobjects", $data);
 		
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
@@ -616,6 +713,24 @@ class Site extends CI_Controller
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");
 		
+
+		$world_name = "";
+		if(isset($_POST['submitworld'])){
+			$world_name = $_POST['world'];
+		}
+		$ans = $this->Tables_model->get_world_by_name($world_name);
+		
+		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
+		if(!empty($ans)){
+			$data = array(
+			"error" => "Fel: $world_name finns redan, välj ett annat namn."
+			);
+			$this->load->view('sub_addworldandobjects', $data);
+		}else{
+
+
+
+
 		if ( ! $this->upload->do_multi_upload()) //if upload didnt work
 		{
 			$error = array('error' => $this->upload->display_errors());
@@ -652,8 +767,8 @@ class Site extends CI_Controller
 				$this->Tables_model->add_animation_to_billboard("1", $billboard_id);// updates the database for the specific image.
 			}
 			echo "<script>window.location.href = 'add_object_information/".urlencode($world_name)."';</script>"; // Javascript, loads the add_object_information view with the variables $world_name
-
 		}
+	}
 		$this->load->view("site_footer"); // Finally, add the footer.		
 	}
 	
@@ -680,16 +795,22 @@ class Site extends CI_Controller
 				if($counter == $_POST['delete']) //if the image should be deleted	
 				{
 					 $this->Tables_model->remove_billboard_from_world($world_id,$billboard->billboard_id);
+					$this->Tables_model->remove_billboard($billboard->billboard_id);
 				}
 				else //save the filled data
 				{
 					$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 					$type = $_POST['type'.$counter]; // gets the specific type for this billboard
 					$size = $_POST['size'.$counter]; // gets the specific size
-					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
+					$scalexy = getimagesize($billboard->imgurl)[0] / getimagesize($billboard->imgurl)[1]; 
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
@@ -739,6 +860,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
@@ -751,6 +876,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
@@ -791,6 +920,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}	
@@ -803,6 +936,10 @@ class Site extends CI_Controller
 					$size_x = $maxSize*($size/10);
 					$size_y = $size_x*$scalexy;
 					$animation = $_POST['animation'.$counter]; // gets the specific animation
+
+					$threshold = $_POST['threshold'.$counter];
+					$this->Tables_model->update_billboard_image($billboard->billboard_id, '', $threshold);
+
 					$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
 					$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 				}
@@ -829,26 +966,26 @@ class Site extends CI_Controller
 			$config['max_height']  = '10000';
 			$counter = 0; // count the number of images.
 			$newImages = array();
-			$idArray = $this->Tables_model->get_billboard_id_from_billboard_world($world_id); // an array with all the id's in the group
+			$billboards = $this->Tables_model->get_billboards_from_billboard_world($world_id); // an array with all the id's in the group
 			$editId = array();
 			$threshId = array();
 			$thresholdValues = array();
 			$newSound = array();
 			//Get new info from form
-			foreach ($idArray as $id) {
-
+			$maxSize = 500;
+			foreach ($billboards as $billboard) {
 				//Update threshold
 				if($_POST['threshold'.$counter] != '5' && ($_POST['threshold'.$counter]) != ''){//Change image
 					//exit($_POST['threshold'.$counter]);
 					$threshvalue = $_POST['threshold'.$counter];
 					array_push($thresholdValues, $threshvalue);
-					array_push($threshId, $id->billboard_id);
+					array_push($threshId, $billboard->billboard_id);
 				}
 				else{
 					$threshvalue = "5";
 				}
 				//save filled values
-				$this->Tables_model->update_billboard_image($id->billboard_id, "", intval($threshvalue));
+				$this->Tables_model->update_billboard_image($billboard->billboard_id, "", intval($threshvalue));
 				$quantity = $_POST['quantity'.$counter]; // gets the specific quantity for this billboard
 				$type = $_POST['type'.$counter]; // gets the specific type for this billboard
 				$size = $_POST['size'.$counter]; // gets the specific size
@@ -856,8 +993,8 @@ class Site extends CI_Controller
 				$size_x = $maxSize*($size/10);
 				$size_y = $size_x*$scalexy;
 				$animation = $_POST['animation'.$counter]; // gets the specific animation
-				$this->Tables_model->update_billboard_world($world_id, $id->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
-				$this->Tables_model->update_animation_to_billboard($animation, $id->billboard_id);// updates the database for the specific image.
+				$this->Tables_model->update_billboard_world($world_id, $billboard->billboard_id, $quantity, $type, $size_x, $size_y);// updates the database for the specific image.
+				$this->Tables_model->update_animation_to_billboard($animation, $billboard->billboard_id);// updates the database for the specific image.
 
 				$counter++;
 			}
@@ -1106,33 +1243,33 @@ class Site extends CI_Controller
 			}
 			echo "<script>window.location.href = 'download_info/".$group[0] -> date."/". urlencode($group[0] -> name)."';</script>";// Javascript, loads the download_info view with the variables $date and $group
 
-
-
-		}else if($date != NULL & $group != NULL ){
-		$group_id = $this->Tables_model->get_group_id($date, $group);
-		$group = $this->Tables_model->get_group($group_id[0]-> id);
-		$illustrations = $this->Tables_model->get_all_illustrations_from_group($group_id[0]-> id);
-		$world_id = $this->Tables_model->get_group_world($group_id[0]-> id);
-		$world = $this->Tables_model->get_world($world_id[0] -> world_id);
-		$map = $this->Tables_model->get_map($world[0]-> map_id);
-		$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
-		$billboards = array();
-		foreach ($illustrations as $image) {
-			$billboard = $this->Tables_model->get_billboard_image($image -> billboard_id);
-			array_push($billboards,$billboard[0]);
 		}
-		$data  = array(
-			'world' => $world[0],
-			'map' => $map[0],
-			'plane' => $plane[0],
-			'group' => $group[0],
-			'illustrations' => $illustrations,
-			'billboards' => $billboards
-				);
+		else if($date != NULL & $group != NULL ){
+			$group_id = $this->Tables_model->get_group_id($date, $group);
+			$group = $this->Tables_model->get_group($group_id[0]-> id);
+			$illustrations = $this->Tables_model->get_all_illustrations_from_group($group_id[0]-> id);
+			$world_id = $this->Tables_model->get_group_world($group_id[0]-> id);
+			$world = $this->Tables_model->get_world($world_id[0] -> world_id);
+			$map = $this->Tables_model->get_map($world[0]-> map_id);
+			$plane = $this->Tables_model->get_plane($map[0] -> plane_id);
+			$billboards = array();
+			foreach ($illustrations as $image) {
+				$billboard = $this->Tables_model->get_billboard_image($image -> billboard_id);
+				array_push($billboards,$billboard[0]);
+			}
+			$data  = array(
+				'world' => $world[0],
+				'map' => $map[0],
+				'plane' => $plane[0],
+				'group' => $group[0],
+				'illustrations' => $illustrations,
+				'billboards' => $billboards
+					);
 
-		
-		$this->load->view("sub_coord", $data);
-		}else{ // Let the user choose group.
+			
+			$this->load->view("sub_coord", $data);
+		}
+		else{ // Let the user choose group.
 			$info = $this->Tables_model->get_all_groups();	// gets an array of all the groups.
 			
 			$data = array( // Makes an array of the array, so that the content_download view gets an array as variabel.
