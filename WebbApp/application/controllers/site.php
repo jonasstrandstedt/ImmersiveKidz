@@ -41,7 +41,11 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" => "",
+			"date" => ""
+			);
+		$this->load->view("content_create", $contentCreate);
 
 		//If no upload folder exists, create it.
         if(!is_dir("./uploads")){
@@ -74,13 +78,14 @@ class Site extends CI_Controller
 			$group = $_POST['group'];
 			$date = $_POST['date'];
 		}
+		
 		$ans = $this->Tables_model->get_group_id($date, $group);
 		
 		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
 		if(!empty($ans)){
 			$data = array(
 			"worlds" => $info,
-			"error" => "Fel: Gruppen \"$group\" finns redan på datumet : $date, välj ett annat namn."
+			"error" => "Fel: Gruppen \"$group\" finns redan datumet $date, välj ett annat namn."
 			);
 			$this->load->view('upload_form', $data);
 		}else{
@@ -97,6 +102,22 @@ class Site extends CI_Controller
 			//echo $group;
 			$date = $_POST['date']; // The date for this group
 			$world = $_POST['world']; // The chosen world
+
+			if($group == NULL || $group == ''){
+				$data = array(
+					"worlds" => $info,
+					"error" => "Fel: Du måste ange ett gruppnamn"
+			);
+			
+			$this->load->view('upload_form', $data);
+			
+			}else if($date == NULL || $date == ''){
+				$data = array(
+					"worlds" => $info,
+					"error" => "Fel: Du måste ange ett datum"
+			);
+			$this->load->view('upload_form', $data);
+			} else{
 
  			$this->Tables_model->add_group($group, $date, $world);
 
@@ -127,6 +148,7 @@ class Site extends CI_Controller
 
 		}
 	}
+}
 		$this->load->view("site_footer"); // Finally, add the footer.
 
 	}
@@ -143,7 +165,11 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" =>$group,
+			"date" => $date
+			);
+		$this->load->view("content_create", $contentCreate);
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");
 		$maxSize = 500;
@@ -592,7 +618,11 @@ class Site extends CI_Controller
 	function download_info($date = NULL, $group = NULL){
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" =>$group,
+			"date" => $date
+			);
+		$this->load->view("content_create", $contentCreate);
 		$this->load->model("Tables_model");
 		$this->load->model("Create_xml_model");
 
@@ -698,7 +728,10 @@ class Site extends CI_Controller
 		$data = array(
 			"error" => "");
 
-		$this->load->view("content_create_world");
+		$contentCreate = array(
+			"world_name" => "");
+
+		$this->load->view("content_create_world", $contentCreate);
 		
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
@@ -730,21 +763,40 @@ class Site extends CI_Controller
 
 
 
-
-		if ( ! $this->upload->do_multi_upload()) //if upload didnt work
+		if(isset($_POST['submitworld']) && $_FILES['uploadObject']['error'] == 4) //if user didnt upload objects when submited world
 		{
+			if($world_name == NULL || $world_name == ''){
+				$data = array(
+					"error" => "Fel: Du måste ange ett namn på världen."
+				);
+			$this->load->view('sub_addworldandobjects', $data);
+			}else{
+				$this->Tables_model->add_world($world_name , "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+				echo "<script>window.location.href = 'add_plane/".urlencode($world_name)."';</script>"; // Javascript, loads the add_plane view with the variable $world_name
+			}
+		}
+		else if ( ! $this->upload->do_multi_upload("uploadObject")) //if upload didnt work
+		{	
 			$error = array('error' => $this->upload->display_errors());
+			$data = array(
+				"error" =>"");
 			$this->load->view('sub_addworldandobjects', $data);
 		}
 		else if(isset($_POST['submitworld'])) // if the user has submited the world
 		{	
 			$world_name= $_POST['world'];
+			if($world_name == NULL || $world_name == ''){
+				$data = array(
+					"error" => "Fel: Du måste ange ett namn på världen."
+				);
+				$this->load->view('sub_addworldandobjects', $data);
+			}else{
 			
  			$this->Tables_model->add_world($world_name , "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
 			$world = $this->Tables_model->get_world_by_name($world_name);
 			$world_id = $world[0]->id;			
 			
-			$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
+			$data = array('upload_data' => $this->upload->get_multi_upload("uploadObject")); // Gets all the url's ect from the upload function.
 			$this->load->library('ProcessImage'); // loads  the ProcessImage library.
 			$imagesIn = array(); // Array for all the uploaded images.
 			for($i = 0; $i < count($data['upload_data']); $i++)// Loop for all images.
@@ -769,6 +821,7 @@ class Site extends CI_Controller
 			echo "<script>window.location.href = 'add_object_information/".urlencode($world_name)."';</script>"; // Javascript, loads the add_object_information view with the variables $world_name
 		}
 	}
+}
 		$this->load->view("site_footer"); // Finally, add the footer.		
 	}
 	
@@ -778,7 +831,9 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create_world");
+		$contentCreate = array(
+			"world_name" => $world_name);
+		$this->load->view("content_create_world", $contentCreate);
 		
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");		
@@ -1109,7 +1164,10 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create_world");
+		$contentCreate = array(
+			"world_name" => $world_name);
+
+		$this->load->view("content_create_world", $contentCreate);
 		
 		$config['upload_path'] = './plane/';
 		$config['allowed_types'] = 'gif|jpg|png';
@@ -1133,7 +1191,9 @@ class Site extends CI_Controller
 		}else if(!isset($_POST['submitplane'])) //if user didnt submited plane
 		{	
 			$world_name = urldecode($world_name);
+			// echo $world_name;
 			$world = $this->Tables_model->get_world_by_name($world_name);
+			// print_r($world);
 			// get an array of all the planes
 			$info = $this->Tables_model->get_all_planes_from_maps();
 			// Makes an array of the array, so that the sub_addplane view gets an array as variabel.
@@ -1227,7 +1287,11 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" =>$group,
+			"date" => $date
+			);
+		$this->load->view("content_create", $contentCreate);
 		$group = urldecode($group);
 		$this->load->model("Tables_model");
 		if(isset($_POST['submitcoord'])){

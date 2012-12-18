@@ -62,7 +62,7 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 			float posz = 0;
 
 			int maskCount = 0;
-			while ( maskCount < 20 )
+			while ( maskCount < 10000 )
 			{
 				float r1 = static_cast<float> (rand() / (RAND_MAX + 1.0));
 				float r2 = static_cast<float> (rand() / (RAND_MAX + 1.0));
@@ -81,8 +81,8 @@ MultObject::MultObject(DrawableObject *obj, std::vector< std::vector<bool> > *ma
 				maskCount++;
 			}
 
-			// if the position randomizer fails 20 times in a row, quit trying
-			if ( maskCount >= 20 ) break;
+			// if the position randomizer fails 10000 times in a row, quit trying
+			if ( maskCount >= 10000 ) break;
 
 			// if the type is SINGLE or BILLBOARD:
 			// only one instance of the model is needed

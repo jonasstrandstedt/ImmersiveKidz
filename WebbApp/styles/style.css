@@ -136,12 +136,12 @@ h1,h2,h3,h4,p,a,li,ul, html{
 #content .hr1{ /*black line under llinks*/
 	border-color: black;
 	opacity:0.44;
-	width: 340px;
+	width: 500px;
 }
 
 #content .hr2{ /* white line under llinks*/
 	opacity:0.2;
-	width: 340px;
+	width: 500px;
 }
 
 #content .hr3{ /*black line under llinks*/
@@ -169,8 +169,15 @@ h1,h2,h3,h4,p,a,li,ul, html{
 .uploadform .upload{  /* choose files to upload area */
 	width: 250px;
 	color: #c3c3c3;
-	font-size: 18px;
+	font-size: 16px;
 	padding: 0px 0px 40px 25px;	
+}
+
+.uploadform .uploadMap{  /* choose planes to upload area */
+	width: 250px;
+	color: #c3c3c3;
+	font-size: 16px;
+	padding: 0px 0px 40px 0px;	
 }
 
 .uploadform input{
@@ -178,18 +185,57 @@ h1,h2,h3,h4,p,a,li,ul, html{
 	width:150px;
 	padding: 0 5px;
 }
-.uploadform #group, .uploadform #date, .uploadform #plane{
+.uploadform #group, .uploadform #date, .uploadform #plane, .uploadform #uploadMask, .uploadform #uploadPlane{
 	padding: 0px 0px 10px 0;
 }
-
-
-
 
 .uploadform label{
 	font-size: 18px;
 	color: #c3c3c3;
 	display: inline-block; 
 	width: 100px;
+}
+
+.uploadform label[for=uploadPlane]{
+	/* text-align: center; */
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: #c3c3c3;
+	display: inline-block; 
+	width: 200px;
+}
+
+.uploadform label[for=uploadMask]{
+	/* text-align: center; */
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: #c3c3c3;
+	display: inline-block; 
+	width: 200px;
+}
+
+.uploadform label[for=plane]{
+	/* text-align: center; */
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: #c3c3c3;
+	display: inline-block; 
+	width: 300px;
+}
+
+.uploadform .textinfo p{
+font-size: 20px;
+
+font-style: italic;
+}
+.uploadform .textinfo{
+width: 35%;
+margin: 0 auto;
+margin-bottom: 80px;
+}
+#plane  select{
+	margin-bottom: 20px;
+	display: block;
 }
 
 .row{ /*each row with uploaded images*/
@@ -429,6 +475,9 @@ margin-top: 10px;
 	margin: 0 auto;
 }
 #error{
-	color:#e8e8e8;
+	color: red;
 	text-align: center;
+}
+p.max{
+	font-size: 12px;
 }
