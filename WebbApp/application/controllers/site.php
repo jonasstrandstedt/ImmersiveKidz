@@ -533,7 +533,7 @@ class Site extends CI_Controller
 			$group_id = $_POST['group_id'];
 			$group = $this->Tables_model->get_group($group_id);
 
-			$idArray = $this->Tables_model->get_all_illustration_id_from_group($group_id); // an array with all the id's in the group
+			$idArray = $this->Tables_model->get_all_illustration_id_and_imgurl_from_group($group_id); // an array with all the id's in the group
 			$newSound = array();
 			foreach ($idArray as $id) {
 				if(isset($_FILES['soundurl'.$counter]['name']) && ($_FILES['soundurl'.$counter]['name']) != ''){// sound, file input
