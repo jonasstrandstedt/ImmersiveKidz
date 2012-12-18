@@ -36,6 +36,7 @@ date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 				</label>
 				<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
 			</div>
+			
 			<div id="world">
 				<label for"world">
 					Värld

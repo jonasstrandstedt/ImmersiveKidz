@@ -14,8 +14,9 @@
 		echo "<h3 id='error'> ".htmlentities($error)." </h3></br>";
 	}?>
 	<div class='uploadform'>
+	<div class="textinfo"><p>Skapa din värld här. Ladda upp dina objekt som ska användas i världen, exempelvis blommor eller träd. Om du inte vill ha några objekt så skriver du bara in namnet på världen.</p></div>
 		<?php echo form_open_multipart('index.php/site/add_world_and_objects');?>
-			<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
+			<input class="upload" type="file" name="uploadObject" size="20" multiple=""/>
 			<div id="world">
 				<label for="world">
 					Världnamn

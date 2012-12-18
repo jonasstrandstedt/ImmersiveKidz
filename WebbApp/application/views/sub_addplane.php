@@ -13,15 +13,19 @@
 	<div class='uploadform'>
 		<?php echo form_open_multipart('index.php/site/add_plane');
 			echo "<input type='hidden' name='world_id' value='".$world_id."' />";
-		?>	<label for="uploadPlane">
-		Välj ett plan
-			</label>
-			<input class="upload" type="file" name="uploadPlane" size="20" />
+		?>	
+		<div id="uploadPlane">
 			<label for="uploadPlane">
-		Välj en mask
+				Välj ett plan
 			</label>
-			<input class="upload" type="file" name="uploadMask" size="20" />
-			<div id="plane">
+			<input class="uploadMap" type="file" name="uploadPlane" size="20" />
+		</div>
+		<div id="uploadMask">
+			<label for="uploadMask">
+				Välj en mask
+			</label>
+			<input class="uploadMap" type="file" name="uploadMask" size="20" />
+		<div id="plane">
 				<label for="plane">
 					Eller välj ett plan som redan finns
 				</label>
@@ -33,7 +37,7 @@
 					}
 					?>
 				</select>
-			</div>
+		</div>
 
 			<div id="button">
 				<input class="styledbutton" type="submit" name="submitplane" value="Lägg till planet" />
