@@ -8,7 +8,8 @@
 			get_xml_file($world, $images) Writes the generated structure to an xml file
 *
 * @author   Gabriella Ivarsson gabiv132
-* @date     December 4, 2012
+* @author   Viktor Fröberg vikfr292
+* @date     December 17, 2012 (fixed size and map)
 * @version  
 *    
 */
@@ -67,8 +68,6 @@ class Create_xml_model extends CI_Model
 		$scene = xml_add_child($dom, "scene");
 		$world = xml_add_child($scene, "world");
 		//camera
-		//if(($camlim_xpos != NULL || $camlim_xpos != '') && ($camlim_ypos != NULL || $camlim_ypos != '') && ($camlim_xpos != NULL || $camlim_xpos != '')&& ($camlim_zpos != NULL || $camlim_zpos != '') && ($camlim_xmin != NULL || $camlim_xmin != '')&& ($camlim_ymin != NULL || $camlim_ymin != '')&& ($camlim_zmin != NULL || $camlim_zmin != '') && ($camstart_x != NULL || $camstart_x != '') && ($camstart_y != NULL || $camstart_y != '') && ($camstart_z != NULL || $camstart_z != '') && ($camdir_x != NULL || $camdir_x != '') && ($camdir_y != NULL || $camdir_y != '') && ($camdir_z != NULL || $camdir_z != '') && ($camdir_x != NULL || $camdir_x != '')){
-		//if(($camlim_xpos != NULL) || ($camlim_ypos != NULL) || ($camlim_xpos != NULL)|| ($camlim_zpos != NULL) || ($camlim_xmin != NULL)|| ($camlim_ymin != NULL)|| ($camlim_zmin != NULL) || ($camstart_x != NULL) || ($camstart_y != NULL) || ($camstart_z != NULL) || ($camdir_x != NULL) || ($camdir_y != NULL) || ($camdir_z != NULL) || ($camdir_x != NULL)){
 		if(($camstart_x != NULL && $camstart_y != NULL && $camstart_z != NULL) || ($camlim_xmin != NULL && $camlim_xpos != NULL) || ($camlim_ymin != NULL && $camlim_ypos != NULL) || ($camlim_ymin != NULL && $camlim_ypos != NULL)){
 		$camera = xml_add_child($world, "camera");
 
@@ -128,7 +127,6 @@ class Create_xml_model extends CI_Model
 
 		//mask
 		foreach ($mask as $m) {
-			//$themask = xml_add_child($world, "mask", substr($m->textureurl, strrpos($m->textureurl, '/')+1));
 			$themask = xml_add_child($world, "mask", $m->textureurl);
 			xml_add_attribute($themask, 'name', $m->name);
 		}

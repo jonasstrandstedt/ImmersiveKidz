@@ -41,7 +41,11 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" => "",
+			"date" => ""
+			);
+		$this->load->view("content_create", $contentCreate);
 
 		//If no upload folder exists, create it.
         if(!is_dir("./uploads")){
@@ -143,7 +147,11 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" =>$group,
+			"date" => $date
+			);
+		$this->load->view("content_create", $contentCreate);
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");
 		$maxSize = 500;
@@ -592,7 +600,11 @@ class Site extends CI_Controller
 	function download_info($date = NULL, $group = NULL){
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" =>$group,
+			"date" => $date
+			);
+		$this->load->view("content_create", $contentCreate);
 		$this->load->model("Tables_model");
 		$this->load->model("Create_xml_model");
 
@@ -697,8 +709,9 @@ class Site extends CI_Controller
 		
 		$data = array(
 			"error" => "");
-
-		$this->load->view("content_create_world");
+		$contentCreate = array(
+			"world_name" => "");
+		$this->load->view("content_create_world", $contentCreate);
 		
 		// Config-file for the upload library.
 		$config['upload_path'] = './uploads/';
@@ -778,7 +791,9 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create_world");
+		$contentCreate = array(
+			"world_name" => $world_name);
+		$this->load->view("content_create_world", $contentCreate);
 		
 		// Loads the Images_model model, to access the database functions.
 		$this->load->model("Tables_model");		
@@ -1109,7 +1124,10 @@ class Site extends CI_Controller
 	{
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create_world");
+		$contentCreate = array(
+			"world_name" => $world_name);
+
+		$this->load->view("content_create_world", $contentCreate);
 		
 		$config['upload_path'] = './plane/';
 		$config['allowed_types'] = 'gif|jpg|png';
@@ -1227,7 +1245,11 @@ class Site extends CI_Controller
 	{	
 		$this->load->view("site_header");
 		$this->load->view("site_nav");
-		$this->load->view("content_create");
+		$contentCreate = array(
+			"group" =>$group,
+			"date" => $date
+			);
+		$this->load->view("content_create", $contentCreate);
 		$group = urldecode($group);
 		$this->load->model("Tables_model");
 		if(isset($_POST['submitcoord'])){
