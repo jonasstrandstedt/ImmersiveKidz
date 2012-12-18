@@ -393,4 +393,8 @@ void ImmersiveKidz::reset()
 	_scenePath = "";		// set in constructor
 	_sceneLoaded = false;
 	_worldRect = glm::vec4();
+	if(_isMaster) 
+	{
+		_hud->setTextureMinimap("");
+	}
 }

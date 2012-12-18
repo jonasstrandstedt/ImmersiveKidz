@@ -274,7 +274,8 @@ void HUD::_drawMinimap(std::vector<Illustration*> illu)
 		}else if(illu[i]->getSeen())
 		{
 			glColor3f( 0.0f, 1.0f, 0.0f);			
-		}else{
+		}else
+		{
 			glColor3f( 1.0f, 0.0f, 0.0f);
 		}
 		

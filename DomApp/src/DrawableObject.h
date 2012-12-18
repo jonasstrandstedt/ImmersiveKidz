@@ -18,10 +18,10 @@ typedef struct
 } Vertex;
 
 // Animation functions
-void bounce(double t, double offset, double param);
-void pendulum(double t, double offset, double param);
-void fly(double t, double offset, double param);
-void orbit(double t, double offset, double param);
+glm::mat4 bounce(float t, float offset, float param);
+glm::mat4 pendulum(float t, float offset, float param);
+glm::mat4 fly(float t, float offset, float param);
+glm::mat4 orbit(float t, float offset, float param);
 
 /**
 * @brief  	An abstract class for objects that can be rendered
@@ -42,7 +42,7 @@ public:
 	~DrawableObject();
 
 	// draw functionality
-	void draw(double t);
+	void draw(float t);
 	virtual void onDraw() = 0;
 	void drawTriangles();
 	void initVBO();
@@ -50,8 +50,11 @@ public:
 	void resetArrays();
 
 	// permanent animations
-	void setAnimationFunc(void (*f)(double,double,double), double offset, double param);
-	void setAnimationFuncByName(std::string name, double seed, double param);
+	void setAnimationFunc(glm::mat4 (*f)(float,float,float), float offset, float param);
+	void setAnimationFuncByName(std::string name, float seed, float param);
+
+	void setPosition(glm::mat4 m);
+	glm::vec3 getPosition();
 
 	// Add temporary animation
 	void addAnimation(Animation *type);
@@ -67,13 +70,16 @@ private:
 	GLuint _iBufferID;
 	
 protected:
-	double _offset;
-	double _param;
-	void (*_animationFunc)(double, double, double);
+	float _offset;
+	float _param;
+	glm::mat4 (*_animationFunc)(float, float, float);
 	void _drawVBO();
 
 	glm::mat4x4 _transform;
 	std::string _texture;
+
+	glm::vec3 _originalPosition;
+	glm::vec3 _currentPosition;
 
 	// arrays with all triangles and indices
 	unsigned int _isize;
@@ -83,6 +89,8 @@ protected:
     int _attrib_loc;
     int _float_attrib_loc;
 	bool _isChild;
+
+	DrawableObject* _parent;
 
 	// Animation vector for temporary animations, e.g. illustrations
 	std::vector<Animation*> _animationVector;
