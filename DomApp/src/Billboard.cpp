@@ -14,15 +14,17 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 {
 	this->_proportions = proportionsIn;
 	this->_position = position;
+	this->_originalPosition = position;
+	this->_currentPosition = position;
 	
 	_texture = texturename;
 	ImmersiveKidz::getInstance()->loadTexture(_texture);
 	_proportions = proportionsIn;
-	_transform = glm::translate(_transform, _position);
+	_transform = glm::translate(_transform, _originalPosition);
     if(_isChild){
 		Billboard *b = dynamic_cast<Billboard*>(parentObject);
 		if(b)
-			this->_position += b->_position;
+			this->_originalPosition += b->_originalPosition;
 	}
 	_vsize = 4;
 	_isize = 6;
@@ -74,16 +76,6 @@ Billboard::Billboard(std::string texturename , glm::vec3 position, glm::vec2 pro
 	}
 }
 
-/**
-*@brief	    Gets the position of the billboard
-*
-*@return	vec3
-*
-*/
-glm::vec3 Billboard::getPosition()
-{
-	return _position;
-}
 
 /**
 *@brief		Draws the Billboard. 

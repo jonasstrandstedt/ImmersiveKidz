@@ -1,6 +1,8 @@
 #include "DrawableObject.h"
 #include "ImmersiveKidz.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #ifndef M_PI 
 #define M_PI	3.14159265358979323846264338327950288 
 #endif 
@@ -25,6 +27,8 @@ DrawableObject::DrawableObject(DrawableObject *parent)
 	_varray = NULL;
 	_attrib_loc = -1;
 	_float_attrib_loc = -1;
+
+	_parent = parent;
 
 	_isChild = parent != 0;
 	if(_isChild){
@@ -195,15 +199,17 @@ void DrawableObject::resetArrays() {
 *
 *@return     void
 */
-void DrawableObject::draw(double t) 
+void DrawableObject::draw(float t) 
 {
+	glm::mat4 animTransform;
 	bool pop = false;
 	// pre-animate
 	if ( _animationFunc != 0 )
 	{
 		pop = true;
 		glPushMatrix();
-		_animationFunc(t, _offset, _param);
+		animTransform = _animationFunc(t, _offset, _param);
+		setPosition(animTransform);
 	}
 	else if ( !_animationVector.empty() )
 	{
@@ -215,11 +221,10 @@ void DrawableObject::draw(double t)
 			_animationVector.erase(_animationVector.begin());
 		}
 	}
-
 	glPushMatrix();
 	
 	//Appllying the transform matrix
-	glMultMatrixf(glm::value_ptr(_transform));
+	glMultMatrixf(glm::value_ptr(_transform*animTransform));
 
 	// calls the virtual onDraw function.
 	onDraw();
@@ -272,7 +277,7 @@ void DrawableObject::resetAnimations() {
 /**
 *@brief	    Sets the animation function s
 */
-void DrawableObject::setAnimationFunc(void (*f)(double,double,double), double offset, double param) 
+void DrawableObject::setAnimationFunc(glm::mat4 (*f)(float,float,float), float offset, float param) 
 { 
 	_animationFunc = f; 
 	_offset = offset; 
@@ -288,7 +293,7 @@ void DrawableObject::setAnimationFunc(void (*f)(double,double,double), double of
 *
 *@return     void
 */
-void DrawableObject::setAnimationFuncByName(std::string name, double offset, double param) 
+void DrawableObject::setAnimationFuncByName(std::string name, float offset, float param) 
 { 
 	if ( name == "bounce" ) setAnimationFunc(bounce, offset,param);
 	if ( name == "pendulum" ) setAnimationFunc(pendulum, offset,param);
@@ -325,58 +330,92 @@ void DrawableObject::getArrays(int *vsize, int *isize, Vertex **varray, int **ia
 /**
 *@brief	    Translates the object up and down
 *
-*@return     void
+*@return     glm::mat4
 */
-void bounce(double t, double offset, double param) 
+glm::mat4 bounce(float t, float offset, float param) 
 {
 	t += offset;
-	glTranslatef(	static_cast<float>(0.0),
-					static_cast<float>(fabs(sin(t*2.0))*0.5),
-					static_cast<float>(0.0));
+
+	glm::mat4 m;
+	m = glm::translate(m, glm::vec3(0,(fabs(sin(t*2.0))*0.5),0));
+
+	return m;
 }
 
 /**
 *@brief	    Translates the object like a pendulum on the x-axis
 *
-*@return     void
+*@return     glm::mat4
 */
-void pendulum(double t, double offset, double param) 
+glm::mat4 pendulum(float t, float offset, float param) 
 {
 	t += offset;
-	glTranslatef(	static_cast<float>(sin(t)),
-					static_cast<float>(0.0),
-					static_cast<float>(0.0));
+	glm::mat4 m;
+	m = glm::translate(m, glm::vec3(sin(t),0,0));
+
+	return m;
 }
 
 /**
 *@brief	    Translates the object in a "8" shape up and down.
 *
-*@return     void
+*@return     glm::mat4
 */
-void fly(double t, double offset, double param) 
+glm::mat4 fly(float t, float offset, float param) 
 {
 	t += offset;
-	glTranslatef(	static_cast<float>(sin(t)),
-					static_cast<float>(fabs(sin(t*0.8))*0.5),
-					static_cast<float>(cos(t*0.5)*1.5));
+
+	glm::mat4 m;
+	m = glm::translate(m, glm::vec3(sin(t),(fabs(sin(t*0.8))*0.5),(cos(t*0.5)*1.5)));
+
+	return m;
 }
 
 /**
 *@brief	    ḿakes the object go in orbit
 *
+*@return     glm::mat4
 */
-void orbit(double t, double offset, double param) 
+glm::mat4 orbit(float t, float offset, float param) 
 {
 	t += offset;
 
-	double orbit_length = 2.0*param*M_PI;
-	double speed = 500.0;
+	float orbit_length = 2.0*param*M_PI;
+	float speed = 500.0;
 
-	glRotatef(t*speed / orbit_length, 0,1,0);
-	glTranslatef(0,0,param);
-	glRotatef(-t*speed / orbit_length, 0,1,0);
+	glm::mat4 m;
+	m = glm::rotate(m,t*speed / orbit_length, glm::vec3(0,1,0));
+	m = glm::translate(m,glm::vec3(0,0,param));
+	m = glm::rotate(m,-t*speed / orbit_length, glm::vec3(0,1,0));
+
+	return m;
 }
 
+/**
+*@brief	    Sets the current position of the object by multiplying with the transform matrix x.
+*
+*/
+void DrawableObject::setPosition(glm::mat4 m)
+{
+	_currentPosition = glm::vec3(m * glm::vec4(_originalPosition,1));
+}
+
+/**
+*@brief	    Returns the current position depending on if its a child or a parrent.
+*
+*@return     glm::vec3
+*/
+glm::vec3 DrawableObject::getPosition()
+{
+	if( _parent != 0 )
+	{
+		return _currentPosition + _parent->_currentPosition;
+	}
+	else
+	{
+		return _currentPosition;
+	}
+}
 
 
 /**
