@@ -2,7 +2,7 @@
 	
 	<?php 
 	$sokvag = '';
-	if(($date != NULL || $date != '') && ($date != NULL || $group != '') ){
+	if(($date != NULL || $date != '') && ($group != NULL || $group != '') ){
 		$sokvag = "/".$date."/".$group;
 	}
 

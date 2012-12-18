@@ -136,12 +136,12 @@ h1,h2,h3,h4,p,a,li,ul, html{
 #content .hr1{ /*black line under llinks*/
 	border-color: black;
 	opacity:0.44;
-	width: 340px;
+	width: 500px;
 }
 
 #content .hr2{ /* white line under llinks*/
 	opacity:0.2;
-	width: 340px;
+	width: 500px;
 }
 
 #content .hr3{ /*black line under llinks*/
