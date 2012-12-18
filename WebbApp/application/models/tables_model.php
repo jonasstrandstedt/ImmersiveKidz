@@ -31,12 +31,21 @@ class Tables_model extends CI_Model
 	 * @param  string	$group		The group
 	 * @return array 	
 	 */ 
-    function get_all_illustrations_from_group($groupID) 
+    function get_all_illustrations_billboards_from_group($groupID) 
     {
 		$this->db->select("*");
 		$this->db->from("illustrations");
 		$this->db->join('billboards', 'illustrations.billboard_id=billboards.id', 'inner');
 		$where = "`illustrations.group_id` = '$groupID'"; 
+		$this->db->where($where);
+		$query = $this->db->get();
+		return $query->result();
+	}
+	function get_all_illustrations_from_group($groupID) 
+    {
+		$this->db->select("*");
+		$this->db->from("illustrations");
+		$where = "`group_id` = '$groupID'"; 
 		$this->db->where($where);
 		$query = $this->db->get();
 		return $query->result();
@@ -456,11 +465,13 @@ class Tables_model extends CI_Model
 		return $query->result();
 	}
 
-	function get_billboard() 
+	function get_billboard_from_illustrations($group_id) 
     {
 		$this->db->select("*");
 
 		$this->db->from("billboards");
+		$where = array(
+			"id" => "(SELECT `billboard_id` FROM illustrations WHERE `group_id` = $group_id)");
 		$query = $this->db->get();
 		return $query->result();
 	}

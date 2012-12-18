@@ -211,7 +211,7 @@ class Site extends CI_Controller
 				}
 				$counter ++; 
 			}
-			$images = $this->Tables_model->get_all_illustrations_from_group($group_id); // Get all images from a specific group and date.
+			$images = $this->Tables_model->get_all_illustrations_billboards_from_group($group_id); // Get all images from a specific group and date.
 			$group_id_array = array(
 				"group_id" => $group_id);
 			$data = array( // Makes an array of the array, so that the sub_info view gets an array as variabel.
@@ -242,7 +242,7 @@ class Site extends CI_Controller
 			{
 				if($counter == $_POST['rotateplus'])
 				{ 
-					$images = $this->Tables_model->get_all_illustrations_from_group($group_id);
+					$images = $this->Tables_model->get_all_illustrations_billboards_from_group($group_id);
 					$imageUrl = $this->Tables_model->get_billboard_image($images[$counter] -> billboard_id);
 					//echo $images[$counter]->imgouturl . "<br>";
 					$filename = $imageUrl[0]->imgurl;
@@ -317,7 +317,7 @@ class Site extends CI_Controller
 			{
 				if($counter == $_POST['rotateminus'])
 				{ 
-					$images = $this->Tables_model->get_all_illustrations_from_group($group_id);
+					$images = $this->Tables_model->get_all_illustrations_billboards_from_group($group_id);
 					$imageUrl = $this->Tables_model->get_billboard_image($images[$counter] -> billboard_id);
 					//echo $images[$counter]->imgouturl . "<br>";
 					$filename = $imageUrl[0]->imgurl;
@@ -455,17 +455,28 @@ class Site extends CI_Controller
 				$this->Tables_model->update_animation_to_billboard($animation, $billboard_id[0]->billboard_id);// updates the database for the specific image.
 				$counter++;
 			}
-			
+
+			$configSound['upload_path'] = './uploads/';
+			$configSound['allowed_types'] = 'wav|mp3';
+			$configSound['max_size']	= '0';
 			// loads the upload library with the config-file.
-			$this->load->library('upload', $config);
+			$this->load->library('upload', $configSound);
 			//upload new sound to database
 			foreach ($newSound as $inputName) {
 				$this->upload->do_multi_upload($inputName);
 				$temp = $this->upload->get_multi_upload();
+				print_r($this->upload->display_errors());
 			}
 
 			$data = array();
 			//upload new data to database
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'gif|jpg|png|jpeg';
+			$config['max_size']	= '0';
+			$config['max_width']  = '10000';
+			$config['max_height']  = '10000';
+
+			$this->load->library('upload', $config);
 			foreach ($newImages as $inputName) {
 				$this->upload->do_multi_upload($inputName);
 				$temp = $this->upload->get_multi_upload();
@@ -526,7 +537,7 @@ class Site extends CI_Controller
 		else if(!isset($_POST['next'])){ // else if, the user has not submited.
 			$group_id = $this->Tables_model->get_group_id($date, urldecode($group));
 
-			$images = $this->Tables_model->get_all_illustrations_from_group($group_id[0] -> id); // Get all images from a specific group and date.
+			$images = $this->Tables_model->get_all_illustrations_billboards_from_group($group_id[0] -> id); // Get all images from a specific group and date.
 			$imageID = $this->Tables_model->get_all_illustration_id_from_group($group_id[0] -> id); // Get all images from a specific group and date.
 			$animations = $this->Tables_model->get_animation();
 			$outImagesArray = array();
@@ -552,9 +563,7 @@ class Site extends CI_Controller
 			$this->load->view('sub_info', $data); // Loads the sub_info view, where the user can add information for all the images.
 		}
 		else{ // isset($_POST['next']) Submit form
-			$config['upload_path'] = './uploads/';
-			$config['allowed_types'] = 'wav|mp3';
-			$config['max_size']	= '0';
+			
 			$counter = 0; // count the number of images.
 			$group_id = $_POST['group_id'];
 			$group = $this->Tables_model->get_group($group_id);
@@ -592,7 +601,10 @@ class Site extends CI_Controller
 				$counter ++; // 
 			}
 			// loads the upload library with the config-file.
-			$this->load->library('upload', $config);
+			$configSound['upload_path'] = './uploads/';
+			$configSound['allowed_types'] = 'wav|mp3';
+			$configSound['max_size']	= '0';
+			$this->load->library('upload', $configSound);
 			//upload new data to database
 			foreach ($newSound as $inputName) {
 				$this->upload->do_multi_upload($inputName);
@@ -648,7 +660,6 @@ class Site extends CI_Controller
 			$images = $this->Tables_model->get_all_illustrations_from_group($group_id[0] -> id); // Get all images from a specific group and date.
 			$billboardimages = $this->Tables_model->get_billboards_from_billboard_world($world_id_array[0] -> world_id); 
 			$this->zip->clear_data(); // clear all data in the zip, just in case ;)
-			
 			foreach ($billboardimages as $bimage) {
 				$pathimg = $bimage->imgurl; // save the path to the image on the server.
 				$newImgpath = "uploads" . substr($pathimg, strrpos($pathimg, "/"));//find name without folder
@@ -680,7 +691,6 @@ class Site extends CI_Controller
 			//add illustrations, billboards and sound to zip
 			foreach ($images as $row){ // For all images
 				$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($row -> id);
-
 				$imgouturl = $this->Tables_model->get_billboard_image($billboard_id[0] -> billboard_id); 
 				$soundurl = $this->Tables_model->get_illustration_sound($billboard_id[0] -> billboard_id); 
 				$pathimg = $imgouturl[0] -> imgurl; // save the path to the image on the server.
@@ -703,7 +713,8 @@ class Site extends CI_Controller
 			$mask = $this->Tables_model->get_masks_from_map_id($map[0]->id);
 			$group = $this->Tables_model->get_group_from_world_id($world[0]->id);
 			$billboard_world = $this->Tables_model->get_billboard_from_billboard_world($world[0]->id);
-			$billboard = $this->Tables_model->get_billboard($world[0]->id);
+			
+			$billboard = $this->Tables_model->get_billboard_from_illustrations($group[0] -> id);
 			$animation = $this->Tables_model->get_animation();
 			$billboard_animation = $this->Tables_model->get_billboard_animation();
 			$model_world = $this->Tables_model->get_model_world($world[0]->id);
@@ -762,8 +773,7 @@ class Site extends CI_Controller
 		}else{
 
 
-
-		if(isset($_POST['submitworld']) && $_FILES['uploadObject']['error'] == 4) //if user didnt upload objects when submited world
+		if(isset($_POST['submitworld']) && $_FILES['uploadObject']['error'][0] == 4) //if user didnt upload objects when submited world
 		{
 			if($world_name == NULL || $world_name == ''){
 				$data = array(
@@ -771,7 +781,7 @@ class Site extends CI_Controller
 				);
 			$this->load->view('sub_addworldandobjects', $data);
 			}else{
-				$this->Tables_model->add_world($world_name , "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+				$this->Tables_model->add_world($world_name , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "", "", "", "", "", "", "");
 				echo "<script>window.location.href = 'add_plane/".urlencode($world_name)."';</script>"; // Javascript, loads the add_plane view with the variable $world_name
 			}
 		}
@@ -792,7 +802,7 @@ class Site extends CI_Controller
 				$this->load->view('sub_addworldandobjects', $data);
 			}else{
 			
- 			$this->Tables_model->add_world($world_name , "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+ 			$this->Tables_model->add_world($world_name , NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "", "", "", "", "", "", "");
 			$world = $this->Tables_model->get_world_by_name($world_name);
 			$world_id = $world[0]->id;			
 			

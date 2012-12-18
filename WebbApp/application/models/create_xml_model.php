@@ -272,7 +272,7 @@ class Create_xml_model extends CI_Model
 
 						$size = xml_add_child($illustration, "size");
 						xml_add_attribute($size, 'width', $b->size_x);
-						xml_add_attribute($size, 'height', $b->size_x);
+						xml_add_attribute($size, 'height', $b->size_y);
 					}
 				}
 			}
