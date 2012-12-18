@@ -127,10 +127,9 @@ void SceneLoader::_loadModels(tinyxml2::XMLElement* parent)
 				if(aniElement->FloatAttribute( "param" ) > 0.0) animparam = aniElement->FloatAttribute( "param" );
 			}
 
-			srand(static_cast<unsigned int>(time(NULL)));
-			float x = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
+			float x = 0;
 			float y = 0;
-			float z  = static_cast<float>(20.0*(rand()/RAND_MAX-0.5));
+			float z = 0;
 			tinyxml2::XMLElement* positionElement = model->FirstChildElement( "pos" );
 			if(positionElement)
 			{
@@ -205,10 +204,9 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent,DrawableObject *p
 				if(aniElement->FloatAttribute( "param" ) > 0.0) animparam = aniElement->FloatAttribute( "param" );
 			}
 
-			srand(static_cast<unsigned int>(time(NULL)));
-			float x = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			float x = 0.0;
 			float y = 0.0;
-			float z  = static_cast<float>(20*(rand()/RAND_MAX-0.5));
+			float z  = 0.0;
 			tinyxml2::XMLElement* positionElement = billboard->FirstChildElement( "pos" );
 			if(positionElement)
 			{
@@ -235,7 +233,6 @@ void SceneLoader::_loadBillboards(tinyxml2::XMLElement* parent,DrawableObject *p
 			else 
 				ImmersiveKidz::getInstance()->addDrawableObject(obj, animation, animoffset, animparam);
 
-			
 			_loadBillboards(billboard,obj);
 			_loadIllustrations(billboard,obj);
 		}
