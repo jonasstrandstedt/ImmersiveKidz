@@ -730,8 +730,13 @@ class Site extends CI_Controller
 
 
 
-
-		if ( ! $this->upload->do_multi_upload()) //if upload didnt work
+		if(isset($_POST['submitworld']) && $_FILES['uploadObject']['error'] == 4) //if user didnt upload objects when submited world
+		{
+			// echo urlencode($world_name);
+			$this->Tables_model->add_world($world_name , "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+			echo "<script>window.location.href = 'add_plane/".urlencode($world_name)."';</script>"; // Javascript, loads the add_plane view with the variable $world_name
+		}
+		else if ( ! $this->upload->do_multi_upload()) //if upload didnt work
 		{
 			$error = array('error' => $this->upload->display_errors());
 			$this->load->view('sub_addworldandobjects', $data);
@@ -1133,7 +1138,9 @@ class Site extends CI_Controller
 		}else if(!isset($_POST['submitplane'])) //if user didnt submited plane
 		{	
 			$world_name = urldecode($world_name);
+			// echo $world_name;
 			$world = $this->Tables_model->get_world_by_name($world_name);
+			// print_r($world);
 			// get an array of all the planes
 			$info = $this->Tables_model->get_all_planes_from_maps();
 			// Makes an array of the array, so that the sub_addplane view gets an array as variabel.
