@@ -7,7 +7,7 @@
 *
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
-* @author 	(Belinda Bernfort, belbe886@student.liu.se)
+* @author 	Belinda Bernfort, belbe886@student.liu.se (Code review)
 * @date     November 9, 2012
 * @version  1.1 (added forms for date and group)
 */
