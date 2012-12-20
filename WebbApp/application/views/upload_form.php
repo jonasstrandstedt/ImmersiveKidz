@@ -15,46 +15,42 @@
 date_default_timezone_set('Europe/Stockholm'); // The timezone for Sweden.
 ?>
 <div id="sub">
-	
 	<div class='uploadform'>
-		<?php if($error != ""){
-		echo "<h3 id='error'> ".htmlentities($error)." </h3></br>";
-	}?>
+		<?php if($error != "")
+		{
+			echo "<h3 id='error'> ".htmlentities($error)." </h3></br>";
+		}?>
 		<?php echo form_open_multipart('index.php/site/upload');?>
-			<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>
-			
-			<div id="group">
-				<label for="group">
-					Gruppnamn
-				</label>
-				<input type="text" name="group" size="20"/>
-			</div>
-			
-			<div id="date">
-				<label for="date">
-					Datum
-				</label>
-				<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
-			</div>
-			
-			<div id="world">
-				<label for"world">
-					Värld
-				</label>
-				<select name="world">
-					<?php
-					foreach ($worlds as $world)
-					{ 
-						echo "<option value='".$world-> id."'>".htmlentities($world-> name)."</option>";
-					}
-					?>
-				</select>
-			</div>
-
-			<div id="button">
-				<p class='max'>Max filstorlek 2MB.</p>
-				<input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" />
-			</div>
+		<input class="upload" type="file" name="userfile[]" size="20" multiple=""/>	
+		<div id="group">
+			<label for="group">
+				Gruppnamn
+			</label>
+			<input type="text" name="group" size="20"/>
+		</div>
+		<div id="date">
+			<label for="date">
+				Datum
+			</label>
+			<input type="text" name="date" value = <?php print "\"". date('Y-m-d') ."\" "; ?> size="20"/> <!-- Gets todays date -->
+		</div>			
+		<div id="world">
+			<label for"world">
+				Värld
+			</label>
+			<select name="world">
+				<?php
+				foreach ($worlds as $world)
+				{ 
+					echo "<option value='".$world-> id."'>".htmlentities($world-> name)."</option>";
+				}
+				?>
+			</select>
+		</div>
+		<div id="button">
+			<p class='max'>Max filstorlek 2MB.</p>
+			<input class="styledbutton" type="submit" name="submit" value="Ladda upp bilderna" />
+		</div>
 		</form>
 	</div>
 </div>

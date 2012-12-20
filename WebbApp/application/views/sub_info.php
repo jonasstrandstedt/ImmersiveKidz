@@ -5,6 +5,7 @@
 * @details  
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
+* @author   Emil Lindström, emili250@student.liu.se
 * @author 	Belinda Bernfort, belbe886@student.liu.se
 * @date     November 14, 2012 
 * @version  1.0

@@ -1,8 +1,6 @@
 	<div id="footer">
 		<p>ImmersiveKidz</p>
 	</div>
-	
-	</div>
-
+</div>
 </body>
 </html>

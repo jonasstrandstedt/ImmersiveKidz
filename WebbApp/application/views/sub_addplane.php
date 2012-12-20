@@ -25,7 +25,7 @@
 				Välj en mask
 			</label>
 			<input class="uploadMap" type="file" name="uploadMask" size="20" />
-		<div id="plane">
+			<div id="plane">
 				<label for="plane">
 					Eller välj ett plan som redan finns
 				</label>
@@ -37,11 +37,12 @@
 					}
 					?>
 				</select>
-		</div>
+			</div>
 
 			<div id="button">
 				<input class="styledbutton" type="submit" name="submitplane" value="Lägg till planet" />
 			</div>
 		</form>
+		</div>
 	</div>
 </div>

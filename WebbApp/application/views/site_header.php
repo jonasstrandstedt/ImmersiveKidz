@@ -1,13 +1,9 @@
-<?php /* @brief    Site header
-*
-* @details  -
+<?php 
+/* @brief    Site header
 *
 * @author   Emil Lindström, emili250@student.liu.se
-* @date     ?
-* @version  
 */
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
