@@ -11,31 +11,41 @@
 * @author   Emil Lindström, emili250@student.liu.se
 * @author   Viktor Fröberg, vikfr292@student.liu.se
 * @author   Gabriella Ivarsson gabiv132
-* @date     December 6, 2012
-* @version  3.0 (new database)
+* @date     December 18, 2012
+* @version  3.2 (bugfixes)
 *    
 */
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Site extends CI_Controller 
 {	
+	/**
+	 * @details index(): Sets the start function (startpage)
+	 *
+	 * @return void
+	 */ 
 	public function index()
 	{
-		$this->upload(); // Sets the startpage to the upload view.
+		$this->upload(); // Sets the start to the upload function
 	}
 	
 
-	
+	/**
+	 * @details constructor, loads the form and url-helper
+	 *
+	 * @return void
+	 */ 
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
 	}
 	 /**
-	 * upload(): Uploads images to the server and add them to the database.
+	 * upload(): Uploads images(illustrations) to the server and add them to the database.
 	 * Librarys: upload, MY_upload, ProcessImage
-	 * Models: Images_model
+	 * Models: Tables_model
 	 * Views: site_header, site_nav, content_create, upload_form, site_footer
-	 *	
+	 *
+	 * @return void
 	 */ 
 	function upload()
 	{	
@@ -81,15 +91,15 @@ class Site extends CI_Controller
 		
 		$ans = $this->Tables_model->get_group_id($date, $group);
 		
-		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
-		if(!empty($ans)){
+		// checks if a group exists.
+		if(!empty($ans)){ 
 			$data = array(
 			"worlds" => $info,
 			"error" => "Fel: Gruppen \"$group\" finns redan datumet $date, välj ett annat namn."
 			);
 			$this->load->view('upload_form', $data);
 		}else{
-
+		// Runs the do_multi_upload() function, if the function cant be run, load the upload_form view
 		if ( !$this->upload->do_multi_upload())
 		{
 			$error = array('error' => $this->upload->display_errors());
@@ -103,22 +113,25 @@ class Site extends CI_Controller
 			$date = $_POST['date']; // The date for this group
 			$world = $_POST['world']; // The chosen world
 
+			// If the user has not added a group-name
 			if($group == NULL || $group == ''){
 				$data = array(
 					"worlds" => $info,
 					"error" => "Fel: Du måste ange ett gruppnamn"
 			);
+			// Load upload_form-view
+				$this->load->view('upload_form', $data);
 			
-			$this->load->view('upload_form', $data);
-			
+			// checks if the user has added a date.
 			}else if($date == NULL || $date == ''){
 				$data = array(
 					"worlds" => $info,
 					"error" => "Fel: Du måste ange ett datum"
 			);
-			$this->load->view('upload_form', $data);
+			// Load upload_form-view
+				$this->load->view('upload_form', $data);
 			} else{
-
+			// add the group to the database.
  			$this->Tables_model->add_group($group, $date, $world);
 
 			$data = array('upload_data' => $this->upload->get_multi_upload()); // Gets all the url's ect from the upload function.
@@ -155,11 +168,12 @@ class Site extends CI_Controller
 	 /**
 	 * add_information($date = NULL , $group = NULL): Adds information for all the images to the database.
 	 * Librarys:
-	 * Models: Images_model
+	 * Models: Tables_model
 	 * Views: site_header, site_nav, content_edit, sub_info, site_footer
 	 * @param  string	$date		The date
 	 * @param  string	$group		The group
 	 *	
+	 * @return void
 	 */ 
 	function add_information($date = NULL , $group = NULL)
 	{	
@@ -179,8 +193,6 @@ class Site extends CI_Controller
 			$group = $this->Tables_model->get_group($group_id);
 			$counter = 0; // count the number of images.
 
-			//$group_id_vec = $this->Tables_model->get_group_id($group, $date);
-			//$group_id = $grup_id_vec[0] -> id;
 			$idArray = $this->Tables_model->get_all_illustration_id_and_imgurl_from_group($group_id); // an array with all the id's in the group
 			foreach ($idArray as $id) 
 			{	
@@ -229,9 +241,6 @@ class Site extends CI_Controller
 				echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			}
 		}else if(isset($_POST['rotateplus'])){
-			
-			//$group = $_POST['group'];
-			//$date = $_POST['date'];
 			
 			$group_id = $_POST['group_id']; // Använd istället för name och date.
 			//print_r($group_id);
@@ -289,7 +298,6 @@ class Site extends CI_Controller
 					$soundurl = "";
 					$this->Tables_model->update_illustration($id ->id, $artist, $imgname,"", $soundurl, $story, $threshold); // updates the database for the specific image.
 					$billboard_id = $this->Tables_model->get_billboard_id_from_illustration($id -> id);
-					// echo $billboard_id[0]->billboard_id;
 					$this->Tables_model->update_billboard_image($billboard_id[0]->billboard_id, '', $threshold);
 					$size = $_POST['size'.$counter]; // gets the specific size
 					$scalexy = getimagesize($id->imgurl)[0] / getimagesize($id->imgurl)[1]; 
@@ -301,13 +309,10 @@ class Site extends CI_Controller
 				}
 				$counter ++; 
 			}
-			// echo urlencode($group[0] -> name);
 			echo "<script>window.location.href = 'add_information/".$group[0] -> date."/".urlencode($group[0] -> name)."';</script>"; // Javascript, loads the add_information view with the variables $date and $group		
 			
 		}else if(isset($_POST['rotateminus'])){
-			
-			//$group = $_POST['group'];
-			//$date = $_POST['date'];
+
 			$group_id = $_POST['group_id']; // Använd istället för name och date.
 			
 			$group = $this->Tables_model->get_group($group_id);
@@ -620,7 +625,7 @@ class Site extends CI_Controller
 	 /**
 	 * download_info($date = NULL, $group = NULL): downloads a zip of all the information from a specific group.
 	 * Librarys:
-	 * Models: Images_model
+	 * Models: Tables_model
 	 * Views: site_header, site_nav, content_download, sub_download, site_footer
 	 * @param  string	$date		The date
 	 * @param  string	$group		The group
@@ -730,7 +735,14 @@ class Site extends CI_Controller
 		
 	}
 	
-
+	 /**
+	 * add_world_and_objects(): add a new world with billboards.
+	 * Librarys: upload, MY_upload, ProcessImage
+	 * Models: Tables_model
+	 * Views: site_header, site_nav, content_create_world, sub_addworldandobjects, site_footer
+	 *	
+	 * @return void
+	 */ 
 	function add_world_and_objects()
 	{
 		$this->load->view("site_header");
@@ -836,7 +848,15 @@ class Site extends CI_Controller
 	}
 	
 	
-	
+	/**
+	 * add_object_information(): edit the worlds billboards information
+	 * Librarys: upload, MY_upload, ProcessImage
+	 * Models: Tables_model
+	 * Views: site_header, site_nav, content_create_world, sub_edit_world, site_footer
+	 *	
+	 * @param $world_name = NULL
+	 * @return void
+	 */ 
 	function add_object_information($world_name = NULL)
 	{
 		$this->load->view("site_header");
@@ -1169,7 +1189,15 @@ class Site extends CI_Controller
 		}
 		$this->load->view("site_footer"); // Finally, add the footer.
 	}
-	
+	/**
+	 * add_plane(): add a plane-map and mask to the world
+	 * Librarys: upload, MY_upload, ProcessImage
+	 * Models: Tables_model
+	 * Views: site_header, site_nav, content_create_world, content_plane, site_footer
+	 *	
+	 * @param $world_name = NULL
+	 * @return void
+	 */ 
 	function add_plane($world_name = NULL)
 	{
 		$this->load->view("site_header");
@@ -1262,7 +1290,13 @@ class Site extends CI_Controller
 	
 
 	
-	
+	/**
+	 * instructions(): loads the instrunctons view.
+	 * Models: 
+	 * Views: site_header, site_nav, content_instructions, site_footer
+	 *	
+	 * @return void
+	 */ 
 	function instructions()
 	{	
 		$this->load->view("site_header");
@@ -1278,6 +1312,7 @@ class Site extends CI_Controller
 	 * Models: 
 	 * Views: site_header, site_nav, content_about, sub_download, site_footer
 	 *	
+	 * @return void
 	 */ 
 	function about()
 	{
@@ -1290,8 +1325,11 @@ class Site extends CI_Controller
 
 	/**
 	*
-	* coord(): function to acess the add_coordinates view, will be removed later.
-	*
+	* add_coordinates(): add coordinates to the illustrations
+	* Librarys:
+	* Models: Tables_model
+	* Views: site_header, site_nav, content_about, sub_coord, site_footer
+	* @return void
 	*/
 	function add_coordinates($date = NULL, $group = NULL)
 	{	

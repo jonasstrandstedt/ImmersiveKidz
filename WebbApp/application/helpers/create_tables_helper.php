@@ -1,16 +1,16 @@
 <?php
 /*
-* @brief    Function that creates the table for the images.
+* @brief    Function that that returns all fields for the different tables the database should have. Used in install_model.php
 *
-* @details  get_images_table_fields(), returns an array containing all the columns that should be in the images table. 
+* @details  get_illustrations_table_fields(), returns an array containing all the columns that should be in the illustrations table. 
 *			get_worlds_table_fields(), returns an array containing all the columns that should be in the worlds table.
 *			get_models_table_fields(), returns an array containing all the columns that should be in the models table.
-*			get_maps_table_fields(), returns an array containing all the columns that should be in the maps table.
+*			get_billboards_table_fields(), returns an array containing all the columns that should be in the billboards table.
+*			get_groups_table_fields(), returns an array containing all the columns that should be in the groups table.
+*			get_planes_table_fields(), returns an array containing all the columns that should be in the planes table.
 *			get_masks_table_fields(), returns an array containing all the columns that should be in the masks table.
 *			get_animations_table_fields(), returns an array containing all the columns that should be in the animations table.
-*			get_planes_table_fields(), returns an array containing all the columns that should be in the planes table.
-*			get_groups_table_fields(), returns an array containing all the columns that should be in the groups table.
-*			get_billboards_table_fields(), returns an array containing all the columns that should be in the billboards table.
+*			get_maps_table_fields(), returns an array containing all the columns that should be in the maps table.
 *			the install model class is using these functions when creating the tables
 *
 * @author   Viktor Fröberg, vikfr292@student.liu.se
@@ -21,7 +21,12 @@
 */
 
 
-function get_images_table_fields()
+ /**
+ * Function returning all the columns the illustrations-table should contain
+ *
+ * @return array 	
+ */ 
+function get_illustrations_table_fields()
 {	
 	$fields = array(
 		'id' => array(
@@ -84,7 +89,11 @@ function get_images_table_fields()
 		);
 	return $fields;
 }
-
+ /**
+ * Function returning all the columns the worlds-table should contain
+ *
+ * @return array 	
+ */ 
 function get_worlds_table_fields() 
 {	
 	$fields = array(
@@ -196,7 +205,11 @@ function get_worlds_table_fields()
 		);
 	return $fields;
 }
-
+ /**
+ * Function returning all the columns the models-table should contain
+ *
+ * @return array 	
+ */ 
 function get_models_table_fields()
 {	
 	$fields = array(
@@ -222,8 +235,12 @@ function get_models_table_fields()
 		);
 	return $fields;
 }
-
-function get_billboards_table_fields()  //size unsigned?
+ /**
+ * Function returning all the columns the billboards-table should contain
+ *
+ * @return array 	
+ */ 
+function get_billboards_table_fields()
 {	
 	$fields = array(
 		'id' => array(
@@ -255,7 +272,11 @@ function get_billboards_table_fields()  //size unsigned?
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the groups-table should contain
+ *
+ * @return array 	
+ */ 
 function get_groups_table_fields()
 {	
 	$fields = array(
@@ -282,7 +303,11 @@ function get_groups_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the planes-table should contain
+ *
+ * @return array 	
+ */ 
 function get_planes_table_fields()
 {	
 	$fields = array(
@@ -332,7 +357,11 @@ function get_planes_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the masks-table should contain
+ *
+ * @return array 	
+ */ 
 function get_masks_table_fields()
 {	
 	$fields = array(
@@ -359,7 +388,11 @@ function get_masks_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the animations-table should contain
+ *
+ * @return array 	
+ */ 
 function get_animations_table_fields()
 {	
 	$fields = array(
@@ -377,7 +410,11 @@ function get_animations_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the maps-table should contain
+ *
+ * @return array 	
+ */ 
 function get_maps_table_fields()
 {	
 	$fields = array(
@@ -400,7 +437,11 @@ function get_maps_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the billboard_world-table should contain
+ *
+ * @return array 	
+ */ 
 function get_billboard_world_table_fields()
 {	
 	$fields = array(
@@ -419,7 +460,7 @@ function get_billboard_world_table_fields()
 			'constraint' => 5, 
 			'unsigned' => TRUE
 			),
-		'pos_x' => array(           //typ?
+		'pos_x' => array(
 			'type' => 'FLOAT',
 			'constraint' => 4,1 
 			),
@@ -447,7 +488,11 @@ function get_billboard_world_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the model_world-table should contain
+ *
+ * @return array 	
+ */ 
 function get_model_world_table_fields()
 {	
 	$fields = array(
@@ -497,7 +542,11 @@ function get_model_world_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the billboard_animation-table should contain
+ *
+ * @return array 	
+ */ 
 function get_billboard_animation_table_fields()
 {	
 	$fields = array(
@@ -519,7 +568,11 @@ function get_billboard_animation_table_fields()
 	return $fields;
 }
 
-
+ /**
+ * Function returning all the columns the plane_world-table should contain
+ *
+ * @return array 	
+ */ 
 function get_plane_world_table_fields()
 {	
 	$fields = array(
@@ -549,21 +602,3 @@ function get_plane_world_table_fields()
 		);
 	return $fields;
 }
-
-
-// function get_map_world_table_fields()
-// {	
-// 	$fields = array(
-// 		'map_id' => array(
-// 			'type' => 'INT',
-// 			'constraint' => 5, 
-// 			'unsigned' => TRUE
-// 			),
-// 		'world_id' => array(
-// 			'type' => 'INT',
-// 			'constraint' => 5, 
-// 			'unsigned' => TRUE
-// 			)
-// 		);
-// 	return $fields;
-// }
